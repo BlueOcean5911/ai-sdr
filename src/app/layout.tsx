@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={space_grotesk}>
-        <main className="font-space_grotesk">
+        <main className="font-space_grotesk h-dvh flex">
           <ThemeProvider attribute="class">{children}</ThemeProvider>
         </main>
       </body>

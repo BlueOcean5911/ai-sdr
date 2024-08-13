@@ -9,7 +9,7 @@ import Image from "next/image";
 export default function SignIn() {
   return (
     <>
-      <div className="flex min-h-dvh">
+      <div className="flex min-h-dvh flex-1">
         <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
@@ -144,7 +144,7 @@ export default function SignIn() {
         </div>
         <div className="relative hidden w-0 flex-1 lg:block">
           <Image
-            alt=""
+            alt="Sign In Background Image"
             src={LOGIN_BG_URL}
             width={1200}
             height={800}
@@ -152,7 +152,7 @@ export default function SignIn() {
           />
           <div className="absolute top-0 left-0 w-full h-full flex-center">
             <Image
-              alt=""
+              alt="Sign In Background Image"
               src={LOGIN_SUB_IMAGE_001_URL}
               width={1200}
               height={800}
