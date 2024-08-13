@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <>
-      <div className="min-h-dvh flex-center">
+      <div className="min-h-dvh flex-center flex-1">
         <div className="fixed z-50 top-0 right-0 mt-4 mr-4">
           <ThemeToggle />
         </div>

@@ -40,7 +40,7 @@ export default function DashboardLayout({
 
   return (
     <>
-      <div>
+      <div className="flex flex-1">
         <Dialog
           open={sidebarOpen}
           onClose={setSidebarOpen}
@@ -73,7 +73,7 @@ export default function DashboardLayout({
               </TransitionChild>
               {/* Sidebar component, swap this element with another sidebar if you like */}
               <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
-                <div className="flex-center h-16 shrink-0 gap-4 pr-12">
+                <div className="flex-center h-16 mt-4 shrink-0 gap-4 pr-12">
                   <Logo />
                 </div>
                 <nav className="flex flex-1 flex-col">
@@ -128,8 +128,8 @@ export default function DashboardLayout({
         {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
-            <div className="flex-center h-16">
+          <div className="flex grow flex-col gap-y-2 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
+            <div className="flex-center h-16 mt-4">
               <Logo />
             </div>
             <nav className="flex flex-1 flex-col">
@@ -179,7 +179,7 @@ export default function DashboardLayout({
           </div>
         </div>
 
-        <div className="lg:pl-72">
+        <div className="lg:pl-72 flex flex-col flex-1">
           <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
             <button
               type="button"
@@ -197,7 +197,7 @@ export default function DashboardLayout({
             />
 
             <div className="flex flex-1 justify-end gap-x-4 lg:gap-x-6">
-              <form action="#" method="GET" className="relative flex">
+              <form action="#" method="GET" className="relative hidden md:flex">
                 <label htmlFor="search-field" className="sr-only">
                   Search
                 </label>
@@ -267,9 +267,7 @@ export default function DashboardLayout({
             </div>
           </div>
 
-          <div className="py-10">
-            <div className="px-4 sm:px-6 lg:px-8 bg-gray-00">{children}</div>
-          </div>
+          {children}
         </div>
       </div>
     </>

@@ -1,14 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/layouts/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/Pages/**/*.{js,ts,jsx,tsx,mdx}", // Note: Ensure this matches your file structure (case-sensitive)
-    "./src/utils/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
       backgroundImage: {
@@ -24,6 +17,12 @@ const config: Config = {
         "olive-green-500": "#B3B8A5",
         "olive-green-200": "#D9DFC7",
         "olive-green-100": "#E4E6DE",
+        "green-100": "#E3F4E3",
+        "green-900": "#65C565",
+        "red-100": "#F4E3E3",
+        "red-900": "#C56565",
+        "gray-150": "#93A3AB",
+        "orange-100": "#F4A754",
       },
       backgroundColor: (theme) => theme("colors"), // Removed unnecessary type annotation
       textColor: (theme) => theme("colors"),

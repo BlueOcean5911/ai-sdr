@@ -36,6 +36,9 @@
     transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
   }
 
+  h2 {
+    @apply text-2xl text-gray-900;
+  }
   .flex-center {
     @apply flex items-center justify-center;
   }
@@ -73,7 +76,11 @@
   }
 
   .title {
-    @apply relative -top-[88px] z-40 text-2xl font-bold inline-block ml-8;
+    @apply relative z-40 -top-12 text-2xl font-bold inline-block ml-8 h-0;
+  }
+
+  .card {
+    @apply bg-white rounded-xl p-6;
   }
 }
 
@@ -159,4 +166,26 @@
   .hidden-xs-up {
     display: none !important;
   }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

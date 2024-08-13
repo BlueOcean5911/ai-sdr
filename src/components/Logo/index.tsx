@@ -7,7 +7,7 @@ export default function Logo() {
   return (
     <div className="flex-center shrink-0">
       <Link href={ROUTE_DASHBOARD}>
-        <div className="flex-center gap-2">
+        <div className="flex-center gap-1">
           <Image
             alt="AIVIO"
             src={LOGO_IMAGE_URL}
