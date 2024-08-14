@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ROUTE_DASHBOARD } from "@/data/routes";
 import Link from "next/link";
-import { LOGO_IMAGE_URL } from "@/data/images";
+import { LOGO_IMAGE_URL } from "@/data/images.url";
 
 export default function Logo() {
   return (

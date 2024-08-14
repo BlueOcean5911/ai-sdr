@@ -1,4 +1,4 @@
-import { LOGO_IMAGE_URL } from "@/data/images";
+import { LOGO_IMAGE_URL } from "@/data/images.url";
 import Image from "next/image";
 
 export default function LogoIcon({ ...others }: any) {

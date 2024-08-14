@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import ApexCharts from "apexcharts";
-import TransactionIcon from "@/components/Icon/transaction.icon";
+import TransactionIcon from "@/components/Icons/transaction.icon";
 
 export default function TrackChart({ data }: { data: any }) {
   const [selection, setSelection] = useState("one_year");

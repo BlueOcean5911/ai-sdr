@@ -1,0 +1,143 @@
+import CubeIcon from "@/components/Icons/cube.icon";
+import LaunchIcon from "@/components/Icons/launch.icon";
+
+export const notificationIcons = {
+  leadAdded: <CubeIcon />,
+  campaignAdded: <LaunchIcon />,
+};
+
+export const headerNotificationList = [
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+  {
+    id: "leadAdded",
+    title: "New Lead Added",
+    content: "Jackson Doe added ----------------------------",
+    href: "#",
+    date: "August 5, 2024",
+  },
+];

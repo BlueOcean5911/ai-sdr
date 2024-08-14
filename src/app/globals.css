@@ -39,6 +39,11 @@
   h2 {
     @apply text-2xl text-gray-900;
   }
+
+  h3 {
+    @apply text-lg text-gray-900;
+  }
+
   .flex-center {
     @apply flex items-center justify-center;
   }
