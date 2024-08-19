@@ -29,9 +29,7 @@ const config: Config = {
       fill: (theme) => theme("colors"),
     },
   },
-  plugins: [
-    require("@tailwindcss/forms"), // Ensure the plugin is installed
-  ],
+  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/line-clamp")],
 };
 
 export default config;

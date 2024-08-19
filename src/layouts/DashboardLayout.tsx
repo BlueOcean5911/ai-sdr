@@ -30,7 +30,11 @@ import Logo from "@/components/Logo";
 
 import { classNames } from "@/utils";
 
-import { navigation, userNavigation } from "@/data/navigation.data";
+import {
+  navigationGeneral,
+  navigationSupport,
+  userNavigation,
+} from "@/data/navigation.data";
 import Link from "next/link";
 import ThemeToggle from "@/components/Theme/ThemeToggle";
 import HeaderNotification from "@/components/Notification/header-notification";
@@ -82,8 +86,9 @@ export default function DashboardLayout({
                 <nav className="flex flex-1 flex-col">
                   <ul role="list" className="flex flex-1 flex-col gap-y-7">
                     <li>
+                      <label className="text-gray-150">General</label>
                       <ul role="list" className="-mx-2 space-y-1">
-                        {navigation.map((item) => (
+                        {navigationGeneral.map((item) => (
                           <li key={item.name} className="nav">
                             <Link
                               href={item.href}
@@ -138,8 +143,9 @@ export default function DashboardLayout({
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
                 <li>
+                  <div className="text-gray-150 py-2">General</div>
                   <ul role="list" className="-mx-2 space-y-1">
-                    {navigation.map((item) => (
+                    {navigationGeneral.map((item) => (
                       <li key={item.name} className="nav">
                         <Link
                           href={item.href}
@@ -165,17 +171,34 @@ export default function DashboardLayout({
                     ))}
                   </ul>
                 </li>
-                <li className="mt-auto">
-                  <Link
-                    href="#"
-                    className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
-                  >
-                    <Cog6ToothIcon
-                      aria-hidden="true"
-                      className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600"
-                    />
-                    Settings
-                  </Link>
+                <li>
+                  <div className="text-gray-150 py-2">Support</div>
+                  <ul role="list" className="-mx-2 space-y-1">
+                    {navigationSupport.map((item) => (
+                      <li key={item.name} className="nav">
+                        <Link
+                          href={item.href}
+                          className={classNames(
+                            pathname?.includes(item.href)
+                              ? "bg-olive-green-900 text-white"
+                              : "bg-white text-gray-900 hover:bg-olive-green-200",
+                            "group flex gap-x-3 rounded-md p-2 font-semibold leading-6"
+                          )}
+                        >
+                          <item.icon
+                            aria-hidden="true"
+                            className={classNames(
+                              pathname?.includes(item.href)
+                                ? "fill-white stroke-white"
+                                : "text-olive-green-100 ",
+                              "h-6 w-6 shrink-0"
+                            )}
+                          />
+                          {item.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </li>
               </ul>
             </nav>

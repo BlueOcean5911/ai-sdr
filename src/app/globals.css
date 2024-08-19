@@ -59,12 +59,12 @@
 
 @layer components {
   * {
-    color: var(--primary-color);
+    @apply text-gray-900;
   }
 
   .btn-primary {
+    @apply rounded-md text-white cursor-pointer;
     background-color: var(--btn-color);
-    color: white;
     transition: scale 0.2s ease-in-out;
   }
 
@@ -74,6 +74,23 @@
 
   .btn-primary:hover {
     scale: 1.1;
+  }
+
+  .btn-primary:active {
+    scale: 1;
+  }
+
+  .btn-secondary {
+    @apply rounded-md border-2 border-gray-150 cursor-pointer;
+    transition: scale 0.2s ease-in-out;
+  }
+
+  .btn-secondary:hover {
+    scale: 1.1;
+  }
+
+  .btn-secondary:active {
+    scale: 1;
   }
 
   .nav {

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ROUTE_DASHBOARD, ROUTE_REGISTER } from "@/data/routes";
 import Logo from "@/components/Logo";
 import CheckBox from "@/components/CheckBox";
-import { LOGIN_BG_URL, LOGIN_SUB_IMAGE_001_URL } from "@/data/images.url";
+import { LOGIN_BG_URL, LOGIN_SUB_IMAGE_001_URL } from "@/data/urls/images.url";
 import Image from "next/image";
 
 export default function SignIn() {
@@ -67,9 +67,7 @@ export default function SignIn() {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <CheckBox id="remember-me" content="Remember me" />
-                    </div>
+                    <CheckBox id="remember-me" content="Remember me" />
 
                     <div className="text-sm leading-6">
                       <a href="#" className="font-semibold">

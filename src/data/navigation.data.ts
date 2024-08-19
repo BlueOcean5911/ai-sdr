@@ -10,7 +10,7 @@ import {
 
 import { ROUTE_LOGIN } from "./routes";
 
-export const navigation = [
+export const navigationGeneral = [
   { name: "Dashboard", href: "/dashboard", icon: ChartPieIcon, current: true },
   {
     name: "Integration",
@@ -41,6 +41,16 @@ export const navigation = [
     name: "Data Management",
     href: "/database",
     icon: CircleStackIcon,
+    current: false,
+  },
+];
+
+export const navigationSupport = [
+  { name: "Account", href: "/account", icon: ChartPieIcon, current: false },
+  {
+    name: "Setting",
+    href: "/setting",
+    icon: UsersIcon,
     current: false,
   },
 ];
