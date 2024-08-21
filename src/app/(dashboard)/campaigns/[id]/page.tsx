@@ -49,6 +49,9 @@ export default function Page({ params }: { params: { id: string } }) {
           <div className="flex-1 flex-center">
             <ComingSoon />
           </div>
+          {/* Add title and description */}
+          {/* Add personas */}
+          {/* Add cadences */}
         </div>
       </div>
     </>

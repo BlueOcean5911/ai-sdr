@@ -1,6 +1,6 @@
 import { classNames } from "@/utils";
 
-const mapStatusToColor = {
+const mapStatusToColor: any = {
   added: { content: "Added", color: "bg-blue-100 text-blue-900" },
   lunched: { content: "Lunched", color: "bg-green-100 text-green-900" },
   paused: { content: "Paused", color: "bg-yellow-100 text-yellow-900" },
