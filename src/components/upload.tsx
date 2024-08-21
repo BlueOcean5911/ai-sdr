@@ -68,6 +68,14 @@ const Upload = ({ text = "Add" }: { text: string }) => {
                 )}
               </Dropzone>
             </div>
+            <div className="flex items-center gap-4">
+              <label htmlFor="description">Description</label>
+              <input
+                className="block w-full rounded-md py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset  sm:text-sm sm:leading-6 focus:border-gray-500 focus:border-2 border-2 border-gray-100"
+                name="description"
+                id="description"
+              />
+            </div>
             <div className="btn-primary text-center p-2">Upload</div>
           </DialogPanel>
         </div>

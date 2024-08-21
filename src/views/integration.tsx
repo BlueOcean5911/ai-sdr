@@ -33,7 +33,7 @@ export default function Integration() {
       description:
         "HubSpot's free CRM powers your customer support, sales, and marketing with easy-to-use features like live chat, meeting scheduling, and email tracking.",
       integrationBtn: "Connect",
-      onClick: () => router.push(ROUTE_INTEGRATION_HUBSPOT),
+      onClick: () => router.push("#"),
     },
     {
       icon: (
@@ -43,7 +43,7 @@ export default function Integration() {
       description:
         "Salesforce offers a wide variety of CRM categories and systems to meet your needs, including Sales Cloud.",
       integrationBtn: "Connect",
-      onClick: () => router.push(ROUTE_INTEGRATION_SALESFORCE),
+      onClick: () => router.push("#"),
     },
     {
       icon: (
@@ -61,7 +61,7 @@ export default function Integration() {
       description:
         "Discover Outreach, the sales execution platform. Elevate your sales strategy, engage customers better, and drive results.",
       integrationBtn: "Connect",
-      onClick: () => router.push(ROUTE_INTEGRATION_OUTREACH),
+      onClick: () => router.push("#"),
     },
     {
       icon: <SalesloftIcon className="w-48 h-12 m-2" aria-label="Salesloft" />,
@@ -69,7 +69,7 @@ export default function Integration() {
       description:
         "Salesloft helps thousands of the world's most successful selling teams drive more revenue with the Modern Revenue Platform",
       integrationBtn: "Connect",
-      onClick: () => router.push(ROUTE_INTEGRATION_SALESLOFT),
+      onClick: () => router.push("#"),
     },
     {
       icon: <ConquorIcon className="w-48 h-12 m-2" aria-label="Conquer" />,
@@ -77,7 +77,7 @@ export default function Integration() {
       description:
         "Conquer is a Sales Engagement Platform that is native to Salesforce, making selling smarter by connecting you to buyers faster, where they want to talk.",
       integrationBtn: "Connect",
-      onClick: () => router.push(ROUTE_INTEGRATION_CONQUER),
+      onClick: () => router.push("#"),
     },
   ];
 

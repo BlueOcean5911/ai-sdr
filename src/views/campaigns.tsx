@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import {
@@ -162,6 +163,7 @@ const defaultCampaigns = [
 
 export default function Campaigns() {
   const [campaigns, setCampaigns] = useState(defaultCampaigns);
+  const router = useRouter();
 
   const handleStatusChange = (id: string, status: number) => {
     setCampaigns(
@@ -178,6 +180,12 @@ export default function Campaigns() {
   const handleDeleteCampaign = (id: string) => {
     // TODO: Delete the cadence
     setCampaigns(campaigns.filter((campaign) => campaign.id !== id));
+  };
+
+  const buildCampaign = () => {
+    //  TODO: Create a new cadence with API and retrieve the new cadence ID
+    const newCadenceId = "M909";
+    router.push(`/campaigns/${newCadenceId}`);
   };
 
   return (
@@ -205,7 +213,10 @@ export default function Campaigns() {
               <EllipsisVerticalIcon className="w-4 h-4" />
               <span>Bulk Action</span>
             </div>
-            <div className="btn-primary flex-center gap-2 p-2" onClick={}>
+            <div
+              className="btn-primary flex-center gap-2 p-2"
+              onClick={() => buildCampaign()}
+            >
               <PlusCircleIcon className="w-4 h-4 stroke-white" />
               Build Campaign
             </div>

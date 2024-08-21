@@ -1,11 +1,8 @@
 import {
-  CalendarIcon,
   ChartPieIcon,
   CircleStackIcon,
   CubeIcon,
-  DocumentDuplicateIcon,
   UsersIcon,
-  WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
 
 import { ROUTE_LOGIN } from "./routes";

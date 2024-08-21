@@ -201,7 +201,6 @@ const SettingLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
           </div>
         </div>
-        {children}
       </div>
     </>
   );

@@ -67,16 +67,16 @@ export default function RecentActivityCard() {
                 <tbody className="divide-y divide-gray-200">
                   {people.map((person, id) => (
                     <tr key={id} className=" hover:bg-gray-100">
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                      <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-900 font-bold sm:pl-0">
                         {person["activity-type"]}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-900 font-bold">
                         {person.actor}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
                         {person["order-date"]}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
                         <StatusButton status={person.status} />
                       </td>
                     </tr>

@@ -14,11 +14,8 @@ import {
 
 import {
   Bars3Icon,
-  BellAlertIcon,
-  BellIcon,
   Cog6ToothIcon,
   UserCircleIcon,
-  XCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import {
@@ -241,7 +238,7 @@ export default function DashboardLayout({
               </form>
               <div className="flex items-center gap-x-4 lg:gap-x-6">
                 <HeaderNotification />
-                <ThemeToggle />
+                {/* <ThemeToggle /> */}
 
                 {/* Separator */}
                 <div

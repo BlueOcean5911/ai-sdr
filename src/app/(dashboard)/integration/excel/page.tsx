@@ -2,15 +2,13 @@
 
 import Pagination from "@/components/Pagination/Pagination";
 import Upload from "@/components/upload";
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import { EllipsisHorizontalCircleIcon } from "@heroicons/react/24/outline";
+import { TrashIcon } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
 import { useState } from "react";
 
-const excels = [
+const defaultExcels = [
   {
-    id: "M909",
+    id: "M909-1",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -18,7 +16,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M910",
+    id: "M910-2",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -26,7 +24,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M911-3",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -34,7 +32,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M912-4",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -42,7 +40,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M913-5",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -50,7 +48,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M914-6",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -58,7 +56,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M915-7",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -66,7 +64,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M916-8",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -74,7 +72,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M917-9",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -82,7 +80,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M918-10",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -90,7 +88,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M919-11",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -98,7 +96,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M920-12",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -106,7 +104,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M921-13",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -114,7 +112,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M922-14",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -122,7 +120,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M923-15",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -130,7 +128,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M924-16",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -138,7 +136,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M925-17",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -146,7 +144,7 @@ const excels = [
     status: "Active",
   },
   {
-    id: "M909",
+    id: "M926-18",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
@@ -157,6 +155,12 @@ const excels = [
 
 export default function Page({}: {}) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [excels, setExcels] = useState(defaultExcels);
+
+  const handleDelete = (id: number | string) => {
+    // TODO: Implement delete functionality
+    setExcels(excels.filter((excel) => excel.id !== id));
+  };
 
   return (
     <>
@@ -189,14 +193,14 @@ export default function Page({}: {}) {
           <Pagination
             className="pagination-bar"
             currentPage={currentPage}
-            totalCount={10000}
+            totalCount={excels.length}
             pageSize={10}
             onPageChange={(page: number) => setCurrentPage(page)}
           />
         </div>
         {/* Table */}
         <div className="px-4 sm:px-6 lg:px-8 flex-1">
-          <div className="mt-8 flow-root">
+          <div className="flow-root">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                 <table className="min-w-full divide-y divide-gray-300">
@@ -236,12 +240,6 @@ export default function Page({}: {}) {
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
-                        Status
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                      >
                         Action
                       </th>
                     </tr>
@@ -267,37 +265,11 @@ export default function Page({}: {}) {
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           {excel.createdDate}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {excel.status}
-                        </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3 rounded-r-md">
-                          <Popover>
-                            <PopoverButton className="block text-sm/6 font-semibold text-gray-900 focus:outline-none">
-                              <EllipsisHorizontalCircleIcon className="w-5 h-5" />
-                            </PopoverButton>
-                            <PopoverPanel
-                              transition
-                              anchor="left"
-                              className="divide-x rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:translate-x-2 translate-y-1/2 data-[closed]:opacity-0 shadow-md text-gray-900"
-                            >
-                              <div className="p-3">
-                                <div className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100">
-                                  Active
-                                </div>
-                                <div className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100">
-                                  Disable
-                                </div>
-                                <div className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100">
-                                  <Link href={`/integration/excel/${excel.id}`}>
-                                    Manage
-                                  </Link>
-                                </div>
-                                <div className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100">
-                                  Delete
-                                </div>
-                              </div>
-                            </PopoverPanel>
-                          </Popover>
+                          <TrashIcon
+                            className="h-5 w-5 stroke-gray-400 hover:stroke-gray-900 hover:cursor-pointer"
+                            onClick={() => handleDelete(excel.id)}
+                          />
                         </td>
                       </tr>
                     ))}
