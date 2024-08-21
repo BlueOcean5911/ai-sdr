@@ -3,7 +3,7 @@ import { ROUTE_LEADS } from "@/data/routes";
 import Leads from "@/views/leads";
 import Link from "next/link";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Page() {
   return (
     <>
       <NavTitle>
