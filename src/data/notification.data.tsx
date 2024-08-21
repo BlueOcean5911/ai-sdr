@@ -1,7 +1,7 @@
 import CubeIcon from "@/components/Icons/cube.icon";
 import LaunchIcon from "@/components/Icons/launch.icon";
 
-export const notificationIcons = {
+export const notificationIcons: any = {
   leadAdded: <CubeIcon />,
   campaignAdded: <LaunchIcon />,
 };

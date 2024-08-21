@@ -8,7 +8,7 @@ import Dropzone from "react-dropzone";
 const Upload = ({ text = "Add" }: { text: string }) => {
   let [isOpen, setIsOpen] = useState(false);
 
-  const [selectedFiles, setSelectedFiles] = useState(undefined);
+  const [selectedFiles, setSelectedFiles] = useState<any>(undefined);
   const [currentFile, setCurrentFile] = useState(undefined);
   const [progress, setProgress] = useState(0);
 

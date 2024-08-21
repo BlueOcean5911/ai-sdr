@@ -24,9 +24,9 @@ const config: Config = {
         "gray-150": "#93A3AB",
         "orange-100": "#F4A754",
       },
-      backgroundColor: (theme) => theme("colors"), // Removed unnecessary type annotation
-      textColor: (theme) => theme("colors"),
-      fill: (theme) => theme("colors"),
+      // backgroundColor: (theme) => theme("colors"), // Removed unnecessary type annotation
+      // textColor: (theme) => theme("colors"),
+      // fill: (theme) => theme("colors"),
     },
   },
   plugins: [require("@tailwindcss/forms"), require("@tailwindcss/line-clamp")],

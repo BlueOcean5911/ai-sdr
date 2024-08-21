@@ -8,7 +8,7 @@ import TransactionIcon from "@/components/Icons/transaction.icon";
 export default function TrackChart({ data }: { data: any }) {
   const [selection, setSelection] = useState("one_year");
   const [series] = useState([{ data: data }]);
-  const [options] = useState({
+  const [options] = useState<any>({
     chart: {
       id: "area-datetime",
       type: "area",
@@ -55,7 +55,7 @@ export default function TrackChart({ data }: { data: any }) {
   const updateData = (timeline: any) => {
     setSelection(timeline);
 
-    const zoomDates = {
+    const zoomDates: any = {
       one_month: [
         new Date("28 Jan 2013").getTime(),
         new Date("27 Feb 2013").getTime(),
