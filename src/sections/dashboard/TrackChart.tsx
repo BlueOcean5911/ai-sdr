@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
-import ApexCharts from "apexcharts";
+// import ApexCharts from "apexcharts";
 import TransactionIcon from "@/components/Icons/transaction.icon";
 
 export default function TrackChart({ data }: { data: any }) {
@@ -78,9 +78,9 @@ export default function TrackChart({ data }: { data: any }) {
       ],
     };
 
-    if (timeline in zoomDates && zoomDates[timeline]) {
-      ApexCharts.exec("area-datetime", "zoomX", ...zoomDates[timeline]);
-    }
+    // if (timeline in zoomDates && zoomDates[timeline]) {
+    //   // ApexCharts.exec("area-datetime", "zoomX", ...zoomDates[timeline]);
+    // }
   };
 
   return (
@@ -118,12 +118,12 @@ export default function TrackChart({ data }: { data: any }) {
         </div>
 
         <div id="chart-timeline w-full">
-          <ReactApexChart
+          {/* <ReactApexChart
             options={options}
             series={series}
             type="area"
             height={220}
-          />
+          /> */}
         </div>
       </div>
       <div id="html-dist"></div>
