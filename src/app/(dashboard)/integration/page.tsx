@@ -1,15 +1,18 @@
+import MainCard from "@/components/main-card";
 import NavTitle from "@/components/Nav/Title";
+import { ROUTE_INTEGRATION } from "@/data/routes";
 import Integration from "@/views/integration";
+import Link from "next/link";
 
 export default function Page() {
   return (
     <>
-      <NavTitle>Integration</NavTitle>
-      <div className="relative py-16 px-8 flex-1 bg-gray-100 overflow-auto">
-        <div className="min-h-full overflow-auto flex flex-col">
-          <Integration />
-        </div>
-      </div>
+      <NavTitle>
+        <Link href={ROUTE_INTEGRATION}>Integration</Link>
+      </NavTitle>
+      <MainCard>
+        <Integration />
+      </MainCard>
     </>
   );
 }

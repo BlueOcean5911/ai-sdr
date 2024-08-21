@@ -1,57 +1,71 @@
 "use client";
 
-import { useState } from "react";
 import {
   Listbox,
   ListboxButton,
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
+import clsx from "clsx";
+import { useEffect, useState } from "react";
 
-export default function Select({
+const Select = ({
   data,
+  defaultValue = data[0],
+  onChange: handleChange,
   ...others
 }: {
   data: any;
+  defaultValue?: any;
+  onChange?: (item: any) => void;
   [key: string]: any;
-}) {
-  const [selected, setSelected] = useState(data[0]);
+}) => {
+  const [selected, setSelected] = useState(defaultValue);
+
+  useEffect(() => {
+    if (handleChange) {
+      handleChange(selected);
+    }
+  }, [selected, handleChange]);
 
   return (
-    <Listbox value={selected} onChange={setSelected} {...others}>
-      <div className="relative mt-2">
-        <ListboxButton className="relative w-full cursor-cursor rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 sm:text-sm sm:leading-6">
-          <span className="block truncate">{selected.name}</span>
-          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-            <ChevronUpDownIcon
-              aria-hidden="true"
-              className="h-5 w-5 text-gray-400"
-            />
-          </span>
-        </ListboxButton>
-
-        <ListboxOptions
-          transition
-          className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm"
+    <div className="min-w-36" {...others}>
+      <Listbox value={selected} onChange={setSelected}>
+        <ListboxButton
+          className={clsx(
+            "relative block w-full rounded-lg bg-white py-1.5 pr-8 pl-3 text-left text-sm/6 text-gray-900 border-2 border-gray-200",
+            "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+          )}
         >
-          {data?.map((item: any) => (
+          {selected?.name}
+          <ChevronDownIcon
+            className="group pointer-events-none absolute top-2.5 right-2.5 size-4 fill-gray-900 stroke-gray-900"
+            aria-hidden="true"
+          />
+        </ListboxButton>
+        <ListboxOptions
+          anchor="bottom"
+          transition
+          className={clsx(
+            "w-[var(--button-width)] mt-2 max-h-60 overflow-auto rounded-xl border border-white/5 bg-white shadow-md p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none",
+            "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
+          )}
+        >
+          {data.map((item: any) => (
             <ListboxOption
-              key={item.id}
+              key={item.name}
               value={item}
-              className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-olive-green-100 data-[focus]:text-white"
+              className="group flex cursor-pointer items-center gap-2 rounded-lg py-1.5 px-3 select-none data-[focus]:bg-gray-200 "
             >
-              <span className="block truncate font-normal group-data-[selected]:font-semibold">
-                {item.name}
-              </span>
-
-              <span className="absolute inset-y-0 right-0 flex items-center pr-4 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">
-                <CheckIcon aria-hidden="true" className="h-5 w-5" />
-              </span>
+              <CheckIcon className="invisible size-4 fill-gray-900 group-data-[selected]:visible" />
+              <div className="text-sm/6 text-gray-900">{item.name}</div>
             </ListboxOption>
           ))}
         </ListboxOptions>
-      </div>
-    </Listbox>
+      </Listbox>
+    </div>
   );
-}
+};
+
+export default Select;

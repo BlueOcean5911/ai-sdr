@@ -1,159 +1,187 @@
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
+"use client";
+import { useState } from "react";
+
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import {
+  EllipsisHorizontalCircleIcon,
+  PlusCircleIcon,
+} from "@heroicons/react/24/outline";
 import {
   EllipsisVerticalIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
+import Link from "next/link";
+import Pagination from "@/components/Pagination/Pagination";
 
-const campaigns = [
+const defaultCampaigns = [
   {
-    id: "M909",
+    id: "M909-1",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-2",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-3",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-4",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-5",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-6",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-7",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-8",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-9",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-10",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-11",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-12",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-13",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-14",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-15",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-16",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-17",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
   {
-    id: "M909",
+    id: "M909-18",
     name: "Lindsay Walton",
     goal: "Generate Leads",
     creator: "John Doe",
     createdDate: "2024/08/12",
-    status: "Active",
+    status: 0,
   },
 ];
 
 export default function Campaigns() {
+  const [campaigns, setCampaigns] = useState(defaultCampaigns);
+
+  const handleStatusChange = (id: string, status: number) => {
+    setCampaigns(
+      campaigns.map((campaign) => {
+        if (campaign.id === id) {
+          // Return a new object with the updated status
+          return { ...campaign, status };
+        }
+        return campaign; // Return the unchanged campaign
+      })
+    );
+  };
+
+  const handleDeleteCampaign = (id: string) => {
+    // TODO: Delete the cadence
+    setCampaigns(campaigns.filter((campaign) => campaign.id !== id));
+  };
+
   return (
-    <div className="card mt-8 p-4 flex flex-col flex-1">
+    <div className="card p-4 flex flex-col flex-1">
       <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <form action="#" method="GET" className="relative hidden md:flex ">
@@ -175,16 +203,15 @@ export default function Campaigns() {
           <div className="flex flex-4 gap-4">
             <div className="btn-secondary flex-center gap-2 p-2">
               <EllipsisVerticalIcon className="w-4 h-4" />
-              <span>Bulk Auction</span>
+              <span>Bulk Action</span>
             </div>
-            <div className="btn-primary flex-center gap-2 p-2">
+            <div className="btn-primary flex-center gap-2 p-2" onClick={}>
               <PlusCircleIcon className="w-4 h-4 stroke-white" />
               Build Campaign
             </div>
           </div>
         </div>
       </div>
-
       {/* Table */}
       <div className="px-4 sm:px-6 lg:px-8 flex-1">
         <div className="mt-8 flow-root">
@@ -238,9 +265,9 @@ export default function Campaigns() {
                   </tr>
                 </thead>
                 <tbody className="bg-white">
-                  {campaigns.map((campaign) => (
+                  {campaigns.map((campaign, id) => (
                     <tr
-                      key={campaign.id}
+                      key={id}
                       className="even:bg-olive-green-100 hover:bg-gray-100 "
                     >
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
@@ -259,15 +286,59 @@ export default function Campaigns() {
                         {campaign.createdDate}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {campaign.status}
+                        {campaign.status === 0 ? (
+                          <span className="p-2 bg-green-200 rounded-md">
+                            Active
+                          </span>
+                        ) : (
+                          <span className="p-2 bg-red-200 rounded-md">
+                            Disabled
+                          </span>
+                        )}
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3 rounded-r-md">
-                        <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900"
-                        >
-                          Edit<span className="sr-only">, {campaign.name}</span>
-                        </a>
+                        <Popover>
+                          <PopoverButton className="block text-sm/6 font-semibold text-gray-900 focus:outline-none">
+                            <EllipsisHorizontalCircleIcon className="w-5 h-5" />
+                          </PopoverButton>
+                          <PopoverPanel
+                            transition
+                            anchor="left"
+                            className="divide-x rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:translate-x-2 translate-y-1/2 data-[closed]:opacity-0 shadow-md text-gray-900"
+                          >
+                            <div className="p-3">
+                              <div
+                                className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100"
+                                onClick={() =>
+                                  handleStatusChange(campaign.id, 0)
+                                }
+                              >
+                                Active
+                              </div>
+                              <div
+                                className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100"
+                                onClick={() =>
+                                  handleStatusChange(campaign.id, 1)
+                                }
+                              >
+                                Disable
+                              </div>
+                              <div className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100">
+                                <Link href={`/campaigns/${campaign.id}`}>
+                                  Manage
+                                </Link>
+                              </div>
+                              <div
+                                className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100"
+                                onClick={() =>
+                                  handleDeleteCampaign(campaign.id)
+                                }
+                              >
+                                Delete
+                              </div>
+                            </div>
+                          </PopoverPanel>
+                        </Popover>
                       </td>
                     </tr>
                   ))}
@@ -276,6 +347,16 @@ export default function Campaigns() {
             </div>
           </div>
         </div>
+      </div>
+      {/* Pagination */}
+      <div className="flex justify-end px-16">
+        <Pagination
+          className="pagination-bar"
+          totalCount={campaigns.length}
+          onPageChange={(pageSize: number, currentPage: number) =>
+            console.log(pageSize, currentPage)
+          }
+        />
       </div>
     </div>
   );

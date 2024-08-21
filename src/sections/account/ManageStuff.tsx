@@ -6,31 +6,6 @@ import {
   PlusCircleIcon,
 } from "@heroicons/react/24/solid";
 
-const filters = ["All", "Leads", "Personas", "Others"];
-
-const Filter = () => {
-  return (
-    <>
-      <div className="flex">
-        <div className="card flex flex-col md:w-full min-w-60 gap-4 h-full">
-          <div className="flex-center justify-between">
-            <h2>Filter by</h2>
-            <ArrowPathIcon className="w-6 h-6" />
-          </div>
-          <div className="flex flex-row md:flex-col flex-wrap gap-4">
-            {filters.map((item) => (
-              <CheckBox id={item} content={item} />
-            ))}
-          </div>
-          <div className="btn-primary p-2 text-center cursor-pointer">
-            Apply
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
 const dataList = [
   {
     id: "M909",
@@ -70,11 +45,10 @@ const dataList = [
   },
 ];
 
-const DataManagement = () => {
+const ManageStuff = () => {
   return (
     <>
       <div className="p-4 flex flex-1 gap-4">
-        <Filter />
         <div className="flex flex-1">
           <div className="card p-4 flex flex-col flex-1">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -102,11 +76,11 @@ const DataManagement = () => {
                 <div className="flex flex-4 gap-4">
                   <div className="btn-secondary flex-center gap-2 p-2">
                     <EllipsisVerticalIcon className="w-4 h-4" />
-                    <span>Bulk Auction</span>
+                    <span>Bulk Action</span>
                   </div>
                   <div className="btn-primary flex-center gap-2 p-2 cursor-pointer">
                     <PlusCircleIcon className="w-4 h-4 stroke-white" />
-                    Upload Leads
+                    Add User
                   </div>
                 </div>
               </div>
@@ -147,9 +121,9 @@ const DataManagement = () => {
                         </tr>
                       </thead>
                       <tbody className="bg-white">
-                        {dataList.map((data) => (
+                        {dataList.map((data, id) => (
                           <tr
-                            key={data.id}
+                            key={id}
                             className="even:bg-olive-green-100 hover:bg-gray-100 "
                           >
                             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
@@ -179,4 +153,4 @@ const DataManagement = () => {
   );
 };
 
-export default DataManagement;
+export default ManageStuff;

@@ -18,29 +18,23 @@ export const navigationGeneral = [
     icon: UsersIcon,
     current: false,
   },
-  {
-    name: "Outreach Tools",
-    href: "/outreach-tools",
-    icon: WrenchScrewdriverIcon,
-    current: false,
-  },
-  {
-    name: "Social Integration",
-    href: "/social-integration",
-    icon: CalendarIcon,
-    current: false,
-  },
-  {
-    name: "Campaign Builder",
-    href: "/campaign-builder",
-    icon: DocumentDuplicateIcon,
-    current: false,
-  },
   { name: "Campaigns", href: "/campaigns", icon: CubeIcon, current: false },
   {
-    name: "Data Management",
-    href: "/database",
+    name: "Personas",
+    href: "/personas",
     icon: CircleStackIcon,
+    current: false,
+  },
+  {
+    name: "Cadences",
+    href: "/cadences",
+    icon: CircleStackIcon,
+    current: false,
+  },
+  {
+    name: "Leads",
+    href: "/leads",
+    icon: UsersIcon,
     current: false,
   },
 ];

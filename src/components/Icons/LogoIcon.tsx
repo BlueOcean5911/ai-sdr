@@ -7,8 +7,8 @@ export default function LogoIcon({ ...others }: any) {
       <Image
         alt="AIVIO"
         src={LOGO_IMAGE_URL}
-        width={28}
-        height={24}
+        width={56}
+        height={28}
         priority
         {...others}
       />

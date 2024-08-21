@@ -11,11 +11,10 @@ export default function Logo() {
           <Image
             alt="AIVIO"
             src={LOGO_IMAGE_URL}
-            width={28}
-            height={24}
+            width={128}
+            height={28}
             priority
           />
-          <span className="text-2xl weight font-bold">AIVIO</span>
         </div>
       </Link>
     </div>
