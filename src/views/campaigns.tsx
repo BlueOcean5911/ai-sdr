@@ -185,7 +185,7 @@ export default function Campaigns() {
   const buildCampaign = () => {
     //  TODO: Create a new cadence with API and retrieve the new cadence ID
     const newCadenceId = "M909";
-    router.push(`/campaigns/${newCadenceId}`);
+    router.push(`/campaigns/${newCadenceId}/create`);
   };
 
   return (

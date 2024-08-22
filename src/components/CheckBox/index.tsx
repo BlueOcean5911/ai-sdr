@@ -1,9 +1,11 @@
 export default function CheckBox({
   id,
   content,
+  ...others
 }: {
   id: string;
   content: string;
+  [key: string]: any;
 }) {
   return (
     <div className="flex items-center">

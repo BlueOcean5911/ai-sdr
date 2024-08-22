@@ -240,8 +240,11 @@ export default function ManagePersona({
                   <h3 className="px-2">Results</h3>
                   <div className="border-b-2 border-gray-100" />
                   <div className=" p-2 flex flex-col flex-1 overflow-y-auto">
-                    {persons.map((person) => (
-                      <div className="border-2 border-gray-100 m-1 p-2 rounded-md hover:shadow-md">
+                    {persons.map((person, id) => (
+                      <div
+                        key={id}
+                        className="border-2 border-gray-100 m-1 p-2 rounded-md hover:shadow-md"
+                      >
                         <h4 className="font-bold text-gray-600">
                           {person.name}
                         </h4>

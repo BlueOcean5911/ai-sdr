@@ -7,6 +7,7 @@ import NavTitle from "@/components/Nav/Title";
 import { ROUTE_CATENCES } from "@/data/routes";
 import Cadences from "@/views/cadences";
 import ComingSoon from "@/components/coming-soon";
+import ManageCadence from "@/sections/cadences/manage-cadence";
 
 const defaultCadence = {
   id: "M909",
@@ -39,14 +40,8 @@ export default function Page({ params }: { params: { id: string } }) {
               value={cadence.name}
               onChange={(e) => setCadence({ ...cadence, name: e.target.value })}
             />
-            <div className="btn-group flex gap-4 p-2">
-              <div className="btn-primary p-2 px-4">Save</div>
-              <div className="btn-primary p-2 px-4">Publish</div>
-            </div>
           </div>
-          <div className="flex-1 flex-center">
-            <ComingSoon />
-          </div>
+          <ManageCadence />
         </div>
       </div>
     </>
