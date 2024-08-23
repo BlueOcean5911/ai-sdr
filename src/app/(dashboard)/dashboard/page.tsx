@@ -1,3 +1,4 @@
+import ComingSoon from "@/components/coming-soon";
 import NavTitle from "@/components/Nav/Title";
 import { ROUTE_DASHBOARD } from "@/data/routes";
 import Dashboard from "@/views/dashboard";
@@ -9,9 +10,10 @@ export default function Page() {
       <NavTitle>
         <Link href={ROUTE_DASHBOARD}>Dashboard</Link>
       </NavTitle>
-      <div className="relative py-10 px-8 flex-1 bg-gray-100 overflow-auto">
-        <div className="min-h-full overflow-auto flex flex-col">
-          <Dashboard />
+      <div className="relative py-10 px-8 flex-1 bg-gray-100 overflow-auto flex-1">
+        <div className="min-h-full overflow-auto flex flex-col flex-1">
+          {/* <Dashboard /> */}
+          <ComingSoon />
         </div>
       </div>
     </>

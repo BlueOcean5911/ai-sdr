@@ -166,6 +166,10 @@
     position: relative;
   }
 
+  .input-primary {
+    @apply block h-full w-full pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm border-2 border-gray-300 hover:border-gray-500 rounded-md focus:border-gray-500;
+  }
+
   @keyframes jelly {
     from {
       transform: scale(1, 1);

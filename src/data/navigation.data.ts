@@ -8,7 +8,7 @@ import {
 import { ROUTE_LOGIN } from "./routes";
 
 export const navigationGeneral = [
-  { name: "Dashboard", href: "/dashboard", icon: ChartPieIcon, current: true },
+  { name: "Home", href: "/dashboard", icon: ChartPieIcon, current: true },
   {
     name: "Integration",
     href: "/integration",
