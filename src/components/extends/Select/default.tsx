@@ -49,7 +49,7 @@ const Select = ({
           transition
           className={clsx(
             "w-[var(--button-width)] mt-2 max-h-60 overflow-auto rounded-xl border border-white/5 bg-white shadow-md p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none",
-            "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
+            "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0 z-50"
           )}
         >
           {data.map((item: any) => (

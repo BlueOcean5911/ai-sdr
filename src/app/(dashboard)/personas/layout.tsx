@@ -1,6 +1,6 @@
 // app/personas/layout.tsx
 
-import NavTitle from "@/components/Nav/Title";
+import NavTitle from "@/components/DashboardLayout/Nav/Title";
 import { ROUTE_PERSONAS } from "@/data/routes";
 import Link from "next/link";
 

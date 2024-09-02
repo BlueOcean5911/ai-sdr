@@ -1,4 +1,4 @@
-import NavTitle from "@/components/Nav/Title";
+import NavTitle from "@/components/DashboardLayout/Nav/Title";
 import { ROUTE_CATENCES } from "@/data/routes";
 import Cadences from "@/views/cadences";
 import Link from "next/link";

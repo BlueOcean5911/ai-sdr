@@ -1,5 +1,5 @@
 import ComingSoon from "@/components/coming-soon";
-import NavTitle from "@/components/Nav/Title";
+import NavTitle from "@/components/DashboardLayout/Nav/Title";
 import { ROUTE_SETTING } from "@/data/routes";
 import SettingLayout from "@/layouts/SettingLayout";
 import Setting from "@/views/Setting";

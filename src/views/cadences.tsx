@@ -16,7 +16,7 @@ import {
 } from "@heroicons/react/24/solid";
 
 import Pagination from "@/components/Pagination/Pagination";
-import Select from "@/components/Select/default";
+import Select from "@/components/extends/Select/default";
 
 const defaultCampaigns = [
   {

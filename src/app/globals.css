@@ -34,6 +34,7 @@
 @layer base {
   * {
     transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+    font-family: var(--font-space-grotesk);
   }
 
   h2 {
@@ -63,7 +64,7 @@
   }
 
   .btn-primary {
-    @apply flex-center rounded-md text-white cursor-pointer bg-olive-green-900 border-2 border-olive-green-900 p-2 min-w-48;
+    @apply flex-center rounded-md text-white cursor-pointer bg-olive-green-900 border-2 border-olive-green-900 p-1 min-w-36 h-10;
     transition: scale 0.2s ease-in-out;
   }
 
@@ -80,7 +81,7 @@
   }
 
   .btn-secondary {
-    @apply rounded-md border-2 border-gray-150 cursor-pointer p-2 min-w-12;
+    @apply rounded-md border-2 border-gray-150 cursor-pointer p-1 min-w-36 h-10;
     transition: scale 0.2s ease-in-out;
   }
 
@@ -256,6 +257,26 @@
 .pagination-item:hover {
   background-color: rgba(0, 0, 0, 0.04);
   cursor: pointer;
+}
+
+.pagination-item.selected {
+  border: 1px solid #0066ff;
+  border-radius: 8px;
+}
+
+.pagination-item.disabled {
+  pointer-events: none;
+  opacity: 0.5; /* Optional: to indicate it's disabled */
+}
+
+.pagination-item.selected {
+  border: 1px solid #0066ff;
+  border-radius: 8px;
+}
+
+.pagination-item.disabled {
+  pointer-events: none;
+  opacity: 0.5; /* Optional: to indicate it's disabled */
 }
 
 .pagination-item.selected {

@@ -233,7 +233,7 @@ const App = () => {
 
   return (
     <div className="flex flex-row flex-1 lg:flex-row">
-      <div className="flex-grow h-screen" ref={reactFlowWrapper}>
+      <div className="flex-1 h-screen" ref={reactFlowWrapper}>
         <ReactFlow
           nodes={nodes}
           nodeTypes={nodeTypes}

@@ -1,4 +1,4 @@
-import NavTitle from "@/components/Nav/Title";
+import NavTitle from "@/components/DashboardLayout/Nav/Title";
 import ManageStuff from "@/sections/account/ManageStuff";
 import Link from "next/link";
 import { ROUTE_ACCOUNT } from "@/data/routes";

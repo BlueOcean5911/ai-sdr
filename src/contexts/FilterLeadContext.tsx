@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 interface LeadFilterConfig {
+  isOpen: boolean;
   title: string;
   company: string;
   location: string;
@@ -17,6 +18,7 @@ export const LeadFilterContext = createContext<
 
 export const LeadFilterProvider = ({ children }: { children: ReactNode }) => {
   const [leadFilterConfig, setLeadFilterConfig] = useState<LeadFilterConfig>({
+    isOpen: true,
     title: "",
     company: "",
     location: "",

@@ -1,4 +1,4 @@
-import Select from "@/components/Select/default";
+import Select from "@/components/extends/Select/default";
 import { timeIntervals } from "@/data/timeIntervals";
 import { ArrowTrendingUpIcon } from "@heroicons/react/24/outline";
 

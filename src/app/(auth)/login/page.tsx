@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 import { ROUTE_DASHBOARD, ROUTE_REGISTER } from "@/data/routes";
-import Logo from "@/components/Logo";
-import CheckBox from "@/components/CheckBox";
+import Logo from "@/components/extends/Logo";
+import CheckBox from "@/components/extends/CheckBox";
 import { LOGIN_BG_URL, LOGIN_SUB_IMAGE_001_URL } from "@/data/urls/images.url";
 import Image from "next/image";
 

@@ -1,5 +1,5 @@
 "use client";
-import Logo from "@/components/Logo";
+import Logo from "@/components/extends/Logo";
 
 import { useState } from "react";
 
@@ -27,7 +27,7 @@ import {
 import { navigationGeneral } from "@/data/navigation.data";
 import Link from "next/link";
 import { classNames } from "@/utils";
-import ToggleButton from "@/components/Button/ToggleButton";
+import ToggleButton from "@/components/extends/Button/ToggleButton";
 
 const settingLayoutItems = [
   {

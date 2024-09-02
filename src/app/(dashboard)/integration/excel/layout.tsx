@@ -1,7 +1,7 @@
 // app/integration/excel/layout.tsx
 
-import MainCard from "@/components/main-card";
-import NavTitle from "@/components/Nav/Title";
+import MainCard from "@/components/extends/main-card";
+import NavTitle from "@/components/DashboardLayout/Nav/Title";
 import { ROUTE_INTEGRATION, ROUTE_INTEGRATION_EXCEL } from "@/data/routes";
 import Link from "next/link";
 

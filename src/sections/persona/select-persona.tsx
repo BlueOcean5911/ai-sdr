@@ -1,9 +1,9 @@
-import Select from "@/components/Select/default";
+import Select from "@/components/extends/Select/default";
 import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { MagnifyingGlassIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { defaultPersonas } from "@/views/personas";
-import CheckBox from "@/components/CheckBox";
+import CheckBox from "@/components/extends/CheckBox";
 
 export default function SelectPersona({
   children,

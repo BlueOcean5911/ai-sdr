@@ -5,7 +5,7 @@ import { useLeadFilter } from "@/contexts/FilterLeadContext";
 export default function FilterLead() {
   const { leadFilterConfig, setLeadFilterConfig } = useLeadFilter();
   return (
-    <div className="w-64 h-full flex flex-col">
+    <div className="card p-2 w-64 h-full flex flex-col">
       <h3 className="p-2 border-b-2 border-gray-100">Search</h3>
       <div className="flex-1 flex flex-col gap-2 p-2 overflow-auto">
         <FilterItem

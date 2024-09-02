@@ -1,4 +1,4 @@
-import Select from "@/components/Select/default";
+import Select from "@/components/extends/Select/default";
 import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";

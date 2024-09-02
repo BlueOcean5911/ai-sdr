@@ -23,7 +23,7 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
 
-import Logo from "@/components/Logo";
+import Logo from "@/components/extends/Logo";
 
 import { classNames } from "@/utils";
 
@@ -34,7 +34,7 @@ import {
 } from "@/data/navigation.data";
 import Link from "next/link";
 import ThemeToggle from "@/components/Theme/ThemeToggle";
-import HeaderNotification from "@/components/Notification/header-notification";
+import HeaderNotification from "@/components/DashboardLayout/Notification/header-notification";
 export default function DashboardLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -202,7 +202,7 @@ export default function DashboardLayout({
           </div>
         </div>
 
-        <div className="lg:pl-72 flex flex-col flex-1">
+        <div className="lg:pl-72 flex flex-col w-dvw h-dvh">
           <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
             <button
               type="button"

@@ -1,4 +1,4 @@
-import StatusButton from "@/components/Button/status-button";
+import StatusButton from "@/components/extends/Button/status-button";
 
 const people = [
   {

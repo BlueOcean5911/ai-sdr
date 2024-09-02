@@ -1,5 +1,5 @@
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
-import CheckBox from "@/components/CheckBox";
+import CheckBox from "@/components/extends/CheckBox";
 import {
   EllipsisVerticalIcon,
   MagnifyingGlassIcon,

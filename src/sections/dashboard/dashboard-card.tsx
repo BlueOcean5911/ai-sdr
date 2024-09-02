@@ -1,4 +1,4 @@
-import CardBadge from "@/components/Badge/card-badge";
+import CardBadge from "@/components/extends/Badge/card-badge";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 
 export default function DashboardCard({

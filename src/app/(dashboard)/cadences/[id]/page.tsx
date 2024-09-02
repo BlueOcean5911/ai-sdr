@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import NavTitle from "@/components/Nav/Title";
+import NavTitle from "@/components/DashboardLayout/Nav/Title";
 import { ROUTE_CATENCES } from "@/data/routes";
 import Cadences from "@/views/cadences";
 import ComingSoon from "@/components/coming-soon";

@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import NavTitle from "@/components/Nav/Title";
+import NavTitle from "@/components/DashboardLayout/Nav/Title";
 import { ROUTE_CAMPAIGNS, ROUTE_CATENCES, ROUTE_PERSONAS } from "@/data/routes";
 import Cadences from "@/views/cadences";
 import ComingSoon from "@/components/coming-soon";
-import ComboBox from "@/components/combobox";
+import ComboBox from "@/components/extends/combobox";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { PersonasTable, defaultPersonas } from "@/views/personas";
 import ManagePersona from "@/sections/persona/manage-persona";
