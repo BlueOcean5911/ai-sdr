@@ -15,7 +15,7 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 
-import Pagination from "@/components/Pagination/Pagination";
+import Pagination from "@/components/extends/Pagination/Pagination";
 import Select from "@/components/extends/Select/default";
 
 const defaultCampaigns = [

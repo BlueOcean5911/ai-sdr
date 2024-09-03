@@ -1,6 +1,6 @@
 import Select from "@/components/extends/Select/default";
 import { XCircleIcon } from "@heroicons/react/24/outline";
-import { Calendar } from "@/components/ui/calendar";
+// import { Calendar } from "@/components/ui/calendar";
 import { useState } from "react";
 import {
   Menu,
@@ -133,7 +133,7 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
                 className="z-20 divide-y divide-white/5 rounded-xl bg-white/5 text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
               >
                 <div className="z-50 bg-white">
-                  <Calendar mode="single" selected={date} onSelect={setDate} />
+                  {/* <Calendar mode="single" selected={date} onSelect={setDate} /> */}
                 </div>
               </PopoverPanel>
             </Popover>

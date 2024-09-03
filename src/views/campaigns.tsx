@@ -12,7 +12,7 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import Pagination from "@/components/Pagination/Pagination";
+import Pagination from "@/components/extends/Pagination/Pagination";
 
 const defaultCampaigns = [
   {

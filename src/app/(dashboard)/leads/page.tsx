@@ -12,7 +12,7 @@ export default function Page() {
       <NavTitle>
         <Link href={ROUTE_LEADS}>Leads</Link>
       </NavTitle>
-      <div className="relative p-4 flex flex-1 bg-gray-100 overflow-auto">
+      <div className="relative p-2 flex flex-1 bg-gray-100 overflow-auto">
         <div className="overflow-auto flex-1 flex flex-col">
           {/* <div className="overflow-auto">
             <div className="card h-[1000px]" />

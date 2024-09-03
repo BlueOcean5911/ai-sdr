@@ -86,6 +86,7 @@ const config = {
     require("@tailwindcss/forms"),
     require("@tailwindcss/line-clamp"),
     require("tailwindcss-animate"),
+    require('tailwindcss-3d'),
   ],
 } satisfies Config;
 

@@ -14,6 +14,8 @@ import {
 
 import {
   Bars3Icon,
+  ChevronDoubleLeftIcon,
+  ChevronDoubleRightIcon,
   Cog6ToothIcon,
   UserCircleIcon,
   XMarkIcon,
@@ -24,6 +26,7 @@ import {
 } from "@heroicons/react/20/solid";
 
 import Logo from "@/components/extends/Logo";
+import Logo2 from "@/components/extends/Logo2";
 
 import { classNames } from "@/utils";
 
@@ -35,19 +38,31 @@ import {
 import Link from "next/link";
 import ThemeToggle from "@/components/Theme/ThemeToggle";
 import HeaderNotification from "@/components/DashboardLayout/Notification/header-notification";
+import { navigations } from "@/data/navigation.data";
+
 export default function DashboardLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarPined, setSidebarPined] = useState(true);
+  const [sidebarShow, setSidebarShow] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
 
   const pathname = usePathname();
+
+  const handleMouseEnter = () => {
+    setSidebarShow(true);
+  };
+
+  const handleMouseLeave = () => {
+    setSidebarShow(false);
+  };
 
   return (
     <>
       <div className="flex flex-1">
         <Dialog
-          open={sidebarOpen}
-          onClose={setSidebarOpen}
+          open={showPopup}
+          onClose={setShowPopup}
           className="relative z-50 lg:hidden"
         >
           <DialogBackdrop
@@ -64,7 +79,7 @@ export default function DashboardLayout({
                 <div className="absolute left-full top-0 flex w-16 justify-center pt-5 duration-300 ease-in-out data-[closed]:opacity-0">
                   <button
                     type="button"
-                    onClick={() => setSidebarOpen(false)}
+                    onClick={() => setShowPopup(false)}
                     className="-m-2.5 p-2.5 bg-transparent"
                   >
                     <span className="sr-only">Close sidebar</span>
@@ -81,44 +96,46 @@ export default function DashboardLayout({
                   <Logo />
                 </div>
                 <nav className="flex flex-1 flex-col">
-                  <ul role="list" className="flex flex-1 flex-col gap-y-7">
-                    <li>
-                      <label className="text-gray-150">General</label>
-                      <ul role="list" className="-mx-2 space-y-1">
-                        {navigationGeneral.map((item) => (
-                          <li key={item.name} className="nav">
-                            <Link
-                              href={item.href}
-                              className={classNames(
-                                pathname?.includes(item.href)
-                                  ? "bg-olive-green-900 text-white"
-                                  : "bg-white text-gray-900 hover:bg-olive-green-200",
-                                "group flex gap-x-3 rounded-md p-2 font-semibold leading-6"
-                              )}
-                            >
-                              <item.icon
-                                aria-hidden="true"
+                  <ul role="list" className="flex flex-1 flex-col gap-y-3">
+                    {navigations.map((group) => (
+                      <li>
+                        <div className="text-gray-150 py-2">{group?.name}</div>
+                        <ul role="list" className="space-y-2">
+                          {group.items.map((item) => (
+                            <li key={item.name} className="nav">
+                              <Link
+                                href={item.href}
                                 className={classNames(
                                   pathname?.includes(item.href)
-                                    ? "fill-white stroke-white"
-                                    : "text-olive-green-100 ",
-                                  "h-6 w-6 shrink-0"
+                                    ? "bg-olive-green-900 text-white"
+                                    : "bg-white text-gray-900 hover:bg-olive-green-200",
+                                  "group flex gap-x-3 rounded-md p-2 font-semibold leading-5"
                                 )}
-                              />
-                              {item.name}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
+                              >
+                                <item.icon
+                                  aria-hidden="true"
+                                  className={classNames(
+                                    pathname?.includes(item.href)
+                                      ? "fill-white stroke-white"
+                                      : "text-olive-green-100 ",
+                                    "h-5 w-5 shrink-0"
+                                  )}
+                                />
+                                {item.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </li>
+                    ))}
                     <li className="mt-auto">
                       <Link
                         href="#"
-                        className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                        className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-5 text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
                       >
                         <Cog6ToothIcon
                           aria-hidden="true"
-                          className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600"
+                          className="h-5 w-5 shrink-0 text-gray-400 group-hover:text-indigo-600"
                         />
                         Settings
                       </Link>
@@ -130,84 +147,133 @@ export default function DashboardLayout({
           </div>
         </Dialog>
 
-        {/* Static sidebar for desktop */}
-        <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+        {/* Collapsed sidebar for desktop with only icon */}
+        <div
+          className={`flex w-0 flex-col ${sidebarPined ? "" : "md:w-14"}`}
+          onMouseEnter={handleMouseEnter}
+        >
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex grow flex-col gap-y-2 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
+          <div className="flex grow flex-col gap-y-4 overflow-y-auto border-r border-gray-200 bg-white px-3 pb-4">
             <div className="flex-center h-16 mt-4">
-              <Logo />
+              <Logo2 />
             </div>
             <nav className="flex flex-1 flex-col">
-              <ul role="list" className="flex flex-1 flex-col gap-y-7">
-                <li>
-                  <div className="text-gray-150 py-2">General</div>
-                  <ul role="list" className="-mx-2 space-y-1">
-                    {navigationGeneral.map((item) => (
-                      <li key={item.name} className="nav">
-                        <Link
-                          href={item.href}
-                          className={classNames(
-                            pathname?.includes(item.href)
-                              ? "bg-olive-green-900 text-white"
-                              : "bg-white text-gray-900 hover:bg-olive-green-200",
-                            "group flex gap-x-3 rounded-md p-2 font-semibold leading-6"
-                          )}
-                        >
-                          <item.icon
-                            aria-hidden="true"
+              <ul role="list" className="flex flex-1 flex-col gap-y-4">
+                {navigations.map((group) => (
+                  <li className="flex flex-col gap-y-4">
+                    <hr />
+                    <ul role="list" className="space-y-2">
+                      {group.items.map((item) => (
+                        <li key={item.name} className="nav">
+                          <Link
+                            href={item.href}
                             className={classNames(
                               pathname?.includes(item.href)
-                                ? "fill-white stroke-white"
-                                : "text-olive-green-100 ",
-                              "h-6 w-6 shrink-0"
+                                ? "bg-olive-green-900 text-white"
+                                : "bg-white text-gray-900 hover:bg-olive-green-200",
+                              "group flex rounded-md p-1.5 font-semibold leading-5"
                             )}
-                          />
-                          {item.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-                <li>
-                  <div className="text-gray-150 py-2">Support</div>
-                  <ul role="list" className="-mx-2 space-y-1">
-                    {navigationSupport.map((item) => (
-                      <li key={item.name} className="nav">
-                        <Link
-                          href={item.href}
-                          className={classNames(
-                            pathname?.includes(item.href)
-                              ? "bg-olive-green-900 text-white"
-                              : "bg-white text-gray-900 hover:bg-olive-green-200",
-                            "group flex gap-x-3 rounded-md p-2 font-semibold leading-6"
-                          )}
-                        >
-                          <item.icon
-                            aria-hidden="true"
-                            className={classNames(
-                              pathname?.includes(item.href)
-                                ? "fill-white stroke-white"
-                                : "text-olive-green-100 ",
-                              "h-6 w-6 shrink-0"
-                            )}
-                          />
-                          {item.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
+                          >
+                            <item.icon
+                              aria-hidden="true"
+                              className={classNames(
+                                pathname?.includes(item.href)
+                                  ? "fill-white stroke-white"
+                                  : "text-olive-green-100 ",
+                                "h-5 w-5 shrink-0"
+                              )}
+                            />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
               </ul>
             </nav>
           </div>
         </div>
 
-        <div className="lg:pl-72 flex flex-col w-dvw h-dvh">
-          <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+        {/* Static sidebar for desktop with full content and icon */}
+        <div
+          className={classNames(
+            "flex w-0 flex-col transition-all duration-500",
+            sidebarPined ? "md:w-60" : "",
+            !sidebarPined && sidebarShow
+              ? "fixed left-0 top-0 bottom-0 z-50 md:w-60"
+              : "",
+            !sidebarPined && !sidebarShow
+              ? "fixed -left-60 top-0 bottom-0 z-50"
+              : ""
+          )}
+          onMouseLeave={handleMouseLeave}
+        >
+          {/* Sidebar component, swap this element with another sidebar if you like */}
+          <div className="flex grow flex-col gap-y-2 overflow-y-auto border-r border-gray-200 bg-white px-3 pb-4">
+            <div className="flex justify-between h-16 mt-4">
+              <Logo />
+              <button
+                className="p-2 h-10 my-auto *:align-middle rounded-md hover:bg-slate-300"
+                onClick={() => setSidebarPined(!sidebarPined)}
+              >
+                <ChevronDoubleLeftIcon
+                  className={classNames(
+                    "w-4 h-4 transition-transform duration-100",
+                    sidebarPined ? "transform rotate-z-180" : ""
+                  )}
+                />
+              </button>
+            </div>
+            <nav className="flex flex-1 flex-col">
+              <ul role="list" className="flex flex-1 flex-col gap-y-3">
+                {navigations.map((group) => (
+                  <li>
+                    <div className="text-gray-150 py-2">{group?.name}</div>
+                    <ul role="list" className="space-y-2">
+                      {group.items.map((item) => (
+                        <li key={item.name} className="nav">
+                          <Link
+                            href={item.href}
+                            className={classNames(
+                              pathname?.includes(item.href)
+                                ? "bg-olive-green-900 text-white"
+                                : "bg-white text-gray-900 hover:bg-olive-green-200",
+                              "group flex gap-x-3 rounded-md p-2 font-semibold leading-5"
+                            )}
+                          >
+                            <item.icon
+                              aria-hidden="true"
+                              className={classNames(
+                                pathname?.includes(item.href)
+                                  ? "fill-white stroke-white"
+                                  : "text-olive-green-100 ",
+                                "h-5 w-5 shrink-0"
+                              )}
+                            />
+                            {item.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <div
+          className={classNames(
+            "flex flex-col flex-1 h-dvh"
+            // sidebarPined ? "md:pl-60" : "",
+            // sidebarShow ? "md:pl-14" : ""
+          )}
+        >
+          <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-3 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
             <button
               type="button"
-              onClick={() => setSidebarOpen(true)}
-              className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
+              onClick={() => setShowPopup(true)}
+              className="-m-2.5 p-2.5 text-gray-700 md:hidden"
             >
               <span className="sr-only">Open sidebar</span>
               <Bars3Icon aria-hidden="true" className="h-6 w-6" />
@@ -216,7 +282,7 @@ export default function DashboardLayout({
             {/* Separator */}
             <div
               aria-hidden="true"
-              className="h-6 w-px bg-gray-200 lg:hidden"
+              className="h-6 w-px bg-gray-200 md:hidden"
             />
 
             <div className="flex flex-1 justify-end gap-x-4 lg:gap-x-6">
@@ -254,7 +320,7 @@ export default function DashboardLayout({
                     <span className="hidden lg:flex lg:items-center">
                       <span
                         aria-hidden="true"
-                        className="ml-4 text-sm font-semibold leading-6 text-gray-900"
+                        className="ml-4 text-sm font-semibold leading-5 text-gray-900"
                       >
                         Tom Cook
                       </span>
@@ -272,7 +338,7 @@ export default function DashboardLayout({
                       <MenuItem key={item.name}>
                         <Link
                           href={item.href}
-                          className="block px-3 py-1 text-sm leading-6 text-gray-900 data-[focus]:bg-olive-green-200"
+                          className="block px-3 py-1 text-sm leading-5 text-gray-900 data-[focus]:bg-olive-green-200"
                         >
                           {item.name}
                         </Link>

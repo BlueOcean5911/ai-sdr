@@ -10,7 +10,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <NavTitle>
         <Link href={ROUTE_PERSONAS}>Personas</Link>
       </NavTitle>
-      <div className="relative py-10 px-8 flex-1 bg-gray-100 overflow-auto">
+      <div className="relative p-2 flex-1 bg-gray-100 overflow-auto">
         <div className="min-h-full overflow-auto flex flex-col">{children}</div>
       </div>
     </>

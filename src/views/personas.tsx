@@ -12,7 +12,7 @@ import {
   PlusCircleIcon,
 } from "@heroicons/react/24/outline";
 
-import Pagination from "@/components/Pagination/Pagination";
+import Pagination from "@/components/extends/Pagination/Pagination";
 import ManagePersona from "@/sections/persona/manage-persona";
 
 export const defaultPersonas = [
