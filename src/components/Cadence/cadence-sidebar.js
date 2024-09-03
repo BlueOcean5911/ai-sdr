@@ -40,7 +40,7 @@ export default function Sidebar({
       ) : (
         //node panel
         <>
-          <h3 className="text-xl mb-4 text-olive-green-900">Steps</h3>
+          <h3 className="text-xl mb-4 text-blue-900">Steps</h3>
           <div className="flex flex-col gap-2">
             <div
               className="cadence-navbar"

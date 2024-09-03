@@ -1,10 +1,20 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
+interface Option {
+  value: string;
+  label: string;
+  disabled?: boolean;
+  isSelected?: boolean;
+}
+
 interface LeadFilterConfig {
   isOpen: boolean;
+  persona: Option | Option[] | null;
   title: string;
   company: string;
   location: string;
+  employee: Option | Option[] | null;
+  keyword: string;
 }
 
 interface LeadFilterContextType {
@@ -19,9 +29,12 @@ export const LeadFilterContext = createContext<
 export const LeadFilterProvider = ({ children }: { children: ReactNode }) => {
   const [leadFilterConfig, setLeadFilterConfig] = useState<LeadFilterConfig>({
     isOpen: true,
+    persona: [],
     title: "",
     company: "",
     location: "",
+    employee: [],
+    keyword: "",
   });
 
   const updateLeadFilterConfig = (config: LeadFilterConfig) => {

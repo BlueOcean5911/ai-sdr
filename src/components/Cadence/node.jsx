@@ -8,7 +8,7 @@ const Node = ({ data, selected, icon, title, description, children }) => {
     <div
       className={`shadow-md rounded-md bg-white border-solid border-2 ${
         selected
-          ? "border-solid border-2 border-olive-green-900"
+          ? "border-solid border-2 border-blue-900"
           : "border-transparent"
       } `}
     >
@@ -17,7 +17,7 @@ const Node = ({ data, selected, icon, title, description, children }) => {
           {icon}
           <span className="text-gray-600">{title}</span>
         </div>
-        <p className="ml-6 text-xs text-olive-green-500">{description}</p>
+        <p className="ml-6 text-xs text-blue-500">{description}</p>
       </div>
       {children}
     </div>

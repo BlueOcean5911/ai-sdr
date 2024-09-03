@@ -178,7 +178,7 @@ export default function ManagePersona({
                   <div className="flex flex-col gap-2">
                     <label>
                       Persona Name
-                      <span className="text-olive-green-900 mb-2">*</span>
+                      <span className="text-blue-900 mb-2">*</span>
                     </label>
                     <input
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-500  sm:text-sm sm:leading-6"
@@ -193,7 +193,7 @@ export default function ManagePersona({
                   <div className="flex flex-col gap-2">
                     <label>
                       Job Title
-                      <span className="text-olive-green-900 mb-2">*</span>
+                      <span className="text-blue-900 mb-2">*</span>
                     </label>
                     <input
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-500  sm:text-sm sm:leading-6"
@@ -208,14 +208,14 @@ export default function ManagePersona({
                   <div className="flex flex-col gap-2">
                     <label>
                       Industry & Keywords
-                      <span className="text-olive-green-900 mb-2">*</span>
+                      <span className="text-blue-900 mb-2">*</span>
                     </label>
                     <Select data={keywords} />
                   </div>
                   <div className="flex flex-col gap-2">
                     <label>
                       Location
-                      <span className="text-olive-green-900 mb-2">*</span>
+                      <span className="text-blue-900 mb-2">*</span>
                     </label>
                     <input
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-500  sm:text-sm sm:leading-6"
@@ -231,7 +231,7 @@ export default function ManagePersona({
                   <div className="flex flex-col gap-2">
                     <label>
                       Employees
-                      <span className="text-olive-green-900 mb-2">*</span>
+                      <span className="text-blue-900 mb-2">*</span>
                     </label>
                     <Select data={employeeRange} />
                   </div>

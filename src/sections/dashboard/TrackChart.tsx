@@ -88,8 +88,8 @@ export default function TrackChart({ data }: { data: any }) {
       <div id="chart w-full">
         <div className="flex justify-between">
           <div className="flex-center gap-4">
-            <div className="w-9 h-9 rounded-xl bg-olive-green-100 flex-center">
-              <TransactionIcon className="w-6 h-6 text-olive-green-900" />
+            <div className="w-9 h-9 rounded-xl bg-blue-100 flex-center">
+              <TransactionIcon className="w-6 h-6 text-blue-900" />
             </div>
             <h2 className="">Transaction activity</h2>
           </div>

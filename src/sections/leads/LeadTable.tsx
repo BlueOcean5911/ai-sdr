@@ -63,6 +63,7 @@ const LeadTable = () => {
       return true;
     });
     setLeads(filteredLeads);
+    console.log("leadFilterConfig: ", leadFilterConfig);
   }, [leadFilterConfig]);
 
   const handleAllSelected = (id: any, checked: boolean) => {
@@ -95,15 +96,15 @@ const LeadTable = () => {
                         setAllSelected(!allSelected);
                       }}
                     />{" "}
-                    ID
+                    Name
                   </div>
                 </th>
-                <th
+                {/* <th
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
                   Name
-                </th>
+                </th> */}
                 <th
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
@@ -140,7 +141,7 @@ const LeadTable = () => {
               {leads.map((lead: any) => (
                 <tr
                   key={lead.id}
-                  className="even:bg-olive-green-100 hover:bg-gray-100 "
+                  className="even:bg-blue-100 hover:bg-gray-100 "
                 >
                   <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
                     <div className="flex gap-2">
@@ -164,12 +165,12 @@ const LeadTable = () => {
                           }
                         }}
                       />{" "}
-                      {lead.id}
+                      {lead.name}
                     </div>
                   </td>
-                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                  {/* <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {lead.name}
-                  </td>
+                  </td> */}
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {lead.title}
                   </td>

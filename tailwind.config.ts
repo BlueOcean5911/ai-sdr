@@ -7,6 +7,7 @@ const config = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{js, jsx, ts,tsx}",
+    "./node_modules/react-tailwindcss-select/dist/index.esm.js",
   ],
   prefix: "",
   theme: {
@@ -22,10 +23,10 @@ const config = {
         space_grotesk: ["var(--font-space-grotesk)", "sans-serif"], // Added fallback font
       },
       colors: {
-        "olive-green-900": "#4571B6",
-        "olive-green-500": "#668FCE",
-        "olive-green-200": "#A5C4F5",
-        "olive-green-100": "#D5E2F6",
+        "blue-900": "#4571B6",
+        "blue-500": "#668FCE",
+        "blue-200": "#A5C4F5",
+        "blue-100": "#D5E2F6",
         "green-100": "#D5E2F6",
         "green-900": "#4571B6",
         "red-100": "#F4E3E3",
@@ -84,9 +85,8 @@ const config = {
   },
   plugins: [
     require("@tailwindcss/forms"),
-    require("@tailwindcss/line-clamp"),
     require("tailwindcss-animate"),
-    require('tailwindcss-3d'),
+    require("tailwindcss-3d"),
   ],
 } satisfies Config;
 

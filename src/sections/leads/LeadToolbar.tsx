@@ -78,7 +78,7 @@ const LeadToolbar = () => {
 
   return (
     <>
-      <div className="flex items-center gap-4 border-b-2 border-gray-100 py-2">
+      <div className="flex items-center gap-2 border-b-1 border-gray-100 py-1 text-sm">
         <button
           className="flex items-center gap-2 border-2 border-gray-300 py-1 px-3 rounded-md hover:bg-gray-200"
           onClick={() => {
@@ -111,13 +111,13 @@ const LeadToolbar = () => {
           <EnvelopeIcon className="w-4 h-4" /> Email
         </button>
         <Menu>
-          <MenuButton className="inline-flex items-center gap-2 rounded-md border-2 border-gray-300 py-1 px-3 text-sm/6 font-semibold text-gray-900 focus:outline-none data-[hover]:bg-gray-200 data-[open]:bg-gray-200 data-[focus]:outline-1 data-[focus]:outline-white">
+          <MenuButton className="inline-flex items-center gap-2 rounded-md border-2 border-gray-300 py-1 px-3 text-gray-900 focus:outline-none data-[hover]:bg-gray-200 data-[open]:bg-gray-200 data-[focus]:outline-1 data-[focus]:outline-white">
             <PaperAirplaneIcon className="w-4 h-4" /> Sequence
           </MenuButton>
           <MenuItems
             transition
             anchor="bottom end"
-            className="w-60 origin-top-right bg-white rounded-xl border border-white/5 shadow-md p-1 text-sm/6 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
+            className="w-60 origin-top-right bg-white rounded-xl border border-white/5 shadow-md p-1 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
           >
             <MenuItem>
               <button

@@ -97,8 +97,8 @@ export default function DashboardLayout({
                 </div>
                 <nav className="flex flex-1 flex-col">
                   <ul role="list" className="flex flex-1 flex-col gap-y-3">
-                    {navigations.map((group) => (
-                      <li>
+                    {navigations.map((group, index) => (
+                      <li key={index}>
                         <div className="text-gray-150 py-2">{group?.name}</div>
                         <ul role="list" className="space-y-2">
                           {group.items.map((item) => (
@@ -107,8 +107,8 @@ export default function DashboardLayout({
                                 href={item.href}
                                 className={classNames(
                                   pathname?.includes(item.href)
-                                    ? "bg-olive-green-900 text-white"
-                                    : "bg-white text-gray-900 hover:bg-olive-green-200",
+                                    ? "bg-blue-900 text-white"
+                                    : "bg-white text-gray-900 hover:bg-blue-200",
                                   "group flex gap-x-3 rounded-md p-2 font-semibold leading-5"
                                 )}
                               >
@@ -117,7 +117,7 @@ export default function DashboardLayout({
                                   className={classNames(
                                     pathname?.includes(item.href)
                                       ? "fill-white stroke-white"
-                                      : "text-olive-green-100 ",
+                                      : "text-blue-100 ",
                                     "h-5 w-5 shrink-0"
                                   )}
                                 />
@@ -159,8 +159,8 @@ export default function DashboardLayout({
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-4">
-                {navigations.map((group) => (
-                  <li className="flex flex-col gap-y-4">
+                {navigations.map((group, index) => (
+                  <li key={index} className="flex flex-col gap-y-4">
                     <hr />
                     <ul role="list" className="space-y-2">
                       {group.items.map((item) => (
@@ -169,8 +169,8 @@ export default function DashboardLayout({
                             href={item.href}
                             className={classNames(
                               pathname?.includes(item.href)
-                                ? "bg-olive-green-900 text-white"
-                                : "bg-white text-gray-900 hover:bg-olive-green-200",
+                                ? "bg-blue-900 text-white"
+                                : "bg-white text-gray-900 hover:bg-blue-200",
                               "group flex rounded-md p-1.5 font-semibold leading-5"
                             )}
                           >
@@ -179,7 +179,7 @@ export default function DashboardLayout({
                               className={classNames(
                                 pathname?.includes(item.href)
                                   ? "fill-white stroke-white"
-                                  : "text-olive-green-100 ",
+                                  : "text-blue-100 ",
                                 "h-5 w-5 shrink-0"
                               )}
                             />
@@ -216,7 +216,7 @@ export default function DashboardLayout({
                 className="p-2 h-10 my-auto *:align-middle rounded-md hover:bg-slate-300"
                 onClick={() => setSidebarPined(!sidebarPined)}
               >
-                <ChevronDoubleLeftIcon
+                <ChevronDoubleRightIcon
                   className={classNames(
                     "w-4 h-4 transition-transform duration-100",
                     sidebarPined ? "transform rotate-z-180" : ""
@@ -226,8 +226,8 @@ export default function DashboardLayout({
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-3">
-                {navigations.map((group) => (
-                  <li>
+                {navigations.map((group, index) => (
+                  <li key={index}>
                     <div className="text-gray-150 py-2">{group?.name}</div>
                     <ul role="list" className="space-y-2">
                       {group.items.map((item) => (
@@ -236,8 +236,8 @@ export default function DashboardLayout({
                             href={item.href}
                             className={classNames(
                               pathname?.includes(item.href)
-                                ? "bg-olive-green-900 text-white"
-                                : "bg-white text-gray-900 hover:bg-olive-green-200",
+                                ? "bg-blue-900 text-white"
+                                : "bg-white text-gray-900 hover:bg-blue-200",
                               "group flex gap-x-3 rounded-md p-2 font-semibold leading-5"
                             )}
                           >
@@ -246,7 +246,7 @@ export default function DashboardLayout({
                               className={classNames(
                                 pathname?.includes(item.href)
                                   ? "fill-white stroke-white"
-                                  : "text-olive-green-100 ",
+                                  : "text-blue-100 ",
                                 "h-5 w-5 shrink-0"
                               )}
                             />
@@ -338,7 +338,7 @@ export default function DashboardLayout({
                       <MenuItem key={item.name}>
                         <Link
                           href={item.href}
-                          className="block px-3 py-1 text-sm leading-5 text-gray-900 data-[focus]:bg-olive-green-200"
+                          className="block px-3 py-1 text-sm leading-5 text-gray-900 data-[focus]:bg-blue-200"
                         >
                           {item.name}
                         </Link>

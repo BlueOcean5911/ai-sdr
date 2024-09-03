@@ -27,11 +27,11 @@ export default function HeaderNotification() {
               <MenuItem key={id}>
                 <Link
                   href={item.href}
-                  className="block px-3 py-1 text-sm leading-6 text-gray-900 data-[focus]:bg-olive-green-200"
+                  className="block px-3 py-1 text-sm leading-6 text-gray-900 data-[focus]:bg-blue-200"
                 >
                   <div className="flex items-center gap-4">
                     {item.id && item.id in notificationIcons && (
-                      <div className="flex-center w-10 h-10 bg-olive-green-100">
+                      <div className="flex-center w-10 h-10 bg-blue-100">
                         <div className="w-6 h-6 flex-center">
                           {notificationIcons[item.id]}
                         </div>

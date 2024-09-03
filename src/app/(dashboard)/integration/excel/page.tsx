@@ -248,7 +248,7 @@ export default function Page({}: {}) {
                     {excels.map((excel, id) => (
                       <tr
                         key={id}
-                        className="even:bg-olive-green-100 hover:bg-gray-100 "
+                        className="even:bg-blue-100 hover:bg-gray-100 "
                       >
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
                           {excel.id}

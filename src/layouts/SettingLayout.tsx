@@ -86,11 +86,11 @@ const SettingLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <div className="flex-1 flex gap-4 relative">
         <div className="lg:flex w-[360px] min-h-full flex-col gap-4">
-          <div className="card bg-olive-green-900 flex-center justify-between">
+          <div className="card bg-blue-900 flex-center justify-between">
             <div className="flex flex-col gap-4">
               <div className="flex-center gap-2">
                 <div className="w-8 h-8 flex-center bg-white rounded-md">
-                  <CircleStackIcon className="w-6 h-6 stroke-olive-green-900" />
+                  <CircleStackIcon className="w-6 h-6 stroke-blue-900" />
                 </div>
                 <p className="text-white">Your Plan</p>
               </div>

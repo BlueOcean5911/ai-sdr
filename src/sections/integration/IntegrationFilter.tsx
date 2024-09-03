@@ -18,7 +18,7 @@ const Item = ({
   return (
     <div
       className={classNames(
-        selected ? "bg-olive-green-900 text-white" : "bg-white text-gray-900",
+        selected ? "bg-blue-900 text-white" : "bg-white text-gray-900",
         "btn-primary text-sm py-2 px-4 rounded-full min-w-24 text-center cursor-pointer w-fit"
       )}
       onClick={() => {
@@ -77,7 +77,7 @@ export default function IntegrationFilter() {
           <div className="flex rounded-full border-2 border-gray-150 p-1 float-right">
             <div
               className={classNames(
-                displayType === DISPLAY_GRID ? "bg-olive-green-900" : "",
+                displayType === DISPLAY_GRID ? "bg-blue-900" : "",
                 "w-8 h-8 rounded-full flex-center "
               )}
               onClick={handleDisplayType}
@@ -91,7 +91,7 @@ export default function IntegrationFilter() {
             </div>
             <div
               className={classNames(
-                displayType === DISPLAY_FLEX ? "bg-olive-green-900" : "",
+                displayType === DISPLAY_FLEX ? "bg-blue-900" : "",
                 "w-8 h-8 rounded-full flex-center"
               )}
               onClick={handleDisplayType}

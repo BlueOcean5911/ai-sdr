@@ -6,7 +6,7 @@ import { PlayIcon } from "@heroicons/react/24/outline";
 function StartNode({ data, selected }) {
   return (
     <div
-      className={`p-2 bg-olive-green-200 shadow-md rounded-md  border-solid border-2 ${selected ? "border-solid border-2 border-olive-green-900" : "border-transparent"
+      className={`p-2 bg-blue-200 shadow-md rounded-md  border-solid border-2 ${selected ? "border-solid border-2 border-blue-900" : "border-transparent"
         } `}
     >
       <div className="flex flex-col">

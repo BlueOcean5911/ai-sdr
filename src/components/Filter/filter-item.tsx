@@ -16,7 +16,7 @@ const FilterItem = ({
     <>
       <div className="border-2 border-gray-100 rounded-md">
         <div
-          className="flex items-center px-4 py-2 bg-gray-50"
+          className="flex items-center px-2 py-2 bg-gray-50"
           onClick={() => setOpen(!open)}
         >
           {icon}
@@ -24,7 +24,7 @@ const FilterItem = ({
             {title}
           </span>
           {/* collapse button */}
-          <ChevronUpIcon
+          <ChevronDownIcon
             className={classNames(
               open ? "transform rotate-180" : "",
               "w-4 h-4 transition-transform duration-200"
@@ -34,8 +34,8 @@ const FilterItem = ({
         </div>
 
         {open && (
-          <div className="px-4 py-2 bg-gray-50 border-t-2 border-gray-100">
-            <div className="space-y-2">{children}</div>
+          <div className="px-2 py-2 bg-gray-50 border-t-2 border-gray-100">
+            <div className="space-y-2 text-sm">{children}</div>
           </div>
         )}
       </div>

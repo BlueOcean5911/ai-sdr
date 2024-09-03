@@ -10,7 +10,7 @@ export default function ToggleButton() {
     <Switch
       checked={enabled}
       onChange={setEnabled}
-      className="group relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:bg-olive-green-100 focus:ring-offset-2 data-[checked]:bg-olive-green-900"
+      className="group relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:bg-blue-100 focus:ring-offset-2 data-[checked]:bg-blue-900"
     >
       <span className="sr-only">Use setting</span>
       <span

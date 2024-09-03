@@ -61,7 +61,7 @@ export const SelectablePerson = ({ data }: { data: any }) => {
         {data.map((item: any, id: any) => (
           <tr
             key={id}
-            className="even:bg-olive-green-100 hover:bg-gray-100 select-none"
+            className="even:bg-blue-100 hover:bg-gray-100 select-none"
             // onClick={() => }
           >
             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
