@@ -32,12 +32,12 @@ const LeadTable = () => {
   }, [leads]);
 
   useEffect(() => {
-    // const currentParams = Object.fromEntries(searchParams);
-    // if (currentParams.prospectedByCurrentTeam) {
-    //   setLeads(savedLeads);
-    // } else {
-    //   setLeads(totalLeads);
-    // }
+    const currentParams = Object.fromEntries(searchParams);
+    if (currentParams.prospectedByCurrentTeam) {
+      setLeads(savedLeads);
+    } else {
+      setLeads(totalLeads);
+    }
   }, [searchParams]);
 
   useEffect(() => {

@@ -8,6 +8,7 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useLeadFilter } from "@/contexts/FilterLeadContext";
+import { Suspense } from "react";
 
 export default function Leads() {
   const pathname = usePathname();
@@ -65,13 +66,17 @@ export default function Leads() {
             <TabPanel className="flex-1 flex flex-col overflow-auto">
               <LeadToolbar />
               <div className="flex-1 overflow-auto flex">
-                <LeadTable />
+                <Suspense>
+                  <LeadTable />
+                </Suspense>
               </div>
             </TabPanel>
             <TabPanel className="flex-1 flex flex-col overflow-auto">
               <LeadToolbar />
               <div className="flex-1 overflow-auto flex">
-                <LeadTable />
+                <Suspense>
+                  <LeadTable />
+                </Suspense>
               </div>
             </TabPanel>
           </TabPanels>

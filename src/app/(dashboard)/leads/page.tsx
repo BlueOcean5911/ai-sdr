@@ -5,6 +5,7 @@ import { LeadSelectionProvider } from "@/contexts/LeadSelectionContext";
 import { ROUTE_LEADS } from "@/data/routes";
 import Leads from "@/views/leads";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default function Page() {
   return (
@@ -19,7 +20,9 @@ export default function Page() {
           </div> */}
           <LeadFilterProvider>
             <LeadSelectionProvider>
-              <Leads />
+              <Suspense>
+                <Leads />
+              </Suspense>
             </LeadSelectionProvider>
           </LeadFilterProvider>
         </div>
