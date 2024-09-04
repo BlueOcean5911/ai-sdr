@@ -12,3 +12,13 @@ export interface LeadProps {
   origin: string;
   title: string;
 }
+
+export interface CompanyProps {
+  id: string;
+  name: string;
+  companyName: string;
+  currentLocation: string;
+  phone: string;
+  origin: string;
+  title: string;
+}

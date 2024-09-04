@@ -46,7 +46,7 @@ export default function FilterLead() {
             options={personaOptions}
             isMultiple={true}
             isSearchable={true}
-            primaryColor="lightgreen"
+            primaryColor={"indigo"}
             classNames={{
               menuButton: (value) => {
                 const isDisabled = value?.isDisabled;

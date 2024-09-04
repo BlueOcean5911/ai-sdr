@@ -9,22 +9,22 @@ import {
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useLeadSelection } from "@/contexts/LeadSelectionContext";
+import { useCompanySelection } from "@/contexts/CompanySelectionContext";
 
 import { useSearchParams } from "next/navigation";
 import EmailSendWindow from "../email/EmailSendWindow";
-import { useLeadFilter } from "@/contexts/FilterLeadContext";
+import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
 import AddSequence from "../sequence/AddSequence";
 import CreateSequence from "../sequence/CreateSequence";
 import NewSequenceFromScratch from "../sequence/NewSequenceFromScratch";
 import { useRouter } from "next/navigation";
 
-const LeadToolbar = () => {
+const CompanyToolbar = () => {
   const searchParams = useSearchParams();
 
-  const { selectedLeads, setSelectedLeads, handleSaveLeads } =
-    useLeadSelection();
-  const { leadFilterConfig, setLeadFilterConfig } = useLeadFilter();
+  const { selectedCompanies, setSelectedCompanies, handleSaveCompanies } =
+    useCompanySelection();
+  const { companyFilterConfig, setCompanyFilterConfig } = useCompanyFilter();
   const [isOpenSendEmail, setIsOpenSendEmail] = useState(false);
   const [isSavedView, setIsSavedView] = useState(false);
   const [openAddSequence, setOpenAddSequence] = useState(false);
@@ -42,23 +42,23 @@ const LeadToolbar = () => {
   });
 
   const handleSendMail = () => {
-    if (selectedLeads.length === 0) {
-      toast.error("Select one lead to send mail");
-    } else if (selectedLeads.length === 1) {
+    if (selectedCompanies.length === 0) {
+      toast.error("Select one company to send mail");
+    } else if (selectedCompanies.length === 1) {
       setIsOpenSendEmail(true);
       toast.info("Let's send email");
     } else {
-      toast.error("Select only one lead to send mail");
+      toast.error("Select only one company to send mail");
     }
   };
 
-  const handleSaveLead = () => {
-    if (selectedLeads.length > 0) {
-      handleSaveLeads(selectedLeads);
-      setSelectedLeads([]);
-      toast.success("Leads saved successfully");
+  const handleSaveCompany = () => {
+    if (selectedCompanies.length > 0) {
+      handleSaveCompanies(selectedCompanies);
+      setSelectedCompanies([]);
+      toast.success("Companies saved successfully");
     } else {
-      toast.info("Please select one lead to save");
+      toast.info("Please select one company to save");
     }
   };
 
@@ -82,14 +82,14 @@ const LeadToolbar = () => {
         <button
           className="flex items-center gap-2 border-2 border-gray-300 py-1 px-3 rounded-md hover:bg-gray-200"
           onClick={() => {
-            if (leadFilterConfig.isOpen) {
-              setLeadFilterConfig({ ...leadFilterConfig, isOpen: false });
+            if (companyFilterConfig.isOpen) {
+              setCompanyFilterConfig({ ...companyFilterConfig, isOpen: false });
             } else {
-              setLeadFilterConfig({ ...leadFilterConfig, isOpen: true });
+              setCompanyFilterConfig({ ...companyFilterConfig, isOpen: true });
             }
           }}
         >
-          {leadFilterConfig.isOpen ? (
+          {companyFilterConfig.isOpen ? (
             <span>Hide Filters</span>
           ) : (
             <span>Show Filters</span>
@@ -98,7 +98,7 @@ const LeadToolbar = () => {
         {!isSavedView && (
           <button
             className="flex items-center gap-2 border-2 border-gray-300 py-1 px-3 rounded-md hover:bg-gray-200"
-            onClick={() => handleSaveLead()}
+            onClick={() => handleSaveCompany()}
           >
             <PlusIcon className="w-4 h-4" /> Save
           </button>
@@ -179,4 +179,4 @@ const LeadToolbar = () => {
   );
 };
 
-export default LeadToolbar;
+export default CompanyToolbar;

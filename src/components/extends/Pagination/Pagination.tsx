@@ -66,7 +66,7 @@ const Pagination = (props: any) => {
 
   let lastPage = paginationRange[paginationRange.length - 1];
   return (
-    <div className="flex justify-end p-4">
+    <div className="flex justify-end pt-2">
       <Select
         data={pageSizes}
         onChange={(item: any) => setPageSize(item.value)}
@@ -79,12 +79,12 @@ const Pagination = (props: any) => {
           )}
           onClick={onPrevious}
         >
-          <ChevronLeftIcon className="w-5 h-5" />
+          <ChevronLeftIcon className="w-4 h-4" />
         </li>
-        {paginationRange.map((pageNumber: any) => {
+        {paginationRange.map((pageNumber: any, index: number) => {
           if (pageNumber === DOTS) {
             return (
-              <li key={pageNumber} className="pagination-item dots">
+              <li key={index} className="pagination-item dots">
                 &#8230;
               </li>
             );
@@ -109,7 +109,7 @@ const Pagination = (props: any) => {
           )}
           onClick={onNext}
         >
-          <ChevronRightIcon className="w-5 h-5" />
+          <ChevronRightIcon className="w-4 h-4" />
         </li>
       </ul>
     </div>

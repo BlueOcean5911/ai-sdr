@@ -5,6 +5,7 @@ export const ROUTE_CAMPAIGNS = "/campaigns";
 export const ROUTE_PERSONAS = "/personas";
 export const ROUTE_CATENCES = "/cadences";
 export const ROUTE_LEADS = "/leads";
+export const ROUTE_COMPANIES = "/companies";
 export const ROUTE_ACCOUNT = "/account";
 export const ROUTE_SETTING = "/setting";
 export const ROUTE_LOGIN = "/login";

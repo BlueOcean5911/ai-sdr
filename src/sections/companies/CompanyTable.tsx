@@ -1,78 +1,72 @@
 import CheckBox from "@/components/extends/CheckBox";
-import { useLeadFilter } from "@/contexts/FilterLeadContext";
-import { useLeadSelection } from "@/contexts/LeadSelectionContext";
+import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
+import { useCompanySelection } from "@/contexts/CompanySelectionContext";
 import { contain } from "@/utils/string";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Pagination from "@/components/extends/Pagination/Pagination";
-import { LeadProps } from "@/types";
+import { CompanyProps } from "@/types";
 
-const LeadTable = () => {
-  const { leadFilterConfig } = useLeadFilter();
+const CompanyTable = () => {
+  const { companyFilterConfig } = useCompanyFilter();
   const {
-    totalLeads,
-    setTotalLeads,
-    savedLeads,
-    setSavedLeads,
-    selectedLeads,
-    setSelectedLeads,
-  } = useLeadSelection();
+    totalCompanies,
+    setTotalCompanies,
+    savedCompanies,
+    setSavedCompanies,
+    selectedCompanies,
+    setSelectedCompanies,
+  } = useCompanySelection();
 
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [leads, setLeads] = useState<LeadProps[]>([]);
+  const [companies, setCompanies] = useState<CompanyProps[]>([]);
   const [allSelected, setAllSelected] = useState(false);
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    console.log("here", totalLeads);
-    setLeads([...totalLeads]);
-  }, [totalLeads]);
+    console.log("here", totalCompanies);
+    setCompanies([...totalCompanies]);
+  }, [totalCompanies]);
 
   useEffect(() => {
-    console.log("leads", leads);
-  }, [leads]);
+    console.log("companies", companies);
+  }, [companies]);
 
   useEffect(() => {
     const currentParams = Object.fromEntries(searchParams);
     if (currentParams.prospectedByCurrentTeam) {
-      setLeads(savedLeads);
+      setCompanies(savedCompanies);
     } else {
-      setLeads(totalLeads);
+      setCompanies(totalCompanies);
     }
   }, [searchParams]);
 
   useEffect(() => {
-    const filteredLeads = totalLeads.filter((lead: any) => {
+    const filteredCompanies = totalCompanies.filter((company: any) => {
       if (
-        leadFilterConfig.title &&
-        !contain(lead.title, leadFilterConfig.title)
+        companyFilterConfig.company &&
+        !contain(company.companyName, companyFilterConfig.company)
       ) {
         return false;
       }
       if (
-        leadFilterConfig.company &&
-        !contain(lead.companyName, leadFilterConfig.company)
-      ) {
-        return false;
-      }
-      if (
-        leadFilterConfig.location &&
-        !contain(lead.currentLocation, leadFilterConfig.location)
+        companyFilterConfig.location &&
+        !contain(company.currentLocation, companyFilterConfig.location)
       ) {
         return false;
       }
       return true;
     });
-    setLeads(filteredLeads);
-    console.log("leadFilterConfig: ", leadFilterConfig);
-  }, [leadFilterConfig]);
+    setCompanies(filteredCompanies);
+    console.log("companyFilterConfig: ", companyFilterConfig);
+  }, [companyFilterConfig]);
 
   const handleAllSelected = (id: any, checked: boolean) => {
     if (checked) {
-      setSelectedLeads(leads.map((lead: any) => lead));
+      setSelectedCompanies(companies.map((company: any) => company));
     } else {
-      setSelectedLeads([]);
+      setSelectedCompanies([]);
     }
   };
 
@@ -98,7 +92,7 @@ const LeadTable = () => {
                         setAllSelected(!allSelected);
                       }}
                     />{" "}
-                    Name
+                    Company Name
                   </div>
                 </th>
                 {/* <th
@@ -107,18 +101,6 @@ const LeadTable = () => {
                 >
                   Name
                 </th> */}
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Title
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Company
-                </th>
                 <th
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
@@ -146,58 +128,53 @@ const LeadTable = () => {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {leads
+              {companies
                 .slice(pageSize * (currentPage - 1), pageSize * currentPage)
-                .map((lead: any) => (
+                .map((company: any) => (
                   <tr
-                    key={lead.id}
+                    key={company.id}
                     className="even:bg-blue-50 hover:bg-gray-100 "
                   >
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
                       <div className="flex gap-2">
                         <CheckBox
-                          id={lead.id}
+                          id={company.id}
                           content=""
-                          value={lead}
-                          checked={selectedLeads.find(
-                            (itemLead: any) => itemLead.id === lead.id
+                          value={company}
+                          checked={selectedCompanies.find(
+                            (itemCompany: any) => itemCompany.id === company.id
                           )}
-                          onChange={(changedLead, checked) => {
+                          onChange={(changedCompany, checked) => {
                             if (!checked) {
-                              setSelectedLeads(
-                                selectedLeads.filter(
-                                  (lead: any) => changedLead.id !== lead.id
+                              setSelectedCompanies(
+                                selectedCompanies.filter(
+                                  (company: any) =>
+                                    changedCompany.id !== company.id
                                 )
                               );
                             } else {
                               console.log(checked);
-                              setSelectedLeads([...selectedLeads, changedLead]);
+                              setSelectedCompanies([
+                                ...selectedCompanies,
+                                changedCompany,
+                              ]);
                             }
                           }}
                         />{" "}
-                        {lead.name}
+                        {company.companyName}
                       </div>
                     </td>
-                    {/* <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                    {lead.name}
-                  </td> */}
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {lead.title}
+                      {company.phone}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {lead.companyName}
+                      {company.currentLocation}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {lead.phone}
+                      {company.employees}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {lead.currentLocation}
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {lead.employees}
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {lead.industry}
+                      {company.industry}
                     </td>
                   </tr>
                 ))}
@@ -207,10 +184,10 @@ const LeadTable = () => {
 
         {/* Pagination */}
         <div className="flex justify-between px-16">
-          <div className="pt-4">Total Leads: {leads.length}</div>
+          <div className="pt-4">Total Companies: {companies.length}</div>
           <Pagination
             className="pagination-bar"
-            totalCount={leads.length}
+            totalCount={companies.length}
             pageSize={pageSize}
             onPageChange={(pageSize: number, currentPage: number) => {
               setPageSize(pageSize);
@@ -223,4 +200,4 @@ const LeadTable = () => {
   );
 };
 
-export default LeadTable;
+export default CompanyTable;

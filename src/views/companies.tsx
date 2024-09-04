@@ -1,20 +1,20 @@
 "use client";
 
-import LeadTable from "@/sections/leads/LeadTable";
+import CompanyTable from "@/sections/companies/CompanyTable";
 
-import FilterLead from "@/components/Filter/filterLead";
-import LeadToolbar from "@/sections/leads/LeadToolbar";
+import FilterCompany from "@/components/Filter/filterCompany";
+import CompanyToolbar from "@/sections/companies/CompanyToolbar";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import { useLeadFilter } from "@/contexts/FilterLeadContext";
+import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
 import { Suspense } from "react";
 
-export default function Leads() {
+export default function Companys() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { leadFilterConfig, setLeadFilterConfig } = useLeadFilter();
+  const { companyFilterConfig, setCompanyFilterConfig } = useCompanyFilter();
 
   const handleSavedView = () => {
     // Get the current query parameters
@@ -45,7 +45,7 @@ export default function Leads() {
 
   return (
     <div className="flex gap-2 overflow-auto flex-1">
-      {leadFilterConfig.isOpen && <FilterLead />}
+      {companyFilterConfig.isOpen && <FilterCompany />}
       <div className="card flex-1 flex flex-col overflow-auto">
         <TabGroup className="flex-1 flex flex-col overflow-auto">
           <TabList className="border-b-2 border-gray-100 flex gap-2 overflow-auto">
@@ -64,18 +64,18 @@ export default function Leads() {
           </TabList>
           <TabPanels className="flex-1 flex flex-col overflow-auto">
             <TabPanel className="flex-1 flex flex-col overflow-auto">
-              <LeadToolbar />
+              <CompanyToolbar />
               <div className="flex-1 overflow-auto flex">
                 <Suspense>
-                  <LeadTable />
+                  <CompanyTable />
                 </Suspense>
               </div>
             </TabPanel>
             <TabPanel className="flex-1 flex flex-col overflow-auto">
-              <LeadToolbar />
+              <CompanyToolbar />
               <div className="flex-1 overflow-auto flex">
                 <Suspense>
-                  <LeadTable />
+                  <CompanyTable />
                 </Suspense>
               </div>
             </TabPanel>
