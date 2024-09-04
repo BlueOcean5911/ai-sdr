@@ -64,9 +64,25 @@ const Pagination = (props: any) => {
     setCurrentPage(currentPage - 1);
   };
 
+  let currentIndex = pageSize * (currentPage - 1) + 1;
+  if (currentIndex < 0) {
+    currentIndex = 1;
+  }
+
+  let showCount = totalCount - pageSize * (currentPage - 1);
+  if (showCount > pageSize) {
+    showCount = pageSize;
+  }
+
   let lastPage = paginationRange[paginationRange.length - 1];
   return (
-    <div className="flex justify-end pt-2">
+    <div className="flex justify-end items-center pt-2">
+      <div className="pr-12 text-sm">
+        {totalCount &&
+          `${currentIndex} - ${
+            currentIndex + showCount - 1
+          } of ${totalCount.toLocaleString("en-US")}`}
+      </div>
       <Select
         data={pageSizes}
         onChange={(item: any) => setPageSize(item.value)}

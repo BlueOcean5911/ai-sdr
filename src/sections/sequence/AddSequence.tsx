@@ -37,7 +37,7 @@ const AddSequence = ({
               className="bg-white w-full max-w-md rounded-xl backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
             >
               <div className="flex-center justify-between border-b-2 border-gray-100">
-                <h3 className="p-2">Add Sequence</h3>
+                <h3 className="p-2">Add Cadence</h3>
                 <XCircle
                   className="w-6 h-6 mr-2 cursor-pointer stroke-gray-300 hover:stroke-gray-500"
                   onClick={close}
@@ -49,17 +49,17 @@ const AddSequence = ({
                   data={[
                     {
                       id: 1,
-                      name: "Sequence 1",
+                      name: "Cadence 1",
                       value: "1",
                     },
                     {
                       id: 2,
-                      name: "Sequence 2",
+                      name: "Cadence 2",
                       value: "2",
                     },
                     {
                       id: 3,
-                      name: "Sequence 3",
+                      name: "Cadence 3",
                       value: "3",
                     },
                   ]}

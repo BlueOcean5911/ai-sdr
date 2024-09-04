@@ -112,7 +112,7 @@ const LeadToolbar = () => {
         </button>
         <Menu>
           <MenuButton className="inline-flex items-center gap-2 rounded-md border-2 border-gray-300 py-1 px-3 text-gray-900 focus:outline-none data-[hover]:bg-gray-200 data-[open]:bg-gray-200 data-[focus]:outline-1 data-[focus]:outline-white">
-            <PaperAirplaneIcon className="w-4 h-4" /> Sequence
+            <PaperAirplaneIcon className="w-4 h-4" /> Cadence
           </MenuButton>
           <MenuItems
             transition
@@ -125,7 +125,7 @@ const LeadToolbar = () => {
                 onClick={() => setOpenAddSequence(true)}
               >
                 <PaperAirplaneIcon className="size-4" />
-                Add to existing Sequence
+                Add to existing Cadence
               </button>
             </MenuItem>
             <MenuItem>
@@ -134,19 +134,19 @@ const LeadToolbar = () => {
                 onClick={() => setOpenCreateSequence(true)}
               >
                 <PlusCircleIcon className="size-4" />
-                Add to new Sequence
+                Add to new Cadence
               </button>
             </MenuItem>
             {/* <MenuItem>
               <button className="group text-xs flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100">
                 <CheckCircleIcon className="size-4" />
-                Mark Sequence as finished
+                Mark Cadence as finished
               </button>
             </MenuItem>
             <MenuItem>
               <button className="group text-xs flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100">
                 <MinusCircleIcon className="size-4" />
-                Remove from Sequence
+                Remove from Cadence
               </button>
             </MenuItem> */}
           </MenuItems>

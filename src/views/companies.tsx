@@ -10,7 +10,7 @@ import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
 import { Suspense } from "react";
 
-export default function Companys() {
+export default function Companies() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();

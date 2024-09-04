@@ -1,7 +1,9 @@
-import Select from "@/components/extends/Select/default";
+// import Select from "@/components/extends/Select/default";
+import { employeeOptions, personaOptions } from "@/data/filter.data";
 import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import Select from "react-tailwindcss-select";
 
 const persons = [
   {
@@ -193,9 +195,44 @@ export default function ManagePersona({
                   <div className="flex flex-col gap-2">
                     <label>
                       Job Title
-                      <span className="text-blue-900 mb-2">*</span>
+                      {/* <span className="text-blue-900 mb-2">*</span> */}
                     </label>
-                    <input
+                    <Select
+                      value={persona?.title}
+                      onChange={(value) =>
+                        setPersona({
+                          ...persona,
+                          title: value,
+                        })
+                      }
+                      options={personaOptions}
+                      isSearchable={true}
+                      primaryColor={"indigo"}
+                      classNames={{
+                        menuButton: (value) => {
+                          const isDisabled = value?.isDisabled;
+                          return `flex text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
+                            isDisabled
+                              ? "bg-gray-200"
+                              : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
+                          }`;
+                        },
+                        menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700",
+                        listItem: (value) => {
+                          const isSelected = value?.isSelected;
+                          return `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${
+                            isSelected
+                              ? `text-white bg-blue-500`
+                              : `text-gray-500 hover:bg-blue-100 hover:text-blue-500`
+                          }`;
+                        },
+                        searchBox:
+                          "text-sm w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none",
+                        searchIcon:
+                          "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
+                      }}
+                    ></Select>
+                    {/* <input
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-500  sm:text-sm sm:leading-6"
                       type="text"
                       placeholder="e.g. Marketing Leaders"
@@ -203,19 +240,27 @@ export default function ManagePersona({
                       onChange={(e) =>
                         setPersona({ ...persona, job: e.target.value })
                       }
-                    />
+                    /> */}
                   </div>
                   <div className="flex flex-col gap-2">
                     <label>
                       Industry & Keywords
-                      <span className="text-blue-900 mb-2">*</span>
+                      {/* <span className="text-blue-900 mb-2">*</span> */}
                     </label>
-                    <Select data={keywords} />
+                    <input
+                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-500  sm:text-sm sm:leading-6"
+                      type="text"
+                      placeholder="e.g. Marketing Leaders"
+                      value={persona?.keyword}
+                      onChange={(e) =>
+                        setPersona({ ...persona, keyword: e.target.value })
+                      }
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
                     <label>
                       Location
-                      <span className="text-blue-900 mb-2">*</span>
+                      {/* <span className="text-blue-900 mb-2">*</span> */}
                     </label>
                     <input
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-500  sm:text-sm sm:leading-6"
@@ -231,9 +276,43 @@ export default function ManagePersona({
                   <div className="flex flex-col gap-2">
                     <label>
                       Employees
-                      <span className="text-blue-900 mb-2">*</span>
+                      {/* <span className="text-blue-900 mb-2">*</span> */}
                     </label>
-                    <Select data={employeeRange} />
+                    <Select
+                      value={persona?.employeeRange}
+                      onChange={(value) =>
+                        setPersona({
+                          ...persona,
+                          employeeRange: value,
+                        })
+                      }
+                      options={employeeOptions}
+                      isSearchable={true}
+                      primaryColor={"indigo"}
+                      classNames={{
+                        menuButton: (value) => {
+                          const isDisabled = value?.isDisabled;
+                          return `flex text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
+                            isDisabled
+                              ? "bg-gray-200"
+                              : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
+                          }`;
+                        },
+                        menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700",
+                        listItem: (value) => {
+                          const isSelected = value?.isSelected;
+                          return `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${
+                            isSelected
+                              ? `text-white bg-blue-500`
+                              : `text-gray-500 hover:bg-blue-100 hover:text-blue-500`
+                          }`;
+                        },
+                        searchBox:
+                          "text-sm w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none",
+                        searchIcon:
+                          "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
+                      }}
+                    ></Select>
                   </div>
                 </div>
                 <div className="results flex flex-col flex-1 h-full overflow-auto">

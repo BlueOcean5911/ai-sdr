@@ -206,8 +206,7 @@ const LeadTable = () => {
         </div>
 
         {/* Pagination */}
-        <div className="flex justify-between px-16">
-          <div className="pt-4">Total Leads: {leads.length}</div>
+        <div className="flex justify-end px-16">
           <Pagination
             className="pagination-bar"
             totalCount={leads.length}

@@ -35,9 +35,9 @@ const CreateSequence = ({
                 />
               </div>
               <div className="header border-b-2 border-gray-100">
-                <h3>Create New Sequence</h3>
+                <h3>Create New Cadence</h3>
                 <p className="text-xs text-gray-400 py-2">
-                  Sequences are a series of automated or manual touchpoints and
+                  Cadences are a series of automated or manual touchpoints and
                   activities, designed to drive deeper engagement with your
                   contacts.
                 </p>

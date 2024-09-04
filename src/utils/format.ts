@@ -16,3 +16,7 @@ export function formatPercentage(
 ): string {
   return `${showPlus && value >= 0 ? "+" : ""}${value.toFixed(1)}%`;
 }
+
+export function formatNumberWithComma(number: number): string {
+  return number.toLocaleString("en-US");
+}

@@ -27,7 +27,7 @@ const NewSequenceFromScratch = ({
     let newErrors = {};
 
     if (removeSpecialCharacters(values.name).length === 0) {
-      newErrors = { ...newErrors, name: "Sequence name is required" };
+      newErrors = { ...newErrors, name: "Cadence name is required" };
       isValid = false;
     }
     if (removeSpecialCharacters(values.subject).length === 0) {
@@ -46,7 +46,7 @@ const NewSequenceFromScratch = ({
   const handleCreate = () => {
     if (checkErrors()) {
       click();
-      toast.success("Sequence created successfully");
+      toast.success("Cadence created successfully");
     }
   };
 
@@ -66,7 +66,7 @@ const NewSequenceFromScratch = ({
               className="w-full max-w-lg rounded-xl bg-white p-4 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
             >
               <div className="flex justify-between border-b-2 border-gray-100 mb-2">
-                <h2> New Sequence</h2>
+                <h2> New Cadence</h2>
                 <XCircleIcon className="w-6 h-6 mr-4 stroke-gray-300 hover:stroke-gray-400" />
               </div>
               <div className="flex flex-col gap-2">
@@ -81,7 +81,7 @@ const NewSequenceFromScratch = ({
                       } else {
                         setErrors({
                           ...errors,
-                          name: "Sequence name is required",
+                          name: "Cadence name is required",
                         });
                       }
                       setValues({ ...values, name: e.target.value });
