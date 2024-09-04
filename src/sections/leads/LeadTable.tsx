@@ -18,6 +18,8 @@ const LeadTable = () => {
     setSelectedLeads,
   } = useLeadSelection();
 
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [leads, setLeads] = useState<LeadProps[]>([]);
   const [allSelected, setAllSelected] = useState(false);
   const searchParams = useSearchParams();
@@ -41,7 +43,7 @@ const LeadTable = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    const filteredLeads = leads.filter((lead: any) => {
+    const filteredLeads = totalLeads.filter((lead: any) => {
       if (
         leadFilterConfig.title &&
         !contain(lead.title, leadFilterConfig.title)
@@ -133,74 +135,87 @@ const LeadTable = () => {
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
-                  From
+                  Employees
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Industry
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white">
-              {leads.map((lead: any) => (
-                <tr
-                  key={lead.id}
-                  className="even:bg-blue-100 hover:bg-gray-100 "
-                >
-                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
-                    <div className="flex gap-2">
-                      <CheckBox
-                        id={lead.id}
-                        content=""
-                        value={lead}
-                        checked={selectedLeads.find(
-                          (itemLead: any) => itemLead.id === lead.id
-                        )}
-                        onChange={(changedLead, checked) => {
-                          if (!checked) {
-                            setSelectedLeads(
-                              selectedLeads.filter(
-                                (lead: any) => changedLead.id !== lead.id
-                              )
-                            );
-                          } else {
-                            console.log(checked);
-                            setSelectedLeads([...selectedLeads, changedLead]);
-                          }
-                        }}
-                      />{" "}
-                      {lead.name}
-                    </div>
-                  </td>
-                  {/* <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+              {leads
+                .slice(pageSize * (currentPage - 1), pageSize * currentPage)
+                .map((lead: any) => (
+                  <tr
+                    key={lead.id}
+                    className="even:bg-blue-50 hover:bg-gray-100 "
+                  >
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
+                      <div className="flex gap-2">
+                        <CheckBox
+                          id={lead.id}
+                          content=""
+                          value={lead}
+                          checked={selectedLeads.find(
+                            (itemLead: any) => itemLead.id === lead.id
+                          )}
+                          onChange={(changedLead, checked) => {
+                            if (!checked) {
+                              setSelectedLeads(
+                                selectedLeads.filter(
+                                  (lead: any) => changedLead.id !== lead.id
+                                )
+                              );
+                            } else {
+                              console.log(checked);
+                              setSelectedLeads([...selectedLeads, changedLead]);
+                            }
+                          }}
+                        />{" "}
+                        {lead.name}
+                      </div>
+                    </td>
+                    {/* <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {lead.name}
                   </td> */}
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {lead.title}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {lead.companyName}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {lead.phone}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {lead.currentLocation}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {lead.origin}
-                  </td>
-                </tr>
-              ))}
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {lead.title}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {lead.companyName}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {lead.phone}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {lead.currentLocation}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {lead.employees}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {lead.industry}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
 
         {/* Pagination */}
-        <div className="flex justify-end px-16">
+        <div className="flex justify-between px-16">
+          <div className="py-4">Total Leads: {leads.length}</div>
           <Pagination
             className="pagination-bar"
             totalCount={leads.length}
-            pageSize={10}
-            onPageChange={(pageSize: number, currentPage: number) =>
-              console.log(pageSize, currentPage)
-            }
+            pageSize={pageSize}
+            onPageChange={(pageSize: number, currentPage: number) => {
+              setPageSize(pageSize);
+              setCurrentPage(currentPage);
+            }}
           />
         </div>
       </div>
