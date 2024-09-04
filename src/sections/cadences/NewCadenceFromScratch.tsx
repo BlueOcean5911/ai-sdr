@@ -4,7 +4,7 @@ import { XCircleIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-const NewSequenceFromScratch = ({
+const NewCadenceFromScratch = ({
   close,
   click,
 }: {
@@ -149,4 +149,4 @@ const NewSequenceFromScratch = ({
   );
 };
 
-export default NewSequenceFromScratch;
+export default NewCadenceFromScratch;

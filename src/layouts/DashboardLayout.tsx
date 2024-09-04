@@ -59,7 +59,7 @@ export default function DashboardLayout({
 
   return (
     <>
-      <div className="flex flex-1">
+      <div className="flex flex-1 overflow-auto">
         <Dialog
           open={showPopup}
           onClose={setShowPopup}
@@ -264,7 +264,7 @@ export default function DashboardLayout({
 
         <div
           className={classNames(
-            "flex flex-col flex-1 h-dvh"
+            "flex flex-col flex-1 h-dvh overflow-auto"
             // sidebarPined ? "md:pl-60" : "",
             // sidebarShow ? "md:pl-14" : ""
           )}

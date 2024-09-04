@@ -4,7 +4,7 @@ import { XCircle } from "lucide-react";
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 
-const AddSequence = ({
+const AddCadence = ({
   children,
   open,
   close,
@@ -13,7 +13,7 @@ const AddSequence = ({
   open: boolean;
   close: () => void;
 }) => {
-  const handleAddToSequence = () => {
+  const handleAddToCadence = () => {
     close();
     toast.success("Successfully Added");
   };
@@ -70,9 +70,9 @@ const AddSequence = ({
                 <button className="btn-secondary">Cancel</button>
                 <button
                   className="btn-primary"
-                  onClick={() => handleAddToSequence()}
+                  onClick={() => handleAddToCadence()}
                 >
-                  Add Lead to sequence
+                  Add Lead to cadence
                 </button>
               </div>
             </DialogPanel>
@@ -83,4 +83,4 @@ const AddSequence = ({
   );
 };
 
-export default AddSequence;
+export default AddCadence;

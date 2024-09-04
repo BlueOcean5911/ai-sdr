@@ -1,11 +1,11 @@
 import { ListBulletIcon } from "@heroicons/react/24/outline";
 import FilterItem from "./filter-item";
-import { useLeadFilter } from "@/contexts/FilterLeadContext";
+import { useCadenceFilter } from "@/contexts/FilterCadenceContext";
 import Select from "react-tailwindcss-select";
 import { personaOptions, employeeOptions } from "@/data/filter.data";
 
-export default function FilterLead() {
-  const { leadFilterConfig, setLeadFilterConfig } = useLeadFilter();
+export default function FilterCadence() {
+  const { cadenceFilterConfig, setCadenceFilterConfig } = useCadenceFilter();
 
   return (
     <div className="card p-2 w-64 h-full flex flex-col">
@@ -16,10 +16,10 @@ export default function FilterLead() {
           title="Persona"
         >
           <Select
-            value={leadFilterConfig.persona}
+            value={cadenceFilterConfig.persona}
             onChange={(value) =>
-              setLeadFilterConfig({
-                ...leadFilterConfig,
+              setCadenceFilterConfig({
+                ...cadenceFilterConfig,
                 persona: value,
               })
             }
@@ -58,10 +58,10 @@ export default function FilterLead() {
           <input
             type="text"
             className="input-primary w-full"
-            value={leadFilterConfig.title}
+            value={cadenceFilterConfig.title}
             onChange={(e) => {
-              setLeadFilterConfig({
-                ...leadFilterConfig,
+              setCadenceFilterConfig({
+                ...cadenceFilterConfig,
                 title: e.target.value,
               });
             }}
@@ -74,10 +74,10 @@ export default function FilterLead() {
           <input
             type="text"
             className="input-primary w-full"
-            value={leadFilterConfig.company}
+            value={cadenceFilterConfig.company}
             onChange={(e) => {
-              setLeadFilterConfig({
-                ...leadFilterConfig,
+              setCadenceFilterConfig({
+                ...cadenceFilterConfig,
                 company: e.target.value,
               });
             }}
@@ -92,10 +92,10 @@ export default function FilterLead() {
             <input
               type="text"
               className="input-primary w-full"
-              value={leadFilterConfig.location}
+              value={cadenceFilterConfig.location}
               onChange={(e) => {
-                setLeadFilterConfig({
-                  ...leadFilterConfig,
+                setCadenceFilterConfig({
+                  ...cadenceFilterConfig,
                   location: e.target.value,
                 });
               }}
@@ -106,10 +106,10 @@ export default function FilterLead() {
             <input
               type="text"
               className="input-primary w-full"
-              value={leadFilterConfig.location}
+              value={cadenceFilterConfig.location}
               onChange={(e) => {
-                setLeadFilterConfig({
-                  ...leadFilterConfig,
+                setCadenceFilterConfig({
+                  ...cadenceFilterConfig,
                   location: e.target.value,
                 });
               }}
@@ -120,10 +120,10 @@ export default function FilterLead() {
             <input
               type="text"
               className="input-primary w-full"
-              value={leadFilterConfig.location}
+              value={cadenceFilterConfig.location}
               onChange={(e) => {
-                setLeadFilterConfig({
-                  ...leadFilterConfig,
+                setCadenceFilterConfig({
+                  ...cadenceFilterConfig,
                   location: e.target.value,
                 });
               }}
@@ -135,10 +135,10 @@ export default function FilterLead() {
           title="Employees"
         >
           <Select
-            value={leadFilterConfig.employee}
+            value={cadenceFilterConfig.employee}
             onChange={(value) =>
-              setLeadFilterConfig({
-                ...leadFilterConfig,
+              setCadenceFilterConfig({
+                ...cadenceFilterConfig,
                 employee: value,
               })
             }
@@ -176,10 +176,10 @@ export default function FilterLead() {
           <input
             type="text"
             className="input-primary w-full"
-            value={leadFilterConfig.keyword}
+            value={cadenceFilterConfig.keyword}
             onChange={(e) => {
-              setLeadFilterConfig({
-                ...leadFilterConfig,
+              setCadenceFilterConfig({
+                ...cadenceFilterConfig,
                 keyword: e.target.value,
               });
             }}

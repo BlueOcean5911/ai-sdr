@@ -6,7 +6,7 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 
-const CreateSequence = ({
+const CreateCadence = ({
   close,
   click: handleClick,
 }: {
@@ -55,7 +55,7 @@ const CreateSequence = ({
                   <FireIcon className="w-16 h-16 stroke-gray-600 m-6" />
                   <h3>AI-assisted</h3>
                   <p className="text-xs text-gray-400">
-                    Create a sequence with AI-assistance
+                    Create a cadence with AI-assistance
                   </p>
                 </div>
                 <div
@@ -70,7 +70,7 @@ const CreateSequence = ({
                   <EnvelopeOpenIcon className="w-16 h-16 stroke-gray-600 m-6" />
                   <h3>Pre-formatted</h3>
                   <p className="text-xs text-gray-400">
-                    Start with one of pre-formatted sequences
+                    Start with one of pre-formatted cadences
                   </p>
                 </div>
                 <div
@@ -85,7 +85,7 @@ const CreateSequence = ({
                   <PaperAirplaneIcon className="w-16 h-16 stroke-gray-600 m-6" />
                   <h3>From scratch</h3>
                   <p className="text-xs text-gray-400">
-                    Create new sequence from scratch
+                    Create new cadence from scratch
                   </p>
                 </div>
               </div>
@@ -97,4 +97,4 @@ const CreateSequence = ({
   );
 };
 
-export default CreateSequence;
+export default CreateCadence;

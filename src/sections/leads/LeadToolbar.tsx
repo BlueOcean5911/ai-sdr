@@ -14,9 +14,9 @@ import { useLeadSelection } from "@/contexts/LeadSelectionContext";
 import { useSearchParams } from "next/navigation";
 import EmailSendWindow from "../email/EmailSendWindow";
 import { useLeadFilter } from "@/contexts/FilterLeadContext";
-import AddSequence from "../sequence/AddSequence";
-import CreateSequence from "../sequence/CreateSequence";
-import NewSequenceFromScratch from "../sequence/NewSequenceFromScratch";
+import AddCadence from "../cadences/AddCadence";
+import CreateCadence from "../cadences/CreateCadence";
+import NewCadenceFromScratch from "../cadences/NewCadenceFromScratch";
 import { useRouter } from "next/navigation";
 
 const LeadToolbar = () => {
@@ -27,9 +27,9 @@ const LeadToolbar = () => {
   const { leadFilterConfig, setLeadFilterConfig } = useLeadFilter();
   const [isOpenSendEmail, setIsOpenSendEmail] = useState(false);
   const [isSavedView, setIsSavedView] = useState(false);
-  const [openAddSequence, setOpenAddSequence] = useState(false);
-  const [openCreateSequence, setOpenCreateSequence] = useState(false);
-  const [openNewSequenceFromScratch, setOpenNewSequenceFromScratch] =
+  const [openAddCadence, setOpenAddCadence] = useState(false);
+  const [openCreateCadence, setOpenCreateCadence] = useState(false);
+  const [openNewCadenceFromScratch, setOpenNewCadenceFromScratch] =
     useState(false);
   const router = useRouter();
   useEffect(() => {
@@ -62,17 +62,17 @@ const LeadToolbar = () => {
     }
   };
 
-  const handleCreateSequence = (type: any) => {
+  const handleCreateCadence = (type: any) => {
     if (type === "from-scratch") {
-      setOpenNewSequenceFromScratch(true);
-      setOpenAddSequence(false);
-      setOpenCreateSequence(false);
+      setOpenNewCadenceFromScratch(true);
+      setOpenAddCadence(false);
+      setOpenCreateCadence(false);
     } else {
-      toast.info("Only support from-scratch sequences");
+      toast.info("Only support from-scratch cadences");
     }
   };
 
-  const handleNewSequenceFromScratch = () => {
+  const handleNewCadenceFromScratch = () => {
     router.push("/cadences/cadences-1/");
   };
 
@@ -122,7 +122,7 @@ const LeadToolbar = () => {
             <MenuItem>
               <button
                 className="group text-xs flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100"
-                onClick={() => setOpenAddSequence(true)}
+                onClick={() => setOpenAddCadence(true)}
               >
                 <PaperAirplaneIcon className="size-4" />
                 Add to existing Cadence
@@ -131,7 +131,7 @@ const LeadToolbar = () => {
             <MenuItem>
               <button
                 className="group text-xs flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100"
-                onClick={() => setOpenCreateSequence(true)}
+                onClick={() => setOpenCreateCadence(true)}
               >
                 <PlusCircleIcon className="size-4" />
                 Add to new Cadence
@@ -156,22 +156,22 @@ const LeadToolbar = () => {
             <EmailSendWindow close={() => setIsOpenSendEmail(false)} />
           </>
         )}
-        {openAddSequence && (
-          <AddSequence
-            open={openAddSequence}
-            close={() => setOpenAddSequence(false)}
+        {openAddCadence && (
+          <AddCadence
+            open={openAddCadence}
+            close={() => setOpenAddCadence(false)}
           />
         )}
-        {openCreateSequence && (
-          <CreateSequence
-            close={() => setOpenCreateSequence(false)}
-            click={(type: any) => handleCreateSequence(type)}
+        {openCreateCadence && (
+          <CreateCadence
+            close={() => setOpenCreateCadence(false)}
+            click={(type: any) => handleCreateCadence(type)}
           />
         )}
-        {openNewSequenceFromScratch && (
-          <NewSequenceFromScratch
-            close={() => setOpenNewSequenceFromScratch(false)}
-            click={() => handleNewSequenceFromScratch()}
+        {openNewCadenceFromScratch && (
+          <NewCadenceFromScratch
+            close={() => setOpenNewCadenceFromScratch(false)}
+            click={() => handleNewCadenceFromScratch()}
           />
         )}
       </div>

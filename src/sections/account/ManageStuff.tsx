@@ -49,7 +49,7 @@ const ManageStuff = () => {
   return (
     <>
       <div className="flex flex-1 gap-4">
-        <div className="flex flex-1">
+        <div className="flex flex-1 overflow-auto">
           <div className="card p-4 flex flex-col flex-1">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
               <div className="flex justify-between items-center">
