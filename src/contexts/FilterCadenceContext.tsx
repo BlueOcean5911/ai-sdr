@@ -9,12 +9,8 @@ interface Option {
 
 interface CadenceFilterConfig {
   isOpen: boolean;
-  persona: Option | Option[] | null;
-  title: string;
-  company: string;
-  location: string;
-  employee: Option | Option[] | null;
-  keyword: string;
+  starred: boolean;
+  ownedBy: Option | Option[] | null;
 }
 
 interface CadenceFilterContextType {
@@ -36,12 +32,8 @@ export const CadenceFilterProvider = ({
   const [cadenceFilterConfig, setCadenceFilterConfig] =
     useState<CadenceFilterConfig>({
       isOpen: true,
-      persona: [],
-      title: "",
-      company: "",
-      location: "",
-      employee: [],
-      keyword: "",
+      starred: false,
+      ownedBy: [],
     });
 
   const updateCadenceFilterConfig = (config: CadenceFilterConfig) => {

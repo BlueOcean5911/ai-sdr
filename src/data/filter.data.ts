@@ -17,3 +17,10 @@ export const employeeOptions = [
   { value: "5001-10000", label: "5001-10000" },
   { value: "10001+", label: "10001+" },
 ];
+
+export const ownedByOptions = [
+  { value: "Current User", label: "Current User" },
+  { value: "Nobody", label: "Nobody" },
+  { value: "Anybody", label: "Anybody" },
+  { value: "You", label: "You" },
+];

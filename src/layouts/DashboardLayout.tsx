@@ -262,14 +262,8 @@ export default function DashboardLayout({
           </div>
         </div>
 
-        <div
-          className={classNames(
-            "flex flex-col flex-1 h-dvh overflow-auto"
-            // sidebarPined ? "md:pl-60" : "",
-            // sidebarShow ? "md:pl-14" : ""
-          )}
-        >
-          <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-3 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+        <div className="flex flex-col flex-1 h-dvh overflow-auto">
+          <div className="sticky top-0 z-40 flex h-12 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white shadow-sm sm:gap-x-6 px-6">
             <button
               type="button"
               onClick={() => setShowPopup(true)}

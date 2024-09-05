@@ -75,7 +75,7 @@ const CompanyTable = () => {
       <div className="flex-1 flex flex-col overflow-auto">
         {/* Table */}
         <div className="flex-1 overflow-auto">
-          <table className="min-w-full overflow-auto">
+          <table className="min-w-full divide-y divide-gray-300 overflow-auto">
             <thead className="bg-white sticky top-0 z-10">
               <tr>
                 <th

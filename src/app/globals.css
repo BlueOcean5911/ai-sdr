@@ -25,7 +25,7 @@
   --toogle-white: #111111;
 }
 
-@layer utilities {
+@layer utilities {title
   .text-balance {
     text-wrap: balance;
   }
@@ -98,7 +98,7 @@
   }
 
   .title {
-    @apply relative z-40 -top-12 text-2xl font-bold inline-block ml-8 h-0;
+    @apply relative z-40 -top-9 text-lg font-bold inline-block px-6 h-0;
   }
 
   .card {

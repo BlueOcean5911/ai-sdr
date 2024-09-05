@@ -22,3 +22,7 @@ export interface CompanyProps {
   origin: string;
   title: string;
 }
+
+export interface CadenceItemProps {}
+
+export interface CadenceStepProps {}
