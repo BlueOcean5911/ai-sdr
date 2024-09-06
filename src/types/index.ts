@@ -26,3 +26,7 @@ export interface CompanyProps {
 export interface CadenceItemProps {}
 
 export interface CadenceStepProps {}
+
+export interface EmailItemProps {}
+
+export interface EmailStepProps {}

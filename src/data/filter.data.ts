@@ -24,3 +24,10 @@ export const ownedByOptions = [
   { value: "Anybody", label: "Anybody" },
   { value: "You", label: "You" },
 ];
+
+export const fromUserOptions = [
+  { value: "Current User", label: "Current User" },
+  { value: "Nobody", label: "Nobody" },
+  { value: "Anybody", label: "Anybody" },
+  { value: "You", label: "You" },
+];

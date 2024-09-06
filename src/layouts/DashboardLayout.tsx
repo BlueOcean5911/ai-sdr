@@ -178,7 +178,7 @@ export default function DashboardLayout({
                               aria-hidden="true"
                               className={classNames(
                                 pathname?.includes(item.href)
-                                  ? "fill-white stroke-white"
+                                  ? "fill-gray-200 stroke-white"
                                   : "text-blue-100 ",
                                 "h-5 w-5 shrink-0"
                               )}
@@ -245,7 +245,7 @@ export default function DashboardLayout({
                               aria-hidden="true"
                               className={classNames(
                                 pathname?.includes(item.href)
-                                  ? "fill-white stroke-white"
+                                  ? "fill-gray-200 stroke-white"
                                   : "text-blue-100 ",
                                 "h-5 w-5 shrink-0"
                               )}

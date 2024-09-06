@@ -1,5 +1,5 @@
 import Select from "@/components/extends/Select/default";
-import { XCircleIcon } from "@heroicons/react/24/outline";
+import { XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 // import { Calendar } from "@/components/ui/calendar";
 import { useState } from "react";
 import {
@@ -52,47 +52,53 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
 
   return (
     <>
-      <div className="z-20 flex flex-col fixed bottom-0 right-6 w-[500px] h-[80vh] shadow-lg bg-white border-2 border-gray-100 rounded-md">
+      <div className="z-20 flex flex-col fixed bottom-0 right-14 w-[500px] h-[80vh] shadow-lg bg-white border-2 border-gray-100 rounded-md">
         <div className="flex-center p-2 py-4 border-b-2 border-gray-200 justify-between">
           Send Email
-          <XCircleIcon
-            className="w-6 h-6 stroke-gray-400 hover:stroke-gray-500 ml-auto cursor-pointer"
+          <XMarkIcon
+            className="w-5 h-5 stroke-gray-400 hover:stroke-gray-500 ml-auto cursor-pointer"
             onClick={close}
           />
         </div>
-        <div className="flex-1 flex flex-col gap-2 p-2">
-          <label>From</label>
-          <Select
-            data={[
-              {
-                id: 10,
-                name: "russell.johnson.navy@gmail.com",
-                value: "russell.johnson.navy@gmail.com",
-              },
-              {
-                id: 20,
-                name: "niklausanton23@gmail.com",
-                value: "niklausanton23@gmail.com",
-              },
-            ]}
-          />
-          <label>To</label>
-          <Select
-            data={[
-              {
-                id: 10,
-                name: "russell.johnson.navy@gmail.com",
-                value: "russell.johnson.navy@gmail.com",
-              },
-              {
-                id: 20,
-                name: "niklausanton23@gmail.com",
-                value: "niklausanton23@gmail.com",
-              },
-            ]}
-          />
+        <div className="flex-1 flex flex-col gap-2 p-3">
+          <div className="flex flex-col gap-1">
+            <label className="text-xs">From</label>
+            <Select
+              data={[
+                {
+                  id: 10,
+                  name: "russell.johnson.navy@gmail.com",
+                  value: "russell.johnson.navy@gmail.com",
+                },
+                {
+                  id: 20,
+                  name: "niklausanton23@gmail.com",
+                  value: "niklausanton23@gmail.com",
+                },
+              ]}
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="text-xs">To</label>
+            <Select
+              data={[
+                {
+                  id: 10,
+                  name: "russell.johnson.navy@gmail.com",
+                  value: "russell.johnson.navy@gmail.com",
+                },
+                {
+                  id: 20,
+                  name: "niklausanton23@gmail.com",
+                  value: "niklausanton23@gmail.com",
+                },
+              ]}
+            />
+          </div>
+
           <div className="flex-center gap-2">
-            <label>Subject*</label>
+            <label className="text-xs">Subject*</label>
             <input
               className="input-primary"
               value={values.subject}
@@ -107,8 +113,8 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
           {errors.subject.length > 0 && (
             <p className="text-red-500 text-xs">{errors.subject}</p>
           )}
-          <div></div>
-          <label>Message*</label>
+
+          <label className="text-xs">Message*</label>
           <textarea
             className="input-primary"
             value={values.message}
@@ -124,7 +130,7 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
           )}
           <div className="flex gap-4 relative">
             <Popover>
-              <PopoverButton className="btn-secondary">
+              <PopoverButton className="text-sm btn-secondary">
                 Delivery Schedule
               </PopoverButton>
               <PopoverPanel
@@ -138,7 +144,10 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
               </PopoverPanel>
             </Popover>
             <Menu>
-              <MenuButton className="btn-primary" onClick={handleSendNow}>
+              <MenuButton
+                className="text-sm btn-primary"
+                onClick={handleSendNow}
+              >
                 Send Now
               </MenuButton>
             </Menu>

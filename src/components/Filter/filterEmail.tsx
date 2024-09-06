@@ -4,17 +4,12 @@ import {
   StarIcon,
 } from "@heroicons/react/24/outline";
 import FilterItem from "./filter-item";
-import { useCadenceFilter } from "@/contexts/FilterCadenceContext";
+import { useEmailFilter } from "@/contexts/FilterEmailContext";
 import Select from "react-tailwindcss-select";
-import {
-  personaOptions,
-  employeeOptions,
-  ownedByOptions,
-} from "@/data/filter.data";
-import CheckBox from "../extends/CheckBox";
+import { fromUserOptions } from "@/data/filter.data";
 
-export default function FilterCadence() {
-  const { cadenceFilterConfig, setCadenceFilterConfig } = useCadenceFilter();
+export default function FilterEmail() {
+  const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
 
   return (
     <div className="card p-2 w-64 h-full flex flex-col">
@@ -32,51 +27,23 @@ export default function FilterCadence() {
             id="search-field"
             name="search"
             type="search"
-            placeholder="Search Cadences..."
+            placeholder="Search Emails..."
             className="flex w-full border-0 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
           />
         </form>
         <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
-          title="Starred"
-        >
-          <div
-            className="flex justify-between items-center"
-            onClick={() =>
-              setCadenceFilterConfig({
-                ...cadenceFilterConfig,
-                starred: !cadenceFilterConfig.starred,
-              })
-            }
-          >
-            <span className="inline-flex gap-2 items-center">
-              {cadenceFilterConfig.starred ? (
-                <StarIcon className="w-4 h-4 fill-blue-500 stroke-blue-500" />
-              ) : (
-                <StarIcon className="w-4 h-4" />
-              )}
-              Starred
-            </span>
-            <input
-              type="checkbox"
-              className="input-cbx focus:ring-0"
-              checked={cadenceFilterConfig.starred}
-            />
-          </div>
-        </FilterItem>
-        <FilterItem
-          icon={<ListBulletIcon className="w-4 h-4" />}
-          title="Owned By"
+          title="From User"
         >
           <Select
-            value={cadenceFilterConfig.ownedBy}
+            value={emailFilterConfig.fromUser}
             onChange={(value) =>
-              setCadenceFilterConfig({
-                ...cadenceFilterConfig,
-                ownedBy: value,
+              setEmailFilterConfig({
+                ...emailFilterConfig,
+                fromUser: value,
               })
             }
-            options={ownedByOptions}
+            options={fromUserOptions}
             isMultiple={true}
             isSearchable={true}
             primaryColor={"indigo"}
@@ -103,6 +70,22 @@ export default function FilterCadence() {
               searchIcon: "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
             }}
           ></Select>
+        </FilterItem>
+        <FilterItem
+          icon={<ListBulletIcon className="w-4 h-4" />}
+          title="From Email"
+        >
+          <input
+            type="text"
+            className="input-primary w-full"
+            value={emailFilterConfig.fromEmail}
+            onChange={(e) => {
+              setEmailFilterConfig({
+                ...emailFilterConfig,
+                fromEmail: e.target.value,
+              });
+            }}
+          />
         </FilterItem>
       </div>
     </div>

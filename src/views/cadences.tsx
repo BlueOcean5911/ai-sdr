@@ -185,8 +185,8 @@ export default function Cadences() {
   return (
     <div className="flex gap-2 flex-1 overflow-auto">
       {cadenceFilterConfig.isOpen && <FilterCadence />}
-      <div className="card flex-1 flex flex-col">
-        <div className="px-6">
+      <div className="card flex-1 flex flex-col overflow-auto">
+        <div className="px-6 overflow-auto">
           <CadenceToolbar />
         </div>
 

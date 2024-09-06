@@ -15,7 +15,7 @@ export default function CadenceItem(props: CadenceItemProps) {
         <input className="shadow-none ring-0 focus:ring-0" type="checkbox" />
       </div>
       <div
-        className="flex items-center overflow-hidden flex-1 gap-2 cursor-pointer"
+        className="flex items-center flex-1 gap-2 cursor-pointer"
         onClick={() => router.push(`/cadences/${"cadence.id"}`)}
       >
         <div className="min-w-64 flex flex-1 flex-col gap-1.5">
