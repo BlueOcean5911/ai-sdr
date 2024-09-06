@@ -44,7 +44,7 @@ const CompanyToolbar = () => {
     <>
       <div className="flex items-center gap-2 border-b-1 border-gray-100 py-1 text-sm">
         <button
-          className="flex items-center gap-2 border-2 border-gray-300 py-1 px-3 rounded-md hover:bg-gray-200"
+          className="min-w-32 flex justify-center items-center gap-2 border-2 border-gray-300 py-1 px-2 rounded-md hover:bg-gray-200"
           onClick={() => {
             if (companyFilterConfig.isOpen) {
               setCompanyFilterConfig({ ...companyFilterConfig, isOpen: false });
@@ -61,7 +61,7 @@ const CompanyToolbar = () => {
         </button>
         {!isSavedView && (
           <button
-            className="flex items-center gap-2 border-2 border-gray-300 py-1 px-3 rounded-md hover:bg-gray-200"
+            className="min-w-32 flex justify-center items-center gap-2 border-2 border-gray-300 py-1 px-2 rounded-md hover:bg-gray-200"
             onClick={() => handleSaveCompany()}
           >
             <PlusIcon className="w-4 h-4" /> Save

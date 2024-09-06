@@ -91,7 +91,7 @@ export default function DashboardLayout({
                 </div>
               </TransitionChild>
               {/* Sidebar component, swap this element with another sidebar if you like */}
-              <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
+              <div className="hidden md:flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
                 <div className="flex-center h-16 mt-4 shrink-0 gap-4 pr-12">
                   <Logo />
                 </div>
@@ -149,7 +149,9 @@ export default function DashboardLayout({
 
         {/* Collapsed sidebar for desktop with only icon */}
         <div
-          className={`flex w-0 flex-col ${sidebarPined ? "" : "md:w-14"}`}
+          className={`hidden md:flex w-0 flex-col ${
+            sidebarPined ? "" : "md:w-14"
+          }`}
           onMouseEnter={handleMouseEnter}
         >
           {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -209,7 +211,7 @@ export default function DashboardLayout({
           onMouseLeave={handleMouseLeave}
         >
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex grow flex-col gap-y-2 overflow-y-auto border-r border-gray-200 bg-white px-3 pb-4">
+          <div className="hidden md:flex grow flex-col gap-y-2 overflow-y-auto border-r border-gray-200 bg-white px-3 pb-4">
             <div className="flex justify-between h-16 mt-4">
               <Logo />
               <button

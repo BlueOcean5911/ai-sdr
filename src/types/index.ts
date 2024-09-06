@@ -30,3 +30,7 @@ export interface CadenceStepProps {}
 export interface EmailItemProps {}
 
 export interface EmailStepProps {}
+
+export interface ContactItemProps {}
+
+export interface ContactStepProps {}

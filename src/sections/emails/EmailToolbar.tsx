@@ -7,7 +7,7 @@ const EmailToolbar = () => {
   return (
     <div className="w-full flex items-center gap-2 border-b border-gray-100 text-sm overflow-auto">
       <button
-        className="min-w-32 flex items-center gap-2 border-2 border-gray-300 py-1 px-3 rounded-md hover:bg-gray-200"
+        className="min-w-32 flex justify-center items-center gap-2 border-2 border-gray-300 py-1 px-2 rounded-md hover:bg-gray-200"
         onClick={() => {
           if (emailFilterConfig.isOpen) {
             setEmailFilterConfig({ ...emailFilterConfig, isOpen: false });

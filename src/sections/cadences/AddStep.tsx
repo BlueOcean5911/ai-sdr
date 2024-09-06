@@ -17,9 +17,9 @@ import {
   InformationCircleIcon,
   LockClosedIcon,
 } from "@heroicons/react/24/outline";
-import { Fragment, useState } from "react";
+import React, { Fragment, useState } from "react";
 
-export default function AddStep() {
+export default function AddStep({ children }: { children: React.ReactNode }) {
   let [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
@@ -39,6 +39,7 @@ export default function AddStep() {
         >
           Add a step
         </button>
+        {children}
       </div>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative" onClose={closeModal}>

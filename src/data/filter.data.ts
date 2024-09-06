@@ -31,3 +31,19 @@ export const fromUserOptions = [
   { value: "Anybody", label: "Anybody" },
   { value: "You", label: "You" },
 ];
+
+export const cadenceStatusOptions = [
+  { value: "Active", label: "Active" },
+  { value: "Paused", label: "Paused" },
+  { value: "Bounced/Spamblocked", label: "Bounced/Spamblocked" },
+  { value: "Finished", label: "Finished" },
+  { value: "Not Sent", label: "Not Sent" },
+];
+
+export const cadenceStepOptions = [
+  { value: "Step: 1", label: "Step: 1" },
+  { value: "Step: 2", label: "Step: 2" },
+  { value: "Step: 3", label: "Step: 3" },
+  { value: "Step: 4", label: "Step: 4" },
+  { value: "Step: 5", label: "Step: 5" },
+];

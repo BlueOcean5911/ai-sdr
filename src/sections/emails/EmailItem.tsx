@@ -67,7 +67,7 @@ export default function EmailItem(props: EmailItemProps) {
           <span>Aug 26</span>
         </div>
       </div>
-      {send ? <EmailSendWindow close={() => setSend(false)} /> : <></>}
+      {/* {send ? <EmailSendWindow close={() => setSend(false)} /> : <></>} */}
       <Transition appear show={sent} as={Fragment}>
         <Dialog as="div" className="relative" onClose={() => setSent(false)}>
           <div className="fixed inset-0 bg-black/65 z-40" />
@@ -177,16 +177,6 @@ export default function EmailItem(props: EmailItemProps) {
             <MenuItem>
               <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
                 Delete Email and Finish Cadence
-              </button>
-            </MenuItem>
-            <MenuItem>
-              <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                Show Diagnostics Information
-              </button>
-            </MenuItem>
-            <MenuItem>
-              <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                CRM Sync History
               </button>
             </MenuItem>
           </MenuItems>

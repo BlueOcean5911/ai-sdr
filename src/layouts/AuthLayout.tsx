@@ -7,9 +7,9 @@ export default function AuthLayout({
 }) {
   return (
     <>
-      <div className="fixed z-50 top-0 right-0 mt-4 mr-4">
+      {/* <div className="fixed z-50 top-0 right-0 mt-4 mr-4">
         <ThemeToggle />
-      </div>
+      </div> */}
       {children}
     </>
   );

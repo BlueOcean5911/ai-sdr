@@ -14,7 +14,7 @@ export default function SignIn() {
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
               <Logo />
-              <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
+              {/* <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
                 Sign in to your account
               </h2>
               <p className="mt-2 text-sm leading-6 ">
@@ -22,11 +22,11 @@ export default function SignIn() {
                 <Link href={ROUTE_REGISTER} className="font-semibold underline">
                   Register
                 </Link>
-              </p>
+              </p> */}
             </div>
 
             <div className="mt-10">
-              <div>
+              {/* <div>
                 <form action="#" method="POST" className="space-y-6">
                   <div>
                     <label
@@ -87,10 +87,10 @@ export default function SignIn() {
                     </Link>
                   </div>
                 </form>
-              </div>
+              </div> */}
 
               <div className="mt-10">
-                <div className="relative">
+                {/* <div className="relative">
                   <div
                     aria-hidden="true"
                     className="absolute inset-0 flex items-center"
@@ -102,7 +102,7 @@ export default function SignIn() {
                       Or continue with
                     </span>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="mt-6 grid grid-cols-1 gap-4">
                   <Link
