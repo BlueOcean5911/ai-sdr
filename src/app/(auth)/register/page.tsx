@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { ROUTE_DASHBOARD, ROUTE_REGISTER } from "@/data/routes";
+import { ROUTE_DASHBOARD, ROUTE_LOGIN, ROUTE_REGISTER } from "@/data/routes";
 import Logo from "@/components/extends/Logo";
 import CheckBox from "@/components/extends/CheckBox";
 import { LOGIN_BG_URL, LOGIN_SUB_IMAGE_001_URL } from "@/data/urls/images.url";
@@ -18,7 +18,15 @@ export default function SignIn() {
                 Sign Up to your account
               </h2>
             </div>
-
+            <p className="mt-2 text-sm leading-6 ">
+              Already a member?{" "}
+              <Link
+                href={ROUTE_LOGIN}
+                className="font-semibold underline hover:text-blue-500"
+              >
+                Login
+              </Link>
+            </p>
             <div className="mt-10">
               <div>
                 <form action="#" method="POST" className="space-y-6">
@@ -73,7 +81,7 @@ export default function SignIn() {
                 </form>
               </div>
 
-              <div className="mt-10">
+              {/* <div className="mt-10">
                 <div className="relative">
                   <div
                     aria-hidden="true"
@@ -119,7 +127,7 @@ export default function SignIn() {
                     </span>
                   </Link>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

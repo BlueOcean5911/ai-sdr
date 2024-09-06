@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 
 import { ROUTE_DASHBOARD, ROUTE_REGISTER } from "@/data/routes";
@@ -5,8 +6,11 @@ import Logo from "@/components/extends/Logo";
 import CheckBox from "@/components/extends/CheckBox";
 import { LOGIN_BG_URL, LOGIN_SUB_IMAGE_001_URL } from "@/data/urls/images.url";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function SignIn() {
+  const [rememberMe, setRememberMe] = useState(false);
+
   return (
     <>
       <div className="flex min-h-dvh flex-1">
@@ -14,19 +18,22 @@ export default function SignIn() {
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
               <Logo />
-              {/* <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
+              <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
                 Sign in to your account
               </h2>
               <p className="mt-2 text-sm leading-6 ">
                 Not a member?{" "}
-                <Link href={ROUTE_REGISTER} className="font-semibold underline">
+                <Link
+                  href={ROUTE_REGISTER}
+                  className="font-semibold underline hover:text-blue-500"
+                >
                   Register
                 </Link>
-              </p> */}
+              </p>
             </div>
 
             <div className="mt-10">
-              {/* <div>
+              <div>
                 <form action="#" method="POST" className="space-y-6">
                   <div>
                     <label
@@ -42,7 +49,7 @@ export default function SignIn() {
                         type="email"
                         required
                         autoComplete="email"
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-900  sm:text-sm sm:leading-6 "
                       />
                     </div>
                   </div>
@@ -61,13 +68,18 @@ export default function SignIn() {
                         type="password"
                         required
                         autoComplete="current-password"
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-900 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <CheckBox id="remember-me" content="Remember me" />
+                    <CheckBox
+                      id="remember-me"
+                      content="Remember me"
+                      checked={rememberMe}
+                      onChange={() => setRememberMe(!rememberMe)}
+                    />
 
                     <div className="text-sm leading-6">
                       <a href="#" className="font-semibold">
@@ -87,7 +99,7 @@ export default function SignIn() {
                     </Link>
                   </div>
                 </form>
-              </div> */}
+              </div>
 
               <div className="mt-10">
                 {/* <div className="relative">
@@ -104,7 +116,7 @@ export default function SignIn() {
                   </div>
                 </div> */}
 
-                <div className="mt-6 grid grid-cols-1 gap-4">
+                {/* <div className="mt-6 grid grid-cols-1 gap-4">
                   <Link
                     href="#"
                     className="btn-primary flex w-full items-center justify-center gap-3 rounded-md  px-3 py-2 text-sm font-semibold  shadow-sm"
@@ -135,7 +147,7 @@ export default function SignIn() {
                       Google
                     </span>
                   </Link>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
