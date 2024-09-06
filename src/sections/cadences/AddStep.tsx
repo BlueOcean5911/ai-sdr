@@ -19,7 +19,7 @@ import {
 } from "@heroicons/react/24/outline";
 import React, { Fragment, useState } from "react";
 
-export default function AddStep({ children }: { children: React.ReactNode }) {
+export default function AddStep() {
   let [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
@@ -39,7 +39,6 @@ export default function AddStep({ children }: { children: React.ReactNode }) {
         >
           Add a step
         </button>
-        {children}
       </div>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative" onClose={closeModal}>
