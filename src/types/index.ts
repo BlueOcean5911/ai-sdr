@@ -34,3 +34,9 @@ export interface EmailStepProps {}
 export interface ContactItemProps {}
 
 export interface ContactStepProps {}
+
+export interface CreateModelProps {
+  open: boolean;
+  handleSave: () => void;
+  handleClose: () => void;
+}
