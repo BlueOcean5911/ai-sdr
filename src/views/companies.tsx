@@ -1,16 +1,29 @@
 "use client";
-
+import { useState } from "react";
 import CompanyTable from "@/sections/companies/CompanyTable";
 
 import FilterCompany from "@/components/Filter/filterCompany";
 import CompanyToolbar from "@/sections/companies/CompanyToolbar";
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  Tab,
+  TabGroup,
+  TabList,
+  TabPanel,
+  TabPanels,
+} from "@headlessui/react";
 
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
 import { Suspense } from "react";
+import { ChevronDownIcon } from "lucide-react";
+import CreateCompany from "@/sections/companies/CreateCompany";
 
 export default function Companies() {
+  const [create, setCreate] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -43,8 +56,23 @@ export default function Companies() {
     }
   };
 
+  const handleSave = () => {
+    setCreate(false);
+  };
+
+  const handleClose = () => {
+    setCreate(false);
+  };
+
   return (
     <div className="flex gap-2 overflow-auto flex-1">
+      {create && (
+        <CreateCompany
+          open={create}
+          handleSave={handleSave}
+          handleClose={handleClose}
+        />
+      )}
       {companyFilterConfig.isOpen && <FilterCompany />}
       <div className="card flex-1 flex flex-col overflow-auto">
         <TabGroup className="flex-1 flex flex-col overflow-auto">
@@ -61,6 +89,34 @@ export default function Companies() {
             >
               Saved
             </Tab>
+            <div className="px-4 flex flex-1 justify-end items-center">
+              <Menu>
+                <MenuButton className="">
+                  <button className="px-2 py-1 flex flex-row items-center gap-1 rounded-md bg-blue-600 hover:bg-blue-500">
+                    <span className="text-sm text-white">Import</span>
+                    <ChevronDownIcon className="w-3 h-3 stroke-white stroke-2" />
+                  </button>
+                </MenuButton>
+                <MenuItems
+                  anchor="bottom end"
+                  className="flex flex-col origin-top-right bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
+                >
+                  <MenuItem>
+                    <button
+                      className="p-2 text-sm flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                      onClick={() => setCreate(true)}
+                    >
+                      Single Company
+                    </button>
+                  </MenuItem>
+                  <MenuItem>
+                    <button className="p-2 text-sm flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                      CSV
+                    </button>
+                  </MenuItem>
+                </MenuItems>
+              </Menu>
+            </div>
           </TabList>
           <TabPanels className="flex-1 flex flex-col overflow-auto">
             <TabPanel className="flex-1 flex flex-col overflow-auto">
