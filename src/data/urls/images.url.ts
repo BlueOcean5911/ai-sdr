@@ -18,6 +18,6 @@ export const LINKEDIN_INTERACT_ICON_URL =
   "/assets/images/icon/linkedininteract.svg";
 export const LINKEDIN_MESSAGE_ICON_URL =
   "/assets/images/icon/linkedinmessage.svg";
-export const LINKEDIN_VIEW_ICON_URL = "/assets/images/icon/linkedinview.svg";
 export const LINKEDIN_REQUEST_ICON_URL =
   "/assets/images/icon/linkedinrequest.svg";
+export const LINKEDIN_VIEW_ICON_URL = "/assets/images/icon/linkedinview.svg";
