@@ -1,9 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 import { ROUTE_LOGIN } from "@/data/routes";
-
-const router = useRouter();
 
 export const runService = async (
   data: any,
@@ -18,7 +15,8 @@ export const runService = async (
     // Check if the error is an Axios error
     if (axios.isAxiosError(error)) {
       const status = error.response?.status;
-      onError(status, error);
+      console.log("error", error);
+      onError(status, error.response?.data?.detail);
     } else {
       onError(undefined, error);
     }
@@ -29,20 +27,21 @@ export const handleError = (status: number | undefined, error: any) => {
   console.log(error);
   switch (status) {
     case 401:
-      toast.error("Please login to continue!");
-      router.push(ROUTE_LOGIN);
+      toast.error(error ? error : "Please login to continue!");
+      window.location.replace(ROUTE_LOGIN);
       break;
     case 404:
-      toast.error("Provided data was not found");
+      const message = error ? error : "Provided data was not found";
+      toast.error(message);
       break;
     case 409:
-      toast.error("Provided data already exists");
+      toast.error(error ? error : "Provided data already exists");
       break;
     case 500:
-      toast.error("Internal server error");
+      toast.error(error ? error : "Internal server error");
       break;
     default:
-      toast.error("An error occurred");
+      toast.error(error ? error : "An error occurred");
       break;
   }
 };
