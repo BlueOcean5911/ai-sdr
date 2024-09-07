@@ -17,6 +17,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "formik": "^2.4.6",
     "lucide-react": "^0.435.0",
     "moment": "^2.30.1",
     "next": "14.2.5",
@@ -29,7 +30,8 @@
     "react-tailwindcss-select": "^1.8.5",
     "react-toastify": "^10.0.5",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
