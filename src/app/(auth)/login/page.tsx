@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 
 import { ROUTE_DASHBOARD, ROUTE_REGISTER } from "@/data/routes";
@@ -5,8 +6,14 @@ import Logo from "@/components/extends/Logo";
 import CheckBox from "@/components/extends/CheckBox";
 import { LOGIN_BG_URL, LOGIN_SUB_IMAGE_001_URL } from "@/data/urls/images.url";
 import Image from "next/image";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { useState } from "react";
+import FormHelperText from "@/components/extends/FormHelperText";
 
 export default function SignIn() {
+  const [rememberMe, setRememberMe] = useState(false);
+
   return (
     <>
       <div className="flex min-h-dvh flex-1">
@@ -14,80 +21,133 @@ export default function SignIn() {
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
               <Logo />
-              {/* <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
+              <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
                 Sign in to your account
               </h2>
               <p className="mt-2 text-sm leading-6 ">
                 Not a member?{" "}
-                <Link href={ROUTE_REGISTER} className="font-semibold underline">
+                <Link
+                  href={ROUTE_REGISTER}
+                  className="font-semibold underline hover:text-blue-500"
+                >
                   Register
                 </Link>
-              </p> */}
+              </p>
             </div>
 
             <div className="mt-10">
-              {/* <div>
-                <form action="#" method="POST" className="space-y-6">
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium leading-6 "
-                    >
-                      Email address
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        required
-                        autoComplete="email"
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
+              <div>
+                <Formik
+                  initialValues={{
+                    email: "",
+                    password: "",
+                    submit: null,
+                  }}
+                  validationSchema={Yup.object().shape({
+                    email: Yup.string()
+                      .email("Must be a valid email")
+                      .max(255)
+                      .required("Email is required"),
+                    password: Yup.string()
+                      .max(255)
+                      .required("Password is required"),
+                  })}
+                  onSubmit={async (
+                    values,
+                    { setErrors, setStatus, setSubmitting }
+                  ) => {
+                    console.log();
+                  }}
+                >
+                  {({
+                    errors,
+                    handleBlur,
+                    handleChange,
+                    handleSubmit,
+                    isSubmitting,
+                    touched,
+                    values,
+                  }) => (
+                    <form action="#" method="POST" className="space-y-6">
+                      <div>
+                        <label
+                          htmlFor="email"
+                          className="block text-sm font-medium leading-6 "
+                        >
+                          Email address
+                        </label>
+                        <div className="mt-2">
+                          <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            value={values.email}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            required
+                            autoComplete="email"
+                            className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-900  sm:text-sm sm:leading-6 "
+                          />
+                        </div>
+                        {touched.email && errors.email && (
+                          <FormHelperText>{errors.email}</FormHelperText>
+                        )}
+                      </div>
 
-                  <div>
-                    <label
-                      htmlFor="password"
-                      className="block text-sm font-medium leading-6 "
-                    >
-                      Password
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        required
-                        autoComplete="current-password"
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
+                      <div>
+                        <label
+                          htmlFor="password"
+                          className="block text-sm font-medium leading-6 "
+                        >
+                          Password
+                        </label>
+                        <div className="mt-2">
+                          <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            value={values.password}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            required
+                            autoComplete="current-password"
+                            className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-900 sm:text-sm sm:leading-6"
+                          />
+                        </div>
+                        {touched.password && errors.password && (
+                          <FormHelperText>{errors.password}</FormHelperText>
+                        )}
+                      </div>
 
-                  <div className="flex items-center justify-between">
-                    <CheckBox id="remember-me" content="Remember me" />
+                      <div className="flex items-center justify-between">
+                        <CheckBox
+                          id="remember-me"
+                          content="Remember me"
+                          checked={rememberMe}
+                          onChange={() => setRememberMe(!rememberMe)}
+                        />
 
-                    <div className="text-sm leading-6">
-                      <a href="#" className="font-semibold">
-                        Forgot password?
-                      </a>
-                    </div>
-                  </div>
+                        <div className="text-sm leading-6">
+                          <a href="#" className="font-semibold">
+                            Forgot password?
+                          </a>
+                        </div>
+                      </div>
 
-                  <div>
-                    <Link href={ROUTE_DASHBOARD}>
-                      <button
-                        type="submit"
-                        className="btn-primary flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                      >
-                        Sign in
-                      </button>
-                    </Link>
-                  </div>
-                </form>
-              </div> */}
+                      <div>
+                        <Link href={ROUTE_DASHBOARD}>
+                          <button
+                            type="submit"
+                            className="btn-primary flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                          >
+                            Sign in
+                          </button>
+                        </Link>
+                      </div>
+                    </form>
+                  )}
+                </Formik>
+              </div>
 
               <div className="mt-10">
                 {/* <div className="relative">
@@ -104,7 +164,7 @@ export default function SignIn() {
                   </div>
                 </div> */}
 
-                <div className="mt-6 grid grid-cols-1 gap-4">
+                {/* <div className="mt-6 grid grid-cols-1 gap-4">
                   <Link
                     href="#"
                     className="btn-primary flex w-full items-center justify-center gap-3 rounded-md  px-3 py-2 text-sm font-semibold  shadow-sm"
@@ -135,7 +195,7 @@ export default function SignIn() {
                       Google
                     </span>
                   </Link>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
