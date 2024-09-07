@@ -1,6 +1,6 @@
 "use client";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -39,6 +39,9 @@ import Link from "next/link";
 import ThemeToggle from "@/components/Theme/ThemeToggle";
 import HeaderNotification from "@/components/DashboardLayout/Notification/header-notification";
 import { navigations } from "@/data/navigation.data";
+import { signOut } from "@/services/authService";
+import { getMe } from "@/services/userService";
+import { handleError, runService } from "@/utils/service_utils";
 
 export default function DashboardLayout({
   children,
@@ -56,6 +59,28 @@ export default function DashboardLayout({
   const handleMouseLeave = () => {
     setSidebarShow(false);
   };
+
+  const [user, setUser] = useState<any>();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        await runService(
+          undefined,
+          getMe,
+          (data: any) => {
+            setUser(data);
+          },
+          (status: number | undefined, error: any) => {
+            handleError(status, error);
+          }
+        );
+        const user = await getMe(undefined);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    })();
+  }, []);
 
   return (
     <>
@@ -312,13 +337,13 @@ export default function DashboardLayout({
                 <Menu as="div" className="relative">
                   <MenuButton className="-m-1.5 flex items-center p-1.5">
                     <span className="sr-only">Open user menu</span>
-                    <UserCircleIcon />
+                    <UserCircleIcon className="w-6 h-6" />
                     <span className="hidden lg:flex lg:items-center">
                       <span
                         aria-hidden="true"
                         className="ml-4 text-sm font-semibold leading-5 text-gray-900"
                       >
-                        Tom Cook
+                        {user?.firstName} {user?.lastName}
                       </span>
                       <ChevronDownIcon
                         aria-hidden="true"
@@ -340,6 +365,14 @@ export default function DashboardLayout({
                         </Link>
                       </MenuItem>
                     ))}
+                    <MenuItem key="logout">
+                      <div
+                        className="cursor-pointer block px-3 py-1 text-sm leading-5 text-gray-900 data-[focus]:bg-blue-200"
+                        onClick={signOut}
+                      >
+                        Sign out
+                      </div>
+                    </MenuItem>
                   </MenuItems>
                 </Menu>
               </div>
