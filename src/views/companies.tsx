@@ -75,7 +75,7 @@ export default function Companies() {
       )}
       {companyFilterConfig.isOpen && <FilterCompany />}
       <div className="card flex-1 flex flex-col overflow-auto">
-        <TabGroup className="flex-1 flex flex-col overflow-auto">
+        <TabGroup className="flex-1 flex flex-col gap-2 overflow-auto">
           <TabList className="border-b-2 border-gray-100 flex gap-2 overflow-auto">
             <Tab
               className="pb-1 px-3 text-sm/6 font-semibold text-gray-900  focus:outline-none data-[hover]:text-blue-500 [hover]:text-blue-200 data-[selected]:text-blue-500 data-[selected]:border-b-blue-500 border-b-2"
