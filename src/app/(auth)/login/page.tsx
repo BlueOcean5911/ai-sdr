@@ -6,7 +6,10 @@ import Logo from "@/components/extends/Logo";
 import CheckBox from "@/components/extends/CheckBox";
 import { LOGIN_BG_URL, LOGIN_SUB_IMAGE_001_URL } from "@/data/urls/images.url";
 import Image from "next/image";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import { useState } from "react";
+import FormHelperText from "@/components/extends/FormHelperText";
 
 export default function SignIn() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -34,71 +37,116 @@ export default function SignIn() {
 
             <div className="mt-10">
               <div>
-                <form action="#" method="POST" className="space-y-6">
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium leading-6 "
-                    >
-                      Email address
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        required
-                        autoComplete="email"
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-900  sm:text-sm sm:leading-6 "
-                      />
-                    </div>
-                  </div>
+                <Formik
+                  initialValues={{
+                    email: "",
+                    password: "",
+                    submit: null,
+                  }}
+                  validationSchema={Yup.object().shape({
+                    email: Yup.string()
+                      .email("Must be a valid email")
+                      .max(255)
+                      .required("Email is required"),
+                    password: Yup.string()
+                      .max(255)
+                      .required("Password is required"),
+                  })}
+                  onSubmit={async (
+                    values,
+                    { setErrors, setStatus, setSubmitting }
+                  ) => {
+                    console.log();
+                  }}
+                >
+                  {({
+                    errors,
+                    handleBlur,
+                    handleChange,
+                    handleSubmit,
+                    isSubmitting,
+                    touched,
+                    values,
+                  }) => (
+                    <form action="#" method="POST" className="space-y-6">
+                      <div>
+                        <label
+                          htmlFor="email"
+                          className="block text-sm font-medium leading-6 "
+                        >
+                          Email address
+                        </label>
+                        <div className="mt-2">
+                          <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            value={values.email}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            required
+                            autoComplete="email"
+                            className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-900  sm:text-sm sm:leading-6 "
+                          />
+                        </div>
+                        {touched.email && errors.email && (
+                          <FormHelperText>{errors.email}</FormHelperText>
+                        )}
+                      </div>
 
-                  <div>
-                    <label
-                      htmlFor="password"
-                      className="block text-sm font-medium leading-6 "
-                    >
-                      Password
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        required
-                        autoComplete="current-password"
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-900 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
+                      <div>
+                        <label
+                          htmlFor="password"
+                          className="block text-sm font-medium leading-6 "
+                        >
+                          Password
+                        </label>
+                        <div className="mt-2">
+                          <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            value={values.password}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            required
+                            autoComplete="current-password"
+                            className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-900 sm:text-sm sm:leading-6"
+                          />
+                        </div>
+                        {touched.password && errors.password && (
+                          <FormHelperText>{errors.password}</FormHelperText>
+                        )}
+                      </div>
 
-                  <div className="flex items-center justify-between">
-                    <CheckBox
-                      id="remember-me"
-                      content="Remember me"
-                      checked={rememberMe}
-                      onChange={() => setRememberMe(!rememberMe)}
-                    />
+                      <div className="flex items-center justify-between">
+                        <CheckBox
+                          id="remember-me"
+                          content="Remember me"
+                          checked={rememberMe}
+                          onChange={() => setRememberMe(!rememberMe)}
+                        />
 
-                    <div className="text-sm leading-6">
-                      <a href="#" className="font-semibold">
-                        Forgot password?
-                      </a>
-                    </div>
-                  </div>
+                        <div className="text-sm leading-6">
+                          <a href="#" className="font-semibold">
+                            Forgot password?
+                          </a>
+                        </div>
+                      </div>
 
-                  <div>
-                    <Link href={ROUTE_DASHBOARD}>
-                      <button
-                        type="submit"
-                        className="btn-primary flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                      >
-                        Sign in
-                      </button>
-                    </Link>
-                  </div>
-                </form>
+                      <div>
+                        <Link href={ROUTE_DASHBOARD}>
+                          <button
+                            type="submit"
+                            className="btn-primary flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                          >
+                            Sign in
+                          </button>
+                        </Link>
+                      </div>
+                    </form>
+                  )}
+                </Formik>
               </div>
 
               <div className="mt-10">
