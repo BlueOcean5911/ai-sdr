@@ -10,6 +10,8 @@ import * as Yup from "yup";
 import { useState } from "react";
 import FormHelperText from "@/components/extends/FormHelperText";
 import Select from "@/components/extends/Select/default";
+import { runService } from "@/utils/service_utils";
+import { register } from "@/services/authService";
 
 const companySizeOptions = [
   { value: "1-10", name: "1-10" },
@@ -31,9 +33,26 @@ interface FormValues {
 }
 
 export default function SignIn() {
-  const [companySize, setCompanySize] = useState<string>(
-    companySizeOptions[0].value
-  );
+  const handleRegister = (
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    companyName: string,
+    companySize: string
+  ) => {
+    runService(
+      { email, password, firstName, lastName, companyName, companySize },
+      register,
+      (data) => {
+        console.log(data);
+      },
+      (statusCode, error) => {
+        console.log(statusCode, error);
+      }
+    );
+  };
+
   return (
     <>
       <div className="flex min-h-dvh flex-1">
@@ -87,7 +106,14 @@ export default function SignIn() {
                     values,
                     { setErrors, setStatus, setSubmitting }
                   ) => {
-                    console.log(values);
+                    handleRegister(
+                      values.email,
+                      values.password,
+                      values.firstName,
+                      values.lastName,
+                      values.companyName,
+                      values.companySize
+                    );
                   }}
                 >
                   {({

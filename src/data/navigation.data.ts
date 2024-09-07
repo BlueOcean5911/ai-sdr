@@ -61,10 +61,7 @@ export const navigationSupport = [
     current: false,
   },
 ];
-export const userNavigation = [
-  { name: "Your profile", href: "#" },
-  { name: "Sign out", href: ROUTE_LOGIN },
-];
+export const userNavigation = [{ name: "Your profile", href: "#" }];
 
 export const navigations = [
   {

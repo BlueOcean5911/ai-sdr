@@ -10,10 +10,26 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import FormHelperText from "@/components/extends/FormHelperText";
+import { useRouter } from "next/navigation";
+import { handleError, runService } from "@/utils/service_utils";
+import { login, saveToken } from "@/services/authService";
 
 export default function SignIn() {
   const [rememberMe, setRememberMe] = useState(false);
-
+  const router = useRouter();
+  const handleLogin = async (email: string, password: string) => {
+    await runService(
+      { email, password },
+      login,
+      (data) => {
+        saveToken(data.token);
+        router.push(ROUTE_DASHBOARD);
+      },
+      (statusCode, error) => {
+        handleError(statusCode, error);
+      }
+    );
+  };
   return (
     <>
       <div className="flex min-h-dvh flex-1">
@@ -56,7 +72,7 @@ export default function SignIn() {
                     values,
                     { setErrors, setStatus, setSubmitting }
                   ) => {
-                    console.log();
+                    await handleLogin(values.email, values.password);
                   }}
                 >
                   {({
@@ -68,7 +84,7 @@ export default function SignIn() {
                     touched,
                     values,
                   }) => (
-                    <form action="#" method="POST" className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                       <div>
                         <label
                           htmlFor="email"
@@ -135,20 +151,18 @@ export default function SignIn() {
                       </div>
 
                       <div>
-                        <Link href={ROUTE_DASHBOARD}>
-                          <button
-                            type="submit"
-                            className="btn-primary flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                          >
-                            Sign in
-                          </button>
-                        </Link>
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="btn-primary flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                        >
+                          Sign in
+                        </button>
                       </div>
                     </form>
                   )}
                 </Formik>
               </div>
-
               <div className="mt-10">
                 {/* <div className="relative">
                   <div
