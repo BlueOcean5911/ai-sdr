@@ -1,6 +1,19 @@
 import { api } from "@/utils/api";
 
-export const getMe = async (data: undefined) => {
+interface UserModel extends BaseUserModel {
+  id?: string;
+}
+
+interface BaseUserModel {
+  firstName?: string;
+  lastName?: string;
+}
+
+interface ApiUserResponse {
+  data?: UserModel;
+}
+
+export const getMe = async (data: undefined): Promise<ApiUserResponse> => {
   const response = await api.get("/api/users/me");
   return {
     data: {
