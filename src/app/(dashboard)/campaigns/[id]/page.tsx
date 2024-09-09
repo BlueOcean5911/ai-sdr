@@ -1,36 +1,67 @@
-import ComingSoon from "@/components/coming-soon";
-import NavTitle from "@/components/DashboardLayout/Nav/Title";
-import { ROUTE_CAMPAIGNS } from "@/data/routes";
-import Cadences from "@/views/cadences";
-import Link from "next/link";
+"use client";
 
-const defaultCampaign = {
-  id: "M909",
-  name: "New Campaign",
-  creator: "John Doe",
-  createdDate: "2024/08/12",
-  status: "Active",
-  schema: "",
-};
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
-export default function Page() {
-  const campaign = defaultCampaign;
-
+export default function Page({ params }: { params: { id: string } }) {
   return (
     <>
-      <NavTitle>
-        <Link className="hover:underline" href={ROUTE_CAMPAIGNS}>
-          Campaigns
-        </Link>
-        &nbsp;/&nbsp;
-        {campaign.name}
-      </NavTitle>
-      <div className="relative py-10 px-8 flex-1 bg-gray-100 overflow-auto">
-        <div className="min-h-full overflow-auto flex flex-col">
-          <div className="flex-1 flex-center">
-            <ComingSoon />
+      <div className="w-full h-10 p-5 flex justify-between items-center border">
+        <span className="text-sm font-semibold uppercase">Statistics</span>
+        <span className="flex flex-row gap-2 items-center text-sm font-semibold uppercase">
+          Email stats per individual contact
+          <span>
+            <InformationCircleIcon className="w-4 h-4" />
+          </span>
+        </span>
+      </div>
+      <div className="w-full h-14 px-5 flex justify-between items-center border bg-white">
+        <div className="flex items-center font-semibold">
+          <div className="flex flex-col w-min-15 px-2 text-xs">
+            <span>-</span>
+            <span className="text-nowrap">Active</span>
+          </div>
+          <div className="flex flex-col w-min-15 px-2 text-xs">
+            <span>-</span>
+            <span className="text-nowrap">Paused</span>
+          </div>
+          <div className="flex flex-col w-min-15 px-2 text-xs">
+            <span>-</span>
+            <span className="text-nowrap">Finished</span>
+          </div>
+          <div className="flex flex-col w-min-15 px-2 text-xs">
+            <span>-</span>
+            <span className="text-nowrap">Bounced</span>
+          </div>
+          <div className="flex flex-col w-min-15 px-2 text-xs">
+            <span>-</span>
+            <span className="text-nowrap">Not sent</span>
           </div>
         </div>
+        <div className="flex items-center font-semibold">
+          <div className="flex flex-col w-min-15 px-2 text-xs">
+            <span>-</span>
+            <span className="text-nowrap">Scheduled</span>
+          </div>
+          <div className="flex flex-col w-min-15 px-2 text-xs">
+            <span>-</span>
+            <span className="text-nowrap">Delivered</span>
+          </div>
+          <div className="flex flex-col w-min-15 px-2 text-xs">
+            <span>-</span>
+            <span className="text-nowrap">Reply</span>
+          </div>
+          <div className="flex flex-col w-min-15 px-2 text-xs">
+            <span>-</span>
+            <span className="text-nowrap">Interested</span>
+          </div>
+          <div className="flex flex-col w-min-15 px-2 text-xs">
+            <span>-</span>
+            <span className="text-nowrap">Opt out</span>
+          </div>
+        </div>
+      </div>
+      <div className="w-full p-4 flex flex-col gap-4">
+        <div className="h-4 w-full" />
       </div>
     </>
   );
