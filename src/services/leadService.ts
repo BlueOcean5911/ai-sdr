@@ -1,11 +1,11 @@
 import { api } from "@/utils/api";
-
+import { CountModel } from "@/types";
 interface FetchLeadsProps {
   offset?: number;
   limit?: number;
 }
 
-interface Lead {
+interface LeadModel {
   id?: string; // Assuming surrogate_id is a string
   name: string;
   title?: string;
@@ -22,13 +22,17 @@ interface Lead {
   replyCount?: number;
 }
 
-interface ApiResponse {
-  data: Lead; // The structure of the data returned from the API
+interface ApiLeadResponse {
+  data: LeadModel; // The structure of the data returned from the API
+}
+
+interface ApiCountResponse {
+  data: CountModel; // The structure of the data returned from the API;
 }
 
 export const getLeads = async (
   data: FetchLeadsProps = { offset: 0, limit: 100 }
-): Promise<ApiResponse> => {
+): Promise<ApiLeadResponse> => {
   const response = await api.get(
     `/api/leads?offset=${data.offset}&limit=${data.limit}`
   );
@@ -49,6 +53,15 @@ export const getLeads = async (
       location: response.data?.location,
       clickCount: response.data?.click_count,
       replyCount: response.data?.reply_count,
+    },
+  };
+};
+
+export const getLeadTotalCount = async (): Promise<ApiCountResponse> => {
+  const response = await api.get(`/api/leads/total-count`);
+  return {
+    data: {
+      count: response.data?.total_count,
     },
   };
 };
