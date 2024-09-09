@@ -40,3 +40,12 @@ export interface CreateModelProps {
   handleSave: () => void;
   handleClose: () => void;
 }
+
+export interface CountModel {
+  count?: number;
+}
+
+export interface FetchProps {
+  offset?: number;
+  limit?: number;
+}
