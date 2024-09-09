@@ -14,8 +14,9 @@ interface Lead {
   phone?: string;
   phoneStatus?: string;
   linkedinURL?: string;
-  companyName?: string;
   companyID?: string;
+  companyName?: string;
+  companyLinkedin?: string;
   location?: string;
   clickCount?: number;
   replyCount?: number;
@@ -42,8 +43,9 @@ export const getLeads = async (
       phoneStatus: response.data?.phone_status,
       linkedinURL: response.data?.linkedin_url,
       // TODO: Check company name
+      companyID: response.data?.company_id,
       companyName: response.data?.company?.name,
-      companyID: response.data?.company?.surrogate_id,
+      companyLinkedin: response.data?.company?.linkedin,
       location: response.data?.location,
       clickCount: response.data?.click_count,
       replyCount: response.data?.reply_count,
