@@ -6,7 +6,6 @@ import Link from "next/link";
 export default function Page() {
   return (
     <>
-      {" "}
       <NavTitle>
         <Link href={ROUTE_CAMPAIGNS}>Campaigns</Link>
       </NavTitle>

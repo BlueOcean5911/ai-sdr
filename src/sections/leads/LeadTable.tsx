@@ -151,7 +151,7 @@ const LeadTable = () => {
                 .map((lead: any) => (
                   <tr
                     key={lead.id}
-                    className="even:bg-blue-50 hover:bg-gray-100 "
+                    className="even:bg-blue-50 hover:bg-gray-300 "
                   >
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
                       <div className="flex gap-2">

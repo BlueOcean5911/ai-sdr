@@ -293,7 +293,7 @@ export const PersonasTable = ({ data }: { data: any }) => {
         {data?.map((item: any, id: any) => (
           <tr
             key={id}
-            className="even:bg-blue-100 hover:bg-gray-100 select-none"
+            className="even:bg-blue-50 hover:bg-gray-300"
             // onClick={() => }
           >
             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
@@ -377,12 +377,12 @@ const Personas = () => {
                   />
                 </form>
                 <div className="flex flex-4 gap-4">
-                  <div className="p-1 flex-center gap-2 rounded-md bg-gray-300">
+                  <div className="min-w-32 px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200">
                     <EllipsisVerticalIcon className="w-4 h-4" />
                     <span className="text-sm">Bulk Action</span>
                   </div>
                   <ManagePersona type="create" persona={null}>
-                    <div className="p-1 flex-center gap-2 rounded-md bg-blue-500">
+                    <div className="p-2 flex-center gap-2 rounded-md bg-blue-500 hover:bg-blue-400 cursor-pointer">
                       <PlusCircleIcon className="w-4 h-4 stroke-white" />
                       <span className="text-sm text-white">Create Persona</span>
                     </div>

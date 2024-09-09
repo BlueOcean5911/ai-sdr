@@ -48,13 +48,13 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
             <div className="flex items-center gap-4">
               <button
-                className="w-full p-1 rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
                 onClick={() => router.push("/campaigns/campaign.id/")}
               >
                 Save
               </button>
               <button
-                className="w-full p-1 rounded-md bg-gray-300 hover:bg-gray-200"
+                className="w-full p-2 rounded-md bg-gray-300 hover:bg-gray-200"
                 onClick={() => router.push("/campaigns/campaign.id/")}
               >
                 Close
