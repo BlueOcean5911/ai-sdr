@@ -377,14 +377,14 @@ const Personas = () => {
                   />
                 </form>
                 <div className="flex flex-4 gap-4">
-                  <div className="btn-secondary flex-center gap-2 p-2">
+                  <div className="p-1 flex-center gap-2 rounded-md bg-gray-300">
                     <EllipsisVerticalIcon className="w-4 h-4" />
-                    <span>Bulk Action</span>
+                    <span className="text-sm">Bulk Action</span>
                   </div>
                   <ManagePersona type="create" persona={null}>
-                    <div className="btn-primary flex-center gap-2 p-2">
+                    <div className="p-1 flex-center gap-2 rounded-md bg-blue-500">
                       <PlusCircleIcon className="w-4 h-4 stroke-white" />
-                      Create Persona
+                      <span className="text-sm text-white">Create Persona</span>
                     </div>
                   </ManagePersona>
                 </div>
@@ -393,10 +393,10 @@ const Personas = () => {
 
             {/* Table */}
             <div className="px-4 sm:px-6 lg:px-8 flex-1">
-              <div className="mt-8 flow-root">
+              <div className="flow-root">
                 <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                   <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                    export <PersonasTable data={defaultPersonas} />
+                    <PersonasTable data={defaultPersonas} />
                   </div>
                 </div>
               </div>
