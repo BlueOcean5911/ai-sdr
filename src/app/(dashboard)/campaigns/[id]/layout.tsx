@@ -52,19 +52,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="w-full px-5 pt-2 flex items-center">
           <button
             className="p-1 text-sm rounded-md hover:bg-gray-100"
-            onClick={() => router.push("/cadences")}
+            onClick={() => router.push("/campaigns")}
           >
             Campaigns
           </button>
           <ChevronRightIcon className="w-3 h-3" />
           <button className="p-1 text-sm rounded-md hover:bg-gray-100">
-            Upcoming Renewal
+            Campaign Title
           </button>
         </div>
         <div className="w-full h-12 px-5 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <ToggleButton />
-            <span className="text-xl">Upcoming Renewal</span>
+            <span className="text-xl">Campaign Title</span>
             <div
               className="p-1 cursor-pointer rounded-md hover:bg-gray-100"
               onClick={() => setStarred(!starred)}
@@ -76,36 +76,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               />
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <Menu>
-              <MenuButton className="">
-                <div className="p-1 border rounded-md">
-                  <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
-                </div>
-              </MenuButton>
-              <MenuItems
-                anchor="bottom end"
-                className="flex flex-col w-24 origin-top bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
-              >
-                <MenuItem>
-                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                    Add a Step
-                  </button>
-                </MenuItem>
-                <MenuItem>
-                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                    Clone
-                  </button>
-                </MenuItem>
-                <MenuItem>
-                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                    Archive
-                  </button>
-                </MenuItem>
-              </MenuItems>
-            </Menu>
-            <button className="px-2 py-1 rounded-md text-white bg-blue-900">
-              Add Contracts
+          <div className="flex items-center">
+            <button className="px-2 py-1 rounded-md bg-gray-300">
+              Add XXX
             </button>
           </div>
         </div>
