@@ -1,17 +1,17 @@
 "use client";
 import Link from "next/link";
 
-import { ROUTE_DASHBOARD, ROUTE_LOGIN, ROUTE_REGISTER } from "@/data/routes";
+import { ROUTE_DASHBOARD, ROUTE_LOGIN } from "@/data/routes";
 import Logo from "@/components/extends/Logo";
 import { LOGIN_BG_URL, LOGIN_SUB_IMAGE_001_URL } from "@/data/urls/images.url";
 import Image from "next/image";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
 import FormHelperText from "@/components/extends/FormHelperText";
 import Select from "@/components/extends/Select/default";
-import { runService } from "@/utils/service_utils";
-import { register } from "@/services/authService";
+import { handleError, runService } from "@/utils/service_utils";
+import { register, saveToken } from "@/services/authService";
+import { useRouter } from "next/navigation";
 
 const companySizeOptions = [
   { value: "1-10", name: "1-10" },
@@ -27,12 +27,9 @@ const companySizeOptions = [
   { value: "10001+", name: "10001+" },
 ];
 
-interface FormValues {
-  email: string;
-  password: string;
-}
-
 export default function SignIn() {
+  const router = useRouter();
+
   const handleRegister = (
     email: string,
     password: string,
@@ -45,10 +42,11 @@ export default function SignIn() {
       { email, password, firstName, lastName, companyName, companySize },
       register,
       (data) => {
-        console.log(data);
+        saveToken(data.token);
+        router.push(ROUTE_DASHBOARD);
       },
       (statusCode, error) => {
-        console.log(statusCode, error);
+        handleError(statusCode, error);
       }
     );
   };
@@ -106,7 +104,7 @@ export default function SignIn() {
                     values,
                     { setErrors, setStatus, setSubmitting }
                   ) => {
-                    handleRegister(
+                    await handleRegister(
                       values.email,
                       values.password,
                       values.firstName,
