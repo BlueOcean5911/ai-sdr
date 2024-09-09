@@ -44,3 +44,8 @@ export interface CreateModelProps {
 export interface CountModel {
   count?: number;
 }
+
+export interface FetchProps {
+  offset?: number;
+  limit?: number;
+}
