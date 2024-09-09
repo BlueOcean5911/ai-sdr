@@ -51,6 +51,8 @@ export default function DashboardLayout({
   const [showPopup, setShowPopup] = useState(false);
 
   const pathname = usePathname();
+  const section =
+    pathname.split("/").length > 1 ? "/" + pathname.split("/").at(1) : "/";
 
   const handleMouseEnter = () => {
     setSidebarShow(true);
@@ -134,7 +136,7 @@ export default function DashboardLayout({
                               <Link
                                 href={item.href}
                                 className={classNames(
-                                  pathname?.includes(item.href)
+                                  section === item.href
                                     ? "bg-blue-900 text-white"
                                     : "bg-white text-gray-900 hover:bg-blue-200",
                                   "group flex gap-x-3 rounded-md p-2 font-semibold leading-5"
@@ -143,7 +145,7 @@ export default function DashboardLayout({
                                 <item.icon
                                   aria-hidden="true"
                                   className={classNames(
-                                    pathname?.includes(item.href)
+                                    section === item.href
                                       ? "fill-white stroke-white"
                                       : "text-blue-100 ",
                                     "h-5 w-5 shrink-0"
@@ -198,7 +200,7 @@ export default function DashboardLayout({
                           <Link
                             href={item.href}
                             className={classNames(
-                              pathname?.includes(item.href)
+                              section === item.href
                                 ? "bg-blue-900 text-white"
                                 : "bg-white text-gray-900 hover:bg-blue-200",
                               "group flex rounded-md p-1.5 font-semibold leading-5"
@@ -207,7 +209,7 @@ export default function DashboardLayout({
                             <item.icon
                               aria-hidden="true"
                               className={classNames(
-                                pathname?.includes(item.href)
+                                section === item.href
                                   ? "fill-gray-200 stroke-white"
                                   : "text-blue-100 ",
                                 "h-5 w-5 shrink-0"
@@ -265,7 +267,7 @@ export default function DashboardLayout({
                           <Link
                             href={item.href}
                             className={classNames(
-                              pathname?.includes(item.href)
+                              section === item.href
                                 ? "bg-blue-900 text-white"
                                 : "bg-white text-gray-900 hover:bg-blue-200",
                               "group flex gap-x-3 rounded-md p-2 font-semibold leading-5"
@@ -274,7 +276,7 @@ export default function DashboardLayout({
                             <item.icon
                               aria-hidden="true"
                               className={classNames(
-                                pathname?.includes(item.href)
+                                section === item.href
                                   ? "fill-gray-200 stroke-white"
                                   : "text-blue-100 ",
                                 "h-5 w-5 shrink-0"
