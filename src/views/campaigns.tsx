@@ -289,27 +289,27 @@ export default function Campaigns() {
               className="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
             />
           </form>
-          <div className="flex flex-4 gap-4">
-            <div className="btn-secondary flex-center gap-2 p-2">
+          <div className="flex gap-4">
+            <div className="p-1 flex-center gap-2 rounded-md bg-gray-300 cursor-pointer">
               <EllipsisVerticalIcon className="w-4 h-4" />
-              <span>Bulk Action</span>
+              <span className="text-sm">Bulk Action</span>
             </div>
             <div
-              className="btn-primary flex-center gap-2 p-2"
+              className="p-1 flex-center gap-2 rounded-md bg-blue-500 cursor-pointer"
               onClick={() => buildCampaign()}
             >
               <PlusCircleIcon className="w-4 h-4 stroke-white" />
-              Build Campaign
+              <span className="text-sm text-white">Build Campaign</span>
             </div>
           </div>
         </div>
       </div>
       {/* Table */}
       <div className="px-4 sm:px-6 lg:px-8 flex-1">
-        <div className="mt-8 flow-root">
+        <div className="flow-root">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-              <table className="min-w-full divide-y divide-gray-300">
+              <table className="min-w-full divide-y divide-gray-300 text-nowrap">
                 <thead>
                   <tr>
                     <th
