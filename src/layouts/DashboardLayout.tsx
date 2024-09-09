@@ -75,12 +75,15 @@ export default function DashboardLayout({
             handleError(status, error);
           }
         );
-        const user = await getMe(undefined);
       } catch (error) {
         console.error("Error fetching user:", error);
       }
     })();
   }, []);
+
+  useEffect(() => {
+    console.log(user);
+  });
 
   return (
     <>

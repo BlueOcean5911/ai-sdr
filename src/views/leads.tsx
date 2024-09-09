@@ -108,7 +108,10 @@ export default function Leads() {
                     </button>
                   </MenuItem>
                   <MenuItem>
-                    <button className="p-2 text-sm flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                    <button
+                      className="p-2 text-sm flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                      onClick={() => router.push("/contacts/import")}
+                    >
                       CSV
                     </button>
                   </MenuItem>
