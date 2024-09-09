@@ -9,6 +9,7 @@ import {
   ChevronRightIcon,
   EllipsisHorizontalIcon,
   InformationCircleIcon,
+  PlusCircleIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
@@ -72,7 +73,7 @@ export default function Page({ params }: { params: { id: string } }) {
           <div className="flex items-center gap-3">
             <Menu>
               <MenuButton className="">
-                <div className="p-1 border rounded-md">
+                <div className="px-2 py-1.5 flex justify-center items-center border-2 border-gray-300 rounded-md hover:bg-gray-200">
                   <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
                 </div>
               </MenuButton>
@@ -97,8 +98,9 @@ export default function Page({ params }: { params: { id: string } }) {
                 </MenuItem>
               </MenuItems>
             </Menu>
-            <button className="px-2 py-1 rounded-md text-white bg-blue-900">
-              Add Contracts
+            <button className="p-2 flex-center gap-2 rounded-md bg-blue-500 hover:bg-blue-400 cursor-pointer">
+              <PlusCircleIcon className="w-4 h-4 stroke-white" />
+              <span className="text-sm text-white">Add Contracts</span>
             </button>
           </div>
         </div>

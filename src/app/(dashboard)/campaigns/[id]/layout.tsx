@@ -76,11 +76,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               />
             </div>
           </div>
-          <div className="flex items-center">
+          {/* <div className="flex items-center">
             <button className="px-2 py-1 rounded-md bg-gray-300">
               Add XXX
             </button>
-          </div>
+          </div> */}
         </div>
         <div className="w-full h-8 px-5 flex items-center gap-2">
           {navList.map((nav, index) => (

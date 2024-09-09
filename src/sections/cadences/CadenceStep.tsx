@@ -161,10 +161,10 @@ export default function CadenceStep(props: CadenceStepProps) {
           </Menu>
         </div>
       </div>
-      <div className="w-full h-12 px-4 flex items-center">
-        <button className="w-28 h-8 px-2 border rounded-md text-sm font-semibold hover:bg-gray-100">
+      <div className="w-full h-10 px-4 flex items-center">
+        {/* <button className="w-28 h-8 px-2 border rounded-md text-sm font-semibold hover:bg-gray-100">
           Add A/B Test
-        </button>
+        </button> */}
       </div>
     </div>
   );

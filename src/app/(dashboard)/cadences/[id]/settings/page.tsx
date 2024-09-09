@@ -126,20 +126,34 @@ export default function Page({ params }: { params: { id: string } }) {
             <span className="w-full border-b-2 border-black"></span>
           </span>
         </div>
-        <div className="p-2 flex flex-1 bg-gray-100 overflow-auto">
+        <div className="p-2 flex flex-1 bg-gray-100 overflow-auto text-sm">
           <div className="flex flex-1 justify-center items-center rounded-md bg-white">
-            <div className="p-4 max-w-lg w-full flex flex-col gap-5 rounded-md bg-gray-100">
-              <div className="flex flex-col">
-                <label htmlFor="name">Name:</label>
+            <div className="p-8 max-w-lg w-full flex flex-col gap-5 rounded-md bg-gray-100">
+              <div className="flex items-center">
+                <label className="min-w-24" htmlFor="name">
+                  Name:
+                </label>
                 <input id="name" type="text" className="input-primary" />
               </div>
-              <div className="flex flex-col">
-                <label htmlFor="owner">Owner:</label>
+              <div className="flex items-center">
+                <label className="min-w-24" htmlFor="owner">
+                  Owner:
+                </label>
                 <input id="owner" type="text" className="input-primary" />
               </div>
-              <div className="flex flex-col">
-                <label htmlFor="schedule">Schedule:</label>
-                <input id="schedule" type="text" className="input-primary" />
+              <div className="flex items-center gap-4">
+                <button
+                  className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                  onClick={() => router.push("/cadences/campaign.id/")}
+                >
+                  Save
+                </button>
+                <button
+                  className="w-full p-2 rounded-md bg-gray-300 hover:bg-gray-200"
+                  onClick={() => router.push("/cadences/campaign.id/")}
+                >
+                  Close
+                </button>
               </div>
             </div>
           </div>

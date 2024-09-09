@@ -10,7 +10,7 @@ export default function CadenceItem(props: CadenceItemProps) {
   const router = useRouter();
 
   return (
-    <div className="w-full h-20 py-2 flex items-center border-b hover:bg-gray-100">
+    <div className="w-full h-20 py-2 flex items-center border-b hover:bg-gray-300">
       <div className="px-4">
         <input className="shadow-none ring-0 focus:ring-0" type="checkbox" />
       </div>
@@ -89,7 +89,7 @@ export default function CadenceItem(props: CadenceItemProps) {
         </div>
         <Menu>
           <MenuButton className="">
-            <div className="p-1 border rounded-md">
+            <div className="p-1 border rounded-md hover:bg-white">
               <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
             </div>
           </MenuButton>
