@@ -95,11 +95,11 @@ export default function Leads() {
                 </MenuButton>
                 <MenuItems
                   anchor="bottom end"
-                  className="flex flex-col w-28 origin-top-right bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none [closed]:scale-95 [closed]:opacity-0 z-20"
+                  className="flex flex-col w-28 origin-top-right bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
                 >
                   <MenuItem>
                     <button
-                      className="p-2 text-sm flex w-full items-center rounded-lg [focus]:bg-blue-100"
+                      className="p-2 text-sm flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
                       onClick={() => setCreate(true)}
                     >
                       Single Lead
@@ -107,7 +107,7 @@ export default function Leads() {
                   </MenuItem>
                   <MenuItem>
                     <button
-                      className="p-2 text-sm flex w-full items-center rounded-lg [focus]:bg-blue-100"
+                      className="p-2 text-sm flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
                       onClick={() => router.push("/contacts/import")}
                     >
                       CSV
