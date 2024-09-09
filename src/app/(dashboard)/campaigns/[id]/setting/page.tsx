@@ -34,18 +34,6 @@ export default function Page({ params }: { params: { id: string } }) {
               </label>
               <input id="status" type="text" className="input-primary" />
             </div>
-            <div className="flex items-center">
-              <label className="min-w-24" htmlFor="createdDate">
-                Created Date:
-              </label>
-              <input id="createdDate" type="text" className="input-primary" />
-            </div>
-            <div className="flex items-center">
-              <label className="min-w-24" htmlFor="creator">
-                Creator:
-              </label>
-              <input id="creator" type="text" className="input-primary" />
-            </div>
             <div className="flex items-center gap-4">
               <button
                 className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
