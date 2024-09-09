@@ -4,23 +4,14 @@ import LeadTable from "@/sections/leads/LeadTable";
 
 import FilterLead from "@/components/Filter/filterLead";
 import LeadToolbar from "@/sections/leads/LeadToolbar";
-import {
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-  Tab,
-  TabGroup,
-  TabList,
-  TabPanel,
-  TabPanels,
-} from "@headlessui/react";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useLeadFilter } from "@/contexts/FilterLeadContext";
 import { Suspense } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import CreateLead from "@/sections/leads/CreateLead";
+import { classNames } from "@/utils";
 
 export default function Leads() {
   const [create, setCreate] = useState(false);
@@ -29,10 +20,10 @@ export default function Leads() {
   const searchParams = useSearchParams();
   const { leadFilterConfig, setLeadFilterConfig } = useLeadFilter();
 
-  const handleSavedView = () => {
-    // Get the current query parameters
-    const currentParams = Object.fromEntries(searchParams.entries());
+  // Get the current query parameters
+  const currentParams = Object.fromEntries(searchParams.entries());
 
+  const handleSavedView = () => {
     // Check if the parameter exists
     if (!currentParams.prospectedByCurrentTeam) {
       // Add the new query parameter
@@ -45,9 +36,6 @@ export default function Leads() {
   };
 
   const handleTotalView = () => {
-    // Get the current query parameters
-    const currentParams = Object.fromEntries(searchParams.entries());
-
     // Check if the parameter exists
     if (currentParams.prospectedByCurrentTeam) {
       const newParams = new URLSearchParams(searchParams);
@@ -75,20 +63,30 @@ export default function Leads() {
       )}
       {leadFilterConfig.isOpen && <FilterLead />}
       <div className="card flex-1 flex flex-col overflow-auto">
-        <TabGroup className="flex-1 flex flex-col gap-2 overflow-auto">
-          <TabList className="border-b-2 border-gray-100 flex gap-2 overflow-auto">
-            <Tab
-              className="pb-1 px-3 text-sm/6 font-semibold text-gray-900  focus:outline-none data-[hover]:text-blue-500 [hover]:text-blue-200 data-[selected]:text-blue-500 data-[selected]:border-b-blue-500 border-b-2"
+        <div className="flex-1 flex flex-col gap-2 overflow-auto">
+          <div className="border-b-2 border-gray-100 flex gap-2 overflow-auto">
+            <button
+              className={classNames(
+                "pb-1 px-3 text-sm/6 font-semibold focus:outline-none hover:text-blue-500 border-b-2",
+                currentParams.prospectedByCurrentTeam
+                  ? ""
+                  : "text-blue-600 border-b-blue-500"
+              )}
               onClick={() => handleTotalView()}
             >
               Total
-            </Tab>
-            <Tab
-              className="pb-1 px-3 text-sm/6 font-semibold text-gray-900  focus:outline-none data-[hover]:text-blue-500 [hover]:text-blue-200 data-[selected]:text-blue-500 data-[selected]:border-b-blue-500 border-b-2"
+            </button>
+            <button
+              className={classNames(
+                "pb-1 px-3 text-sm/6 font-semibold focus:outline-none hover:text-blue-500 border-b-2",
+                currentParams.prospectedByCurrentTeam
+                  ? "text-blue-600 border-b-blue-500"
+                  : ""
+              )}
               onClick={() => handleSavedView()}
             >
               Saved
-            </Tab>
+            </button>
             <div className="px-4 flex flex-1 justify-end items-center">
               <Menu>
                 <MenuButton className="px-2 py-1 flex flex-row items-center gap-1 rounded-md bg-blue-600 hover:bg-blue-500">
@@ -97,11 +95,11 @@ export default function Leads() {
                 </MenuButton>
                 <MenuItems
                   anchor="bottom end"
-                  className="flex flex-col w-28 origin-top-right bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
+                  className="flex flex-col w-28 origin-top-right bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none [closed]:scale-95 [closed]:opacity-0 z-20"
                 >
                   <MenuItem>
                     <button
-                      className="p-2 text-sm flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                      className="p-2 text-sm flex w-full items-center rounded-lg [focus]:bg-blue-100"
                       onClick={() => setCreate(true)}
                     >
                       Single Lead
@@ -109,7 +107,7 @@ export default function Leads() {
                   </MenuItem>
                   <MenuItem>
                     <button
-                      className="p-2 text-sm flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                      className="p-2 text-sm flex w-full items-center rounded-lg [focus]:bg-blue-100"
                       onClick={() => router.push("/contacts/import")}
                     >
                       CSV
@@ -118,26 +116,16 @@ export default function Leads() {
                 </MenuItems>
               </Menu>
             </div>
-          </TabList>
-          <TabPanels className="flex-1 flex flex-col overflow-auto">
-            <TabPanel className="flex-1 flex flex-col overflow-auto">
-              <LeadToolbar />
-              <div className="flex-1 overflow-auto flex">
-                <Suspense>
-                  <LeadTable />
-                </Suspense>
-              </div>
-            </TabPanel>
-            <TabPanel className="flex-1 flex flex-col overflow-auto">
-              <LeadToolbar />
-              <div className="flex-1 overflow-auto flex">
-                <Suspense>
-                  <LeadTable />
-                </Suspense>
-              </div>
-            </TabPanel>
-          </TabPanels>
-        </TabGroup>
+          </div>
+          <div className="flex-1 flex flex-col overflow-auto">
+            <LeadToolbar />
+            <div className="flex-1 overflow-auto flex">
+              <Suspense>
+                <LeadTable />
+              </Suspense>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
