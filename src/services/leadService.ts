@@ -3,25 +3,15 @@ import { CountModel, FetchProps } from "@/types";
 import { EMAIL_STATUS } from "@/types/enums";
 interface FetchLeadsProps extends FetchProps {}
 
-interface ResponseLeadModel {
-  id?: string; // Assuming surrogate_id is a string
-  firstName: string;
-  lastName: string;
-  title?: string;
-  email?: string;
-  emailStatus?: string;
-  phone?: string;
-  phoneStatus?: string;
-  linkedin?: string;
-  companyId?: string;
+interface LeadModel extends BaseLeadModel {
+  id?: string;
   companyName?: string;
   companyLinkedin?: string;
-  location?: string;
   clickCount?: number;
   replyCount?: number;
 }
 
-interface PostLeadModel {
+interface BaseLeadModel {
   firstName?: string;
   lastName?: string;
   title?: string;
@@ -30,17 +20,19 @@ interface PostLeadModel {
   phone?: string;
   phoneStatus?: EMAIL_STATUS;
   linkedin?: string;
-  companyId?: string; // Assuming company_id is a string
   location?: string;
   personalNote1?: string;
   personalNote2?: string;
 
+  companyId?: string;
   personaId?: string;
   ownerId?: string;
+
+  targeted?: string;
 }
 
 interface ApiLeadResponse {
-  data: ResponseLeadModel; // The structure of the data returned from the API
+  data: LeadModel; // The structure of the data returned from the API
 }
 
 interface ApiCountResponse {
@@ -70,6 +62,7 @@ export const getLeads = async (
       location: response.data?.location,
       clickCount: response.data?.clickCount,
       replyCount: response.data?.replyCount,
+      targeted: response.data?.targeted,
     },
   };
 };
@@ -83,7 +76,7 @@ export const getLeadTotalCount = async (): Promise<ApiCountResponse> => {
   };
 };
 
-export const addLead = async (lead: PostLeadModel) => {
+export const addLead = async (lead: BaseLeadModel) => {
   const response = await api.post("/api/leads", lead);
   if (response.status !== 200) {
     throw new Error("Failed to add lead");

@@ -4,20 +4,11 @@ import { COMPANY_SIZE, EMAIL_STATUS } from "@/types/enums";
 
 interface FetchCompaniesProps extends FetchProps {}
 
-interface CompanyModel {
+interface CompanyModel extends BaseCompanyModel {
   id?: string;
-  name?: string;
-  phone?: string;
-  phoneStatus?: EMAIL_STATUS;
-  size?: COMPANY_SIZE;
-  companyType?: string;
-  industry?: string;
-  description?: string;
-  linkedin?: string;
-  location?: string;
 }
 
-interface PostCompanyModel {
+interface BaseCompanyModel {
   name?: string;
   linkedin?: string;
   companyType?: string;
@@ -69,7 +60,7 @@ export const getCompanyTotalCount = async (): Promise<ApiCountResponse> => {
   };
 };
 
-export const addCompany = async (company: PostCompanyModel) => {
+export const addCompany = async (company: BaseCompanyModel) => {
   const response = await api.post("api/companies", company);
 
   if (response.status !== 200) {

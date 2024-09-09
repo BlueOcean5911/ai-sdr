@@ -3,16 +3,11 @@ import { CountModel, FetchProps } from "@/types";
 import { COMPANY_SIZE } from "@/types/enums";
 interface FetchPersonasProps extends FetchProps {}
 
-interface PersonaModel {
-  id?: string; // Assuming surrogate_id is a string
-  name?: string;
-  jobTitles?: Array<string>;
-  industries?: Array<string>;
-  location?: string;
-  employees?: Array<COMPANY_SIZE>;
+interface PersonaModel extends BasePersonModel {
+  id?: string;
 }
 
-interface PostPersonModel {
+interface BasePersonModel {
   name?: string;
   jobTitles?: Array<string>;
   industries?: Array<string>;
@@ -55,7 +50,7 @@ export const getPersonaTotalCount = async (): Promise<ApiCountResponse> => {
   };
 };
 
-export const addPersona = async (persona: PostPersonModel) => {
+export const addPersona = async (persona: BasePersonModel) => {
   const response = await api.post(`/api/personas`, persona);
 
   if (response.status !== 200) {
