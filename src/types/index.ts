@@ -49,3 +49,7 @@ export interface FetchProps {
   offset?: number;
   limit?: number;
 }
+
+export interface ApiCountResponse {
+  data: CountModel; // The structure of the data returned from the API;
+}
