@@ -80,7 +80,7 @@ export default function CadenceStep(props: CadenceStepProps) {
       <div className="w-full min-h-20 px-4 py-1.5 flex border-y hover:bg-gray-100 cursor-pointer">
         <div className="flex flex-1 px-2 items-center overflow-auto">
           <div className="min-w-10 flex justify-center">
-            <ToggleButton />
+            <ToggleButton checked={true} handleChange={() => {}} />
           </div>
           <div className="min-w-40 px-4 flex">A New Thread</div>
           <div className="min-w-60 px-4 flex flex-1 flex-col gap-1">
