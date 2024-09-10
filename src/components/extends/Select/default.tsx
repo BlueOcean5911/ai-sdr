@@ -30,7 +30,7 @@ const Select = ({
   }, [selected, handleChange]);
 
   return (
-    <div className="min-w-36" {...others}>
+    <div className="min-w-36 w-full" {...others}>
       <Listbox value={selected} onChange={setSelected}>
         <ListboxButton
           className={clsx(
