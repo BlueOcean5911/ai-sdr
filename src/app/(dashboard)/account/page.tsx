@@ -357,8 +357,11 @@ export default function Account() {
               >
                 Save
               </button>
-              <button className="w-full p-2 rounded-md bg-gray-300 hover:bg-gray-200">
-                Close
+              <button
+                className="w-full p-2 rounded-md bg-gray-300 hover:bg-gray-200"
+                onClick={() => setUpdatedUserData({ ...userData })}
+              >
+                Cancel
               </button>
             </div>
           </div>
