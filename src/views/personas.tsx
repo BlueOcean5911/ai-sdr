@@ -236,8 +236,8 @@ export const defaultPersonas = [
 
 export const PersonasTable = ({ data }: { data: any }) => {
   return (
-    <table className="min-w-full divide-y divide-gray-300">
-      <thead>
+    <table className="w-full divide-y divide-gray-300 text-nowrap">
+      <thead className="bg-white sticky top-0 z-10">
         <tr>
           <th
             scope="col"
@@ -289,7 +289,7 @@ export const PersonasTable = ({ data }: { data: any }) => {
           </th>
         </tr>
       </thead>
-      <tbody className="bg-white">
+      <tbody className="bg-white overflow-auto">
         {data?.map((item: any, id: any) => (
           <tr
             key={id}
@@ -350,73 +350,54 @@ export const PersonasTable = ({ data }: { data: any }) => {
 
 const Personas = () => {
   return (
-    <>
-      <div className=" flex flex-1 gap-4">
-        <div className="flex flex-1">
-          <div className="card p-4 flex flex-col flex-1">
-            <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-              <div className="flex justify-between items-center">
-                <form
-                  action="#"
-                  method="GET"
-                  className="relative hidden md:flex "
-                >
-                  <label htmlFor="search-field" className="sr-only">
-                    Search
-                  </label>
-                  <MagnifyingGlassIcon
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400"
-                  />
-                  <input
-                    id="search-field"
-                    name="search"
-                    type="search"
-                    placeholder="Search..."
-                    className="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
-                  />
-                </form>
-                <div className="flex flex-4 gap-4">
-                  <div className="min-w-32 px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200">
-                    <EllipsisVerticalIcon className="w-4 h-4" />
-                    <span className="text-sm">Bulk Action</span>
-                  </div>
-                  <ManagePersona type="create" persona={null}>
-                    <div className="p-2 flex-center gap-2 rounded-md bg-blue-500 hover:bg-blue-400 cursor-pointer">
-                      <PlusCircleIcon className="w-4 h-4 stroke-white" />
-                      <span className="text-sm text-white">Create Persona</span>
-                    </div>
-                  </ManagePersona>
-                </div>
-              </div>
-            </div>
-
-            {/* Table */}
-            <div className="px-4 sm:px-6 lg:px-8 flex-1">
-              <div className="flow-root">
-                <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                  <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                    <PersonasTable data={defaultPersonas} />
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Pagination */}
-            <div className="flex justify-end px-16">
-              <Pagination
-                className="pagination-bar"
-                export
-                totalCount={defaultPersonas.length}
-                pageSize={10}
-                onPageChange={(pageSize: number, currentPage: number) =>
-                  console.log(pageSize, currentPage)
-                }
-              />
-            </div>
+    <div className="card p-4 flex flex-col flex-1 overflow-auto">
+      <div className="py-2 flex justify-between items-center">
+        <form action="#" method="GET" className="relative hidden md:flex ">
+          <label htmlFor="search-field" className="sr-only">
+            Search
+          </label>
+          <MagnifyingGlassIcon
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400"
+          />
+          <input
+            id="search-field"
+            name="search"
+            type="search"
+            placeholder="Search..."
+            className="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
+          />
+        </form>
+        <div className="flex flex-4 gap-4">
+          <div className="min-w-32 px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200">
+            <EllipsisVerticalIcon className="w-4 h-4" />
+            <span className="text-sm">Bulk Action</span>
           </div>
+          <ManagePersona type="create" persona={null}>
+            <div className="p-2 flex-center gap-2 rounded-md bg-blue-500 hover:bg-blue-400 cursor-pointer">
+              <PlusCircleIcon className="w-4 h-4 stroke-white" />
+              <span className="text-sm text-white">Create Persona</span>
+            </div>
+          </ManagePersona>
         </div>
       </div>
-    </>
+      {/* Table */}
+      <div className="flex flex-1 overflow-auto">
+        <PersonasTable data={defaultPersonas} />
+      </div>
+      {/* Pagination */}
+      <div className="flex justify-end px-16">
+        <Pagination
+          className="pagination-bar"
+          export
+          totalCount={defaultPersonas.length}
+          pageSize={10}
+          onPageChange={(pageSize: number, currentPage: number) =>
+            console.log(pageSize, currentPage)
+          }
+        />
+      </div>
+    </div>
   );
 };
 
