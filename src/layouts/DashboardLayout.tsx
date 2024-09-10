@@ -295,7 +295,7 @@ export default function DashboardLayout({
         </div>
 
         <div className="flex flex-col flex-1 h-dvh overflow-auto">
-          <div className="sticky top-0 flex h-12 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white shadow-sm sm:gap-x-6 px-6">
+          <div className="flex h-12 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white shadow-sm sm:gap-x-6 px-6">
             <button
               type="button"
               onClick={() => setShowPopup(true)}
