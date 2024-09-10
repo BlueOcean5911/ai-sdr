@@ -12,7 +12,7 @@ import {
   AdjustmentsVerticalIcon,
 } from "@heroicons/react/24/outline";
 
-import { ROUTE_LOGIN } from "./routes";
+import { ROUTE_ACCOUNT_PROFILE, ROUTE_LOGIN } from "./routes";
 import {
   CalendarCheck,
   LucideMonitorSpeaker,
@@ -61,7 +61,9 @@ export const navigationSupport = [
     current: false,
   },
 ];
-export const userNavigation = [{ name: "Your profile", href: "#" }];
+export const userNavigation = [
+  { name: "Your profile", href: ROUTE_ACCOUNT_PROFILE },
+];
 
 export const navigations = [
   {

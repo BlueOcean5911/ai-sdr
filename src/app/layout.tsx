@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={space_grotesk}>
-        <NextTopLoader />
+        <NextTopLoader color="#4571B6" />
         <main className="font-space_grotesk h-dvh flex">
           <ThemeProvider attribute="class">{children}</ThemeProvider>
         </main>
