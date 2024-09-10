@@ -13,13 +13,11 @@ const NewCadenceFromScratch = ({
 }) => {
   const [errors, setErrors] = useState({
     name: "",
-    subject: "",
     description: "",
   });
   const [values, setValues] = useState({
     name: "",
     description: "",
-    subject: "",
   });
 
   const checkErrors = () => {
@@ -28,10 +26,6 @@ const NewCadenceFromScratch = ({
 
     if (removeSpecialCharacters(values.name).length === 0) {
       newErrors = { ...newErrors, name: "Cadence name is required" };
-      isValid = false;
-    }
-    if (removeSpecialCharacters(values.subject).length === 0) {
-      newErrors = { ...newErrors, subject: "Subject is required" };
       isValid = false;
     }
     if (removeSpecialCharacters(values.description).length === 0) {
@@ -63,82 +57,75 @@ const NewCadenceFromScratch = ({
           <div className="flex min-h-full items-center justify-center p-4 ">
             <DialogPanel
               transition
-              className="w-full max-w-lg rounded-xl bg-white p-4 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
+              className="w-full max-w-lg rounded-xl bg-white backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
             >
-              <div className="flex justify-between border-b-2 border-gray-100 mb-2">
-                <h2> New Cadence</h2>
-                <XCircleIcon className="w-6 h-6 mr-4 stroke-gray-300 hover:stroke-gray-400" />
+              <div className="px-4 py-2 flex justify-between items-center border-b-2">
+                <h3>New Cadence</h3>
+                <XCircleIcon
+                  className="w-6 h-6 hover:stroke-gray-600"
+                  onClick={close}
+                />
               </div>
-              <div className="flex flex-col gap-2">
-                <div className="flex flex-col gap-2 text-xs">
-                  <label>Name*</label>
-                  <input
-                    className="input-primary"
-                    value={values.name}
-                    onChange={(e) => {
-                      if (removeSpecialCharacters(values.name).length > 0) {
-                        setErrors({ ...errors, name: "" });
-                      } else {
-                        setErrors({
-                          ...errors,
-                          name: "Cadence name is required",
-                        });
-                      }
-                      setValues({ ...values, name: e.target.value });
-                    }}
-                  />
-                  {errors.name.length > 0 && (
-                    <p className="text-red-500">{errors.name}</p>
-                  )}
-                  <label>Subject*</label>
-                  <input
-                    className="input-primary"
-                    value={values.subject}
-                    onChange={(e) => {
-                      if (removeSpecialCharacters(values.subject).length > 0) {
-                        setErrors({ ...errors, subject: "" });
-                      } else {
-                        setErrors({
-                          ...errors,
-                          subject: "Subject is required",
-                        });
-                      }
-                      setValues({ ...values, subject: e.target.value });
-                    }}
-                  />
-                  {errors.subject.length > 0 && (
-                    <p className="text-red-500">{errors.subject}</p>
-                  )}
-                  <label>Description*</label>
-                  <textarea
-                    className="input-primary min-h-24"
-                    value={values.description}
-                    onChange={(e) => {
-                      if (
-                        removeSpecialCharacters(values.description).length > 0
-                      ) {
-                        setErrors({ ...errors, description: "" });
-                      } else {
-                        setErrors({
-                          ...errors,
-                          description: "Description is required",
-                        });
-                      }
-                      setValues({ ...values, description: e.target.value });
-                    }}
-                  />
-                  {errors.description.length > 0 && (
-                    <p className="text-red-500">{errors.description}</p>
-                  )}
-                </div>
-                <div className="flex gap-4 justify-end">
-                  <button className="btn-secondary">Cancel</button>
-                  <button
-                    className="btn-primary"
-                    onClick={() => handleCreate()}
-                  >
-                    Create
-                  </button>
+              <div className="px-4 py-2 bg-gray-100">
+                <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 text-sm">
+                    <div className="flex flex-col">
+                      <label>Name*</label>
+                      <input
+                        className="input-primary"
+                        value={values.name}
+                        onChange={(e) => {
+                          if (removeSpecialCharacters(values.name).length > 0) {
+                            setErrors({ ...errors, name: "" });
+                          } else {
+                            setErrors({
+                              ...errors,
+                              name: "Cadence name is required",
+                            });
+                          }
+                          setValues({ ...values, name: e.target.value });
+                        }}
+                      />
+                      {errors.name.length > 0 && (
+                        <p className="text-red-500">{errors.name}</p>
+                      )}
+                    </div>
+                    <div className="flex flex-col">
+                      <label>Description*</label>
+                      <textarea
+                        className="input-primary min-h-24"
+                        value={values.description}
+                        onChange={(e) => {
+                          if (
+                            removeSpecialCharacters(values.description).length >
+                            0
+                          ) {
+                            setErrors({ ...errors, description: "" });
+                          } else {
+                            setErrors({
+                              ...errors,
+                              description: "Description is required",
+                            });
+                          }
+                          setValues({ ...values, description: e.target.value });
+                        }}
+                      />
+                      {errors.description.length > 0 && (
+                        <p className="text-red-500">{errors.description}</p>
+                      )}
+                    </div>
+                  </div>
+                  <div className=" py-2 flex justify-between gap-4">
+                    <button className="w-full px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200">
+                      Cancel
+                    </button>
+                    <button
+                      className="w-full p-2 flex-center gap-2 rounded-md bg-blue-500 hover:bg-blue-400 cursor-pointer"
+                      onClick={() => handleCreate()}
+                    >
+                      <span className="text-white">Create</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </DialogPanel>

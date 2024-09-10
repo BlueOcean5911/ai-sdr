@@ -22,6 +22,7 @@ const defaultCampaigns = [
     description: "Initial funding for Project Alpha.",
     creator: "Alice Johnson",
     createdDate: "2024-01-15",
+    closedDate: "2024-01-15",
     status: 1,
   },
   {
@@ -31,6 +32,7 @@ const defaultCampaigns = [
     description: "Budget for the upcoming marketing campaign.",
     creator: "Bob Smith",
     createdDate: "2024-02-10",
+    closedDate: "2024-02-10",
     status: 0,
   },
   {
@@ -40,6 +42,7 @@ const defaultCampaigns = [
     description: "Redesign of the company website.",
     creator: "Charlie Brown",
     createdDate: "2024-02-25",
+    closedDate: "2024-02-25",
     status: 1,
   },
   {
@@ -49,6 +52,7 @@ const defaultCampaigns = [
     description: "Funding for research on renewable energy.",
     creator: "Diana Prince",
     createdDate: "2024-03-01",
+    closedDate: "2024-03-01",
     status: 1,
   },
   {
@@ -58,6 +62,7 @@ const defaultCampaigns = [
     description: "Development of a new software application.",
     creator: "Ethan Hunt",
     createdDate: "2024-03-15",
+    closedDate: "2024-03-15",
     status: 1,
   },
   {
@@ -67,6 +72,7 @@ const defaultCampaigns = [
     description: "Purchase of office supplies for the team.",
     creator: "Fiona Gallagher",
     createdDate: "2024-03-20",
+    closedDate: "2024-03-20",
     status: 0,
   },
   {
@@ -76,6 +82,7 @@ const defaultCampaigns = [
     description: "Budget for the annual team building event.",
     creator: "George Lucas",
     createdDate: "2024-04-05",
+    closedDate: "2024-04-05",
     status: 1,
   },
   {
@@ -85,6 +92,7 @@ const defaultCampaigns = [
     description: "Purchase of new equipment for the office.",
     creator: "Hannah Montana",
     createdDate: "2024-04-10",
+    closedDate: "2024-04-10",
     status: 1,
   },
   {
@@ -94,6 +102,7 @@ const defaultCampaigns = [
     description: "Budget for employee training programs.",
     creator: "Ian Malcolm",
     createdDate: "2024-04-15",
+    closedDate: "2024-04-15",
     status: 0,
   },
   {
@@ -103,6 +112,7 @@ const defaultCampaigns = [
     description: "Funding for the upcoming product launch.",
     creator: "Jack Sparrow",
     createdDate: "2024-05-01",
+    closedDate: "2024-05-01",
     status: 1,
   },
   {
@@ -112,6 +122,7 @@ const defaultCampaigns = [
     description: "Fees for consulting services.",
     creator: "Karen Walker",
     createdDate: "2024-05-10",
+    closedDate: "2024-05-10",
     status: 0,
   },
   {
@@ -121,6 +132,7 @@ const defaultCampaigns = [
     description: "Sponsorship for a local event.",
     creator: "Leo DiCaprio",
     createdDate: "2024-05-15",
+    closedDate: "2024-05-15",
     status: 1,
   },
   {
@@ -130,6 +142,7 @@ const defaultCampaigns = [
     description: "Renovation of the office space.",
     creator: "Mia Wallace",
     createdDate: "2024-06-01",
+    closedDate: "2024-06-01",
     status: 1,
   },
   {
@@ -139,6 +152,7 @@ const defaultCampaigns = [
     description: "Travel expenses for the conference.",
     creator: "Nina Simone",
     createdDate: "2024-06-05",
+    closedDate: "2024-06-05",
     status: 0,
   },
   {
@@ -148,6 +162,7 @@ const defaultCampaigns = [
     description: "Donation to a local charity.",
     creator: "Oscar Wilde",
     createdDate: "2024-06-10",
+    closedDate: "2024-06-10",
     status: 1,
   },
   {
@@ -157,6 +172,7 @@ const defaultCampaigns = [
     description: "Monthly IT support fees.",
     creator: "Peter Parker",
     createdDate: "2024-06-15",
+    closedDate: "2024-06-15",
     status: 1,
   },
   {
@@ -166,6 +182,7 @@ const defaultCampaigns = [
     description: "Budget for social media advertising.",
     creator: "Quinn Fabray",
     createdDate: "2024-07-01",
+    closedDate: "2024-07-01",
     status: 0,
   },
   {
@@ -175,6 +192,7 @@ const defaultCampaigns = [
     description: "Legal fees for contract review.",
     creator: "Rick Grimes",
     createdDate: "2024-07-10",
+    closedDate: "2024-07-10",
     status: 1,
   },
   {
@@ -184,6 +202,7 @@ const defaultCampaigns = [
     description: "Expenses for onboarding new hires.",
     creator: "Sarah Connor",
     createdDate: "2024-07-15",
+    closedDate: "2024-07-15",
     status: 1,
   },
   {
@@ -193,6 +212,7 @@ const defaultCampaigns = [
     description: "Funding for product development.",
     creator: "Tony Stark",
     createdDate: "2024-08-01",
+    closedDate: "2024-08-01",
     status: 0,
   },
   {
@@ -202,6 +222,7 @@ const defaultCampaigns = [
     description: "Annual website hosting fees.",
     creator: "Uma Thurman",
     createdDate: "2024-08-05",
+    closedDate: "2024-08-05",
     status: 1,
   },
   {
@@ -211,6 +232,7 @@ const defaultCampaigns = [
     description: "Budget for market research.",
     creator: "Vin Diesel",
     createdDate: "2024-08-10",
+    closedDate: "2024-08-10",
     status: 1,
   },
   {
@@ -220,6 +242,7 @@ const defaultCampaigns = [
     description: "Cost of conducting customer surveys.",
     creator: "Will Smith",
     createdDate: "2024-08-15",
+    closedDate: "2024-08-15",
     status: 0,
   },
   {
@@ -229,6 +252,7 @@ const defaultCampaigns = [
     description: "Cost of preparing the annual report.",
     creator: "Xena Warrior",
     createdDate: "2024-09-01",
+    closedDate: "2024-09-01",
     status: 1,
   },
   {
@@ -238,6 +262,7 @@ const defaultCampaigns = [
     description: "Monthly health insurance premium.",
     creator: "Yoda",
     createdDate: "2024-09-05",
+    closedDate: "2024-09-05",
     status: 1,
   },
 ];
@@ -352,6 +377,12 @@ export default function Campaigns() {
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
+                      Closed Date
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    >
                       Action
                     </th>
                   </tr>
@@ -376,6 +407,9 @@ export default function Campaigns() {
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {campaign.createdDate}
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        {campaign.closedDate}
                       </td>
 
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3 rounded-r-md">
