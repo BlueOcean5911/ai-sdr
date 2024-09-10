@@ -3,8 +3,8 @@
 import { Switch } from "@headlessui/react";
 
 export default function ToggleButton({
-  checked,
-  handleChange,
+  checked = false,
+  handleChange = () => {},
 }: {
   checked: boolean;
   handleChange: () => void;
