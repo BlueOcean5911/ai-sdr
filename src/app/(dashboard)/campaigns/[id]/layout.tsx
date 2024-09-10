@@ -63,7 +63,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
         <div className="w-full h-12 px-5 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <ToggleButton />
+            <ToggleButton checked={true} handleChange={() => {}} />
             <span className="text-xl">Campaign Title</span>
             <div
               className="p-1 cursor-pointer rounded-md hover:bg-gray-100"
