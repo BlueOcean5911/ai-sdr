@@ -295,8 +295,8 @@ export default function Campaigns() {
   };
 
   return (
-    <div className="card p-4 flex flex-col flex-1">
-      <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+    <div className="card p-4 flex flex-col flex-1 overflow-auto">
+      <div className="inline-block w-full py-2 align-middle">
         <div className="flex justify-between items-center">
           <form action="#" method="GET" className="relative hidden md:flex ">
             <label htmlFor="search-field" className="sr-only">
@@ -330,139 +330,125 @@ export default function Campaigns() {
         </div>
       </div>
       {/* Table */}
-      <div className="px-4 sm:px-6 lg:px-8 flex-1">
-        <div className="flow-root">
-          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-              <table className="min-w-full divide-y divide-gray-300 text-nowrap">
-                <thead>
-                  <tr>
-                    <th
-                      scope="col"
-                      className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
-                    >
-                      Title
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Amount
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Descirption
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Current Status
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Creator
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Created Date
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Closed Date
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white">
-                  {campaigns.map((campaign, id) => (
-                    <tr key={id} className="even:bg-blue-50 hover:bg-gray-300">
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                        {campaign.title}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {campaign.amount}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {campaign.description}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {campaign.status}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {campaign.creator}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {campaign.createdDate}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {campaign.closedDate}
-                      </td>
+      <div className="flex flex-1 overflow-auto">
+        <table className="w-full divide-y divide-gray-300 text-nowrap overflow-auto">
+          <thead className="bg-white sticky top-0 z-10">
+            <tr>
+              <th
+                scope="col"
+                className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
+              >
+                Title
+              </th>
+              <th
+                scope="col"
+                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                Amount
+              </th>
+              <th
+                scope="col"
+                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                Descirption
+              </th>
+              <th
+                scope="col"
+                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                Current Status
+              </th>
+              <th
+                scope="col"
+                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                Creator
+              </th>
+              <th
+                scope="col"
+                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                Created Date
+              </th>
+              <th
+                scope="col"
+                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                Closed Date
+              </th>
+              <th
+                scope="col"
+                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white overflow-auto">
+            {campaigns.map((campaign, id) => (
+              <tr key={id} className="even:bg-blue-50 hover:bg-gray-300">
+                <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                  {campaign.title}
+                </td>
+                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {campaign.amount}
+                </td>
+                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {campaign.description}
+                </td>
+                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {campaign.status}
+                </td>
+                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {campaign.creator}
+                </td>
+                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {campaign.createdDate}
+                </td>
+                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {campaign.closedDate}
+                </td>
 
-                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3 rounded-r-md">
-                        <Popover>
-                          <PopoverButton className="block text-sm/6 font-semibold text-gray-900 focus:outline-none">
-                            <EllipsisHorizontalCircleIcon className="w-5 h-5" />
-                          </PopoverButton>
-                          <PopoverPanel
-                            transition
-                            anchor="left"
-                            className="divide-x rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:translate-x-2 translate-y-1/2 data-[closed]:opacity-0 shadow-md text-gray-900"
-                          >
-                            <div className="p-3">
-                              <div
-                                className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100"
-                                onClick={() =>
-                                  handleStatusChange(campaign.id, 0)
-                                }
-                              >
-                                Active
-                              </div>
-                              <div
-                                className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100"
-                                onClick={() =>
-                                  handleStatusChange(campaign.id, 1)
-                                }
-                              >
-                                Disable
-                              </div>
-                              <div className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100">
-                                <Link href={`/campaigns/${campaign.id}`}>
-                                  Manage
-                                </Link>
-                              </div>
-                              <div
-                                className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100"
-                                onClick={() =>
-                                  handleDeleteCampaign(campaign.id)
-                                }
-                              >
-                                Delete
-                              </div>
-                            </div>
-                          </PopoverPanel>
-                        </Popover>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+                <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3 rounded-r-md">
+                  <Popover>
+                    <PopoverButton className="block text-sm/6 font-semibold text-gray-900 focus:outline-none">
+                      <EllipsisHorizontalCircleIcon className="w-5 h-5" />
+                    </PopoverButton>
+                    <PopoverPanel
+                      transition
+                      anchor="left"
+                      className="divide-x rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:translate-x-2 translate-y-1/2 data-[closed]:opacity-0 shadow-md text-gray-900"
+                    >
+                      <div className="p-3">
+                        <div
+                          className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100"
+                          onClick={() => handleStatusChange(campaign.id, 0)}
+                        >
+                          Active
+                        </div>
+                        <div
+                          className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100"
+                          onClick={() => handleStatusChange(campaign.id, 1)}
+                        >
+                          Disable
+                        </div>
+                        <div className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100">
+                          <Link href={`/campaigns/${campaign.id}`}>Manage</Link>
+                        </div>
+                        <div
+                          className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100"
+                          onClick={() => handleDeleteCampaign(campaign.id)}
+                        >
+                          Delete
+                        </div>
+                      </div>
+                    </PopoverPanel>
+                  </Popover>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       {/* Pagination */}
       <div className="flex justify-end px-16">
