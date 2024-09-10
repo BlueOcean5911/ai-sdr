@@ -1,15 +1,18 @@
 "use client";
 
-import { useState } from "react";
 import { Switch } from "@headlessui/react";
 
-export default function ToggleButton() {
-  const [enabled, setEnabled] = useState(true);
-
+export default function ToggleButton({
+  checked,
+  handleChange,
+}: {
+  checked: boolean;
+  handleChange: () => void;
+}) {
   return (
     <Switch
-      checked={enabled}
-      onChange={setEnabled}
+      checked={checked}
+      onChange={handleChange}
       className="group relative inline-flex h-5 w-8 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 focus:bg-blue-100 data-[checked]:bg-blue-900"
     >
       <span className="sr-only">Use setting</span>
