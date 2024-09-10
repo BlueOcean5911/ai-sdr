@@ -1,12 +1,13 @@
 import { api } from "@/utils/api";
 
-interface UserModel extends BaseUserModel {
+export interface UserModel extends BaseUserModel {
   id?: string;
 }
 
-interface BaseUserModel {
+export interface BaseUserModel {
   firstName?: string;
   lastName?: string;
+  email?: string;
 }
 
 interface ApiUserResponse {
@@ -19,6 +20,7 @@ export const getMe = async (data: undefined): Promise<ApiUserResponse> => {
     data: {
       firstName: response.data?.firstName,
       lastName: response.data?.firstName,
+      email: response.data?.email,
       id: response.data?.surrogateId,
     },
   };

@@ -18,3 +18,20 @@ export enum EMAIL_STATUS {
   QUESTIONABLE = "questionable",
   NO_STATUS = "no_status",
 }
+
+export enum CAMPAIGN_STAGE {
+  NOT_STARTED = "not-started",
+  DISCOVERY = "discovery",
+  VALUE_PROPOSITION = "value-proposition",
+  PROPOSAL = "proposal",
+  NEGOTIATING = "negotiating",
+  CLOSED_WON = "closed-won",
+  CLOSED_LOST = "closed-lost",
+  ACCOUNT_PLAN = "account-plan",
+}
+
+export enum SHARE_TYPE {
+  PRIVATE = "private",
+  VIEW_SHARED = "viewShared",
+  EDIT_SHARED = "editShared",
+}
