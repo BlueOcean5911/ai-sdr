@@ -1,19 +1,10 @@
 import Select from "@/components/extends/Select/default";
 import { XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
-// import { Calendar } from "@/components/ui/calendar";
 import { useState } from "react";
-import {
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-} from "@headlessui/react";
 import { toast } from "react-toastify";
 
 const EmailSendWindow = ({ close }: { close?: () => void }) => {
+  const [sendLater, setSendLater] = useState(false);
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   const [values, setValues] = useState({
@@ -52,17 +43,17 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
 
   return (
     <>
-      <div className="z-20 flex flex-col fixed bottom-0 right-14 w-[500px] h-[80vh] shadow-lg bg-white border-2 border-gray-100 rounded-md">
-        <div className="flex-center p-2 py-4 border-b-2 border-gray-200 justify-between">
+      <div className="z-20 flex flex-col fixed bottom-2 right-14 w-[500px] h-[80vh] shadow-lg bg-white border-2 border-gray-100 rounded-md">
+        <div className="px-4 py-2 flex justify-between items-center border-b-2">
           Send Email
           <XMarkIcon
-            className="w-5 h-5 stroke-gray-400 hover:stroke-gray-500 ml-auto cursor-pointer"
+            className="w-5 h-5 hover:stroke-gray-600 cursor-pointer"
             onClick={close}
           />
         </div>
-        <div className="flex-1 flex flex-col gap-2 p-3">
-          <div className="flex flex-col gap-1">
-            <label className="text-xs">From</label>
+        <div className="px-4 py-2 flex flex-1 flex-col gap-2 bg-gray-100">
+          <div className="flex justify-between items-center gap-2">
+            <label className="min-w-20">From</label>
             <Select
               data={[
                 {
@@ -79,8 +70,8 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
             />
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label className="text-xs">To</label>
+          <div className="flex justify-between items-center gap-2">
+            <label className="min-w-20">To</label>
             <Select
               data={[
                 {
@@ -97,8 +88,8 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
             />
           </div>
 
-          <div className="flex-center gap-2">
-            <label className="text-xs">Subject*</label>
+          <div className="flex justify-between items-center gap-2">
+            <label className="min-w-20">Subject*</label>
             <input
               className="input-primary"
               value={values.subject}
@@ -111,46 +102,55 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
             />
           </div>
           {errors.subject.length > 0 && (
-            <p className="text-red-500 text-xs">{errors.subject}</p>
+            <p className="pl-24 text-red-500 text-xs">{errors.subject}</p>
           )}
-
-          <label className="text-xs">Message*</label>
-          <textarea
-            className="input-primary"
-            value={values.message}
-            onChange={(event) => {
-              setValues({ ...values, message: event.target.value });
-              if (errors.message.length > 0) {
-                setErrors({ ...errors, message: "" });
-              }
-            }}
-          />
-          {errors.message.length > 0 && (
-            <p className="text-red-500 text-xs">{errors.message}</p>
-          )}
-          <div className="flex gap-4 relative">
-            <Popover>
-              <PopoverButton className="text-sm btn-secondary">
-                Delivery Schedule
-              </PopoverButton>
-              <PopoverPanel
-                transition
-                anchor="bottom"
-                className="z-20 divide-y divide-white/5 rounded-xl bg-white/5 text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
-              >
-                <div className="z-50 bg-white">
-                  {/* <Calendar mode="single" selected={date} onSelect={setDate} /> */}
-                </div>
-              </PopoverPanel>
-            </Popover>
-            <Menu>
-              <MenuButton
-                className="text-sm btn-primary"
-                onClick={handleSendNow}
-              >
-                Send Now
-              </MenuButton>
-            </Menu>
+          <div className="flex flex-1 flex-col gap-2">
+            <label className="">Message*</label>
+            <textarea
+              className="input-primary"
+              value={values.message}
+              onChange={(event) => {
+                setValues({ ...values, message: event.target.value });
+                if (errors.message.length > 0) {
+                  setErrors({ ...errors, message: "" });
+                }
+              }}
+            />
+            {errors.message.length > 0 && (
+              <p className="text-red-500 text-xs">{errors.message}</p>
+            )}
+          </div>
+          <div className="min-h-12 flex justify-between gap-2">
+            <div className="flex items-center gap-4">
+              <input
+                type="checkbox"
+                name="sendLater"
+                id="sendLater"
+                className="focus:ring-0 cursor-pointer"
+                onChange={(e) => setSendLater(e.target.checked)}
+              />
+              <label htmlFor="sendLater">Send Later</label>
+            </div>
+            {sendLater && (
+              <div className="flex items-center gap-4">
+                <label htmlFor="sendDate">Send Date:</label>
+                <input type="date" name="sendDate" id="sendDate" />
+              </div>
+            )}
+          </div>
+          <div className="flex items-center gap-4">
+            <button
+              className="w-full p-2 rounded-md bg-gray-300 hover:bg-gray-200"
+              onClick={close}
+            >
+              Close
+            </button>
+            <button
+              className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
+              onClick={handleSendNow}
+            >
+              Send
+            </button>
           </div>
         </div>
       </div>

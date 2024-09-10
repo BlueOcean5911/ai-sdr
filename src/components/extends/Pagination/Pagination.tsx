@@ -77,7 +77,7 @@ const Pagination = (props: any) => {
   let lastPage = paginationRange[paginationRange.length - 1];
   return (
     <div className="flex justify-end items-center pt-2">
-      <div className="pr-12 text-sm">
+      <div className="pr-12 text-sm text-nowrap">
         {totalCount &&
           `${currentIndex} - ${
             currentIndex + showCount - 1
