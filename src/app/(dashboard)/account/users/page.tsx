@@ -48,10 +48,8 @@ const Page = () => {
         </Link>
       </div>
 
-      <div className="relative py-2 px-2 flex-1 overflow-auto bg-gray-100">
-        <div className="card min-h-full overflow-auto flex flex-col bg-white">
-          <ManageStuff />
-        </div>
+      <div className="card p-2 h-full flex flex-col bg-gray-100 overflow-auto">
+        <ManageStuff />
       </div>
     </>
   );
