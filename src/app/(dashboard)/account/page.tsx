@@ -1,20 +1,85 @@
 "use client";
-import NavTitle from "@/components/DashboardLayout/Nav/Title";
-import ManageStuff from "@/sections/account/ManageStuff";
 import Link from "next/link";
 import {
-  ROUTE_ACCOUNT,
   ROUTE_ACCOUNT_COMPANY_DATA,
   ROUTE_ACCOUNT_PROFILE,
   ROUTE_ACCOUNT_USERS,
 } from "@/data/routes";
 import { useRouter } from "next/navigation";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  getMe,
+  updatePassword,
+  updateUser,
+  UserModel,
+} from "@/services/userService";
+import { handleError, runService } from "@/utils/service_utils";
+import { toast } from "react-toastify";
+import { classNames } from "@/utils";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import FormHelperText from "@/components/extends/FormHelperText";
 
 export default function Account() {
   const [change, setChange] = useState(false);
   const router = useRouter();
+  const [userData, setUserData] = useState<UserModel>();
+  const [updatedUserData, setUpdatedUserData] = useState<UserModel>();
+  const fetchUserData = () => {
+    runService(
+      undefined,
+      getMe,
+      (data) => {
+        setUserData(data);
+        setUpdatedUserData(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  const saveUserData = () => {
+    runService(
+      updatedUserData,
+      updateUser,
+      (data) => {
+        setUserData(data);
+        setUpdatedUserData(data);
+        setChange(false);
+        toast.success("Profile updated successfully");
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  const updateUserPassword = (
+    oldPassword: string,
+    newPassword: string,
+    confirmPassword: string
+  ) => {
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    runService(
+      { oldPassword, newPassword },
+      updatePassword,
+      (data) => {
+        toast.success("Password updated successfully");
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   return (
     <>
@@ -63,85 +128,236 @@ export default function Account() {
               <label className="min-w-24" htmlFor="firstName">
                 First Name:
               </label>
-              <input id="firstName" type="text" className="input-primary" />
+              <input
+                id="firstName"
+                type="text"
+                className="input-primary"
+                defaultValue={userData?.firstName}
+                value={updatedUserData?.firstName}
+                onChange={(e) => {
+                  setUpdatedUserData({
+                    ...updatedUserData,
+                    firstName: e.target.value,
+                  });
+                }}
+              />
             </div>
             <div className="flex items-center">
               <label className="min-w-24" htmlFor="lastName">
                 Last Name:
               </label>
-              <input id="lastName" type="text" className="input-primary" />
+              <input
+                id="lastName"
+                type="text"
+                className="input-primary"
+                defaultValue={userData?.lastName}
+                value={updatedUserData?.lastName}
+                onChange={(e) => {
+                  setUpdatedUserData({
+                    ...updatedUserData,
+                    lastName: e.target.value,
+                  });
+                }}
+              />
             </div>
             <div className="flex items-center">
               <label className="min-w-24" htmlFor="title">
                 Title:
               </label>
-              <input id="title" type="text" className="input-primary" />
+              <input
+                id="title"
+                type="text"
+                className="input-primary"
+                defaultValue={userData?.title}
+                value={updatedUserData?.title}
+                onChange={(e) => {
+                  setUpdatedUserData({
+                    ...updatedUserData,
+                    title: e.target.value,
+                  });
+                }}
+              />
             </div>
             <div className="flex items-center">
               <label className="min-w-24" htmlFor="email">
                 Email:
               </label>
-              <input id="email" type="text" className="input-primary" />
+              <input
+                id="email"
+                type="text"
+                className="input-primary"
+                defaultValue={userData?.email}
+                value={updatedUserData?.email}
+                onChange={(e) => {
+                  setUpdatedUserData({
+                    ...updatedUserData,
+                    email: e.target.value,
+                  });
+                }}
+              />
             </div>
             <div className="flex items-center">
               <label className="min-w-24" htmlFor="phone">
                 Phone:
               </label>
-              <input id="phone" type="text" className="input-primary" />
-            </div>{" "}
-            <div className="flex flex-col gap-2">
-              <button
-                className="min-w-32 px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200"
-                onClick={() => setChange(!change)}
+              <input
+                id="phone"
+                type="text"
+                className="input-primary"
+                defaultValue={userData?.phone}
+                value={updatedUserData?.phone}
+                onChange={(e) => {
+                  setUpdatedUserData({
+                    ...updatedUserData,
+                    phone: e.target.value,
+                  });
+                }}
+              />
+            </div>
+            <div>
+              <div className="pb-2">Password</div>
+              <div
+                className={classNames(
+                  "flex flex-col gap-2 ",
+                  change ? "p-4 border-2 border-gray-300 rounded-md" : ""
+                )}
               >
-                {change ? "Hide" : "Change Password"}
-              </button>
-              {change && (
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center">
-                    <label className="min-w-36" htmlFor="oldPassword">
-                      Old Password:
-                    </label>
-                    <input
-                      id="oldPassword"
-                      type="password"
-                      className="input-primary"
-                    />
-                  </div>
-                  <div className="flex items-center">
-                    <label className="min-w-36" htmlFor="newPassword">
-                      New Password:
-                    </label>
-                    <input
-                      id="newPassword"
-                      type="password"
-                      className="input-primary"
-                    />
-                  </div>
-                  <div className="flex items-center">
-                    <label className="min-w-36" htmlFor="confirmPassword">
-                      Confirm Password:
-                    </label>
-                    <input
-                      id="confirmPassword"
-                      type="password"
-                      className="input-primary"
-                    />
-                  </div>
-                </div>
-              )}
+                <button
+                  className="min-w-32 px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200"
+                  onClick={() => setChange(!change)}
+                >
+                  {change ? "Hide" : "Change Password"}
+                </button>
+                {change && (
+                  <Formik
+                    initialValues={{
+                      oldPassword: "",
+                      newPassword: "",
+                      confirmPassword: "",
+                    }}
+                    validationSchema={Yup.object().shape({
+                      oldPassword: Yup.string().required(
+                        "Old password is required"
+                      ),
+                      newPassword: Yup.string()
+                        .required("New password is required")
+                        .min(8, "Password must be at least 8 characters long"),
+                      confirmPassword: Yup.string()
+                        .required("Confirm password is required")
+                        .oneOf(
+                          [Yup.ref("newPassword")],
+                          "Passwords must match"
+                        ),
+                    })}
+                    onSubmit={async (
+                      values,
+                      { setErrors, setStatus, setSubmitting }
+                    ) => {
+                      setSubmitting(true);
+                      updateUserPassword(
+                        values.oldPassword,
+                        values.newPassword,
+                        values.confirmPassword
+                      );
+                      setSubmitting(false);
+                    }}
+                  >
+                    {({
+                      errors,
+                      handleBlur,
+                      handleChange,
+                      handleSubmit,
+                      isSubmitting,
+                      touched,
+                      values,
+                    }) => (
+                      <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center">
+                            <label className="min-w-36" htmlFor="oldPassword">
+                              Old Password:
+                            </label>
+                            <div className="flex flex-col w-full">
+                              <input
+                                id="oldPassword"
+                                type="password"
+                                className="input-primary"
+                                value={values.oldPassword}
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                              />
+                              {touched.oldPassword && errors.oldPassword && (
+                                <FormHelperText>
+                                  {errors.oldPassword}
+                                </FormHelperText>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center">
+                            <label className="min-w-36" htmlFor="newPassword">
+                              New Password:
+                            </label>
+                            <div className="flex flex-col w-full">
+                              <input
+                                id="newPassword"
+                                type="password"
+                                className="input-primary"
+                                value={values.newPassword}
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                              />
+                              {touched.newPassword && errors.newPassword && (
+                                <FormHelperText>
+                                  {errors.newPassword}
+                                </FormHelperText>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center">
+                            <label
+                              className="min-w-36"
+                              htmlFor="confirmPassword"
+                            >
+                              Confirm Password:
+                            </label>
+                            <div className="flex flex-col w-full">
+                              <input
+                                id="confirmPassword"
+                                type="password"
+                                className="input-primary"
+                                value={values.confirmPassword}
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                              />
+                              {touched.confirmPassword &&
+                                errors.confirmPassword && (
+                                  <FormHelperText>
+                                    {errors.confirmPassword}
+                                  </FormHelperText>
+                                )}
+                            </div>
+                          </div>
+                          <button
+                            className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                            disabled={isSubmitting}
+                          >
+                            Confirm
+                          </button>
+                        </div>
+                      </form>
+                    )}
+                  </Formik>
+                )}
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <button
                 className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
-                onClick={() => router.push("/campaigns/campaign.id/")}
+                onClick={() => saveUserData()}
               >
                 Save
               </button>
-              <button
-                className="w-full p-2 rounded-md bg-gray-300 hover:bg-gray-200"
-                onClick={() => router.push("/campaigns/campaign.id/")}
-              >
+              <button className="w-full p-2 rounded-md bg-gray-300 hover:bg-gray-200">
                 Close
               </button>
             </div>
