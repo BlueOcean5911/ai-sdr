@@ -12,6 +12,7 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import CreateCampaign from "@/sections/campaigns/CreateCampaign";
 import Pagination from "@/components/extends/Pagination/Pagination";
 import ToggleButton from "@/components/extends/Button/ToggleButton";
 
@@ -294,6 +295,7 @@ const defaultCampaigns = [
 ];
 
 export default function Campaigns() {
+  const [create, setCreate] = useState(false);
   const [campaigns, setCampaigns] = useState(defaultCampaigns);
   const router = useRouter();
 
@@ -315,9 +317,7 @@ export default function Campaigns() {
   };
 
   const buildCampaign = () => {
-    //  TODO: Create a new cadence with API and retrieve the new cadence ID
-    const newCadenceId = "M909";
-    router.push(`/campaigns/${newCadenceId}/create`);
+    setCreate(true);
   };
 
   return (
@@ -355,6 +355,7 @@ export default function Campaigns() {
           </div>
         </div>
       </div>
+      {create && <CreateCampaign close={() => setCreate(false)} />}
       {/* Table */}
       <div className="flex flex-1 overflow-auto">
         <table className="w-full divide-y divide-gray-300 text-nowrap overflow-auto">
