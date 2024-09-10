@@ -170,12 +170,12 @@ export default function ManagePersona({
           <div className="flex h-full sm:w-full md:w-[720px] items-center justify-center p-4">
             <DialogPanel
               transition
-              className="w-full h-5/6 rounded-xl bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 flex flex-col"
+              className="w-full h-5/6 rounded-xl bg-white backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 flex flex-col"
             >
-              <DialogTitle as="h2">
+              <DialogTitle as="h3" className="px-4 py-2">
                 {type === "create" ? "Create Persona" : "Edit Persona"}
               </DialogTitle>
-              <div className="filter flex gap-2 flex-1 overflow-auto mt-2">
+              <div className="px-4 py-2 filter flex flex-1 gap-4 bg-gray-100 overflow-auto">
                 <div className="flex flex-col gap-4 flex-1 overflow-auto">
                   <div className="flex flex-col gap-2">
                     <label>
@@ -232,15 +232,6 @@ export default function ManagePersona({
                           "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
                       }}
                     ></Select>
-                    {/* <input
-                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-500  sm:text-sm sm:leading-6"
-                      type="text"
-                      placeholder="e.g. Marketing Leaders"
-                      value={persona?.job}
-                      onChange={(e) =>
-                        setPersona({ ...persona, job: e.target.value })
-                      }
-                    /> */}
                   </div>
                   <div className="flex flex-col gap-2">
                     <label>
@@ -315,36 +306,40 @@ export default function ManagePersona({
                     ></Select>
                   </div>
                 </div>
-                <div className="results flex flex-col flex-1 h-full overflow-auto">
+                <div className="results flex flex-col flex-1 gap-1 h-full overflow-auto">
                   <h3 className="px-2">Results</h3>
-                  <div className="border-b-2 border-gray-100" />
-                  <div className=" p-2 flex flex-col flex-1 overflow-y-auto">
+                  <div className="flex flex-col flex-1 border border-gray-300 rounded-md bg-white overflow-y-auto">
                     {persons.map((person, id) => (
                       <div
                         key={id}
-                        className="border-2 border-gray-100 m-1 p-2 rounded-md hover:shadow-md"
+                        className="px-4 py-2 flex flex-col gap-1 rounded-md border border-gray-100 hover:bg-gray-200"
                       >
                         <h4 className="font-bold text-gray-600">
                           {person.name}
                         </h4>
-                        <p className="text-sm">{person.company}</p>
-                        <div className="flex items-center gap-2">
-                          <MapPinIcon className="w-3 h-3 stroke-gray-500" />
-                          <span className="text-sm">{person.location}</span>
+                        <div className="flex justify-between items-center">
+                          <p className="text-sm">{person.company}</p>
+                          <div className="flex items-center gap-2">
+                            <MapPinIcon className="w-3 h-3 stroke-gray-500" />
+                            <span className="text-sm">{person.location}</span>
+                          </div>
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
-              <div className="mt-4 flex gap-4">
+              <div className="px-4 pb-4 flex gap-4 rounded-md bg-gray-100">
                 <Button
-                  className="btn-secondary p-2 px-4 flex-1"
+                  className="p-1 px-4 flex flex-1 justify-center border-2 border-gray-300 rounded-md hover:bg-gray-200"
                   onClick={close}
                 >
                   Cancel
                 </Button>
-                <Button className="btn-primary p-2 px-4 flex-1" onClick={save}>
+                <Button
+                  className="p-1 px-4 flex-1 rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                  onClick={save}
+                >
                   Save
                 </Button>
               </div>

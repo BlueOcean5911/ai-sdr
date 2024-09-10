@@ -89,6 +89,7 @@ const Pagination = (props: any) => {
       />
       <ul className="flex items-center &>li:hover:bg-gray-200">
         <li
+          key={"<"}
           className={classNames(
             "pagination-item",
             currentPage === 1 ? "disabled" : ""
@@ -108,6 +109,7 @@ const Pagination = (props: any) => {
 
           return (
             <li
+              key={index}
               className={classNames(
                 "pagination-item",
                 pageNumber === currentPage ? "selected" : ""
@@ -119,6 +121,7 @@ const Pagination = (props: any) => {
           );
         })}
         <li
+          key={">"}
           className={classNames(
             "pagination-item",
             currentPage === lastPage ? "disabled" : ""
