@@ -12,7 +12,9 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import CreateCampaign from "@/sections/campaigns/CreateCampaign";
 import Pagination from "@/components/extends/Pagination/Pagination";
+import ToggleButton from "@/components/extends/Button/ToggleButton";
 
 const defaultCampaigns = [
   {
@@ -23,6 +25,7 @@ const defaultCampaigns = [
     creator: "Alice Johnson",
     createdDate: "2024-01-15",
     closedDate: "2024-01-15",
+    active: false,
     status: 1,
   },
   {
@@ -33,6 +36,7 @@ const defaultCampaigns = [
     creator: "Bob Smith",
     createdDate: "2024-02-10",
     closedDate: "2024-02-10",
+    active: false,
     status: 0,
   },
   {
@@ -43,6 +47,7 @@ const defaultCampaigns = [
     creator: "Charlie Brown",
     createdDate: "2024-02-25",
     closedDate: "2024-02-25",
+    active: false,
     status: 1,
   },
   {
@@ -53,6 +58,7 @@ const defaultCampaigns = [
     creator: "Diana Prince",
     createdDate: "2024-03-01",
     closedDate: "2024-03-01",
+    active: false,
     status: 1,
   },
   {
@@ -63,6 +69,7 @@ const defaultCampaigns = [
     creator: "Ethan Hunt",
     createdDate: "2024-03-15",
     closedDate: "2024-03-15",
+    active: false,
     status: 1,
   },
   {
@@ -73,6 +80,7 @@ const defaultCampaigns = [
     creator: "Fiona Gallagher",
     createdDate: "2024-03-20",
     closedDate: "2024-03-20",
+    active: false,
     status: 0,
   },
   {
@@ -83,6 +91,7 @@ const defaultCampaigns = [
     creator: "George Lucas",
     createdDate: "2024-04-05",
     closedDate: "2024-04-05",
+    active: false,
     status: 1,
   },
   {
@@ -93,6 +102,7 @@ const defaultCampaigns = [
     creator: "Hannah Montana",
     createdDate: "2024-04-10",
     closedDate: "2024-04-10",
+    active: false,
     status: 1,
   },
   {
@@ -103,6 +113,7 @@ const defaultCampaigns = [
     creator: "Ian Malcolm",
     createdDate: "2024-04-15",
     closedDate: "2024-04-15",
+    active: false,
     status: 0,
   },
   {
@@ -113,6 +124,7 @@ const defaultCampaigns = [
     creator: "Jack Sparrow",
     createdDate: "2024-05-01",
     closedDate: "2024-05-01",
+    active: false,
     status: 1,
   },
   {
@@ -123,6 +135,7 @@ const defaultCampaigns = [
     creator: "Karen Walker",
     createdDate: "2024-05-10",
     closedDate: "2024-05-10",
+    active: false,
     status: 0,
   },
   {
@@ -133,6 +146,7 @@ const defaultCampaigns = [
     creator: "Leo DiCaprio",
     createdDate: "2024-05-15",
     closedDate: "2024-05-15",
+    active: false,
     status: 1,
   },
   {
@@ -143,6 +157,7 @@ const defaultCampaigns = [
     creator: "Mia Wallace",
     createdDate: "2024-06-01",
     closedDate: "2024-06-01",
+    active: false,
     status: 1,
   },
   {
@@ -153,6 +168,7 @@ const defaultCampaigns = [
     creator: "Nina Simone",
     createdDate: "2024-06-05",
     closedDate: "2024-06-05",
+    active: false,
     status: 0,
   },
   {
@@ -163,6 +179,7 @@ const defaultCampaigns = [
     creator: "Oscar Wilde",
     createdDate: "2024-06-10",
     closedDate: "2024-06-10",
+    active: false,
     status: 1,
   },
   {
@@ -173,6 +190,7 @@ const defaultCampaigns = [
     creator: "Peter Parker",
     createdDate: "2024-06-15",
     closedDate: "2024-06-15",
+    active: false,
     status: 1,
   },
   {
@@ -183,6 +201,7 @@ const defaultCampaigns = [
     creator: "Quinn Fabray",
     createdDate: "2024-07-01",
     closedDate: "2024-07-01",
+    active: false,
     status: 0,
   },
   {
@@ -193,6 +212,7 @@ const defaultCampaigns = [
     creator: "Rick Grimes",
     createdDate: "2024-07-10",
     closedDate: "2024-07-10",
+    active: false,
     status: 1,
   },
   {
@@ -203,6 +223,7 @@ const defaultCampaigns = [
     creator: "Sarah Connor",
     createdDate: "2024-07-15",
     closedDate: "2024-07-15",
+    active: false,
     status: 1,
   },
   {
@@ -213,6 +234,7 @@ const defaultCampaigns = [
     creator: "Tony Stark",
     createdDate: "2024-08-01",
     closedDate: "2024-08-01",
+    active: false,
     status: 0,
   },
   {
@@ -223,6 +245,7 @@ const defaultCampaigns = [
     creator: "Uma Thurman",
     createdDate: "2024-08-05",
     closedDate: "2024-08-05",
+    active: false,
     status: 1,
   },
   {
@@ -233,6 +256,7 @@ const defaultCampaigns = [
     creator: "Vin Diesel",
     createdDate: "2024-08-10",
     closedDate: "2024-08-10",
+    active: false,
     status: 1,
   },
   {
@@ -243,6 +267,7 @@ const defaultCampaigns = [
     creator: "Will Smith",
     createdDate: "2024-08-15",
     closedDate: "2024-08-15",
+    active: false,
     status: 0,
   },
   {
@@ -253,6 +278,7 @@ const defaultCampaigns = [
     creator: "Xena Warrior",
     createdDate: "2024-09-01",
     closedDate: "2024-09-01",
+    active: false,
     status: 1,
   },
   {
@@ -263,11 +289,13 @@ const defaultCampaigns = [
     creator: "Yoda",
     createdDate: "2024-09-05",
     closedDate: "2024-09-05",
+    active: false,
     status: 1,
   },
 ];
 
 export default function Campaigns() {
+  const [create, setCreate] = useState(false);
   const [campaigns, setCampaigns] = useState(defaultCampaigns);
   const router = useRouter();
 
@@ -289,9 +317,7 @@ export default function Campaigns() {
   };
 
   const buildCampaign = () => {
-    //  TODO: Create a new cadence with API and retrieve the new cadence ID
-    const newCadenceId = "M909";
-    router.push(`/campaigns/${newCadenceId}/create`);
+    setCreate(true);
   };
 
   return (
@@ -329,6 +355,7 @@ export default function Campaigns() {
           </div>
         </div>
       </div>
+      {create && <CreateCampaign close={() => setCreate(false)} />}
       {/* Table */}
       <div className="flex flex-1 overflow-auto">
         <table className="w-full divide-y divide-gray-300 text-nowrap overflow-auto">
@@ -380,6 +407,12 @@ export default function Campaigns() {
                 scope="col"
                 className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
               >
+                Active
+              </th>
+              <th
+                scope="col"
+                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
                 Action
               </th>
             </tr>
@@ -407,6 +440,9 @@ export default function Campaigns() {
                 </td>
                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   {campaign.closedDate}
+                </td>
+                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <ToggleButton checked={false} handleChange={() => {}} />
                 </td>
 
                 <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3 rounded-r-md">

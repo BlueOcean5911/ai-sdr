@@ -77,7 +77,7 @@ export default function CadenceItem(props: CadenceItemProps) {
       </div>
       <div className="w-36 px-4 flex justify-between items-center gap-2">
         <div className="w-8 h-5">
-          <ToggleButton />
+          <ToggleButton checked={true} handleChange={() => {}} />
         </div>
         <div className="">
           <StarIcon

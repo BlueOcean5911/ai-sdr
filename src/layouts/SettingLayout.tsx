@@ -135,7 +135,7 @@ const SettingLayout = ({ children }: { children: React.ReactNode }) => {
                 <div className="flex flex-col gap-2 justify-end items-end p-2">
                   <div className="max-w-[400px] flex gap-4  border-b-2 pb-2">
                     <div className="pt-2">
-                      <ToggleButton />
+                      <ToggleButton checked={true} handleChange={() => {}} />
                     </div>
                     <div className="flex flex-col gap-2">
                       <h3>News & Update</h3>
@@ -146,7 +146,7 @@ const SettingLayout = ({ children }: { children: React.ReactNode }) => {
                   </div>
                   <div className="max-w-[400px] flex gap-4  border-b-2 pb-2">
                     <div className="pt-2">
-                      <ToggleButton />
+                      <ToggleButton checked={true} handleChange={() => {}} />
                     </div>
                     <div className="flex flex-col gap-2">
                       <h3>Tips</h3>
@@ -157,7 +157,7 @@ const SettingLayout = ({ children }: { children: React.ReactNode }) => {
                   </div>
                   <div className="max-w-[400px] flex gap-4  border-b-2 pb-2">
                     <div className="pt-2">
-                      <ToggleButton />
+                      <ToggleButton checked={true} handleChange={() => {}} />
                     </div>
                     <div className="flex flex-col gap-2">
                       <h3>Message</h3>
@@ -168,7 +168,7 @@ const SettingLayout = ({ children }: { children: React.ReactNode }) => {
                   </div>
                   <div className="max-w-[400px] flex gap-4  border-b-2 pb-2">
                     <div className="pt-2">
-                      <ToggleButton />
+                      <ToggleButton checked={true} handleChange={() => {}} />
                     </div>
                     <div className="flex flex-col gap-2">
                       <h3>Other</h3>
@@ -187,7 +187,7 @@ const SettingLayout = ({ children }: { children: React.ReactNode }) => {
                 <div className="flex flex-col gap-2 justify-end items-end p-2">
                   <div className="max-w-[400px] flex gap-4  border-b-2 pb-2">
                     <div className="pt-2">
-                      <ToggleButton />
+                      <ToggleButton checked={true} handleChange={() => {}} />
                     </div>
                     <div className="flex flex-col gap-2">
                       <h3>Comments</h3>
