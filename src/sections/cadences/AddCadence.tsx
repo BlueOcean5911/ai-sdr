@@ -1,4 +1,6 @@
 import Select from "@/components/extends/Select/default";
+import { CadenceModel, getCadences } from "@/services/cadenceService";
+import { runService } from "@/utils/service_utils";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XCircle } from "lucide-react";
 import React, { useEffect } from "react";
@@ -17,9 +19,26 @@ const AddCadence = ({
     close();
     toast.success("Successfully Added");
   };
+
+  const [cadences, setCadences] = React.useState([]);
+
+  const fetchCadences = () => {
+    runService(
+      undefined,
+      getCadences,
+      (resCadences) => {
+        setCadences(resCadences);
+      },
+      (status, error) => {
+        toast.error(`Failed to fetch cadences: ${error}`);
+      }
+    );
+  };
+
   useEffect(() => {
-    console.log("open", open);
-  });
+    fetchCadences();
+  }, []);
+
   return (
     <>
       <div>{children}</div>
@@ -46,23 +65,24 @@ const AddCadence = ({
               <div className="p-2 min-h-32 flex-center flex-col items-center">
                 <Select
                   className="w-full"
-                  data={[
-                    {
-                      id: 1,
-                      name: "Cadence 1",
-                      value: "1",
-                    },
-                    {
-                      id: 2,
-                      name: "Cadence 2",
-                      value: "2",
-                    },
-                    {
-                      id: 3,
-                      name: "Cadence 3",
-                      value: "3",
-                    },
-                  ]}
+                  data={cadences}
+                  // data={[
+                  //   {
+                  //     id: 1,
+                  //     name: "Cadence 1",
+                  //     value: "1",
+                  //   },
+                  //   {
+                  //     id: 2,
+                  //     name: "Cadence 2",
+                  //     value: "2",
+                  //   },
+                  //   {
+                  //     id: 3,
+                  //     name: "Cadence 3",
+                  //     value: "3",
+                  //   },
+                  // ]}
                 />
               </div>
 

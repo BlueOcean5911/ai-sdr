@@ -30,6 +30,20 @@ export const getMe = async (data: undefined): Promise<ApiUserResponse> => {
   };
 };
 
+export const getUsers = async (data: undefined): Promise<ApiUserResponse> => {
+  const response = await api.get("/api/users");
+  return {
+    data: response.data?.map((user: any) => ({
+      id: user?.surrogateId,
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      email: user?.email,
+      title: user?.title,
+      phone: user?.phone,
+    })),
+  };
+};
+
 export const updateUser = async (data: UserModel): Promise<ApiUserResponse> => {
   const response = await api.put("/api/users/me", data);
   return {

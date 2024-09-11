@@ -1,3 +1,4 @@
+import { LeadModelWithCompanyModel } from "@/services/leadService";
 import { createContext, useContext, useState } from "react";
 
 const defaultLeads = [
@@ -285,11 +286,13 @@ export const LeadSelectionProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [totalLeads, setTotalLeads] = useState<any[]>(defaultLeads);
-  const [savedLeads, setSavedLeads] = useState<any[]>([]);
-  const [selectedLeads, setSelectedLeads] = useState<any[]>([]);
+  const [totalLeads, setTotalLeads] = useState<LeadModelWithCompanyModel[]>([]);
+  const [savedLeads, setSavedLeads] = useState<LeadModelWithCompanyModel[]>([]);
+  const [selectedLeads, setSelectedLeads] = useState<
+    LeadModelWithCompanyModel[]
+  >([]);
 
-  const handleSaveLeads = (leads: any[]) => {
+  const handleSaveLeads = (leads: LeadModelWithCompanyModel[]) => {
     for (const lead of leads) {
       const leadExists = savedLeads.find(
         (savedLead) => savedLead.id === lead.id

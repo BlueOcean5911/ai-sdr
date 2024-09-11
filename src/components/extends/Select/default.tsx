@@ -34,7 +34,7 @@ const Select = ({
       <Listbox value={selected} onChange={setSelected}>
         <ListboxButton
           className={clsx(
-            "relative block w-full rounded-lg bg-white py-1.5 pr-8 pl-3 text-left text-sm/6 text-gray-900 border-2 border-gray-200",
+            "min-h-10 relative block w-full rounded-lg bg-white py-1.5 pr-8 pl-3 text-left text-sm/6 text-gray-900 border-2 border-gray-200",
             "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
           )}
         >

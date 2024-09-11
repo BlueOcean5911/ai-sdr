@@ -18,6 +18,11 @@ import AddCadence from "../cadences/AddCadence";
 import CreateCadence from "../cadences/CreateCadence";
 import NewCadenceFromScratch from "../cadences/NewCadenceFromScratch";
 import { useRouter } from "next/navigation";
+import { handleError, runService } from "@/utils/service_utils";
+import {
+  LeadModelWithCompanyModel,
+  updateLeadsAsTargeted,
+} from "@/services/leadService";
 
 const LeadToolbar = () => {
   const searchParams = useSearchParams();
@@ -55,8 +60,23 @@ const LeadToolbar = () => {
   const handleSaveLead = () => {
     if (selectedLeads.length > 0) {
       handleSaveLeads(selectedLeads);
+      //  TODO: Add logic to handle save the leads. We need to update the selected lead as target
+      // So add logic for this
+      const leadIds = selectedLeads.map(
+        (lead: LeadModelWithCompanyModel) => lead.id
+      );
+      runService(
+        leadIds,
+        updateLeadsAsTargeted,
+        (data) => {
+          toast.success("Successfully saved");
+        },
+        (status, error) => {
+          // handleError(status, error);
+          toast.error(error);
+        }
+      );
       setSelectedLeads([]);
-      toast.success("Leads saved successfully");
     } else {
       toast.info("Please select one lead to save");
     }
@@ -111,7 +131,7 @@ const LeadToolbar = () => {
           <EnvelopeIcon className="w-4 h-4" /> Email
         </button>
         <Menu>
-          <MenuButton className="inline-flex items-center gap-2 rounded-md border-2 border-gray-300 py-1 px-3 text-gray-900 focus:outline-none data-[hover]:bg-gray-200 data-[open]:bg-gray-200 data-[focus]:outline-1 data-[focus]:outline-white">
+          <MenuButton className="inline-flex items-center gap-2 rounded-md border-2 border-gray-300 py-1.5 px-3 text-gray-900 focus:outline-none data-[hover]:bg-gray-200 data-[open]:bg-gray-200 data-[focus]:outline-1 data-[focus]:outline-white">
             <PaperAirplaneIcon className="w-4 h-4" /> Cadence
           </MenuButton>
           <MenuItems
