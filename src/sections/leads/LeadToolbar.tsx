@@ -39,7 +39,7 @@ const LeadToolbar = () => {
   const router = useRouter();
   useEffect(() => {
     const currentParams = Object.fromEntries(searchParams.entries());
-    if (currentParams.prospectedByCurrentTeam) {
+    if (currentParams.targeted) {
       setIsSavedView(true);
     } else {
       setIsSavedView(false);

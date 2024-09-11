@@ -5,7 +5,13 @@ import { contain } from "@/utils/string";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Pagination from "@/components/extends/Pagination/Pagination";
-import { CompanyProps } from "@/types";
+import { CompanyProps, CountModel } from "@/types";
+import { handleError, runService } from "@/utils/service_utils";
+import {
+  CompanyModel,
+  getCompanies,
+  getCompanyTotalCount,
+} from "@/services/companyService";
 
 const CompanyTable = () => {
   const { companyFilterConfig } = useCompanyFilter();
@@ -18,53 +24,95 @@ const CompanyTable = () => {
     setSelectedCompanies,
   } = useCompanySelection();
 
+  const [totalCount, setTotalCount] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [companies, setCompanies] = useState<CompanyProps[]>([]);
   const [allSelected, setAllSelected] = useState(false);
   const searchParams = useSearchParams();
 
-  useEffect(() => {
-    console.log("here", totalCompanies);
-    setCompanies([...totalCompanies]);
-  }, [totalCompanies]);
+  // useEffect(() => {
+  // console.log("here", totalCompanies);
+  // setCompanies([...totalCompanies]);
+  // }, [totalCompanies]);
+
+  // useEffect(() => {
+  // console.log("companies", companies);
+  // }, [companies]);
+
+  const fetchCompanies = (targeted: boolean = false) => {
+    const offset = pageSize * (currentPage - 1);
+    const limit = pageSize;
+    runService(
+      { offset, limit, targeted },
+      getCompanies,
+      (data) => {
+        console.log("company data", data);
+        setTotalCompanies(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  const fetchTotalCount = (targeted: boolean = false) => {
+    runService(
+      { targeted },
+      getCompanyTotalCount,
+      (data: CountModel) => {
+        setTotalCount(data?.count ? data?.count : 0);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
 
   useEffect(() => {
-    console.log("companies", companies);
-  }, [companies]);
+    fetchTotalCount();
+    fetchCompanies();
+  }, []);
+
+  useEffect(() => {
+    console.log("total count", totalCount);
+  }, [totalCount]);
 
   useEffect(() => {
     const currentParams = Object.fromEntries(searchParams);
-    if (currentParams.prospectedByCurrentTeam) {
-      setCompanies(savedCompanies);
+    if (currentParams.targeted) {
+      fetchTotalCount(true);
+      fetchCompanies(true);
     } else {
-      setCompanies(totalCompanies);
+      fetchTotalCount(false);
+      fetchCompanies(false);
     }
-  }, [searchParams]);
+    setSelectedCompanies([]);
+    setAllSelected(false);
+  }, [searchParams, currentPage, pageSize]);
 
-  useEffect(() => {
-    const filteredCompanies = totalCompanies.filter((company: any) => {
-      if (
-        companyFilterConfig.company &&
-        !contain(company.companyName, companyFilterConfig.company)
-      ) {
-        return false;
-      }
-      if (
-        companyFilterConfig.location &&
-        !contain(company.currentLocation, companyFilterConfig.location)
-      ) {
-        return false;
-      }
-      return true;
-    });
-    setCompanies(filteredCompanies);
-    console.log("companyFilterConfig: ", companyFilterConfig);
-  }, [companyFilterConfig]);
+  // useEffect(() => {
+  //   const filteredCompanies = totalCompanies.filter((company: any) => {
+  //     if (
+  //       companyFilterConfig.company &&
+  //       !contain(company.companyName, companyFilterConfig.company)
+  //     ) {
+  //       return false;
+  //     }
+  //     if (
+  //       companyFilterConfig.location &&
+  //       !contain(company.currentLocation, companyFilterConfig.location)
+  //     ) {
+  //       return false;
+  //     }
+  //     return true;
+  //   });
+  //   setCompanies(filteredCompanies);
+  //   console.log("companyFilterConfig: ", companyFilterConfig);
+  // }, [companyFilterConfig]);
 
   const handleAllSelected = (id: any, checked: boolean) => {
     if (checked) {
-      setSelectedCompanies(companies.map((company: any) => company));
+      setSelectedCompanies(totalCompanies.map((company: any) => company));
     } else {
       setSelectedCompanies([]);
     }
@@ -128,9 +176,9 @@ const CompanyTable = () => {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {companies
-                .slice(pageSize * (currentPage - 1), pageSize * currentPage)
-                .map((company: any) => (
+              {totalCompanies
+                // .slice(pageSize * (currentPage - 1), pageSize * currentPage)
+                .map((company: CompanyModel) => (
                   <tr
                     key={company.id}
                     className="even:bg-blue-50 hover:bg-gray-300 "
@@ -139,6 +187,7 @@ const CompanyTable = () => {
                       <div className="flex gap-2">
                         <CheckBox
                           id={company.id}
+                          key={company.id}
                           content=""
                           value={company}
                           checked={selectedCompanies.find(
@@ -160,18 +209,23 @@ const CompanyTable = () => {
                               ]);
                             }
                           }}
-                        />{" "}
-                        {company.companyName}
+                        />
+                        <a
+                          className="hover:underline hover:text-blue-900"
+                          href={company.linkedin}
+                        >
+                          {company.name}
+                        </a>
                       </div>
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {company.phone}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {company.currentLocation}
+                      {company.location}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {company.employees}
+                      {company.size}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {company.industry}
@@ -186,7 +240,7 @@ const CompanyTable = () => {
         <div className="flex justify-end px-16">
           <Pagination
             className="pagination-bar"
-            totalCount={companies.length}
+            totalCount={totalCount}
             pageSize={pageSize}
             onPageChange={(pageSize: number, currentPage: number) => {
               setPageSize(pageSize);

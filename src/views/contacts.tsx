@@ -6,7 +6,7 @@ import ContactToolbar from "@/sections/contacts/ContactToolbar";
 import ContactItem from "@/sections/contacts/ContactItem";
 import { useRouter } from "next/navigation";
 
-export default function Contacts() {
+export default function Contacts({ cadenceId }: { cadenceId: string }) {
   const { contactFilterConfig, setContactFilterConfig } = useContactFilter();
   const router = useRouter();
 

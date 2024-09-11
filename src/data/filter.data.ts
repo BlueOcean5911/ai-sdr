@@ -1,3 +1,5 @@
+import { EMAIL_STATUS } from "@/types/enums";
+
 export const personaOptions = [
   { value: "CEO", label: "CEO" },
   { value: "Sales Manager", label: "Sales Manager" },
@@ -49,8 +51,8 @@ export const cadenceStepOptions = [
 ];
 
 export const statusOptions = [
-  { value: "Verified", label: "Verified" },
-  { value: "Questionable", label: "Questionable" },
-  { value: "Invalid", label: "Invalid" },
-  { value: "No Status", label: "No Status" },
+  { value: EMAIL_STATUS.VALID, label: "Verified" },
+  { value: EMAIL_STATUS.QUESTIONABLE, label: "Questionable" },
+  { value: EMAIL_STATUS.INVALID, label: "Invalid" },
+  { value: EMAIL_STATUS.NO_STATUS, label: "No Status" },
 ];
