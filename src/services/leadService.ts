@@ -2,7 +2,9 @@ import { api } from "@/utils/api";
 import { CountModel, FetchProps } from "@/types";
 import { EMAIL_STATUS } from "@/types/enums";
 import { CompanyModel } from "./companyService";
-interface FetchLeadsProps extends FetchProps {}
+interface FetchLeadsProps extends FetchProps {
+  targeted?: boolean;
+}
 
 export interface LeadModel extends BaseLeadModel {
   id: string;
