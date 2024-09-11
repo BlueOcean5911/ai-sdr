@@ -15,7 +15,7 @@ export default function Page({ params }: { params: { id: string } }) {
           <ContactFilterProvider>
             <ContactSelectionProvider>
               <Suspense>
-                <Contacts />
+                <Contacts cadenceId={id} />
               </Suspense>
             </ContactSelectionProvider>
           </ContactFilterProvider>
