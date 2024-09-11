@@ -48,6 +48,7 @@ export interface CountModel {
 export interface FetchProps {
   offset?: number;
   limit?: number;
+  targeted?: boolean;
 }
 
 export interface ApiCountResponse {

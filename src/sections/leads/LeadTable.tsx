@@ -5,7 +5,14 @@ import { contain } from "@/utils/string";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Pagination from "@/components/extends/Pagination/Pagination";
-import { LeadProps } from "@/types";
+import { CountModel, LeadProps } from "@/types";
+import { handleError, runService } from "@/utils/service_utils";
+import {
+  getLeads,
+  getLeadTotalCount,
+  LeadModelWithCompanyModel,
+} from "@/services/leadService";
+import Link from "next/link";
 
 const LeadTable = () => {
   const { leadFilterConfig } = useLeadFilter();
@@ -20,53 +27,87 @@ const LeadTable = () => {
 
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [leads, setLeads] = useState<LeadProps[]>([]);
+  const [leads, setLeads] = useState<LeadModelWithCompanyModel[]>([]);
   const [allSelected, setAllSelected] = useState(false);
+  const [totalCount, setTotalCount] = useState<number>(0);
   const searchParams = useSearchParams();
 
+  const fetchLeads = (targeted: boolean = false) => {
+    const offset = 0;
+    const limit = pageSize;
+    runService(
+      { offset, limit, targeted },
+      getLeads,
+      (data) => {
+        console.log("data", data);
+        setTotalLeads(data); // if total changed, leads will update
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  const fetchTotalCount = () => {
+    runService(
+      {},
+      getLeadTotalCount,
+      (data: CountModel) => {
+        setTotalCount(data?.count ? data?.count : 0);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
   useEffect(() => {
-    console.log("here", totalLeads);
+    fetchTotalCount();
+    fetchLeads();
+  }, []);
+
+  useEffect(() => {
     setLeads([...totalLeads]);
   }, [totalLeads]);
 
   useEffect(() => {
-    console.log("leads", leads);
+    console.log("leads here", leads);
   }, [leads]);
 
   useEffect(() => {
     const currentParams = Object.fromEntries(searchParams);
-    if (currentParams.prospectedByCurrentTeam) {
-      setLeads(savedLeads);
+    if (currentParams.targeted) {
+      fetchLeads(true);
     } else {
-      setLeads(totalLeads);
+      fetchLeads(false);
     }
   }, [searchParams]);
 
-  useEffect(() => {
-    const filteredLeads = totalLeads.filter((lead: any) => {
-      if (
-        leadFilterConfig.title &&
-        !contain(lead.title, leadFilterConfig.title)
-      ) {
-        return false;
-      }
-      if (
-        leadFilterConfig.company &&
-        !contain(lead.companyName, leadFilterConfig.company)
-      ) {
-        return false;
-      }
-      if (
-        leadFilterConfig.location &&
-        !contain(lead.currentLocation, leadFilterConfig.location)
-      ) {
-        return false;
-      }
-      return true;
-    });
-    setLeads(filteredLeads);
-    console.log("leadFilterConfig: ", leadFilterConfig);
-  }, [leadFilterConfig]);
+  // useEffect(() => {
+  //   const filteredLeads = totalLeads.filter((lead: any) => {
+  //     if (
+  //       leadFilterConfig.title &&
+  //       !contain(lead.title, leadFilterConfig.title)
+  //     ) {
+  //       return false;
+  //     }
+  //     if (
+  //       leadFilterConfig.company &&
+  //       !contain(lead.companyName, leadFilterConfig.company)
+  //     ) {
+  //       return false;
+  //     }
+  //     if (
+  //       leadFilterConfig.location &&
+  //       !contain(lead.currentLocation, leadFilterConfig.location)
+  //     ) {
+  //       return false;
+  //     }
+  //     return true;
+  //   });
+  //   setLeads(filteredLeads);
+  //   console.log("leadFilterConfig: ", leadFilterConfig);
+  // }, [leadFilterConfig]);
 
   const handleAllSelected = (id: any, checked: boolean) => {
     if (checked) {
@@ -117,7 +158,7 @@ const LeadTable = () => {
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
-                  Company
+                  Email
                 </th>
                 <th
                   scope="col"
@@ -130,6 +171,18 @@ const LeadTable = () => {
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
                   Current Location
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Company
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Company Location
                 </th>
                 <th
                   scope="col"
@@ -148,7 +201,7 @@ const LeadTable = () => {
             <tbody className="bg-white">
               {leads
                 .slice(pageSize * (currentPage - 1), pageSize * currentPage)
-                .map((lead: any) => (
+                .map((lead: LeadModelWithCompanyModel, index) => (
                   <tr
                     key={lead.id}
                     className="even:bg-blue-50 hover:bg-gray-300 "
@@ -157,6 +210,7 @@ const LeadTable = () => {
                       <div className="flex gap-2">
                         <CheckBox
                           id={lead.id}
+                          key={lead.id}
                           content=""
                           value={lead}
                           checked={selectedLeads.find(
@@ -175,7 +229,12 @@ const LeadTable = () => {
                             }
                           }}
                         />{" "}
-                        {lead.name}
+                        <a
+                          className="hover:underline hover:text-blue-900 hover:cursor-pointer"
+                          href={lead.linkedin}
+                        >
+                          {lead.firstName} {lead.lastName}
+                        </a>
                       </div>
                     </td>
                     {/* <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
@@ -185,19 +244,30 @@ const LeadTable = () => {
                       {lead.title}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {lead.companyName}
+                      {lead.email}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {lead.phone}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {lead.currentLocation}
+                      {lead.location}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {lead.employees}
+                      <a
+                        className="hover:underline hover:text-blue-900"
+                        href={lead.company?.linkedin}
+                      >
+                        {lead.company?.name}
+                      </a>
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {lead.industry}
+                      {lead.company?.location}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {lead.company?.size}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {lead.company?.industry}
                     </td>
                   </tr>
                 ))}

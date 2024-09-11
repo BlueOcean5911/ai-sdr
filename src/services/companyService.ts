@@ -4,7 +4,7 @@ import { COMPANY_SIZE, EMAIL_STATUS } from "@/types/enums";
 
 interface FetchCompaniesProps extends FetchProps {}
 
-interface CompanyModel extends BaseCompanyModel {
+export interface CompanyModel extends BaseCompanyModel {
   id?: string;
 }
 

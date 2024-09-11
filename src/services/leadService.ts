@@ -1,14 +1,15 @@
 import { api } from "@/utils/api";
 import { CountModel, FetchProps } from "@/types";
 import { EMAIL_STATUS } from "@/types/enums";
+import { CompanyModel } from "./companyService";
 interface FetchLeadsProps extends FetchProps {}
 
-interface LeadModel extends BaseLeadModel {
-  id?: string;
-  companyName?: string;
-  companyLinkedin?: string;
-  clickCount?: number;
-  replyCount?: number;
+export interface LeadModel extends BaseLeadModel {
+  id: string;
+}
+
+export interface LeadModelWithCompanyModel extends LeadModel {
+  company?: CompanyModel;
 }
 
 interface BaseLeadModel {
@@ -28,11 +29,16 @@ interface BaseLeadModel {
   personaId?: string;
   ownerId?: string;
 
+  clickCount?: number;
+  replyCount?: number;
+
+  company?: CompanyModel;
+
   targeted?: string;
 }
 
 interface ApiLeadResponse {
-  data: LeadModel; // The structure of the data returned from the API
+  data: Array<LeadModelWithCompanyModel>; // The structure of the data returned from the API
 }
 
 interface ApiCountResponse {
@@ -40,30 +46,49 @@ interface ApiCountResponse {
 }
 
 export const getLeads = async (
-  data: FetchLeadsProps = { offset: 0, limit: 100 }
+  props: FetchLeadsProps = { offset: 0, limit: 100, targeted: undefined }
 ): Promise<ApiLeadResponse> => {
-  const response = await api.get(
-    `/api/leads?offset=${data.offset}&limit=${data.limit}`
-  );
+  const { offset, limit, targeted } = props;
+  let url = `/api/leads/?offset=${offset}&limit=${limit}`;
+
+  if (targeted) {
+    url += `&targeted=true`; // Conditionally add targeted parameter
+  }
+  const response = await api.get(url);
+
+  let leads: Array<LeadModelWithCompanyModel> = [];
+  response.data.forEach((item: any) => {
+    leads.push({
+      id: item?.surrogateId,
+      firstName: item?.firstName,
+      lastName: item?.lastName,
+      title: item?.title,
+      email: item?.email,
+      emailStatus: item?.emailStatus,
+      phone: item?.phone,
+      phoneStatus: item?.phoneStatus,
+      linkedin: item?.linkedin,
+      companyId: item?.companyId,
+      location: item?.location,
+      clickCount: item?.clickCount,
+      replyCount: item?.replyCount,
+      targeted: item?.targeted,
+      company: {
+        id: item?.company?.surrogateId,
+        name: item?.company?.name,
+        companyType: item?.company?.companyType,
+        phone: item?.company?.phone,
+        phoneStatus: item?.company?.phoneStatus,
+        size: item?.company?.size,
+        industry: item?.company?.industry,
+        description: item?.company?.description,
+        linkedin: item?.company?.linkedin,
+        location: item?.company?.location,
+      },
+    });
+  });
   return {
-    data: {
-      id: response.data?.surrogateId,
-      firstName: response.data?.firstName,
-      lastName: response.data?.lastName,
-      title: response.data?.title,
-      email: response.data?.email,
-      emailStatus: response.data?.emailStatus,
-      phone: response.data?.phone,
-      phoneStatus: response.data?.phoneStatus,
-      linkedin: response.data?.linkedin,
-      companyId: response.data?.companyId,
-      companyName: response.data?.company?.name,
-      companyLinkedin: response.data?.company?.linkedin,
-      location: response.data?.location,
-      clickCount: response.data?.clickCount,
-      replyCount: response.data?.replyCount,
-      targeted: response.data?.targeted,
-    },
+    data: leads,
   };
 };
 
@@ -81,4 +106,16 @@ export const addLead = async (lead: BaseLeadModel) => {
   if (response.status !== 200) {
     throw new Error("Failed to add lead");
   }
+};
+
+export const updateLeadsAsTargeted = async (
+  leadIds: string[]
+): Promise<ApiCountResponse> => {
+  const response = await api.put("/api/leads/targeted", leadIds);
+
+  return {
+    data: {
+      count: response.data?.count,
+    },
+  };
 };
