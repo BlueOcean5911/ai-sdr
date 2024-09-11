@@ -16,7 +16,7 @@ export enum EMAIL_STATUS {
   VALID = "verified",
   INVALID = "invalid",
   QUESTIONABLE = "questionable",
-  NO_STATUS = "no_status",
+  NO_STATUS = "noStatus",
 }
 
 export enum CAMPAIGN_STAGE {
@@ -34,4 +34,14 @@ export enum SHARE_TYPE {
   PRIVATE = "private",
   VIEW_SHARED = "viewShared",
   EDIT_SHARED = "editShared",
+}
+
+export enum CADENCE_STEP_TYPE {
+  AUTO_EMAIL = "autoEmail",
+  PHONE_CALL = "phoneCall",
+  MANUAL_EMAIL = "manualEmail",
+  LINKEDIN_CONNECT = "linkedinConnect",
+  LINKEDIN_SEND_MESSAGE = "linkedinSendMessage",
+  LINKEDIN_VIEW_PROFILE = "linkedinViewProfile",
+  LINKEDIN_INTERACT_WITH_POST = "linkedinInteractWithPost",
 }

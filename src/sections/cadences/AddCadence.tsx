@@ -1,5 +1,6 @@
 import Select from "@/components/extends/Select/default";
-import { CadenceModel, getCadences } from "@/services/cadenceService";
+// import { CadenceModel, getCadences } from "@/services/cadenceService001";
+import { getCadences } from "@/services/cadenceService";
 import { runService } from "@/utils/service_utils";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XCircle } from "lucide-react";
@@ -87,9 +88,11 @@ const AddCadence = ({
               </div>
 
               <div className="flex gap-4 p-2 justify-end">
-                <button className="btn-secondary">Cancel</button>
+                <button className="w-full p-1 rounded-md bg-gray-300 hover:bg-gray-200">
+                  Cancel
+                </button>
                 <button
-                  className="btn-primary"
+                  className="w-full p-1 rounded-md text-white bg-blue-500 hover:bg-blue-400"
                   onClick={() => handleAddToCadence()}
                 >
                   Add Lead to cadence

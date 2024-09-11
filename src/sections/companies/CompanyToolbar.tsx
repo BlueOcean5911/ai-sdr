@@ -13,6 +13,11 @@ import { useCompanySelection } from "@/contexts/CompanySelectionContext";
 import { useSearchParams } from "next/navigation";
 import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
 import { useRouter } from "next/navigation";
+import {
+  CompanyModel,
+  updateCompaniesAsTargeted,
+} from "@/services/companyService";
+import { runService } from "@/utils/service_utils";
 
 const CompanyToolbar = () => {
   const searchParams = useSearchParams();
@@ -23,7 +28,7 @@ const CompanyToolbar = () => {
   const [isSavedView, setIsSavedView] = useState(false);
   useEffect(() => {
     const currentParams = Object.fromEntries(searchParams.entries());
-    if (currentParams.prospectedByCurrentTeam) {
+    if (currentParams.targeted) {
       setIsSavedView(true);
     } else {
       setIsSavedView(false);
@@ -33,6 +38,20 @@ const CompanyToolbar = () => {
   const handleSaveCompany = () => {
     if (selectedCompanies.length > 0) {
       handleSaveCompanies(selectedCompanies);
+      const companyIds = selectedCompanies.map(
+        (company: CompanyModel) => company.id
+      );
+      runService(
+        companyIds,
+        updateCompaniesAsTargeted,
+        (data) => {
+          toast.success("Successfully saved");
+        },
+        (status, error) => {
+          // handleError(status, error);
+          toast.error(error);
+        }
+      );
       setSelectedCompanies([]);
       toast.success("Companies saved successfully");
     } else {

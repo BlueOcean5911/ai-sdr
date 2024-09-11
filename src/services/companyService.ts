@@ -1,14 +1,17 @@
 import { api } from "@/utils/api";
 import { CountModel, FetchProps } from "@/types";
 import { COMPANY_SIZE, EMAIL_STATUS } from "@/types/enums";
+import { boolean } from "yup";
 
-interface FetchCompaniesProps extends FetchProps {}
-
-export interface CompanyModel extends BaseCompanyModel {
-  id?: string;
+interface FetchCompaniesProps extends FetchProps {
+  targeted?: boolean;
 }
 
-interface BaseCompanyModel {
+export interface CompanyModel extends BaseCompanyModel {
+  id: string;
+}
+
+export interface BaseCompanyModel {
   name?: string;
   linkedin?: string;
   companyType?: string;
@@ -17,10 +20,13 @@ interface BaseCompanyModel {
   description?: string;
   industry?: string;
   location?: string;
-  size?: COMPANY_SIZE;
+  size?: COMPANY_SIZE | string;
   targeted?: boolean;
 }
 
+interface ApiCompaniesResponse {
+  data: CompanyModel[]; // The structure of the data returned from the API
+}
 interface ApiCompanyResponse {
   data: CompanyModel; // The structure of the data returned from the API
 }
@@ -30,29 +36,46 @@ interface ApiCountResponse {
 }
 
 export const getCompanies = async (
-  data: FetchCompaniesProps = { offset: 0, limit: 100 }
-): Promise<ApiCompanyResponse> => {
-  const response = await api.get(
-    `/api/companies?offset=${data.offset}&limit=${data.limit}`
-  );
+  data: FetchCompaniesProps = { offset: 0, limit: 100, targeted: false }
+): Promise<ApiCompaniesResponse> => {
+  const { offset, limit, targeted } = data;
+  let url = `/api/companies?offset=${offset}&limit=${limit}`;
+  if (targeted) {
+    url += "&targeted=true";
+  }
+  const response = await api.get(url);
+
+  let companies: Array<CompanyModel> = [];
+  response.data.forEach((item: any) => {
+    companies.push({
+      id: item?.surrogateId,
+      name: item?.name,
+      linkedin: item?.linkedin,
+      companyType: item?.companyType,
+      phone: item?.phone,
+      phoneStatus: item?.phoneStatus,
+      description: item?.description,
+      industry: item?.industry,
+      location: item?.location,
+      size: item?.size,
+      targeted: item?.targeted,
+    });
+  });
   return {
-    data: {
-      id: response.data?.surrogateId,
-      name: response.data?.name,
-      companyType: response.data?.companyType,
-      phone: response.data?.phone,
-      phoneStatus: response.data?.phoneStatus,
-      size: response.data?.size,
-      industry: response.data?.industry,
-      description: response.data?.description,
-      linkedin: response.data?.linkedin,
-      location: response.data?.location,
-    },
+    data: companies,
   };
 };
 
-export const getCompanyTotalCount = async (): Promise<ApiCountResponse> => {
-  const response = await api.get(`/api/companies/total-count`);
+export const getCompanyTotalCount = async ({
+  targeted,
+}: {
+  targeted: boolean;
+}): Promise<ApiCountResponse> => {
+  let url = "/api/companies/total-count";
+  if (targeted) {
+    url += "?targeted=true";
+  }
+  const response = await api.get(url);
   return {
     data: {
       count: response.data?.count,
@@ -60,10 +83,40 @@ export const getCompanyTotalCount = async (): Promise<ApiCountResponse> => {
   };
 };
 
-export const addCompany = async (company: BaseCompanyModel) => {
+export const addCompany = async (
+  company: BaseCompanyModel
+): Promise<ApiCompanyResponse> => {
   const response = await api.post("api/companies", company);
 
   if (response.status !== 200) {
     throw new Error("Failed to create company");
   }
+
+  return {
+    data: {
+      id: response.data?.surrogateId,
+      name: response.data?.name,
+      linkedin: response.data?.linkedin,
+      companyType: response.data?.companyType,
+      phone: response.data?.phone,
+      phoneStatus: response.data?.phoneStatus,
+      description: response.data?.description,
+      industry: response.data?.industry,
+      location: response.data?.location,
+      size: response.data?.size,
+      targeted: response.data?.targeted,
+    },
+  };
+};
+
+export const updateCompaniesAsTargeted = async (
+  companyIds: string[]
+): Promise<ApiCountResponse> => {
+  const response = await api.put("/api/companies/targeted", companyIds);
+
+  return {
+    data: {
+      count: response.data?.count,
+    },
+  };
 };

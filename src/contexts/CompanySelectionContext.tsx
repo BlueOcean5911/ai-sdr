@@ -1,3 +1,4 @@
+import { CompanyModel } from "@/services/companyService";
 import { createContext, useContext, useState } from "react";
 
 const defaultCompanies = [
@@ -235,9 +236,11 @@ export const CompanySelectionProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [totalCompanies, setTotalCompanies] = useState<any[]>(defaultCompanies);
-  const [savedCompanies, setSavedCompanies] = useState<any[]>([]);
-  const [selectedCompanies, setSelectedCompanies] = useState<any[]>([]);
+  const [totalCompanies, setTotalCompanies] = useState<CompanyModel[]>([]);
+  const [savedCompanies, setSavedCompanies] = useState<CompanyModel[]>([]);
+  const [selectedCompanies, setSelectedCompanies] = useState<CompanyModel[]>(
+    []
+  );
 
   const handleSaveCompanies = (companies: any[]) => {
     for (const company of companies) {

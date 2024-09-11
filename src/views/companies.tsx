@@ -25,10 +25,10 @@ export default function Companies() {
 
   const handleSavedView = () => {
     // Check if the parameter exists
-    if (!currentParams.prospectedByCurrentTeam) {
+    if (!currentParams.targeted) {
       // Add the new query parameter
       const newParams = new URLSearchParams(searchParams);
-      newParams.set("prospectedByCurrentTeam", "yes");
+      newParams.set("targeted", "yes");
 
       // Update the URL
       router.push(`${pathname}?${newParams.toString()}`);
@@ -37,9 +37,9 @@ export default function Companies() {
 
   const handleTotalView = () => {
     // Check if the parameter exists
-    if (currentParams.prospectedByCurrentTeam) {
+    if (currentParams.targeted) {
       const newParams = new URLSearchParams(searchParams);
-      newParams.delete("prospectedByCurrentTeam");
+      newParams.delete("targeted");
       router.push(`${pathname}?${newParams.toString()}`);
     }
   };
@@ -68,9 +68,7 @@ export default function Companies() {
             <button
               className={classNames(
                 "pb-1 px-3 text-sm/6 font-semibold focus:outline-none hover:text-blue-500 border-b-2",
-                currentParams.prospectedByCurrentTeam
-                  ? ""
-                  : "text-blue-600 border-b-blue-500"
+                currentParams.targeted ? "" : "text-blue-600 border-b-blue-500"
               )}
               onClick={() => handleTotalView()}
             >
@@ -79,9 +77,7 @@ export default function Companies() {
             <button
               className={classNames(
                 "pb-1 px-3 text-sm/6 font-semibold focus:outline-none hover:text-blue-500 border-b-2",
-                currentParams.prospectedByCurrentTeam
-                  ? "text-blue-600 border-b-blue-500"
-                  : ""
+                currentParams.targeted ? "text-blue-600 border-b-blue-500" : ""
               )}
               onClick={() => handleSavedView()}
             >
@@ -95,14 +91,14 @@ export default function Companies() {
                 </MenuButton>
                 <MenuItems
                   anchor="bottom end"
-                  className="flex flex-col w-28 origin-top-right bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
+                  className="flex flex-col w-32 origin-top-right bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
                 >
                   <MenuItem>
                     <button
-                      className="p-2 text-sm flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                      className="p-2 text-sm flex w-full items-center rounded-lg data-[focus]:bg-blue-100 text-nowrap"
                       onClick={() => setCreate(true)}
                     >
-                      Single Lead
+                      Single Company
                     </button>
                   </MenuItem>
                   <MenuItem>

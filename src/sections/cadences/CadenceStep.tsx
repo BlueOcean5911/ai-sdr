@@ -8,29 +8,44 @@ import {
   Bars2Icon,
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import { CadenceStepModel } from "@/services/cadenceStepService";
 
-export default function CadenceStep(props: CadenceStepProps) {
+export default function CadenceStep({
+  cadenceStep,
+}: {
+  cadenceStep: CadenceStepModel;
+}) {
   const router = useRouter();
 
   return (
     <div className="w-full h-min-40 flex flex-col bg-white rounded-md shadow-md">
       <div className="w-full h-12 flex text-nowrap">
         <div className="w-12 flex justify-center items-center border-r">
-          <span className="px-2 text-xl">1</span>
+          <span className="px-2 text-xl">{cadenceStep.order}</span>
         </div>
         <div className="flex flex-1 items-center gap-2">
           <div className="w-50 px-4 flex justify-between items-center gap-4">
             <div className="w-8 h-8 bg-slate-100 flex justify-center items-center rounded-full">
               <EnvelopeIcon className="w-4 h-4" />
             </div>
-            <span className="font-semibold">Day 1: Automatic email</span>
+            <span className="font-semibold">{cadenceStep.name}</span>
           </div>
           <div className="flex items-center overflow-hidden">
-            <div className="flex w-15 px-1 text-xs">- Active</div>
-            <div className="flex w-15 px-1 text-xs">- Paused</div>
-            <div className="flex w-15 px-1 text-xs">- Not sent</div>
-            <div className="flex w-15 px-1 text-xs">- Bounced</div>
-            <div className="flex w-15 px-1 text-xs">- Finished</div>
+            <div className="flex w-15 px-1 text-xs">
+              {cadenceStep.activeCount} Active
+            </div>
+            <div className="flex w-15 px-1 text-xs">
+              {cadenceStep.pausedCount} Paused
+            </div>
+            <div className="flex w-15 px-1 text-xs">
+              {cadenceStep.notSentCount} Not sent
+            </div>
+            <div className="flex w-15 px-1 text-xs">
+              {cadenceStep.bouncedCount} Bounced
+            </div>
+            <div className="flex w-15 px-1 text-xs">
+              {cadenceStep.finishedCount} Finished
+            </div>
           </div>
         </div>
         <div className="flex px-2 gap-2 justify-end items-center">
@@ -82,51 +97,42 @@ export default function CadenceStep(props: CadenceStepProps) {
           <div className="min-w-10 flex justify-center">
             <ToggleButton checked={true} handleChange={() => {}} />
           </div>
-          <div className="min-w-40 px-4 flex">A New Thread</div>
+          <div className="min-w-40 px-4 flex">New Thread</div>
           <div className="min-w-60 px-4 flex flex-1 flex-col gap-1">
-            <div className="text-base font-semibold">Upcoming Renewal</div>
+            <div className="text-base font-semibold">
+              {cadenceStep.template?.subject}
+            </div>
             <div className="text-sm line-clamp-2">
-              Hi first_name, I hope you are having a wonderful now_weekday! I'd
-              love to connect in the next few weeks to discuss company's
-              upcoming annual renewal with [your organization name] and plan out
-              the road to success for the next year. During this call, we will
-              have an open conversation about how [your organization name] has
-              provided value to you and your team throughout the year, look at
-              specific business metrics, discuss what your goals for the coming
-              year will be, and layout a plan on how we can continue to drive
-              value. Would any of these times work for you? [insert availability
-              #1] [insert availability #2] [insert availability #3] Please feel
-              free to invite anyone from company who would be an integral part
-              of this conversation! Thanks, sender_first_name
+              {cadenceStep.template?.bodyText}
             </div>
           </div>
           <div className="flex items-center overflow-hidden">
             <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>-</span>
+              <span>{cadenceStep.scheduledCount}</span>
               <span className="text-nowrap">Scheduled</span>
             </div>
             <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>-</span>
+              <span>{cadenceStep.deliveredCount}</span>
               <span className="text-nowrap">Delivered</span>
             </div>
             <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>-</span>
+              <span>{cadenceStep.bouncedCount}</span>
               <span className="text-nowrap">Bounced</span>
             </div>
-            <div className="flex flex-col w-min-15 px-1 text-xs">
+            {/* <div className="flex flex-col w-min-15 px-1 text-xs">
               <span>-</span>
               <span className="text-nowrap">Spam Blocked</span>
-            </div>
+            </div> */}
             <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>-</span>
+              <span>{cadenceStep.replyCount}</span>
               <span className="text-nowrap">Reply</span>
             </div>
             <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>-</span>
+              <span>{cadenceStep.interestedCount}</span>
               <span className="text-nowrap">Interested</span>
             </div>
             <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>-</span>
+              <span>{cadenceStep.optOutCount}</span>
               <span className="text-nowrap">Opt out</span>
             </div>
           </div>
