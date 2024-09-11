@@ -190,7 +190,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <ContactFilterProvider>
               <ContactSelectionProvider>
                 <Suspense>
-                  <Contacts cadenceId={cadence?.id} />
+                  {/* <Contacts cadenceId={cadence?.id} /> */}
                 </Suspense>
               </ContactSelectionProvider>
             </ContactFilterProvider>
