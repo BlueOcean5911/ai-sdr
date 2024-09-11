@@ -41,6 +41,12 @@ export interface CreateModelProps {
   handleClose: () => void;
 }
 
+export interface InviteUserProps {
+  open: boolean;
+  handleInvite: () => void;
+  handleClose: () => void;
+}
+
 export interface CountModel {
   count?: number;
 }
