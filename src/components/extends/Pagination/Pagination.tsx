@@ -45,24 +45,12 @@ const Pagination = (props: any) => {
   const [pageSize, setPageSize] = useState(defaultPageSize);
   const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    onPageChange(pageSize, currentPage);
-  }, [currentPage, pageSize]);
-
   const paginationRange: any = usePagination({
     currentPage,
     totalCount,
     siblingCount,
     pageSize,
   });
-
-  const onNext = () => {
-    setCurrentPage(currentPage + 1);
-  };
-
-  const onPrevious = () => {
-    setCurrentPage(currentPage - 1);
-  };
 
   let currentIndex = pageSize * (currentPage - 1) + 1;
   if (currentIndex < 0) {
@@ -75,6 +63,19 @@ const Pagination = (props: any) => {
   }
 
   let lastPage = paginationRange[paginationRange.length - 1];
+
+  useEffect(() => {
+    onPageChange(pageSize, currentPage);
+    if (totalCount < pageSize * (currentPage - 1)) setCurrentPage(lastPage);
+  }, [currentPage, pageSize]);
+
+  const onNext = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const onPrevious = () => {
+    setCurrentPage(currentPage - 1);
+  };
   return (
     <div className="flex justify-end items-center pt-2">
       <div className="pr-12 text-sm text-nowrap">
