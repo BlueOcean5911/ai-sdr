@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { ContactItemProps } from "@/types";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
-import { ContactInCadence } from "@/services/contactsInCadence";
+import { ContactInCadence } from "@/services/contactsInCadenceService";
 
 export default function ContactItem({
   contact,
