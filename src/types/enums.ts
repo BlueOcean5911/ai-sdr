@@ -67,3 +67,14 @@ export enum CADENCE_STEP_STATUS {
   FAILED = "failed",
   FINISHED = "finished",
 }
+
+export enum MAILING_STATE {
+  DRAFT = "drafted",
+  NOT_SENT = "notSent",
+  SCHEDULED = "scheduled",
+  DELIVERED = "delivered",
+  BOUNCED = "bounced",
+  OPENED = "opened",
+  CLICKED = "clicked",
+  REPLIED = "replied",
+}

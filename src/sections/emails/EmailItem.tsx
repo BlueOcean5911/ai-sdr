@@ -18,10 +18,12 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import EmailSendWindow from "@/sections/email/EmailSendWindow";
+import { MailingModel } from "@/services/mailingService";
+import { formatDate } from "@/utils/format";
 
-export default function EmailItem(props: EmailItemProps) {
+export default function EmailItem({ mailing }: { mailing: MailingModel }) {
   const [sent, setSent] = useState(false);
-  const [send, setSend] = useState(true);
+
   const router = useRouter();
 
   return (
@@ -33,38 +35,29 @@ export default function EmailItem(props: EmailItemProps) {
         className="flex items-center flex-1 gap-2 cursor-pointer"
         onClick={() => setSent(true)}
       >
-        <div className="min-w-35 flex items-center">
+        <div className="min-w-28 flex items-center overflow-hidden max-w-28">
           <span className="text-xs">To:</span>
-          <span className="text-sm text-blue-900">Archy Gupta</span>
+          <span className="text-sm text-blue-900">{mailing.leadName}</span>
         </div>
 
         <div className="flex flex-1 flex-col gap-0.5 text-xs">
-          <span className="font-semibold line-clamp-1">
-            Re: Solution for Product Manager Talent Management Systems - HR IT
-          </span>
-          <span className="line-clamp-2 text-gray-500">
-            Hi Mark, I came across First Energy Gum, a company dedicated to
-            providing extra energy and focus through their innovative
-            caffeine-infused chewing gum.🚀👀 Noticed that Greate is a Student's
-            best friend at times. Niklaus understands the value of Greate's, and
-            we're here to make things easier for you. Greate's can often feel
-            overwhelming, but with our Greate, you'll breeze through them. We've
-            helped businesses like yours before, and I thought you might be
-            interested in how we did that. Could we connect for 15 minutes this
-            week to discuss how Greate can be a solution and not a challenge for
-            you? Best, Niklaus -- Niklaus Anton
-          </span>
+          <span className="font-semibold line-clamp-1">{mailing.subject}</span>
+          <span className="line-clamp-2 text-gray-500">{mailing.message}</span>
           <span className="line-clamp-1 text-blue-500">
-            Step 1 of Niklaus's Outbound AI Sequence 1
+            Step {mailing.currentCadenceStep} of {mailing.cadenceName}
           </span>
         </div>
 
-        <div className="flex items-center gap-2 text-xs">
-          <span className="px-1 flex flex-1 justify-end bg-orange-500 text-white">
-            Not sent
-          </span>
-          <span className="p-1 rounded-full bg-gray-100">NA</span>
-          <span>Aug 26</span>
+        <div className="flex  gap-2 text-xs flex-col">
+          <p className="p-1 rounded-full bg-gray-100 text-center">
+            {mailing.ownerName}
+          </p>
+          <div className="flex items-center gap-2">
+            <span className="px-1 flex flex-1 justify-center bg-orange-500 text-white capitalize">
+              {mailing.mailingStatus}
+            </span>
+            <span>{formatDate(mailing.scheduledAt)}</span>
+          </div>
         </div>
       </div>
       {/* {send ? <EmailSendWindow close={() => setSend(false)} /> : <></>} */}

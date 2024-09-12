@@ -20,3 +20,12 @@ export function formatPercentage(
 export function formatNumberWithComma(number: number): string {
   return number.toLocaleString("en-US");
 }
+
+export function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    day: "2-digit",
+  };
+  return date.toLocaleDateString("en-US", options).replace(",", "");
+}
