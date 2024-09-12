@@ -7,21 +7,52 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect, useMemo } from "react";
+import { handleError, runService } from "@/utils/service_utils";
+import { getUsers, UserModel } from "@/services/userService";
+import { addLead, BaseLeadModel, LeadModel } from "@/services/leadService";
 import Select from "react-tailwindcss-select";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import FormHelperText from "@/components/extends/FormHelperText";
-import { runService } from "@/utils/service_utils";
-import { addLead, BaseLeadModel, LeadModel } from "@/services/leadService";
-import { EMAIL_STATUS } from "@/types/enums";
 import { toast } from "react-toastify";
+import RSelect from "@/components/extends/Select/default";
 
 export default function CreateLead({
   open,
   handleSave,
   handleClose,
 }: CreateModelProps) {
+  const [users, setUsers] = useState<UserModel[]>();
+
+  const fetchUsers = () => {
+    runService(
+      undefined,
+      getUsers,
+      (data) => {
+        setUsers(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  const userOptions = useMemo(() => {
+    let options = users
+      ? users.map((user) => {
+          return {
+            name: user.firstName + " " + user.lastName,
+            value: user.id,
+          };
+        })
+      : [];
+    return options;
+  }, [users]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
   return (
     <>
       <Transition appear show={open} as={Fragment}>
@@ -114,30 +145,6 @@ export default function CreateLead({
                         companyId: undefined,
                         ownerId: undefined,
                       };
-                      // let lead: BaseLeadModel = {
-                      //   firstName: "values.firstName",
-                      //   lastName: "values.lastName",
-                      //   title: "values.jobTitle",
-                      //   email: "values.email",
-                      //   emailStatus: "verified",
-                      //   phone: "values.phone",
-                      //   phoneStatus: "verified",
-                      //   linkedin: "values.linkedin",
-                      //   location: "values.location",
-                      //   personalNote1: "values.note1",
-                      //   personalNote2: "values.note2",
-
-                      //   clickCount: 0,
-                      //   replyCount: 0,
-
-                      //   targeted: false,
-                      //   // personaId: undefined,
-                      //   // companyId: values.company,
-                      //   // ownerId: values.leadOwner,
-                      //   personaId: undefined,
-                      //   companyId: undefined,
-                      //   ownerId: undefined,
-                      // };
                       runService(
                         lead,
                         addLead,
@@ -399,15 +406,7 @@ export default function CreateLead({
 
                           <div className="flex flex-col">
                             <label htmlFor="leadOwner">Lead Owner</label>
-                            <input
-                              id="leadOwner"
-                              type="text"
-                              placeholder="Lead Owner"
-                              className="input-primary max-h-9"
-                              value={values.leadOwner}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
+                            <RSelect data={userOptions}></RSelect>
                             {touched.leadOwner && errors.leadOwner && (
                               <FormHelperText>
                                 {errors.leadOwner}
@@ -419,7 +418,7 @@ export default function CreateLead({
                             <button
                               type="submit"
                               disabled={isSubmitting}
-                              className="px-2 py-1 rounded-md text-white bg-blue-600 hover:bg-blue-500"
+                              className="px-2 py-1 rounded-md text-white bg-blue-500 hover:bg-blue-400"
                             >
                               Save Lead
                             </button>
