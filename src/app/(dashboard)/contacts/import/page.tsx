@@ -2,10 +2,23 @@
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click(); // Trigger the file input click
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      console.log(files[0]); // Log the selected file
+    }
+  };
 
   return (
     <div className="flex flex-1 flex-col lg:flex-row justify-center items-center gap-6 bg-gray-100 overflow-auto">
@@ -49,7 +62,17 @@ export default function Page({ params }: { params: { id: string } }) {
         </div>
         <div className="flex flex-col gap-4">
           <div className="flex justify-center">
-            <button className="px-4 py-1 rounded-sm text-white bg-blue-600">
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept=".csv"
+              style={{ display: "none" }} // Hide the input
+              onChange={handleFileChange}
+            />
+            <button
+              className="px-4 py-1 rounded-sm text-white bg-blue-500 hover:bg-blue-400"
+              onClick={handleButtonClick}
+            >
               Select CSV File
             </button>
           </div>
@@ -61,8 +84,8 @@ export default function Page({ params }: { params: { id: string } }) {
       <div className="max-w-[400px] p-5 flex flex-col gap-4 rounded-md">
         <div className="flex justify-center items-center">
           <Image
-            src={"/assets/images/icon/importlead.svg"}
-            alt="import lead"
+            src={"/assets/images/icon/importcompany.svg"}
+            alt="import company"
             width={90}
             height={90}
           />
@@ -98,7 +121,17 @@ export default function Page({ params }: { params: { id: string } }) {
         </div>
         <div className="flex flex-col gap-4">
           <div className="flex justify-center">
-            <button className="px-4 py-1 rounded-sm bg-white border-2">
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept=".csv"
+              style={{ display: "none" }} // Hide the input
+              onChange={handleFileChange}
+            />
+            <button
+              className="px-4 py-1 rounded-sm text-white bg-blue-500 hover:bg-blue-400"
+              onClick={handleButtonClick}
+            >
               Select CSV File
             </button>
           </div>
