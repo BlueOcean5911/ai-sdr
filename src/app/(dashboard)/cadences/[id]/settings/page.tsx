@@ -1,20 +1,9 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-import {
-  ChevronRightIcon,
-  EllipsisHorizontalIcon,
-  InformationCircleIcon,
-  StarIcon,
-} from "@heroicons/react/24/outline";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { Suspense, useEffect, useState, useMemo } from "react";
+import { ChevronRightIcon, StarIcon } from "@heroicons/react/24/outline";
 import ToggleButton from "@/components/extends/Button/ToggleButton";
-import CadenceStep from "@/sections/cadences/CadenceStep";
-import AddStep from "@/sections/cadences/AddStep";
 import { useRouter } from "next/navigation";
-import { EmailSelectionProvider } from "@/contexts/EmailSelectionContext";
-import { EmailFilterProvider } from "@/contexts/FilterEmailContext";
-import Emails from "@/views/emails";
 import Link from "next/link";
 import {
   BaseCadenceModel,
@@ -22,13 +11,16 @@ import {
   getCadenceById,
   updateCadence,
 } from "@/services/cadenceService";
+import { getUsers, UserModel } from "@/services/userService";
 import { handleError, runService } from "@/utils/service_utils";
+import Select from "@/components/extends/Select/default";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
   const [starred, setStarred] = useState(false);
   const [active, setActive] = useState(false);
   const [cadence, setCadence] = useState<FetchCadenceModel>();
+  const [users, setUsers] = useState<UserModel[]>();
   const router = useRouter();
 
   const handleUpdateCadence = (updatedCadence: BaseCadenceModel) => {
@@ -76,6 +68,34 @@ export default function Page({ params }: { params: { id: string } }) {
     setStarred(cadence?.star ? true : false);
     setActive(cadence?.isActive ? true : false);
   }, [cadence]);
+  const fetchUsers = () => {
+    runService(
+      undefined,
+      getUsers,
+      (data) => {
+        setUsers(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  const userOptions = useMemo(() => {
+    let options = users
+      ? users.map((user) => {
+          return {
+            name: user.firstName + " " + user.lastName,
+            value: user.id,
+          };
+        })
+      : [];
+    return options;
+  }, [users]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <>
@@ -113,38 +133,6 @@ export default function Page({ params }: { params: { id: string } }) {
                 }`}
               />
             </div>
-          </div>
-          <div className="flex items-center gap-3">
-            {/* <Menu>
-              <MenuButton className="">
-                <div className="p-1 border rounded-md">
-                  <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
-                </div>
-              </MenuButton>
-              <MenuItems
-                anchor="bottom end"
-                className="flex flex-col w-24 origin-top bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
-              >
-                <MenuItem>
-                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                    Add a Step
-                  </button>
-                </MenuItem>
-                <MenuItem>
-                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                    Clone
-                  </button>
-                </MenuItem>
-                <MenuItem>
-                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                    Archive
-                  </button>
-                </MenuItem>
-              </MenuItems>
-            </Menu> */}
-            {/* <button className="px-2 py-1 rounded-md text-white bg-blue-900">
-              Add Contracts
-            </button> */}
           </div>
         </div>
         <div className="w-full h-8 px-5 flex items-center gap-2">
@@ -211,23 +199,18 @@ export default function Page({ params }: { params: { id: string } }) {
                 <label className="min-w-24" htmlFor="owner">
                   Owner:
                 </label>
-                <input
-                  id="owner"
-                  type="text"
-                  className="input-primary"
-                  value={`${cadence?.owner.firstName} ${cadence?.owner.lastName}`}
-                />
+                <Select data={userOptions}></Select>
               </div>
               <div className="flex items-center gap-4">
                 <button
                   className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
-                  onClick={() => router.push("/cadences/campaign.id/")}
+                  onClick={() => router.push("/cadences/cadence.id/")}
                 >
                   Save
                 </button>
                 <button
                   className="w-full p-2 rounded-md bg-gray-300 hover:bg-gray-200"
-                  onClick={() => router.push("/cadences/campaign.id/")}
+                  onClick={() => router.push("/cadences/cadence.id/")}
                 >
                   Close
                 </button>
