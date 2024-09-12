@@ -42,7 +42,7 @@ export default function Account() {
       updateUser,
       (data) => {
         setUserData(data);
-        setChange(false);
+        // setChange(false);
         toast.success("Profile updated successfully");
       },
       (status, error) => {
@@ -252,153 +252,7 @@ export default function Account() {
                       </div>
                     </div>
                   </div>
-                  <div>
-                    <div className="pb-2">Password</div>
-                    <div
-                      className={classNames(
-                        "flex flex-col gap-2 ",
-                        change ? "p-4 border-2 border-gray-300 rounded-md" : ""
-                      )}
-                    >
-                      <button
-                        className="min-w-32 px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200"
-                        onClick={() => setChange(!change)}
-                      >
-                        {change ? "Hide" : "Change Password"}
-                      </button>
-                      {change && (
-                        <Formik
-                          initialValues={{
-                            oldPassword: "",
-                            newPassword: "",
-                            confirmPassword: "",
-                          }}
-                          validationSchema={Yup.object().shape({
-                            oldPassword: Yup.string().required(
-                              "Old password is required"
-                            ),
-                            newPassword: Yup.string()
-                              .required("New password is required")
-                              .min(
-                                8,
-                                "Password must be at least 8 characters long"
-                              ),
-                            confirmPassword: Yup.string()
-                              .required("Confirm password is required")
-                              .oneOf(
-                                [Yup.ref("newPassword")],
-                                "Passwords must match"
-                              ),
-                          })}
-                          onSubmit={async (
-                            values,
-                            { setErrors, setStatus, setSubmitting }
-                          ) => {
-                            setSubmitting(true);
-                            updateUserPassword(
-                              values.oldPassword,
-                              values.newPassword,
-                              values.confirmPassword
-                            );
-                            setSubmitting(false);
-                          }}
-                        >
-                          {({
-                            errors,
-                            handleBlur,
-                            handleChange,
-                            handleSubmit,
-                            isSubmitting,
-                            touched,
-                            values,
-                          }) => (
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                              <div className="flex flex-col gap-2">
-                                <div className="flex items-center">
-                                  <label
-                                    className="min-w-36"
-                                    htmlFor="oldPassword"
-                                  >
-                                    Old Password:
-                                  </label>
-                                  <div className="flex flex-col w-full">
-                                    <input
-                                      id="oldPassword"
-                                      type="password"
-                                      className="input-primary"
-                                      value={values.oldPassword}
-                                      onBlur={handleBlur}
-                                      onChange={handleChange}
-                                    />
-                                    {touched.oldPassword &&
-                                      errors.oldPassword && (
-                                        <FormHelperText>
-                                          {errors.oldPassword}
-                                        </FormHelperText>
-                                      )}
-                                  </div>
-                                </div>
-                                <div className="flex items-center">
-                                  <label
-                                    className="min-w-36"
-                                    htmlFor="newPassword"
-                                  >
-                                    New Password:
-                                  </label>
-                                  <div className="flex flex-col w-full">
-                                    <input
-                                      id="newPassword"
-                                      type="password"
-                                      className="input-primary"
-                                      value={values.newPassword}
-                                      onBlur={handleBlur}
-                                      onChange={handleChange}
-                                    />
-                                    {touched.newPassword &&
-                                      errors.newPassword && (
-                                        <FormHelperText>
-                                          {errors.newPassword}
-                                        </FormHelperText>
-                                      )}
-                                  </div>
-                                </div>
-                                <div className="flex items-center">
-                                  <label
-                                    className="min-w-36"
-                                    htmlFor="confirmPassword"
-                                  >
-                                    Confirm Password:
-                                  </label>
-                                  <div className="flex flex-col w-full">
-                                    <input
-                                      id="confirmPassword"
-                                      type="password"
-                                      className="input-primary"
-                                      value={values.confirmPassword}
-                                      onBlur={handleBlur}
-                                      onChange={handleChange}
-                                    />
-                                    {touched.confirmPassword &&
-                                      errors.confirmPassword && (
-                                        <FormHelperText>
-                                          {errors.confirmPassword}
-                                        </FormHelperText>
-                                      )}
-                                  </div>
-                                </div>
-                                <button
-                                  className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
-                                  disabled={isSubmitting}
-                                >
-                                  Confirm
-                                </button>
-                              </div>
-                            </form>
-                          )}
-                        </Formik>
-                      )}
-                    </div>
-                  </div>
+
                   <div className="flex items-center gap-4">
                     <button
                       type="submit"
@@ -418,6 +272,142 @@ export default function Account() {
                 </form>
               )}
             </Formik>
+            <div>
+              <div className="pb-2">Password</div>
+              <div
+                className={classNames(
+                  "flex flex-col gap-2 ",
+                  change ? "p-4 border-2 border-gray-300 rounded-md" : ""
+                )}
+              >
+                <button
+                  className="min-w-32 px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200"
+                  onClick={() => setChange(!change)}
+                >
+                  {change ? "Hide" : "Change Password"}
+                </button>
+                {change && (
+                  <Formik
+                    initialValues={{
+                      oldPassword: "",
+                      newPassword: "",
+                      confirmPassword: "",
+                    }}
+                    validationSchema={Yup.object().shape({
+                      oldPassword: Yup.string().required(
+                        "Old password is required"
+                      ),
+                      newPassword: Yup.string()
+                        .required("New password is required")
+                        .min(8, "Password must be at least 8 characters long"),
+                      confirmPassword: Yup.string()
+                        .required("Confirm password is required")
+                        .oneOf(
+                          [Yup.ref("newPassword")],
+                          "Passwords must match"
+                        ),
+                    })}
+                    onSubmit={async (
+                      values,
+                      { setErrors, setStatus, setSubmitting }
+                    ) => {
+                      setSubmitting(true);
+                      updateUserPassword(
+                        values.oldPassword,
+                        values.newPassword,
+                        values.confirmPassword
+                      );
+                      setSubmitting(false);
+                    }}
+                  >
+                    {({
+                      errors,
+                      handleBlur,
+                      handleChange,
+                      handleSubmit,
+                      isSubmitting,
+                      touched,
+                      values,
+                    }) => (
+                      <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center">
+                            <label className="min-w-36" htmlFor="oldPassword">
+                              Old Password:
+                            </label>
+                            <div className="flex flex-col w-full">
+                              <input
+                                id="oldPassword"
+                                type="password"
+                                className="input-primary"
+                                value={values.oldPassword}
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                              />
+                              {touched.oldPassword && errors.oldPassword && (
+                                <FormHelperText>
+                                  {errors.oldPassword}
+                                </FormHelperText>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center">
+                            <label className="min-w-36" htmlFor="newPassword">
+                              New Password:
+                            </label>
+                            <div className="flex flex-col w-full">
+                              <input
+                                id="newPassword"
+                                type="password"
+                                className="input-primary"
+                                value={values.newPassword}
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                              />
+                              {touched.newPassword && errors.newPassword && (
+                                <FormHelperText>
+                                  {errors.newPassword}
+                                </FormHelperText>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center">
+                            <label
+                              className="min-w-36"
+                              htmlFor="confirmPassword"
+                            >
+                              Confirm Password:
+                            </label>
+                            <div className="flex flex-col w-full">
+                              <input
+                                id="confirmPassword"
+                                type="password"
+                                className="input-primary"
+                                value={values.confirmPassword}
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                              />
+                              {touched.confirmPassword &&
+                                errors.confirmPassword && (
+                                  <FormHelperText>
+                                    {errors.confirmPassword}
+                                  </FormHelperText>
+                                )}
+                            </div>
+                          </div>
+                          <button
+                            className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                            disabled={isSubmitting}
+                          >
+                            Confirm
+                          </button>
+                        </div>
+                      </form>
+                    )}
+                  </Formik>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
