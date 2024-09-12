@@ -121,7 +121,7 @@ export default function DashboardLayout({
                 </div>
               </TransitionChild>
               {/* Sidebar component, swap this element with another sidebar if you like */}
-              <div className="hidden md:flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
+              <div className="md:flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
                 <div className="flex-center h-16 mt-4 shrink-0 gap-4 pr-12">
                   <Logo />
                 </div>
