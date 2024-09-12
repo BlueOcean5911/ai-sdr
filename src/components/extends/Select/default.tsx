@@ -21,6 +21,7 @@ const Select = ({
   onChange?: (item: any) => void;
   [key: string]: any;
 }) => {
+  console.log("defaultValue", defaultValue);
   const [selected, setSelected] = useState(defaultValue);
 
   useEffect(() => {

@@ -166,7 +166,7 @@ export default function CadenceItem({
             <MenuItem>
               <button
                 className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
-                onClick={() => router.push(`/cadences/${"cadence.id"}`)}
+                onClick={() => router.push(`/cadences/${cadence.id}`)}
               >
                 Edit
               </button>

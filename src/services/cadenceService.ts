@@ -36,7 +36,7 @@ export interface BaseCadenceModel {
 export interface FetchCadenceModel extends CadenceModel, ExtraCadenceModel {}
 
 interface ExtraCadenceModel {
-  owner: UserModel;
+  owner?: UserModel;
 }
 
 export interface ApiCadencesResponse {
