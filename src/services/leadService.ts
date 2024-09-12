@@ -45,6 +45,44 @@ interface ApiCountResponse {
   data: CountModel; // The structure of the data returned from the API;
 }
 
+export const addLead = async (lead: BaseLeadModel) => {
+  const response = await api.post("/api/leads", lead);
+  if (response.status !== 200) {
+    throw new Error("Failed to add lead");
+  }
+  console.log("response", response);
+  return {
+    data: {
+      id: response?.data?.surrogateId,
+      firstName: response?.data?.firstName,
+      lastName: response?.data?.lastName,
+      title: response?.data?.title,
+      email: response?.data?.email,
+      emailStatus: response?.data?.emailStatus,
+      phone: response?.data?.phone,
+      phoneStatus: response?.data?.phoneStatus,
+      linkedin: response?.data?.linkedin,
+      companyId: response?.data?.companyId,
+      location: response?.data?.location,
+      clickCount: response?.data?.clickCount,
+      replyCount: response?.data?.replyCount,
+      targeted: response?.data?.targeted,
+      company: {
+        id: response?.data?.company?.surrogateId,
+        name: response?.data?.company?.name,
+        companyType: response?.data?.company?.companyType,
+        phone: response?.data?.company?.phone,
+        phoneStatus: response?.data?.company?.phoneStatus,
+        size: response?.data?.company?.size,
+        industry: response?.data?.company?.industry,
+        description: response?.data?.company?.description,
+        linkedin: response?.data?.company?.linkedin,
+        location: response?.data?.company?.location,
+      },
+    },
+  };
+};
+
 export const getLeads = async (
   props: FetchLeadsProps = { offset: 0, limit: 100, targeted: undefined }
 ): Promise<ApiLeadResponse> => {
@@ -92,6 +130,18 @@ export const getLeads = async (
   };
 };
 
+export const updateLeadsAsTargeted = async (
+  leadIds: string[]
+): Promise<ApiCountResponse> => {
+  const response = await api.put("/api/leads/targeted", leadIds);
+
+  return {
+    data: {
+      count: response.data?.count,
+    },
+  };
+};
+
 export const getLeadTotalCount = async ({
   targeted,
 }: {
@@ -109,52 +159,20 @@ export const getLeadTotalCount = async ({
   };
 };
 
-export const addLead = async (lead: BaseLeadModel) => {
-  const response = await api.post("/api/leads", lead);
+// Extra functions
+export const addLeadsToExistingCadence = async ({
+  leadIds,
+  cadenceId,
+}: {
+  leadIds: string[];
+  cadenceId: string;
+}) => {
+  const response = await api.post(`/api/cadences/${cadenceId}/leads`, {
+    leadIds,
+  });
+
   if (response.status !== 200) {
-    throw new Error("Failed to add lead");
+    console.log("addLeadsToExistingCadence", response.status, response.data);
+    throw new Error("Failed to add leads to existing cadence");
   }
-  console.log("response", response);
-  return {
-    data: {
-      id: response?.data?.surrogateId,
-      firstName: response?.data?.firstName,
-      lastName: response?.data?.lastName,
-      title: response?.data?.title,
-      email: response?.data?.email,
-      emailStatus: response?.data?.emailStatus,
-      phone: response?.data?.phone,
-      phoneStatus: response?.data?.phoneStatus,
-      linkedin: response?.data?.linkedin,
-      companyId: response?.data?.companyId,
-      location: response?.data?.location,
-      clickCount: response?.data?.clickCount,
-      replyCount: response?.data?.replyCount,
-      targeted: response?.data?.targeted,
-      company: {
-        id: response?.data?.company?.surrogateId,
-        name: response?.data?.company?.name,
-        companyType: response?.data?.company?.companyType,
-        phone: response?.data?.company?.phone,
-        phoneStatus: response?.data?.company?.phoneStatus,
-        size: response?.data?.company?.size,
-        industry: response?.data?.company?.industry,
-        description: response?.data?.company?.description,
-        linkedin: response?.data?.company?.linkedin,
-        location: response?.data?.company?.location,
-      },
-    },
-  };
-};
-
-export const updateLeadsAsTargeted = async (
-  leadIds: string[]
-): Promise<ApiCountResponse> => {
-  const response = await api.put("/api/leads/targeted", leadIds);
-
-  return {
-    data: {
-      count: response.data?.count,
-    },
-  };
 };

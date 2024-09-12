@@ -140,6 +140,12 @@ export const addCadence = async (cadence: BaseCadenceModel) => {
   if (response.status !== 200) {
     throw new Error("Failed to create cadence");
   }
+
+  return {
+    data: {
+      id: response.data?.surrogateId,
+    },
+  };
 };
 
 export const updateCadence = async ({

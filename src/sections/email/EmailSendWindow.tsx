@@ -1,11 +1,30 @@
 import Select from "@/components/extends/Select/default";
+import { useLeadFilter } from "@/contexts/FilterLeadContext";
+import { useLeadSelection } from "@/contexts/LeadSelectionContext";
+import { addMailing } from "@/services/mailingService";
+import { getUsers, UserModel } from "@/services/userService";
+import { MAILING_STATE } from "@/types/enums";
+import { handleError, runService } from "@/utils/service_utils";
 import { XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
+interface UserForSelect {
+  name: string;
+  email: string;
+  id: string;
+}
+
 const EmailSendWindow = ({ close }: { close?: () => void }) => {
+  const { selectedLeads } = useLeadSelection();
+  const [owner, setOwner] = useState<UserForSelect>({
+    name: "",
+    email: "",
+    id: "",
+  });
   const [sendLater, setSendLater] = useState(false);
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const [users, setUsers] = useState<UserForSelect[]>([]);
 
   const [values, setValues] = useState({
     from: "",
@@ -18,6 +37,36 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
     subject: "",
     message: "",
   });
+
+  const fetchUsers = () => {
+    runService(
+      {},
+      getUsers,
+      (resUsers) => {
+        const users: UserForSelect[] = resUsers.map((resUser: UserModel) => {
+          return {
+            name: resUser.email,
+            email: resUser.email,
+            id: resUser.id,
+          };
+        });
+        setUsers([...users]);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  useEffect(() => {
+    fetchUsers();
+    setValues({
+      from: "",
+      to: selectedLeads[0].email,
+      subject: "",
+      message: "",
+    });
+  }, []);
 
   const checkErrors = () => {
     let isValid = true;
@@ -35,10 +84,48 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
     return isValid;
   };
 
-  const handleSendNow = () => {
+  const handleSend = () => {
     if (checkErrors()) {
+      runService(
+        {
+          subject: values.subject,
+          message: values.message,
+          leadId: selectedLeads[0].id,
+          ownerId: owner.id,
+          fromEmail: selectedLeads[0].email,
+          toEmail: owner.name,
+          scheduledAt: date,
+          mailingStatus: MAILING_STATE.SCHEDULED,
+        },
+        addMailing,
+        () => {},
+        (status, error) => {
+          handleError(status, error);
+        }
+      );
       toast.success("Email sent successfully");
     }
+  };
+
+  const handleSaveAsDraft = () => {
+    runService(
+      {
+        leadId: selectedLeads[0].id,
+        owner: owner,
+        fromEma: selectedLeads[0].email,
+        toEmail: owner.name,
+        subject: values.subject,
+        bodyText: values.message,
+        scheduledAt: date?.toDateString(),
+        mailingStatus: MAILING_STATE.SCHEDULED,
+      },
+      addMailing,
+      () => {},
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+    toast.success("Email sent successfully");
   };
 
   return (
@@ -54,25 +141,19 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
         <div className="px-4 py-2 flex flex-1 flex-col gap-2 bg-gray-100">
           <div className="flex justify-between items-center gap-2">
             <label className="min-w-20">From</label>
-            <Select
-              data={[
-                {
-                  id: 10,
-                  name: "russell.johnson.navy@gmail.com",
-                  value: "russell.johnson.navy@gmail.com",
-                },
-                {
-                  id: 20,
-                  name: "niklausanton23@gmail.com",
-                  value: "niklausanton23@gmail.com",
-                },
-              ]}
-            />
+            <Select data={users} onChange={(item) => setOwner(item)} />
           </div>
 
           <div className="flex justify-between items-center gap-2">
             <label className="min-w-20">To</label>
-            <Select
+            <input
+              className="input-primary"
+              type="text"
+              placeholder=""
+              value={values.to}
+              onChange={(e) => setValues({ ...values, to: e.target.value })}
+            />
+            {/* <Select
               data={[
                 {
                   id: 10,
@@ -85,7 +166,7 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
                   value: "niklausanton23@gmail.com",
                 },
               ]}
-            />
+            /> */}
           </div>
 
           <div className="flex justify-between items-center gap-2">
@@ -147,7 +228,7 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
             </button>
             <button
               className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
-              onClick={handleSendNow}
+              onClick={handleSend}
             >
               Send
             </button>

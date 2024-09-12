@@ -29,3 +29,47 @@ export function formatDate(dateString: string): string {
   };
   return date.toLocaleDateString("en-US", options).replace(",", "");
 }
+
+export function formatDateTimeReadable(dateTime: Date | string) {
+  if (typeof dateTime === "string") {
+    dateTime = new Date(dateTime);
+  }
+
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  const year = dateTime.getFullYear();
+  const month = months[dateTime.getMonth()];
+  const day = days[dateTime.getDay()];
+  const date = dateTime.getDate();
+
+  const hours = dateTime.getHours();
+  const minutes = dateTime.getMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  const hour = hours % 12 || 12;
+
+  return `${day}, ${month} ${date}, ${year}, at ${hour}:${minutes
+    .toString()
+    .padStart(2, "0")} ${ampm}`;
+}

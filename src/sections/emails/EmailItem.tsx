@@ -19,7 +19,7 @@ import {
 import { useRouter } from "next/navigation";
 import EmailSendWindow from "@/sections/email/EmailSendWindow";
 import { MailingModel } from "@/services/mailingService";
-import { formatDate } from "@/utils/format";
+import { formatDate, formatDateTimeReadable } from "@/utils/format";
 
 export default function EmailItem({ mailing }: { mailing: MailingModel }) {
   const [sent, setSent] = useState(false);
@@ -80,7 +80,7 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
                     as="h3"
                     className="px-6 py-3 flex justify-between items-center text-lg font-semibold leading-6 bg-white text-gray-900"
                   >
-                    <span>Sent Email</span>
+                    <span>Email</span>
                     <div
                       className="p-1 rounded-md hover:bg-gray-100"
                       onClick={() => setSent(false)}
@@ -92,47 +92,30 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
                   <div className="px-6 py-6 flex flex-col gap-6 bg-gray-50 text-sm">
                     <div className="flex flex-col gap-2">
                       <div className="flex flex-row items-center gap-2">
-                        <span className="font-semibold">Sent at:</span>
-                        <span>Thu, Aug 22, 2024 at 12:54 PM</span>
+                        <span className="font-semibold">
+                          <span className="capitalize">
+                            {mailing.mailingStatus}
+                          </span>{" "}
+                          at:
+                        </span>
+                        <span>
+                          {formatDateTimeReadable(mailing.scheduledAt)}
+                        </span>
                       </div>
                       <div className="flex flex-row items-center gap-2">
                         <span className="font-semibold">From:</span>
-                        <span>Niklaus Anton niklausanton23@gmail.com</span>
+                        <span>{mailing.ownerName}</span>
                       </div>
                       <div className="flex flex-row items-center gap-2">
                         <span className="font-semibold">To:</span>
-                        <span>Joyce Jing joyce@zwhrconsulting.com</span>
+                        <span>{mailing.leadName}</span>
                       </div>
                       <div className="flex flex-row items-center gap-2">
                         <span className="font-semibold">Subject:</span>
-                        <span>Solution for General Manager</span>
+                        <span>{mailing.subject}</span>
                       </div>
                     </div>
-                    <div className="flex flex-col gap-3">
-                      <span>Hi Joyce,</span>
-                      <span>
-                        Congratulations on your 12-year milestone as a General
-                        Manager at ZW HR Consulting Co., Ltd.! Your leadership
-                        must have played a pivotal role in the company's
-                        success.
-                      </span>
-                      <span>
-                        Noticed that Greate is a General Manager's best friend
-                        at times. Niklaus understands the value of Greate's, and
-                        we're here to make things easier for you.
-                      </span>
-                      <span>
-                        Greate's can often feel overwhelming, but with our
-                        Greate, you'll breeze through them. We've helped
-                        businesses like yours before, and I thought you might be
-                        interested in how we did that.
-                      </span>
-                      <span>
-                        Could we connect for 15 minutes this week to discuss how
-                        Greate can be a solution and not a challenge for you?
-                      </span>
-                      <span>Best, Niklaus Anton</span>
-                    </div>
+                    <div className="flex flex-col gap-3">{mailing.message}</div>
                     <div className="flex justify-between">
                       <span className="p-1 rounded-md text-white bg-blue-500">
                         Delivered

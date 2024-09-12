@@ -15,12 +15,14 @@ import FormHelperText from "@/components/extends/FormHelperText";
 import { addCompany, BaseCompanyModel } from "@/services/companyService";
 import { runService } from "@/utils/service_utils";
 import { toast } from "react-toastify";
+import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
 
 export default function CreateCompany({
   open,
   handleSave,
   handleClose,
 }: CreateModelProps) {
+  const { setCompanyFilterConfig } = useCompanyFilter();
   return (
     <>
       <Transition appear show={open} as={Fragment}>
@@ -46,27 +48,27 @@ export default function CreateCompany({
                   </DialogTitle>
                   <Formik
                     initialValues={{
-                      name: "Floz",
-                      phone: "123456798",
+                      name: "",
+                      phone: "",
                       phoneStatus: statusOptions[3],
-                      type: "Sales",
-                      description: "Marketing company",
+                      type: "",
+                      description: "",
                       size: employeeOptions[0],
-                      industry: "Marketing",
-                      linkedin: "https://www.linkedin.com/in/floz",
-                      location: "US",
+                      industry: "",
+                      linkedin: "",
+                      location: "",
                     }}
-                    // validationSchema={Yup.object().shape({
-                    //   name: Yup.string().required("Name is required"),
-                    //   phone: Yup.string().required("Phone is required"),
-                    //   phoneStatus: Yup.string().required("Status is required"),
-                    //   type: Yup.string().required("Type is required"),
-                    //   size: Yup.string().required("Size is required"),
-                    //   linkedin: Yup.string()
-                    //     .required("LinkedIn is required")
-                    //     .url("Invalid URL"),
-                    //   location: Yup.string().required("Location is required"),
-                    // })}
+                    validationSchema={Yup.object().shape({
+                      name: Yup.string().required("Name is required"),
+                      phone: Yup.string().required("Phone is required"),
+                      phoneStatus: Yup.string().required("Status is required"),
+                      type: Yup.string().required("Type is required"),
+                      size: Yup.string().required("Size is required"),
+                      linkedin: Yup.string()
+                        .required("LinkedIn is required")
+                        .url("Invalid URL"),
+                      location: Yup.string().required("Location is required"),
+                    })}
                     onSubmit={async (
                       values,
                       { setErrors, setStatus, setSubmitting }
@@ -90,6 +92,10 @@ export default function CreateCompany({
                         company,
                         addCompany,
                         (data) => {
+                          setCompanyFilterConfig((prev) => ({
+                            ...prev,
+                            createdCompanyId: data.surrogateId,
+                          }));
                           toast.success("Company created successfully");
                           handleClose();
                         },

@@ -9,6 +9,8 @@ import AddCadence from "../cadences/AddCadence";
 import CreateCadence from "../cadences/CreateCadence";
 import NewCadenceFromScratch from "./NewCadenceFromScratch";
 import { useRouter } from "next/navigation";
+import { runService } from "@/utils/service_utils";
+import { addCadence } from "@/services/cadenceService";
 
 const CadenceToolbar = () => {
   const { cadenceFilterConfig, setCadenceFilterConfig } = useCadenceFilter();
@@ -28,8 +30,17 @@ const CadenceToolbar = () => {
     }
   };
 
-  const handleNewCadenceFromScratch = () => {
-    router.push("/cadences/cadences-1/");
+  const handleNewCadenceFromScratch = (name: string) => {
+    runService(
+      { name },
+      addCadence,
+      (data) => {
+        router.push(`/cadences/${data.id}/`);
+      },
+      (status, error) => {
+        console.log(status, error);
+      }
+    );
   };
 
   return (
@@ -76,7 +87,7 @@ const CadenceToolbar = () => {
       {openNewCadenceFromScratch && (
         <NewCadenceFromScratch
           close={() => setOpenNewCadenceFromScratch(false)}
-          click={() => handleNewCadenceFromScratch()}
+          click={(name: string) => handleNewCadenceFromScratch(name)}
         />
       )}
     </>

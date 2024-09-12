@@ -88,7 +88,7 @@ const CompanyTable = () => {
     }
     setSelectedCompanies([]);
     setAllSelected(false);
-  }, [searchParams, currentPage, pageSize]);
+  }, [companyFilterConfig, searchParams, currentPage, pageSize]);
 
   // useEffect(() => {
   //   const filteredCompanies = totalCompanies.filter((company: any) => {

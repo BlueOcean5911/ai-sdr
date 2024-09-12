@@ -8,6 +8,7 @@ interface Option {
 }
 
 interface EmailFilterConfig {
+  params: { [key: string]: string };
   isOpen: boolean;
   fromUser: Option | Option[] | null;
   fromEmail: string;
@@ -25,6 +26,7 @@ export const EmailFilterContext = createContext<
 export const EmailFilterProvider = ({ children }: { children: ReactNode }) => {
   const [emailFilterConfig, setEmailFilterConfig] = useState<EmailFilterConfig>(
     {
+      params: {},
       isOpen: true,
       fromUser: [],
       fromEmail: "",
