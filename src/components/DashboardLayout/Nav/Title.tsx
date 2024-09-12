@@ -5,7 +5,7 @@ export default function NavTitle({
 }>) {
   return (
     <>
-      <h3 className="title px-4">{children}</h3>
+      <h3 className="title px-20 md:px-6">{children}</h3>
     </>
   );
 }
