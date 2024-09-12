@@ -1,28 +1,41 @@
 import { useContactFilter } from "@/contexts/FilterContactContext";
+import { ContactInCadenceStatistics } from "@/services/contactsInCadenceService";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 
-const stageArray = [
-  { name: "Tatal", count: 9 },
-  { name: "Cold", count: 6 },
-  { name: "Approaching", count: 1 },
-  { name: "Replied", count: 0 },
-  { name: "Interested", count: 0 },
-  { name: "Not Interested", count: 0 },
-  { name: "Unresponsive", count: 1 },
-  { name: "Do Not Contact", count: 0 },
-  { name: "Bad Data", count: 1 },
-  { name: "Changed Job", count: 0 },
-  { name: "Open", count: 0 },
-  { name: "Open Deal", count: 0 },
-  { name: "Unqualified", count: 0 },
-  { name: "All in Progress", count: 7 },
-  { name: "All Succeeded Stage", count: 0 },
-  { name: "All Failed Stage", count: 1 },
-];
+const stageDict: Record<string, string> = {
+  totalCount: "Total",
+  coldCount: "Cold",
+  approachingCount: "Approaching",
+  repliedCount: "Replied",
+  interestedCount: "Interested",
+  notInterestedCount: "Not Interested",
+  unResponsiveCount: "Unresponsive",
+  doNotContactCount: "Do Not Contact",
+  badDataCount: "Bad Data",
+  changedJobCount: "Changed Job",
+  openCount: "Open",
+  // openDealCount: "Open Deal",
+};
 
-const ContactToolbar = () => {
+// { label: "Cold", count: 6 },
+// { label: "Approaching", count: 1 },
+// { label: "Replied", count: 0 },
+// { label: "Interested", count: 0 },
+// { label: "Not Interested", count: 0 },
+// { label: "Unresponsive", count: 1 },
+// { label: "Do Not Contact", count: 0 },
+// { label: "Bad Data", count: 1 },
+// { label: "Changed Job", count: 0 },
+// { label: "Open", count: 0 },
+// { label: "Open Deal", count: 0 },
+// { label: "Unqualified", count: 0 },
+// { name: "All in Progress", count: 7 },
+// { name: "All Succeeded Stage", count: 0 },
+// { name: "All Failed Stage", count: 1 },
+
+const ContactToolbar = ({ data }: { data: any }) => {
   const { contactFilterConfig, setContactFilterConfig } = useContactFilter();
-
+  console.log("data", data);
   return (
     <div className="w-full flex items-center gap-2 border-b border-gray-100 text-sm overflow-auto">
       <button
@@ -42,14 +55,19 @@ const ContactToolbar = () => {
           <span>Show Filters</span>
         )}
       </button>
-      {stageArray.map((stage) => (
-        <div className="min-w-20 max-w-28 py-1 flex flex-col text-xs text-center cursor-pointer border-b hover:bg-gray-100 hover:border-b-blue-600">
-          <span className="text-inherit">{stage.count}</span>
-          <span className="text-inherit text-nowrap overflow-hidden">
-            {stage.name}
-          </span>
-        </div>
-      ))}
+      <div className="flex-1 overflow-auto flex">
+        {Object.keys(stageDict).map((stage: any) => (
+          <div
+            key={stage}
+            className="min-w-20 max-w-28 py-1 flex flex-col text-xs text-center cursor-pointer border-b hover:bg-gray-100 hover:border-b-blue-600"
+          >
+            <span className="text-inherit">{data ? data[stage] : "-"}</span>
+            <span className="text-inherit text-nowrap overflow-hidden">
+              {stageDict[stage]}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

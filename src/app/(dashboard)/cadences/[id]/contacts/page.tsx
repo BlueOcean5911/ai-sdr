@@ -22,7 +22,7 @@ import {
 import Link from "next/link";
 
 export default function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
+  const { id: cadenceId } = params;
   const [starred, setStarred] = useState(false);
   const [active, setActive] = useState(false);
   const [cadence, setCadence] = useState<FetchCadenceModel>();
@@ -58,7 +58,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     runService(
-      id,
+      cadenceId,
       getCadenceById,
       (data) => {
         setCadence(data);
@@ -190,7 +190,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <ContactFilterProvider>
               <ContactSelectionProvider>
                 <Suspense>
-                  {/* <Contacts cadenceId={cadence?.id} /> */}
+                  <Contacts cadenceId={cadenceId} />
                 </Suspense>
               </ContactSelectionProvider>
             </ContactFilterProvider>

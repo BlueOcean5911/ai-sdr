@@ -2,8 +2,13 @@ import React, { Fragment, useState } from "react";
 import { ContactItemProps } from "@/types";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import { ContactInCadence } from "@/services/contactsInCadence";
 
-export default function ContactItem(props: ContactItemProps) {
+export default function ContactItem({
+  contact,
+}: {
+  contact: ContactInCadence;
+}) {
   return (
     <div className="w-full py-4 flex items-center border-b hover:bg-gray-100">
       <div className="px-4">
@@ -12,28 +17,36 @@ export default function ContactItem(props: ContactItemProps) {
       <div className="flex items-center flex-1 gap-2 cursor-pointer">
         <div className="min-w-35 flex items-center">
           <span className="text-xs">To:</span>
-          <span className="text-sm text-blue-900">Archy Gupta</span>
+          <span className="text-sm text-blue-900">
+            {contact.firstName} {contact.lastName}
+          </span>
         </div>
 
         <div className="flex flex-1 items-center gap-2 text-xs text-nowrap">
-          <span className="p-1 text-white bg-blue-600">Active</span>
-          <span className="p-1 text-white bg-gray-500">Step 3</span>
-          <span className="p-1 bg-gray-200">Unresponsive</span>
+          <span className="p-1 text-white bg-blue-600">
+            {contact.currentStepStatus}
+          </span>
+          <span className="p-1 text-white bg-gray-500">
+            Step {contact.cadenceCurrentStep}
+          </span>
+          <span className="p-1 bg-gray-200">{contact.leadStatus}</span>
           <span className="text-sm font-semibold line-clamp-1">
-            Product Manager Talent Management Systems - HR IT
+            {contact.jobTitle}
           </span>
           <span className="">@</span>
           <span className="text-sm text-blue-600 font-semibold">
-            JG Summit Holdings Inc.
+            {contact.companyName}
           </span>
         </div>
 
         <div className="flex items-center gap-2 text-xs">
-          <span className="px-1 flex flex-1 justify-end bg-orange-500 text-white">
+          {/* <span className="px-1 flex flex-1 justify-end bg-orange-500 text-white">
             Not sent
+          </span> */}
+          <span className="p-1 rounded-full bg-gray-100">
+            {contact.ownerFirstName} {contact.ownerLastName}
           </span>
-          <span className="p-1 rounded-full bg-gray-100">NA</span>
-          <span>Aug 26</span>
+          {/* <span>Aug 26</span> */}
         </div>
       </div>
 

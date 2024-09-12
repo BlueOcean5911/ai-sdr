@@ -45,3 +45,25 @@ export enum CADENCE_STEP_TYPE {
   LINKEDIN_VIEW_PROFILE = "linkedinViewProfile",
   LINKEDIN_INTERACT_WITH_POST = "linkedinInteractWithPost",
 }
+
+export enum LEAD_STATUS {
+  COLD = "cold",
+  APPROACHING = "approaching",
+  REPLIED = "replied",
+  INTERESTED = "interested",
+  NOT_INTERESTED = "not-interested",
+  UNRESPONSIVE = "unresponsive",
+  BAD_DATA = "bad-data",
+  CHANGED_JOB = "changed-job",
+  OPEN = "open",
+  UNQUALIFIED = "unqualified",
+}
+
+export enum CADENCE_STEP_STATUS {
+  NOT_SENT = "notSent",
+  ACTIVE = "active",
+  PAUSED = "paused",
+  BOUNCED = "bounced",
+  FAILED = "failed",
+  FINISHED = "finished",
+}
