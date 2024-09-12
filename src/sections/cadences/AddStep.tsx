@@ -70,7 +70,10 @@ export default function AddStep() {
 
                     <div className="py-1">
                       <p className="py-1 text-sm">Automatc</p>
-                      <div className="flex flex-1 items-center bg-white rounded-md shadow-md border hover:border-blue-600 cursor-pointer">
+                      <div
+                        className="flex flex-1 items-center bg-white rounded-md shadow-md border hover:border-blue-600 cursor-pointer"
+                        onClick={() => {}}
+                      >
                         <div className="w-50 p-4 flex justify-between items-center gap-4">
                           <AutomaticEmailIcon />
                           <div className="flex flex-col gap-1">

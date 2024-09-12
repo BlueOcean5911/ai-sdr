@@ -17,6 +17,7 @@ import * as Yup from "yup";
 import FormHelperText from "@/components/extends/FormHelperText";
 import { toast } from "react-toastify";
 import RSelect from "@/components/extends/Select/default";
+import { useLeadFilter } from "@/contexts/FilterLeadContext";
 
 export default function CreateLead({
   open,
@@ -24,7 +25,7 @@ export default function CreateLead({
   handleClose,
 }: CreateModelProps) {
   const [users, setUsers] = useState<UserModel[]>();
-
+  const { setLeadFilterConfig } = useLeadFilter();
   const fetchUsers = () => {
     runService(
       undefined,
@@ -143,12 +144,17 @@ export default function CreateLead({
                         // ownerId: values.leadOwner,
                         personaId: undefined,
                         companyId: undefined,
-                        ownerId: undefined,
+                        ownerId: values.leadOwner,
                       };
+                      console.log("here lead", lead);
                       runService(
                         lead,
                         addLead,
                         (data) => {
+                          setLeadFilterConfig((prev) => ({
+                            ...prev,
+                            createdLeadId: data.surrogateId,
+                          }));
                           toast.success("Lead created successfully");
                         },
                         (status, error) => {
@@ -406,7 +412,14 @@ export default function CreateLead({
 
                           <div className="flex flex-col">
                             <label htmlFor="leadOwner">Lead Owner</label>
-                            <RSelect data={userOptions}></RSelect>
+                            <RSelect
+                              data={userOptions}
+                              onChange={(item) => {
+                                if (values.leadOwner !== item?.value) {
+                                  setFieldValue("leadOwner", item?.value);
+                                }
+                              }}
+                            ></RSelect>
                             {touched.leadOwner && errors.leadOwner && (
                               <FormHelperText>
                                 {errors.leadOwner}

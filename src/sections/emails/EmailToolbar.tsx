@@ -3,11 +3,16 @@ import {
   getMailingsStatistics,
   MailingsStatistics,
 } from "@/services/mailingService";
+import { classNames } from "@/utils";
 import { handleError, runService } from "@/utils/service_utils";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const EmailToolbar = () => {
+  const currentParams = Object.fromEntries(useSearchParams());
+  // console.log(currentParams);
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
   const [statistics, setStatistics] = useState<MailingsStatistics>({
     totalCount: 0,
@@ -56,35 +61,140 @@ const EmailToolbar = () => {
           <span>Show Filters</span>
         )}
       </button>
-      <div className="w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer text-blue-500 border-b bg-gray-100 border-b-blue-500">
-        <span className="text-inherit">{statistics.totalCount}</span>
-        <span className="text-inherit">Total</span>
-      </div>
-      <div className="w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b hover:bg-gray-100 hover:border-b-blue-500">
-        <span className="text-inherit">{statistics.draftedCount}</span>
-        <span className="text-inherit">Drafted</span>
-      </div>
-      <div className="w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b hover:bg-gray-100 hover:border-b-blue-500">
-        <span className="text-inherit">{statistics.scheduledCount}</span>
-        <span className="text-inherit">Scheduled</span>
-      </div>
-      <div className="w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b hover:bg-gray-100 hover:border-b-blue-500">
-        <span className="text-inherit">{statistics.deliveredCount}</span>
-        <span className="text-inherit">Delivered</span>
-      </div>
-      <div className="w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b hover:bg-gray-100 hover:border-b-blue-500">
-        <span className="text-inherit">{statistics.notOpenedCount}</span>
-        <span className="text-inherit">Not Opened</span>
-      </div>
-      <div className="w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b hover:bg-gray-100 hover:border-b-blue-500">
-        <span className="text-inherit">{statistics.bouncedCount}</span>
-        <span className="text-inherit">Bounced</span>
-      </div>
+      <Link href="/emails">
+        <div
+          className={classNames(
+            "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer text-blue-500 border-b",
+            Object.keys(currentParams).length === 0
+              ? "border-b-blue-500  bg-gray-100"
+              : "hover:bg-gray-100 hover:border-b-blue-500"
+          )}
+          onClick={() =>
+            setEmailFilterConfig((prev) => ({
+              ...prev,
+              params: {},
+            }))
+          }
+        >
+          <span className="text-inherit">{statistics.totalCount}</span>
+          <span className="text-inherit">Total</span>
+        </div>
+      </Link>
+      <Link href="/emails?drafted=true">
+        <div
+          className={classNames(
+            "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
+            currentParams.drafted
+              ? "border-b-blue-500  bg-gray-100"
+              : "hover:bg-gray-100 hover:border-b-blue-500"
+          )}
+          onClick={() =>
+            setEmailFilterConfig((prev) => ({
+              ...prev,
+              params: { drafted: "true" },
+            }))
+          }
+        >
+          <span className="text-inherit">{statistics.draftedCount}</span>
+          <span className="text-inherit">Drafted</span>
+        </div>
+      </Link>
+      <Link href="/emails?scheduled=true">
+        <div
+          className={classNames(
+            "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
+            currentParams.scheduled
+              ? "border-b-blue-500  bg-gray-100"
+              : "hover:bg-gray-100 hover:border-b-blue-500"
+          )}
+          onClick={() =>
+            setEmailFilterConfig((prev) => ({
+              ...prev,
+              params: { scheduled: "true" },
+            }))
+          }
+        >
+          <span className="text-inherit">{statistics.scheduledCount}</span>
+          <span className="text-inherit">Scheduled</span>
+        </div>
+      </Link>
+      <Link href="/emails?delivered=true">
+        <div
+          className={classNames(
+            "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
+            currentParams.delivered
+              ? "border-b-blue-500  bg-gray-100"
+              : "hover:bg-gray-100 hover:border-b-blue-500"
+          )}
+          onClick={() =>
+            setEmailFilterConfig((prev) => ({
+              ...prev,
+              params: { delivered: "true" },
+            }))
+          }
+        >
+          <span className="text-inherit">{statistics.deliveredCount}</span>
+          <span className="text-inherit">Delivered</span>
+        </div>
+      </Link>
+      <Link href="/emails?not_opened=true">
+        <div
+          className={classNames(
+            "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
+            currentParams["not_opened"]
+              ? "border-b-blue-500  bg-gray-100"
+              : "hover:bg-gray-100 hover:border-b-blue-500"
+          )}
+          onClick={() =>
+            setEmailFilterConfig((prev) => ({
+              ...prev,
+              params: { not_opened: "true" },
+            }))
+          }
+        >
+          <span className="text-inherit">{statistics.notOpenedCount}</span>
+          <span className="text-inherit">Not Opened</span>
+        </div>
+      </Link>
+      <Link href="/emails?bounced=true">
+        <div
+          className={classNames(
+            "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
+            currentParams.bounced
+              ? "border-b-blue-500  bg-gray-100"
+              : "hover:bg-gray-100 hover:border-b-blue-500"
+          )}
+          onClick={() =>
+            setEmailFilterConfig((prev) => ({
+              ...prev,
+              params: { bounced: "true" },
+            }))
+          }
+        >
+          <span className="text-inherit">{statistics.bouncedCount}</span>
+          <span className="text-inherit">Bounced</span>
+        </div>
+      </Link>
 
-      <div className="w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b hover:bg-gray-100 hover:border-b-blue-500">
-        <span className="text-inherit">{statistics.notSentCount}</span>
-        <span className="text-inherit">Not Sent</span>
-      </div>
+      <Link href="/emails?not_sent=true">
+        <div
+          className={classNames(
+            "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
+            currentParams["not_sent"]
+              ? "border-b-blue-500  bg-gray-100"
+              : "hover:bg-gray-100 hover:border-b-blue-500"
+          )}
+          onClick={() =>
+            setEmailFilterConfig((prev) => ({
+              ...prev,
+              params: { not_sent: "true" },
+            }))
+          }
+        >
+          <span className="text-inherit">{statistics.notSentCount}</span>
+          <span className="text-inherit">Not Sent</span>
+        </div>
+      </Link>
     </div>
   );
 };

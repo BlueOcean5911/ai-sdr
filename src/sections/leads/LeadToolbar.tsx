@@ -23,6 +23,7 @@ import {
   LeadModelWithCompanyModel,
   updateLeadsAsTargeted,
 } from "@/services/leadService";
+import { addCadence } from "@/services/cadenceService";
 
 const LeadToolbar = () => {
   const searchParams = useSearchParams();
@@ -92,8 +93,17 @@ const LeadToolbar = () => {
     }
   };
 
-  const handleNewCadenceFromScratch = () => {
-    router.push("/cadences/cadences-1/");
+  const handleNewCadenceFromScratch = (name: string) => {
+    runService(
+      { name },
+      addCadence,
+      (data) => {
+        router.push(`/cadences/${data.id}/`);
+      },
+      (status, error) => {
+        console.log(status, error);
+      }
+    );
   };
 
   return (
@@ -191,7 +201,7 @@ const LeadToolbar = () => {
         {openNewCadenceFromScratch && (
           <NewCadenceFromScratch
             close={() => setOpenNewCadenceFromScratch(false)}
-            click={() => handleNewCadenceFromScratch()}
+            click={(name: string) => handleNewCadenceFromScratch(name)}
           />
         )}
       </div>

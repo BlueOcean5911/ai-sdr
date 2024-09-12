@@ -8,6 +8,7 @@ interface Option {
 }
 
 interface CompanyFilterConfig {
+  createdCompanyId: string;
   isOpen: boolean;
   company: string;
   location: string;
@@ -33,6 +34,7 @@ export const CompanyFilterProvider = ({
 }) => {
   const [companyFilterConfig, setCompanyFilterConfig] =
     useState<CompanyFilterConfig>({
+      createdCompanyId: "",
       isOpen: true,
       company: "",
       location: "",

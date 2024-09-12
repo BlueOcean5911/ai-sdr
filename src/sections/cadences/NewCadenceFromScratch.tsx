@@ -9,15 +9,13 @@ const NewCadenceFromScratch = ({
   click,
 }: {
   close: () => void;
-  click: () => void;
+  click: (name: string) => void;
 }) => {
   const [errors, setErrors] = useState({
     name: "",
-    description: "",
   });
   const [values, setValues] = useState({
     name: "",
-    description: "",
   });
 
   const checkErrors = () => {
@@ -28,10 +26,6 @@ const NewCadenceFromScratch = ({
       newErrors = { ...newErrors, name: "Cadence name is required" };
       isValid = false;
     }
-    if (removeSpecialCharacters(values.description).length === 0) {
-      newErrors = { ...newErrors, description: "Description is required" };
-      isValid = false;
-    }
 
     setErrors({ ...errors, ...newErrors });
     return isValid;
@@ -39,7 +33,7 @@ const NewCadenceFromScratch = ({
 
   const handleCreate = () => {
     if (checkErrors()) {
-      click();
+      click(values.name);
       toast.success("Cadence created successfully");
     }
   };
@@ -93,30 +87,6 @@ const NewCadenceFromScratch = ({
                       />
                       {errors.name.length > 0 && (
                         <p className="text-red-500">{errors.name}</p>
-                      )}
-                    </div>
-                    <div className="flex flex-col">
-                      <label>Description*</label>
-                      <textarea
-                        className="input-primary min-h-24"
-                        value={values.description}
-                        onChange={(e) => {
-                          if (
-                            removeSpecialCharacters(values.description).length >
-                            0
-                          ) {
-                            setErrors({ ...errors, description: "" });
-                          } else {
-                            setErrors({
-                              ...errors,
-                              description: "Description is required",
-                            });
-                          }
-                          setValues({ ...values, description: e.target.value });
-                        }}
-                      />
-                      {errors.description.length > 0 && (
-                        <p className="text-red-500">{errors.description}</p>
                       )}
                     </div>
                   </div>

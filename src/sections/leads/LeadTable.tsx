@@ -82,7 +82,7 @@ const LeadTable = () => {
       fetchTotalCount();
       fetchLeads(false);
     }
-  }, [searchParams, currentPage, pageSize]);
+  }, [leadFilterConfig, searchParams, currentPage, pageSize]);
 
   // useEffect(() => {
   //   const filteredLeads = totalLeads.filter((lead: any) => {

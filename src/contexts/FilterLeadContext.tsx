@@ -8,6 +8,7 @@ interface Option {
 }
 
 interface LeadFilterConfig {
+  createdLeadId: string;
   isOpen: boolean;
   persona: Option | Option[] | null;
   title: string;
@@ -28,6 +29,7 @@ export const LeadFilterContext = createContext<
 
 export const LeadFilterProvider = ({ children }: { children: ReactNode }) => {
   const [leadFilterConfig, setLeadFilterConfig] = useState<LeadFilterConfig>({
+    createdLeadId: "",
     isOpen: true,
     persona: [],
     title: "",

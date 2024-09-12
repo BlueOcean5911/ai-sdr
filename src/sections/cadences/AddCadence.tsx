@@ -1,10 +1,12 @@
 import Select from "@/components/extends/Select/default";
+import { useLeadSelection } from "@/contexts/LeadSelectionContext";
 // import { CadenceModel, getCadences } from "@/services/cadenceService001";
-import { getCadences } from "@/services/cadenceService";
-import { runService } from "@/utils/service_utils";
+import { CadenceModel, getCadences } from "@/services/cadenceService";
+import { addLeadsToExistingCadence, LeadModel } from "@/services/leadService";
+import { handleError, runService } from "@/utils/service_utils";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XCircle } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const AddCadence = ({
@@ -16,13 +18,9 @@ const AddCadence = ({
   open: boolean;
   close: () => void;
 }) => {
-  const handleAddToCadence = () => {
-    close();
-    toast.success("Successfully Added");
-  };
-
   const [cadences, setCadences] = React.useState([]);
-
+  const [selectedCadenceId, setSelectedCadenceId] = useState<string>("");
+  const { selectedLeads, setSelectedLeads } = useLeadSelection();
   const fetchCadences = () => {
     runService(
       undefined,
@@ -39,6 +37,29 @@ const AddCadence = ({
   useEffect(() => {
     fetchCadences();
   }, []);
+
+  const handleAddToCadence = () => {
+    if (selectedCadenceId === "" || selectedCadenceId === undefined) {
+      toast.info("Please select at least one cadence.");
+      return;
+    }
+
+    let leadIds = selectedLeads.map((lead: LeadModel) => lead.id);
+
+    runService(
+      { leadIds, cadenceId: selectedCadenceId },
+      addLeadsToExistingCadence,
+      (data) => {
+        toast.success("Successfully Added");
+        setSelectedLeads([]);
+        close();
+      },
+      (status, error) => {
+        console.log(status, error);
+        handleError(status, error);
+      }
+    );
+  };
 
   return (
     <>
@@ -57,33 +78,20 @@ const AddCadence = ({
               className="bg-white w-full max-w-md rounded-xl backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
             >
               <div className="flex-center justify-between border-b-2 border-gray-100">
-                <h3 className="p-2">Add Cadence</h3>
+                <h3 className="p-2">Add to Cadence</h3>
                 <XCircle
                   className="w-6 h-6 mr-2 cursor-pointer stroke-gray-300 hover:stroke-gray-500"
                   onClick={close}
                 />
               </div>
-              <div className="p-2 min-h-32 flex-center flex-col items-center">
+              <div className="p-2 min-h-32 flex-col">
+                <span className="text-xs">Sequences:</span>
                 <Select
                   className="w-full"
                   data={cadences}
-                  // data={[
-                  //   {
-                  //     id: 1,
-                  //     name: "Cadence 1",
-                  //     value: "1",
-                  //   },
-                  //   {
-                  //     id: 2,
-                  //     name: "Cadence 2",
-                  //     value: "2",
-                  //   },
-                  //   {
-                  //     id: 3,
-                  //     name: "Cadence 3",
-                  //     value: "3",
-                  //   },
-                  // ]}
+                  onChange={(item: CadenceModel) =>
+                    setSelectedCadenceId(item?.id ? item.id : "")
+                  }
                 />
               </div>
 

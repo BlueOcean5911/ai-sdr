@@ -2,7 +2,9 @@ import { api } from "@/utils/api";
 import { ApiCountResponse, CountModel, FetchProps } from "@/types";
 import { MAILING_STATE } from "@/types/enums";
 
-interface FetchMailingsProps extends FetchProps {}
+interface FetchMailingsProps extends FetchProps {
+  params: { [key: string]: string };
+}
 
 // interface MailingModel extends BaseMailingModel {
 //   id?: string;
@@ -24,6 +26,8 @@ export interface MailingModel {
 }
 
 export interface SendMailingModel {
+  leadId: string;
+  ownerId: string;
   fromEmail: string;
   toEmail: string;
   subject: string;
@@ -31,6 +35,7 @@ export interface SendMailingModel {
   bodyHtml?: string;
   scheduleAt?: string;
   templateId?: string;
+  mailingStatus?: MAILING_STATE;
 }
 
 export interface MailingsStatistics {
@@ -47,15 +52,28 @@ interface ApiMailingResponse {
   data: MailingModel;
 }
 
+interface ApiMailingsResponse {
+  data: MailingModel[];
+}
+
 interface ApiStatisticsResponse {
   data: MailingsStatistics;
 }
 
 export const getMailings = async (
-  data: FetchMailingsProps = { offset: 0, limit: 100 }
-): Promise<ApiMailingResponse> => {
+  data: FetchMailingsProps = { offset: 0, limit: 100, params: {} }
+): Promise<ApiMailingsResponse> => {
+  const { offset, limit, params } = data;
+  //  get search params from current params
+  const keys = Object.keys(params);
+  let searchParams = "";
+
+  if (keys.length > 0) {
+    searchParams = "&" + keys.map((key) => `${key}=${params[key]}`).join("&");
+  }
+
   const response = await api.get(
-    `/api/mailings?offset=${data.offset}&limit=${data.limit}`
+    `/api/mailings?offset=${offset}&limit=${limit}${searchParams}`
   );
   return {
     data: response.data,

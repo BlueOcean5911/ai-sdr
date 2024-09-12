@@ -7,15 +7,17 @@ import EmailItem from "@/sections/emails/EmailItem";
 import { handleError, runService } from "@/utils/service_utils";
 import { getMailings, MailingModel } from "@/services/mailingService";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function Emails() {
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
   const [mailings, setMailings] = useState<MailingModel[]>([]);
+  const currentParams = Object.fromEntries(useSearchParams());
   // const [currentPage, setCurrentPage] = useState;
 
-  const fetchMailings = () => {
+  const fetchMailings = (params: { [key: string]: string }) => {
     runService(
-      { offset: 0, limit: 100 },
+      { offset: 0, limit: 100, params },
       getMailings,
       (data) => {
         console.log(data);
@@ -29,8 +31,12 @@ export default function Emails() {
   };
 
   useEffect(() => {
-    fetchMailings();
+    fetchMailings(currentParams);
   }, []);
+
+  useEffect(() => {
+    fetchMailings(emailFilterConfig.params);
+  }, [emailFilterConfig]);
 
   return (
     <div className="flex gap-2 flex-1 overflow-auto">
