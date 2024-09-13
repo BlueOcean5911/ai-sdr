@@ -289,12 +289,12 @@ export default function CreateCompany({
                             <button
                               type="submit"
                               disabled={isSubmitting}
-                              className="px-2 py-1 rounded-md text-white bg-blue-600 hover:bg-blue-500"
+                              className="px-2 py-1 rounded-md text-white bg-blue-500 hover:bg-blue-400"
                             >
                               Save company
                             </button>
                             <button
-                              className="px-2 py-1 rounded-md bg-gray-300 hover:bg-gray-200"
+                              className="px-2 py-0.5 rounded-md border-2 bg-white border-gray-300 hover:bg-gray-200"
                               onClick={handleClose}
                             >
                               Close

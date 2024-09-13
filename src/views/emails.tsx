@@ -65,7 +65,9 @@ export default function Emails(
                 <EmailItem key={mailing.id} mailing={mailing} />
               ))
             ) : (
-              <p>No mailings</p>
+              <div className="h-full flex flex-1 justify-center items-center">
+                <p>No mailings</p>
+              </div>
             )}
           </div>
         </div>
