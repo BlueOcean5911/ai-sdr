@@ -75,7 +75,14 @@ const CreateCampaign = ({
                   <XMarkIcon className="w-5 h-5" />
                 </div>
               </DialogTitle>
-              <div className="p-6 max-w-sm w-full flex flex-col gap-5 rounded-md bg-gray-100">
+              <div className="p-6 max-w-sm w-full flex flex-col gap-3 rounded-md bg-gray-100">
+                <label
+                  htmlFor="description"
+                  className="text-base text-justify indent-4"
+                >
+                  Fill in the title, amount, and description for your campaign.
+                  Choose the status to indicate its progress.
+                </label>
                 <div className="flex items-center">
                   <label className="min-w-24 text-sm" htmlFor="title">
                     Title:
@@ -151,7 +158,7 @@ const CreateCampaign = ({
                     Save
                   </button>
                   <button
-                    className="w-full p-1 text-sm rounded-md bg-gray-300 hover:bg-gray-200"
+                    className="w-full p-0.5 text-sm rounded-md border-2 bg-white border-gray-300 hover:bg-gray-200"
                     onClick={close}
                   >
                     Close

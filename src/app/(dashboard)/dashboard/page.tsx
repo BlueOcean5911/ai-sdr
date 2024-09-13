@@ -11,7 +11,7 @@ export default function Page() {
         <Link href={ROUTE_DASHBOARD}>Dashboard</Link>
       </NavTitle>
       <div className="relative py-2 px-2 bg-gray-100 overflow-auto flex-1">
-        <div className="min-h-full overflow-auto flex flex-col flex-1">
+        <div className="min-h-full flex flex-1 flex-col justify-center items-center overflow-auto">
           {/* <Dashboard /> */}
           <ComingSoon />
         </div>
