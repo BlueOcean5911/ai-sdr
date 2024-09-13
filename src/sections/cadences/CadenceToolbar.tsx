@@ -30,9 +30,9 @@ const CadenceToolbar = () => {
     }
   };
 
-  const handleNewCadenceFromScratch = (name: string) => {
+  const handleNewCadenceFromScratch = (name: string, ownerId: string) => {
     runService(
-      { name },
+      { name, ownerId },
       addCadence,
       (data) => {
         router.push(`/cadences/${data.id}/`);
@@ -87,7 +87,9 @@ const CadenceToolbar = () => {
       {openNewCadenceFromScratch && (
         <NewCadenceFromScratch
           close={() => setOpenNewCadenceFromScratch(false)}
-          click={(name: string) => handleNewCadenceFromScratch(name)}
+          click={(name: string, ownerId: string) =>
+            handleNewCadenceFromScratch(name, ownerId)
+          }
         />
       )}
     </>

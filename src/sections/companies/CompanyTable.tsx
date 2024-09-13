@@ -74,10 +74,6 @@ const CompanyTable = () => {
   }, []);
 
   useEffect(() => {
-    console.log("total count", totalCount);
-  }, [totalCount]);
-
-  useEffect(() => {
     const currentParams = Object.fromEntries(searchParams);
     if (currentParams.targeted) {
       fetchTotalCount(true);

@@ -1,22 +1,57 @@
 import { removeSpecialCharacters } from "@/utils/string";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
+import RSelect from "@/components/extends/Select/default";
+import { getUsers, UserModel } from "@/services/userService";
+import { handleError, runService } from "@/utils/service_utils";
+import FormHelperText from "@/components/extends/FormHelperText";
 
 const NewCadenceFromScratch = ({
   close,
   click,
 }: {
   close: () => void;
-  click: (name: string) => void;
+  click: (name: string, ownerId: string) => void;
 }) => {
+  const [users, setUsers] = useState<UserModel[]>();
   const [errors, setErrors] = useState({
     name: "",
+    ownerId: "",
   });
   const [values, setValues] = useState({
     name: "",
+    ownerId: "",
   });
+
+  const fetchUsers = () => {
+    runService(
+      undefined,
+      getUsers,
+      (data) => {
+        setUsers(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const userOptions = useMemo(() => {
+    let options = users
+      ? users.map((user) => {
+          return {
+            name: user.firstName + " " + user.lastName,
+            value: user.id,
+          };
+        })
+      : [];
+    return options;
+  }, [users]);
 
   const checkErrors = () => {
     let isValid = true;
@@ -33,7 +68,7 @@ const NewCadenceFromScratch = ({
 
   const handleCreate = () => {
     if (checkErrors()) {
-      click(values.name);
+      click(values.name, values.ownerId);
       toast.success("Cadence created successfully");
     }
   };
@@ -88,6 +123,22 @@ const NewCadenceFromScratch = ({
                       {errors.name.length > 0 && (
                         <p className="text-red-500">{errors.name}</p>
                       )}
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="flex flex-col">
+                        <label htmlFor="Cadence Owner">Cadence Owner*</label>
+                        <RSelect
+                          data={userOptions}
+                          onChange={(item) => {
+                            if (values.ownerId !== item?.value) {
+                              setValues({ ...values, ownerId: item?.value });
+                            }
+                          }}
+                        ></RSelect>
+                        {errors.ownerId && (
+                          <FormHelperText>{errors.ownerId}</FormHelperText>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-6">

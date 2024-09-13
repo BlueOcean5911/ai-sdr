@@ -7,12 +7,12 @@ import { classNames } from "@/utils";
 import { handleError, runService } from "@/utils/service_utils";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const EmailToolbar = () => {
+  const path = usePathname();
   const currentParams = Object.fromEntries(useSearchParams());
-  // console.log(currentParams);
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
   const [statistics, setStatistics] = useState<MailingsStatistics>({
     totalCount: 0,
@@ -61,7 +61,7 @@ const EmailToolbar = () => {
           <span>Show Filters</span>
         )}
       </button>
-      <Link href="/emails">
+      <Link href={`${path}`}>
         <div
           className={classNames(
             "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer text-blue-500 border-b",
@@ -80,7 +80,7 @@ const EmailToolbar = () => {
           <span className="text-inherit">Total</span>
         </div>
       </Link>
-      <Link href="/emails?drafted=true">
+      <Link href={`${path}?drafted=true`}>
         <div
           className={classNames(
             "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
@@ -99,7 +99,7 @@ const EmailToolbar = () => {
           <span className="text-inherit">Drafted</span>
         </div>
       </Link>
-      <Link href="/emails?scheduled=true">
+      <Link href={`${path}?scheduled=true`}>
         <div
           className={classNames(
             "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
@@ -118,7 +118,7 @@ const EmailToolbar = () => {
           <span className="text-inherit">Scheduled</span>
         </div>
       </Link>
-      <Link href="/emails?delivered=true">
+      <Link href={`${path}?delivered=true`}>
         <div
           className={classNames(
             "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
@@ -137,7 +137,7 @@ const EmailToolbar = () => {
           <span className="text-inherit">Delivered</span>
         </div>
       </Link>
-      <Link href="/emails?not_opened=true">
+      <Link href={`${path}?not_opened=true`}>
         <div
           className={classNames(
             "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
@@ -156,7 +156,7 @@ const EmailToolbar = () => {
           <span className="text-inherit">Not Opened</span>
         </div>
       </Link>
-      <Link href="/emails?bounced=true">
+      <Link href={`${path}?bounced=true`}>
         <div
           className={classNames(
             "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
@@ -175,8 +175,7 @@ const EmailToolbar = () => {
           <span className="text-inherit">Bounced</span>
         </div>
       </Link>
-
-      <Link href="/emails?not_sent=true">
+      <Link href={`${path}?not_sent=true`}>
         <div
           className={classNames(
             "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",

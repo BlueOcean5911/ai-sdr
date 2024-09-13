@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import NavTitle from "@/components/DashboardLayout/Nav/Title";
 import { ROUTE_CAMPAIGNS } from "@/data/routes";
@@ -9,6 +9,12 @@ import ToggleButton from "@/components/extends/Button/ToggleButton";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { ChevronRightIcon, StarIcon } from "lucide-react";
 import { classNames } from "@/utils";
+import { handleError, runService } from "@/utils/service_utils";
+import {
+  CampaignModel,
+  getCampaign,
+  updateCampaign,
+} from "@/services/campaignService";
 
 const defaultCampaign = {
   id: "M909",
@@ -22,7 +28,7 @@ const defaultCampaign = {
 const navList = [
   { title: "Overview", endpoint: "" },
   { title: "Cadences", endpoint: "cadences" },
-  { title: "Leads", endpoint: "leads" },
+  { title: "Contacts", endpoint: "contacts" },
   { title: "Emails", endpoint: "emails" },
   { title: "Tasks", endpoint: "tasks" },
   { title: "Calls", endpoint: "calls" },
@@ -30,48 +36,98 @@ const navList = [
   { title: "Setting", endpoint: "setting" },
 ];
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  const [starred, setStarred] = useState(false);
-  const [campaign, setCampaign] = useState(defaultCampaign);
-  const router = useRouter();
+export default function Layout({
+  params,
+  children,
+}: {
+  params: { id: string };
+  children: React.ReactNode;
+}) {
+  const { id } = params;
+  const [campaign, setCampaign] = useState<CampaignModel>(defaultCampaign);
   const pathname = usePathname();
 
   const endpoint =
     pathname.split("/").length > 3 ? pathname.split("/").at(3) : "";
 
+  const fetchCampaign = () => {
+    runService(
+      id,
+      getCampaign,
+      (data) => {
+        setCampaign(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  useEffect(() => {
+    console.log(campaign);
+  }, [campaign]);
+
+  useEffect(() => {
+    fetchCampaign();
+  }, []);
+
+  const handleUpdateCampaign = (updatedCampaign: Partial<CampaignModel>) => {
+    runService(
+      { id, data: updatedCampaign },
+      updateCampaign,
+      (data) => {
+        setCampaign(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
   return (
     <>
-      <NavTitle>
+      {/* <NavTitle>
         <Link className="hover:underline" href={ROUTE_CAMPAIGNS}>
           Campaigns
         </Link>
         &nbsp;/&nbsp;
-        {campaign.name}
-      </NavTitle>
+        {campaign.title}
+      </NavTitle> */}
       <div className="flex flex-1 flex-col overflow-auto">
         <div className="w-full px-5 pt-2 flex items-center">
-          <button
-            className="p-1 text-sm rounded-md hover:bg-gray-100"
-            onClick={() => router.push("/campaigns")}
-          >
-            Campaigns
-          </button>
+          <Link href={"/campaigns"}>
+            <button className="p-1 text-sm rounded-md hover:bg-gray-100">
+              Campaigns
+            </button>
+          </Link>
           <ChevronRightIcon className="w-3 h-3" />
           <button className="p-1 text-sm rounded-md hover:bg-gray-100">
-            Campaign Title
+            {campaign.title}
           </button>
         </div>
         <div className="w-full h-12 px-5 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <ToggleButton checked={true} handleChange={() => {}} />
-            <span className="text-xl">Campaign Title</span>
+            <ToggleButton
+              checked={campaign.isActive ? true : false}
+              handleChange={() =>
+                handleUpdateCampaign({
+                  isActive: !campaign.isActive,
+                })
+              }
+            />
+            <span className="text-xl min-w-36">{campaign.title}</span>
             <div
               className="p-1 cursor-pointer rounded-md hover:bg-gray-100"
-              onClick={() => setStarred(!starred)}
+              onClick={() =>
+                handleUpdateCampaign({
+                  star: !campaign.star,
+                })
+              }
             >
               <StarIcon
                 className={`w-5 h-5 ${
-                  starred ? "fill-blue-900 stroke-blue-900" : "stroke-gray-500"
+                  campaign.star
+                    ? "fill-blue-900 stroke-blue-900"
+                    : "stroke-gray-500"
                 }`}
               />
             </div>
@@ -88,17 +144,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               key={index}
               className="flex flex-col rounded-md text-sm hover:bg-gray-100"
             >
-              <span
-                className={classNames(
-                  "p-1.5 cursor-pointer border-b-2",
-                  endpoint === nav.endpoint ? "font-semibold border-black" : ""
-                )}
-                onClick={() =>
-                  router.push(`/campaigns/campaign.id/${nav.endpoint}`)
-                }
-              >
-                {nav.title}
-              </span>
+              <Link href={`/campaigns/${campaign.id}/${nav.endpoint}`}>
+                <span
+                  className={classNames(
+                    "p-1.5 cursor-pointer border-b-2",
+                    endpoint === nav.endpoint
+                      ? "font-semibold border-black"
+                      : ""
+                  )}
+                >
+                  {nav.title}
+                </span>
+              </Link>
             </span>
           ))}
         </div>

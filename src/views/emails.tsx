@@ -9,18 +9,29 @@ import { getMailings, MailingModel } from "@/services/mailingService";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function Emails() {
+export default function Emails(
+  { campaignId, cadenceId }: { campaignId?: string; cadenceId?: string } = {
+    cadenceId: "",
+    campaignId: "",
+  }
+) {
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
   const [mailings, setMailings] = useState<MailingModel[]>([]);
   const currentParams = Object.fromEntries(useSearchParams());
-  // const [currentPage, setCurrentPage] = useState;
 
   const fetchMailings = (params: { [key: string]: string }) => {
     runService(
-      { offset: 0, limit: 100, params },
+      {
+        offset: 0,
+        limit: 100,
+        campaignId: campaignId,
+        cadenceId: cadenceId,
+        fromUser: emailFilterConfig.fromUser,
+        search: emailFilterConfig.search,
+        params,
+      },
       getMailings,
       (data) => {
-        console.log(data);
         setMailings(data);
       },
       (status, error) => {

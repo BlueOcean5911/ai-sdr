@@ -7,9 +7,34 @@ import FilterItem from "./filter-item";
 import { useEmailFilter } from "@/contexts/FilterEmailContext";
 import Select from "react-tailwindcss-select";
 import { fromUserOptions } from "@/data/filter.data";
+import { runService } from "@/utils/service_utils";
+import { getUsers, UserModel } from "@/services/userService";
+import { useEffect, useState } from "react";
 
 export default function FilterEmail() {
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
+  const [fromEmailOptions, setFromEmailOptions] = useState(fromUserOptions);
+
+  const fetchUsers = () => {
+    runService(
+      undefined,
+      getUsers,
+      (users) => {
+        const fromEmailOptions = users.map((user: UserModel) => ({
+          value: user.id,
+          label: user.firstName + " " + user.lastName,
+        }));
+        setFromEmailOptions(fromEmailOptions);
+      },
+      (status, error) => {
+        console.error(error);
+      }
+    );
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <div className="card p-2 w-64 h-full flex flex-col">
@@ -28,6 +53,13 @@ export default function FilterEmail() {
             name="search"
             type="search"
             placeholder="Search Emails..."
+            value={emailFilterConfig.search}
+            onChange={(e) => {
+              setEmailFilterConfig((prev) => ({
+                ...prev,
+                search: e.target.value,
+              }));
+            }}
             className="flex w-full border-0 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
           />
         </form>
@@ -43,7 +75,7 @@ export default function FilterEmail() {
                 fromUser: value,
               })
             }
-            options={fromUserOptions}
+            options={fromEmailOptions}
             isMultiple={true}
             isSearchable={true}
             primaryColor={"indigo"}
@@ -65,13 +97,14 @@ export default function FilterEmail() {
                     : `text-gray-500 hover:bg-blue-100 hover:text-blue-500`
                 }`;
               },
+
               searchBox:
                 "text-xs w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none",
               searchIcon: "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
             }}
           ></Select>
         </FilterItem>
-        <FilterItem
+        {/* <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
           title="From Email"
         >
@@ -86,7 +119,7 @@ export default function FilterEmail() {
               });
             }}
           />
-        </FilterItem>
+        </FilterItem> */}
       </div>
     </div>
   );

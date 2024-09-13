@@ -2,17 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
-import NavTitle from "@/components/DashboardLayout/Nav/Title";
-import { ROUTE_CATENCES } from "@/data/routes";
 import {
   ChevronRightIcon,
-  EllipsisHorizontalIcon,
   InformationCircleIcon,
   PlusCircleIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import ToggleButton from "@/components/extends/Button/ToggleButton";
 import CadenceStep from "@/sections/cadences/CadenceStep";
 import AddStep from "@/sections/cadences/AddStep";
@@ -26,7 +21,6 @@ import {
 } from "@/services/cadenceService";
 import {
   CadenceStepModel,
-  getCadenceSteps,
   getCadenceStepsByCadenceId,
 } from "@/services/cadenceStepService";
 

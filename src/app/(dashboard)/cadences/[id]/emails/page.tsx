@@ -1,16 +1,8 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import {
-  ChevronRightIcon,
-  EllipsisHorizontalIcon,
-  InformationCircleIcon,
-  StarIcon,
-} from "@heroicons/react/24/outline";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { ChevronRightIcon, StarIcon } from "@heroicons/react/24/outline";
 import ToggleButton from "@/components/extends/Button/ToggleButton";
-import CadenceStep from "@/sections/cadences/CadenceStep";
-import AddStep from "@/sections/cadences/AddStep";
 import { useRouter } from "next/navigation";
 import { EmailSelectionProvider } from "@/contexts/EmailSelectionContext";
 import { EmailFilterProvider } from "@/contexts/FilterEmailContext";
@@ -100,12 +92,12 @@ export default function Page({ params }: { params: { id: string } }) {
           <div className="flex items-center gap-3">
             <ToggleButton
               checked={active}
-              handleChange={() => handleUpdateActive}
+              handleChange={() => handleUpdateActive()}
             />
             <span className="text-xl">{cadence?.name}</span>
             <div
               className="p-1 cursor-pointer rounded-md hover:bg-gray-100"
-              onClick={() => handleUpdateStarred}
+              onClick={() => handleUpdateStarred()}
             >
               <StarIcon
                 className={`w-5 h-5 ${
@@ -198,7 +190,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <EmailFilterProvider>
               <EmailSelectionProvider>
                 <Suspense>
-                  <Emails />
+                  <Emails cadenceId={id} />
                 </Suspense>
               </EmailSelectionProvider>
             </EmailFilterProvider>

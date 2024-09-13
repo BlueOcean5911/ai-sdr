@@ -20,7 +20,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const [starred, setStarred] = useState(false);
   const [active, setActive] = useState(false);
   const [cadence, setCadence] = useState<FetchCadenceModel>();
-  const [users, setUsers] = useState<UserModel[]>();
+  const [userOptions, setUserOptions] = useState<any[]>([]);
   const router = useRouter();
 
   const handleUpdateCadence = (updatedCadence: BaseCadenceModel) => {
@@ -68,12 +68,19 @@ export default function Page({ params }: { params: { id: string } }) {
     setStarred(cadence?.star ? true : false);
     setActive(cadence?.isActive ? true : false);
   }, [cadence]);
+
   const fetchUsers = () => {
     runService(
       undefined,
       getUsers,
-      (data) => {
-        setUsers(data);
+      (users: any[]) => {
+        const tempUserOptions = users.map((user) => {
+          return {
+            name: user.firstName + " " + user.lastName,
+            value: user.id,
+          };
+        });
+        setUserOptions(tempUserOptions);
       },
       (status, error) => {
         handleError(status, error);
@@ -81,17 +88,24 @@ export default function Page({ params }: { params: { id: string } }) {
     );
   };
 
-  const userOptions = useMemo(() => {
-    let options = users
-      ? users.map((user) => {
-          return {
-            name: user.firstName + " " + user.lastName,
-            value: user.id,
-          };
-        })
-      : [];
-    return options;
-  }, [users]);
+  // const userOptions = useMemo(() => {
+  //   let options = users
+  //     ? users.map((user) => {
+  //         return {
+  //           name: user.firstName + " " + user.lastName,
+  //           value: user.id,
+  //         };
+  //       })
+  //     : [];
+  //   return options;
+  // }, [users]);
+
+  const handleSaveCadence = () => {
+    handleUpdateCadence({
+      name: cadence?.name,
+      ownerId: cadence?.ownerId,
+    });
+  };
 
   useEffect(() => {
     fetchUsers();
@@ -120,7 +134,7 @@ export default function Page({ params }: { params: { id: string } }) {
           <div className="flex items-center gap-3">
             <ToggleButton
               checked={active}
-              handleChange={() => handleUpdateActive}
+              handleChange={() => handleUpdateActive()}
             />
             <span className="text-xl">{cadence?.name}</span>
             <div
@@ -193,26 +207,33 @@ export default function Page({ params }: { params: { id: string } }) {
                   type="text"
                   className="input-primary"
                   value={cadence?.name}
+                  onChange={(e) => {
+                    setCadence((prev) => ({
+                      ...prev,
+                      name: e.target?.value ? e.target?.value : "",
+                    }));
+                  }}
                 />
               </div>
               <div className="flex items-center">
                 <label className="min-w-24" htmlFor="owner">
                   Owner:
                 </label>
-                <Select data={userOptions}></Select>
+                <Select
+                  data={userOptions}
+                  defaultValue={
+                    userOptions.filter(
+                      (user) => user.value === cadence?.ownerId
+                    )[0]
+                  }
+                ></Select>
               </div>
               <div className="flex items-center gap-4">
                 <button
                   className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
-                  onClick={() => router.push("/cadences/cadence.id/")}
+                  onClick={() => handleSaveCadence()}
                 >
                   Save
-                </button>
-                <button
-                  className="w-full p-2 rounded-md bg-gray-300 hover:bg-gray-200"
-                  onClick={() => router.push("/cadences/cadence.id/")}
-                >
-                  Close
                 </button>
               </div>
             </div>

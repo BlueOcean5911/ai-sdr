@@ -1,5 +1,5 @@
 import { useContactFilter } from "@/contexts/FilterContactContext";
-import { ContactInCadenceStatistics } from "@/services/contactsInCadenceService";
+import { ContactInCadenceStatistics } from "@/services/contactsService";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 
 const stageDict: Record<string, string> = {
@@ -35,7 +35,6 @@ const stageDict: Record<string, string> = {
 
 const ContactToolbar = ({ data }: { data: any }) => {
   const { contactFilterConfig, setContactFilterConfig } = useContactFilter();
-  console.log("data", data);
   return (
     <div className="w-full flex items-center gap-2 border-b border-gray-100 text-sm overflow-auto">
       <button

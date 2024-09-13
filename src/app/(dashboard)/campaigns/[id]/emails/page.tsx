@@ -15,7 +15,7 @@ export default function Page({ params }: { params: { id: string } }) {
           <EmailFilterProvider>
             <EmailSelectionProvider>
               <Suspense>
-                <Emails />
+                <Emails campaignId={id} />
               </Suspense>
             </EmailSelectionProvider>
           </EmailFilterProvider>

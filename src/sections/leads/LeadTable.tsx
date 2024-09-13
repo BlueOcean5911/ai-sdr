@@ -27,8 +27,8 @@ const LeadTable = () => {
 
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [allSelected, setAllSelected] = useState(false);
   const [totalCount, setTotalCount] = useState<number>(0);
+  const [allSelected, setAllSelected] = useState(false);
   const searchParams = useSearchParams();
 
   const fetchLeads = (targeted: boolean = false) => {
@@ -38,7 +38,6 @@ const LeadTable = () => {
       { offset, limit, targeted },
       getLeads,
       (data) => {
-        console.log("data", data);
         setTotalLeads([...data]); // if total changed, leads will update
       },
       (status, error) => {

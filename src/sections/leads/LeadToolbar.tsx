@@ -152,7 +152,13 @@ const LeadToolbar = () => {
             <MenuItem>
               <button
                 className="group text-xs flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100"
-                onClick={() => setOpenAddCadence(true)}
+                onClick={() => {
+                  if (selectedLeads && selectedLeads.length > 0) {
+                    setOpenAddCadence(true);
+                  } else {
+                    toast.info("Please select one lead to add to cadence");
+                  }
+                }}
               >
                 <PaperAirplaneIcon className="size-4" />
                 Add to existing Cadence

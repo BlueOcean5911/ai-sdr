@@ -1,7 +1,33 @@
+import { FetchProps } from "@/types";
 import { CADENCE_STEP_STATUS, LEAD_STATUS } from "@/types/enums";
 import { api } from "@/utils/api";
 
+interface FetchContactProps extends FetchProps {
+  cadenceStatus?: string[];
+  cadenceStep?: string[];
+  emailFrom?: string;
+  campaignId?: string;
+  cadenceId?: string;
+}
+
 export interface ContactInCadence {
+  firstName?: string;
+  lastName?: string;
+  jobTitle?: string;
+  companyId: string;
+  companyName?: string;
+  ownerId?: string;
+  ownerFirstName?: string;
+  ownerLastName?: string;
+  currentStepStatus?: CADENCE_STEP_STATUS | string;
+  cadenceCurrentStep?: number;
+  leadStatus?: LEAD_STATUS | string;
+}
+
+export interface ContactInCampaign {
+  campaignId?: string;
+  campaignName?: string;
+  campaignStatus?: string;
   firstName?: string;
   lastName?: string;
   jobTitle?: string;
@@ -67,12 +93,49 @@ export const getContactsInCadenceStatistics = async ({
   };
 };
 
-export const getContactsInCadence = async ({
-  cadenceId,
+export const getContactsInCadence = async (
+  data: FetchContactProps = { offset: 0, limit: 10 }
+): Promise<ApiContactsInCadenceResponse> => {
+  let url = `api/contacts?offset=${data.offset}&limit=${data.limit}`;
+  if (data.cadenceId) {
+    url += `&cadenceId=${data.cadenceId}`;
+  }
+  if (data.campaignId) {
+    url += `&campaignId=${data.campaignId}`;
+  }
+  // if (data.cadenceStatus?.length && data.cadenceStatus?.length > 0) {
+  //   url += `&cadenceStatus=${data.cadenceStatus}`;
+  // }
+  // if (data.cadenceStep?.length && data.cadenceStep?.length > 0) {
+  //   url += `&cadenceStep=${data.cadenceStep}`;
+  // }
+  if (data.emailFrom) {
+    url += `&emailFrom=${data.emailFrom}`;
+  }
+  const response = await api.get(url);
+  return {
+    data: response.data.map((item: any) => ({
+      firstName: item?.firstName,
+      lastName: item?.lastName,
+      jobTitle: item?.jobTitle,
+      companyId: item?.companyId,
+      companyName: item?.companyName,
+      ownerId: item?.ownerId,
+      ownerFirstName: item?.ownerFirstName,
+      ownerLastName: item?.ownerLastName,
+      currentStepStatus: item?.currentStepStatus,
+      cadenceCurrentStep: item?.cadenceCurrentStep,
+      leadStatus: item?.leadStatus,
+    })),
+  };
+};
+
+export const getContactsInCampaign = async ({
+  campaignId,
 }: {
-  cadenceId: string;
+  campaignId: string;
 }): Promise<ApiContactsInCadenceResponse> => {
-  const url = `api/cadences/${cadenceId}/contacts`;
+  const url = `api/campaigns/${campaignId}/contacts`;
   const response = await api.get(url);
   return {
     data: response.data.map((item: any) => ({
