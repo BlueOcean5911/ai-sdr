@@ -9,8 +9,8 @@ interface Option {
 
 interface ContactFilterConfig {
   isOpen: boolean;
-  cadenceStatus?: Option | Option[] | null;
-  cadenceStep?: Option | Option[] | null;
+  cadenceStatus: Option | Option[] | null;
+  cadenceStep: Option | Option[] | null;
   sendEmailsFrom?: string;
   cadenceId?: string;
   campaignId?: string;
