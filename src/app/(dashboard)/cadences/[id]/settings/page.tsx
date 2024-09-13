@@ -134,7 +134,7 @@ export default function Page({ params }: { params: { id: string } }) {
           <div className="flex items-center gap-3">
             <ToggleButton
               checked={active}
-              handleChange={() => handleUpdateActive}
+              handleChange={() => handleUpdateActive()}
             />
             <span className="text-xl">{cadence?.name}</span>
             <div

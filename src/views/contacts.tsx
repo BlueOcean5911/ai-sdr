@@ -11,7 +11,7 @@ import {
   ContactInCadenceStatistics,
   getContactsInCadence,
   getContactsInCadenceStatistics,
-} from "@/services/contactsInCadenceService";
+} from "@/services/contactsService";
 import { useEffect, useState } from "react";
 
 export default function Contacts({ cadenceId }: { cadenceId: string }) {

@@ -1,16 +1,53 @@
+import Select from "@/components/extends/Select/default";
+import { addCampaign, BaseCampaignModel } from "@/services/campaignService";
+import { handleError, runService } from "@/utils/service_utils";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const CreateCampaign = ({
   close,
-  click: handleClick,
+  click,
 }: {
   close: () => void;
-  click?: (type: any) => any;
+  click?: () => void;
 }) => {
   const router = useRouter();
-
+  const [campaign, setCampaign] = useState<BaseCampaignModel>({
+    title: "",
+    description: "",
+    amount: 0,
+    status: "",
+  });
+  const handelCreateCampaign = () => {
+    runService(
+      campaign,
+      addCampaign,
+      (data) => {
+        if (click) {
+          click();
+        }
+        close();
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+  const campaignStatuses = [
+    {
+      name: "Not Started",
+      value: "not-started",
+    },
+    { name: "Discovery", value: "discovery" },
+    { name: "Value-proposition", value: "value-proposition" },
+    { name: "PROPOSAL", value: "proposal" },
+    { name: "NEGOTIATING", value: "negotiating" },
+    { name: "CLOSED_WON", value: "closed-won" },
+    { name: "CLOSED_LOST", value: "closed-lost" },
+    { name: "ACCOUNT_PLAN", value: "account-plan" },
+  ];
   return (
     <>
       <Dialog
@@ -43,34 +80,73 @@ const CreateCampaign = ({
                   <label className="min-w-24 text-sm" htmlFor="title">
                     Title:
                   </label>
-                  <input id="title" type="text" className="input-primary" />
+                  <input
+                    id="title"
+                    type="text"
+                    className="input-primary"
+                    value={campaign.title}
+                    onChange={(e) =>
+                      setCampaign((prev) => ({
+                        ...prev,
+                        title: e.target?.value,
+                      }))
+                    }
+                  />
                 </div>
                 <div className="flex items-center">
                   <label className="min-w-24 text-sm" htmlFor="amount">
                     Amount:
                   </label>
-                  <input id="amount" type="text" className="input-primary" />
+                  <input
+                    id="amount"
+                    type="number"
+                    className="input-primary"
+                    onChange={(e) =>
+                      setCampaign((prev) => ({
+                        ...prev,
+                        amount: parseInt(e.target?.value),
+                      }))
+                    }
+                    value={campaign.amount}
+                  />
                 </div>
                 <div className="flex items-center">
-                  <label className="min-w-24 text-sm" htmlFor="desctiption">
+                  <label className="min-w-24 text-sm" htmlFor="description">
                     Description:
                   </label>
                   <input
-                    id="desctiption"
+                    id="description"
                     type="text"
                     className="input-primary"
+                    onChange={(e) =>
+                      setCampaign((prev) => ({
+                        ...prev,
+                        description: e.target.value,
+                      }))
+                    }
+                    value={campaign.description}
                   />
                 </div>
                 <div className="flex items-center">
                   <label className="min-w-24 text-sm" htmlFor="status">
                     Status:
                   </label>
-                  <input id="status" type="text" className="input-primary" />
+                  <Select
+                    data={campaignStatuses}
+                    onChange={(item) => {
+                      if (campaign.status !== item.value) {
+                        setCampaign((prev) => ({
+                          ...prev,
+                          status: item.value,
+                        }));
+                      }
+                    }}
+                  />
                 </div>
                 <div className="flex items-center gap-6">
                   <button
                     className="w-full p-1 text-sm rounded-md text-white bg-blue-500 hover:bg-blue-400"
-                    onClick={() => router.push("/campaigns/campaign.id/")}
+                    onClick={() => handelCreateCampaign()}
                   >
                     Save
                   </button>

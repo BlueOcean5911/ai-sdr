@@ -5,13 +5,6 @@ import {
 } from "@heroicons/react/24/outline";
 import FilterItem from "./filter-item";
 import { useCadenceFilter } from "@/contexts/FilterCadenceContext";
-import Select from "react-tailwindcss-select";
-import {
-  personaOptions,
-  employeeOptions,
-  ownedByOptions,
-} from "@/data/filter.data";
-import CheckBox from "../extends/CheckBox";
 
 export default function FilterCadence() {
   const { cadenceFilterConfig, setCadenceFilterConfig } = useCadenceFilter();
@@ -32,6 +25,13 @@ export default function FilterCadence() {
             id="search-field"
             name="search"
             type="search"
+            value={cadenceFilterConfig.search}
+            onChange={(e) =>
+              setCadenceFilterConfig((prev) => ({
+                ...prev,
+                search: e.target.value,
+              }))
+            }
             placeholder="Search Cadences..."
             className="flex w-full border-0 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
           />
@@ -65,6 +65,34 @@ export default function FilterCadence() {
           </div>
         </FilterItem>
         <FilterItem
+          icon={<ListBulletIcon className="w-4 h-4" />}
+          title="Active"
+        >
+          <div
+            className="flex justify-between items-center"
+            onClick={() =>
+              setCadenceFilterConfig({
+                ...cadenceFilterConfig,
+                isActive: !cadenceFilterConfig.isActive,
+              })
+            }
+          >
+            <span className="inline-flex gap-2 items-center">
+              {cadenceFilterConfig.isActive ? (
+                <StarIcon className="w-4 h-4 fill-blue-500 stroke-blue-500" />
+              ) : (
+                <StarIcon className="w-4 h-4" />
+              )}
+              Active
+            </span>
+            <input
+              type="checkbox"
+              className="input-cbx focus:ring-0"
+              checked={cadenceFilterConfig.isActive}
+            />
+          </div>
+        </FilterItem>
+        {/* <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
           title="Owned By"
         >
@@ -103,7 +131,7 @@ export default function FilterCadence() {
               searchIcon: "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
             }}
           ></Select>
-        </FilterItem>
+        </FilterItem> */}
       </div>
     </div>
   );

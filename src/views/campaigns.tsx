@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
@@ -15,303 +15,71 @@ import Link from "next/link";
 import CreateCampaign from "@/sections/campaigns/CreateCampaign";
 import Pagination from "@/components/extends/Pagination/Pagination";
 import ToggleButton from "@/components/extends/Button/ToggleButton";
-
-const defaultCampaigns = [
-  {
-    id: "1",
-    title: "Project Alpha",
-    amount: 1500.0,
-    description: "Initial funding for Project Alpha.",
-    creator: "Alice Johnson",
-    createdDate: "2024-01-15",
-    closedDate: "2024-01-15",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "2",
-    title: "Marketing Campaign",
-    amount: 3000.0,
-    description: "Budget for the upcoming marketing campaign.",
-    creator: "Bob Smith",
-    createdDate: "2024-02-10",
-    closedDate: "2024-02-10",
-    active: false,
-    status: 0,
-  },
-  {
-    id: "3",
-    title: "Website Redesign",
-    amount: 2500.0,
-    description: "Redesign of the company website.",
-    creator: "Charlie Brown",
-    createdDate: "2024-02-25",
-    closedDate: "2024-02-25",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "4",
-    title: "Research Grant",
-    amount: 5000.0,
-    description: "Funding for research on renewable energy.",
-    creator: "Diana Prince",
-    createdDate: "2024-03-01",
-    closedDate: "2024-03-01",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "5",
-    title: "Software Development",
-    amount: 7000.0,
-    description: "Development of a new software application.",
-    creator: "Ethan Hunt",
-    createdDate: "2024-03-15",
-    closedDate: "2024-03-15",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "6",
-    title: "Office Supplies",
-    amount: 500.0,
-    description: "Purchase of office supplies for the team.",
-    creator: "Fiona Gallagher",
-    createdDate: "2024-03-20",
-    closedDate: "2024-03-20",
-    active: false,
-    status: 0,
-  },
-  {
-    id: "7",
-    title: "Team Building Event",
-    amount: 1200.0,
-    description: "Budget for the annual team building event.",
-    creator: "George Lucas",
-    createdDate: "2024-04-05",
-    closedDate: "2024-04-05",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "8",
-    title: "New Equipment",
-    amount: 3500.0,
-    description: "Purchase of new equipment for the office.",
-    creator: "Hannah Montana",
-    createdDate: "2024-04-10",
-    closedDate: "2024-04-10",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "9",
-    title: "Training Program",
-    amount: 2000.0,
-    description: "Budget for employee training programs.",
-    creator: "Ian Malcolm",
-    createdDate: "2024-04-15",
-    closedDate: "2024-04-15",
-    active: false,
-    status: 0,
-  },
-  {
-    id: "10",
-    title: "Product Launch",
-    amount: 4000.0,
-    description: "Funding for the upcoming product launch.",
-    creator: "Jack Sparrow",
-    createdDate: "2024-05-01",
-    closedDate: "2024-05-01",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "11",
-    title: "Consulting Fees",
-    amount: 3000.0,
-    description: "Fees for consulting services.",
-    creator: "Karen Walker",
-    createdDate: "2024-05-10",
-    closedDate: "2024-05-10",
-    active: false,
-    status: 0,
-  },
-  {
-    id: "12",
-    title: "Event Sponsorship",
-    amount: 2500.0,
-    description: "Sponsorship for a local event.",
-    creator: "Leo DiCaprio",
-    createdDate: "2024-05-15",
-    closedDate: "2024-05-15",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "13",
-    title: "Office Renovation",
-    amount: 8000.0,
-    description: "Renovation of the office space.",
-    creator: "Mia Wallace",
-    createdDate: "2024-06-01",
-    closedDate: "2024-06-01",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "14",
-    title: "Travel Expenses",
-    amount: 1500.0,
-    description: "Travel expenses for the conference.",
-    creator: "Nina Simone",
-    createdDate: "2024-06-05",
-    closedDate: "2024-06-05",
-    active: false,
-    status: 0,
-  },
-  {
-    id: "15",
-    title: "Charity Donation",
-    amount: 1000.0,
-    description: "Donation to a local charity.",
-    creator: "Oscar Wilde",
-    createdDate: "2024-06-10",
-    closedDate: "2024-06-10",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "16",
-    title: "IT Support",
-    amount: 2000.0,
-    description: "Monthly IT support fees.",
-    creator: "Peter Parker",
-    createdDate: "2024-06-15",
-    closedDate: "2024-06-15",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "17",
-    title: "Social Media Ads",
-    amount: 1800.0,
-    description: "Budget for social media advertising.",
-    creator: "Quinn Fabray",
-    createdDate: "2024-07-01",
-    closedDate: "2024-07-01",
-    active: false,
-    status: 0,
-  },
-  {
-    id: "18",
-    title: "Legal Fees",
-    amount: 3000.0,
-    description: "Legal fees for contract review.",
-    creator: "Rick Grimes",
-    createdDate: "2024-07-10",
-    closedDate: "2024-07-10",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "19",
-    title: "New Hire Onboarding",
-    amount: 1200.0,
-    description: "Expenses for onboarding new hires.",
-    creator: "Sarah Connor",
-    createdDate: "2024-07-15",
-    closedDate: "2024-07-15",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "20",
-    title: "Product Development",
-    amount: 6000.0,
-    description: "Funding for product development.",
-    creator: "Tony Stark",
-    createdDate: "2024-08-01",
-    closedDate: "2024-08-01",
-    active: false,
-    status: 0,
-  },
-  {
-    id: "21",
-    title: "Website Hosting",
-    amount: 800.0,
-    description: "Annual website hosting fees.",
-    creator: "Uma Thurman",
-    createdDate: "2024-08-05",
-    closedDate: "2024-08-05",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "22",
-    title: "Market Research",
-    amount: 2500.0,
-    description: "Budget for market research.",
-    creator: "Vin Diesel",
-    createdDate: "2024-08-10",
-    closedDate: "2024-08-10",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "23",
-    title: "Customer Feedback Survey",
-    amount: 700.0,
-    description: "Cost of conducting customer surveys.",
-    creator: "Will Smith",
-    createdDate: "2024-08-15",
-    closedDate: "2024-08-15",
-    active: false,
-    status: 0,
-  },
-  {
-    id: "24",
-    title: "Annual Report",
-    amount: 1500.0,
-    description: "Cost of preparing the annual report.",
-    creator: "Xena Warrior",
-    createdDate: "2024-09-01",
-    closedDate: "2024-09-01",
-    active: false,
-    status: 1,
-  },
-  {
-    id: "25",
-    title: "Health Insurance",
-    amount: 3000.0,
-    description: "Monthly health insurance premium.",
-    creator: "Yoda",
-    createdDate: "2024-09-05",
-    closedDate: "2024-09-05",
-    active: false,
-    status: 1,
-  },
-];
+import { handleError, runService } from "@/utils/service_utils";
+import {
+  CampaignModel,
+  CampaignModelWithCreator,
+  getCampaigns,
+  getCampaignTotalCount,
+} from "@/services/campaignService";
+import { formatDate } from "@/utils/format";
+import { CountModel } from "@/types";
 
 export default function Campaigns() {
   const [create, setCreate] = useState(false);
-  const [campaigns, setCampaigns] = useState(defaultCampaigns);
-  const router = useRouter();
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const [campaigns, setCampaigns] = useState<CampaignModelWithCreator[]>([]);
 
-  const handleStatusChange = (id: string, status: number) => {
+  const fetchCampaigns = () => {
+    const offset = pageSize * (currentPage - 1);
+    const limit = pageSize;
+    runService(
+      { offset, limit },
+      getCampaigns,
+      (data) => {
+        setCampaigns(data);
+      },
+      (status, error) => {
+        console.log(status, error);
+      }
+    );
+  };
+
+  const fetchTotalCount = (targeted: boolean = false) => {
+    runService(
+      { targeted },
+      getCampaignTotalCount,
+      (data: CountModel) => {
+        setTotalCount(data?.count ? data?.count : 0);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  useEffect(() => {
+    fetchTotalCount();
+    fetchCampaigns();
+  }, [pageSize, currentPage]);
+
+  const handleStatusChange = (
+    id: string | undefined,
+    value: boolean | undefined
+  ) => {
     setCampaigns(
-      campaigns.map((campaign) => {
+      campaigns.map((campaign: CampaignModelWithCreator) => {
         if (campaign.id === id) {
-          // Return a new object with the updated status
-          return { ...campaign, status };
+          return { ...campaign, isActive: value };
         }
-        return campaign; // Return the unchanged campaign
+        return campaign;
       })
     );
   };
 
-  const handleDeleteCampaign = (id: string) => {
+  const handleDeleteCampaign = (id: string | undefined) => {
     // TODO: Delete the cadence
     setCampaigns(campaigns.filter((campaign) => campaign.id !== id));
   };
@@ -355,9 +123,17 @@ export default function Campaigns() {
           </div>
         </div>
       </div>
-      {create && <CreateCampaign close={() => setCreate(false)} />}
+      {create && (
+        <CreateCampaign
+          close={() => setCreate(false)}
+          click={() => {
+            fetchTotalCount;
+            fetchCampaigns();
+          }}
+        />
+      )}
       {/* Table */}
-      <div className="flex flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto">
         <table className="w-full divide-y divide-gray-300 text-nowrap overflow-auto">
           <thead className="bg-white sticky top-0 z-10">
             <tr>
@@ -397,18 +173,18 @@ export default function Campaigns() {
               >
                 Created Date
               </th>
-              <th
+              {/* <th
                 scope="col"
                 className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
               >
                 Closed Date
-              </th>
-              <th
+              </th> */}
+              {/* <th
                 scope="col"
                 className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
               >
                 Active
-              </th>
+              </th> */}
               <th
                 scope="col"
                 className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
@@ -418,10 +194,19 @@ export default function Campaigns() {
             </tr>
           </thead>
           <tbody className="bg-white overflow-auto">
-            {campaigns.map((campaign, id) => (
-              <tr key={id} className="even:bg-blue-50 hover:bg-gray-300">
+            {campaigns.map((campaign: CampaignModelWithCreator, id) => (
+              <tr
+                key={id}
+                id="cadence-item"
+                className="even:bg-blue-50 hover:bg-gray-300"
+              >
                 <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                  {campaign.title}
+                  <Link
+                    href={`/campaigns/${campaign.id}`}
+                    className="cursor-pointer hover:underline hover:text-blue-900"
+                  >
+                    {campaign.title}
+                  </Link>
                 </td>
                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   {campaign.amount}
@@ -429,21 +214,21 @@ export default function Campaigns() {
                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   {campaign.description}
                 </td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 uppercase">
                   {campaign.status}
                 </td>
                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  {campaign.creator}
+                  {campaign.creator.firstName} {campaign.creator.lastName}
                 </td>
                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  {campaign.createdDate}
+                  {formatDate(campaign.createdAt)}
                 </td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {/* <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   {campaign.closedDate}
-                </td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                </td> */}
+                {/* <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   <ToggleButton checked={false} handleChange={() => {}} />
-                </td>
+                </td> */}
 
                 <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3 rounded-r-md">
                   <Popover>
@@ -456,24 +241,24 @@ export default function Campaigns() {
                       className="divide-x rounded-xl bg-white text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:translate-x-2 translate-y-1/2 data-[closed]:opacity-0 shadow-md text-gray-900"
                     >
                       <div className="p-3">
-                        <div
+                        {/* <div
                           className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100"
-                          onClick={() => handleStatusChange(campaign.id, 0)}
+                          onClick={() => handleStatusChange(campaign?.id, true)}
                         >
                           Active
                         </div>
                         <div
                           className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100"
-                          onClick={() => handleStatusChange(campaign.id, 1)}
+                          onClick={() => handleStatusChange(campaign.id, false)}
                         >
                           Disable
-                        </div>
+                        </div> */}
                         <div className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100">
                           <Link href={`/campaigns/${campaign.id}`}>Manage</Link>
                         </div>
                         <div
                           className="rounded-md p-1 px-2 font-semibold text-gray-900 cursor-pointer hover:bg-gray-100"
-                          onClick={() => handleDeleteCampaign(campaign.id)}
+                          onClick={() => handleDeleteCampaign(campaign?.id)}
                         >
                           Delete
                         </div>
@@ -490,10 +275,11 @@ export default function Campaigns() {
       <div className="flex justify-end px-16">
         <Pagination
           className="pagination-bar"
-          totalCount={campaigns.length}
-          onPageChange={(pageSize: number, currentPage: number) =>
-            console.log(pageSize, currentPage)
-          }
+          totalCount={totalCount}
+          onPageChange={(pageSize: number, currentPage: number) => {
+            setPageSize(pageSize);
+            setCurrentPage(currentPage);
+          }}
         />
       </div>
     </div>

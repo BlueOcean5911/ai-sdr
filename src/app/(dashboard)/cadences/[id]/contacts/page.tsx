@@ -20,6 +20,8 @@ import {
   updateCadence,
 } from "@/services/cadenceService";
 import Link from "next/link";
+import GeneralContacts from "@/views/generalContacts";
+import CadenceContacts from "@/views/cadenceContacts";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id: cadenceId } = params;
@@ -97,7 +99,7 @@ export default function Page({ params }: { params: { id: string } }) {
           <div className="flex items-center gap-3">
             <ToggleButton
               checked={active}
-              handleChange={() => handleUpdateActive}
+              handleChange={() => handleUpdateActive()}
             />
             <span className="text-xl">{cadence?.name}</span>
             <div
@@ -190,7 +192,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <ContactFilterProvider>
               <ContactSelectionProvider>
                 <Suspense>
-                  <Contacts cadenceId={cadenceId} />
+                  <CadenceContacts cadenceId={cadenceId} />
                 </Suspense>
               </ContactSelectionProvider>
             </ContactFilterProvider>

@@ -3,7 +3,13 @@ import { CountModel, FetchProps } from "@/types";
 import { SHARE_TYPE } from "@/types/enums";
 import { UserModel } from "./userService";
 
-interface FetchCompaniesProps extends FetchProps {}
+interface FetchCompaniesProps extends FetchProps {
+  isActive?: boolean;
+  starred?: boolean;
+  ownedBy?: string;
+  campaignId?: string;
+  search?: string;
+}
 
 export interface CadenceModel extends BaseCadenceModel {
   id?: string;
@@ -90,11 +96,26 @@ export const getCadenceById = async (
 export const getCadences = async (
   data: FetchCompaniesProps = { offset: 0, limit: 100 }
 ): Promise<ApiCadenceResponse> => {
-  const response = await api.get(
-    `/api/cadences?offset=${data.offset}&limit=${data.limit}`
-  );
-  console.log(response);
-
+  let url = `/api/cadences?offset=${data.offset}&limit=${data.limit}`;
+  if (data.isActive) {
+    url += "&isActive=true";
+  }
+  if (data.starred) {
+    url += "&starred=true";
+  }
+  // if (data.ownedBy) {
+  //   url += `&ownedBy=${data.ownedBy}`;
+  // }
+  console.log("here", data.campaignId);
+  if (data.campaignId) {
+    url += `&campaignId=${data.campaignId}`;
+  }
+  if (data.search) {
+    url += `&search=${data.search}`;
+  }
+  console.log(url, " url ");
+  const response = await api.get(url);
+  console.log(response, url);
   return {
     data: response.data?.map((item: any) => ({
       id: item?.surrogateId,
@@ -125,8 +146,8 @@ export const getCadences = async (
   };
 };
 
-export const getCadenceTotalCount = async (): Promise<ApiCountResponse> => {
-  const response = await api.get(`/api/cadences/total-count`);
+export const getCadencesTotalCount = async (): Promise<ApiCountResponse> => {
+  const response = await api.get("api/cadences/total-count");
   return {
     data: {
       count: response.data?.count,

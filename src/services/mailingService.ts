@@ -2,7 +2,19 @@ import { api } from "@/utils/api";
 import { ApiCountResponse, CountModel, FetchProps } from "@/types";
 import { MAILING_STATE } from "@/types/enums";
 
+interface Option {
+  value: string;
+  label: string;
+  disabled?: boolean;
+  isSelected?: boolean;
+}
+
 interface FetchMailingsProps extends FetchProps {
+  campaignId?: string;
+  cadenceId?: string;
+  fromEmail?: Option | Option[] | null;
+  fromUser?: Option | Option[] | null;
+  search?: string;
   params: { [key: string]: string };
 }
 
@@ -63,18 +75,40 @@ interface ApiStatisticsResponse {
 export const getMailings = async (
   data: FetchMailingsProps = { offset: 0, limit: 100, params: {} }
 ): Promise<ApiMailingsResponse> => {
-  const { offset, limit, params } = data;
+  let url = `/api/mailings?offset=${data.offset}&limit=${data.limit}`;
   //  get search params from current params
-  const keys = Object.keys(params);
+  const keys = Object.keys(data.params);
   let searchParams = "";
 
   if (keys.length > 0) {
-    searchParams = "&" + keys.map((key) => `${key}=${params[key]}`).join("&");
+    searchParams =
+      "&" + keys.map((key) => `${key}=${data.params[key]}`).join("&");
   }
+  if (data.campaignId) {
+    url += `&campaignId=${data.campaignId}`;
+  }
+  if (data.cadenceId) {
+    url += `&cadenceId=${data.cadenceId}`;
+  }
+  let userIds: string[] = [];
+  if (Array.isArray(data.fromUser)) {
+    userIds = data.fromUser.map((option) => option.value);
+  } else if (data.fromUser) {
+    userIds = [data.fromUser.value];
+  } else {
+    userIds = [];
+  }
+  for (const userId of userIds) {
+    url += `&fromUser=${userId}`;
+  }
+  if (data.search) {
+    url += `&search=${data.search}`;
+  }
+  if (searchParams) {
+    url += searchParams;
+  }
+  const response = await api.get(url);
 
-  const response = await api.get(
-    `/api/mailings?offset=${offset}&limit=${limit}${searchParams}`
-  );
   return {
     data: response.data,
   };

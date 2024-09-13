@@ -9,8 +9,11 @@ interface Option {
 
 interface CadenceFilterConfig {
   isOpen: boolean;
+  isActive: boolean;
   starred: boolean;
   ownedBy: Option | Option[] | null;
+  campaignId: string;
+  search: string;
 }
 
 interface CadenceFilterContextType {
@@ -32,8 +35,11 @@ export const CadenceFilterProvider = ({
   const [cadenceFilterConfig, setCadenceFilterConfig] =
     useState<CadenceFilterConfig>({
       isOpen: true,
+      isActive: false,
       starred: false,
       ownedBy: [],
+      campaignId: "",
+      search: "",
     });
 
   const updateCadenceFilterConfig = (config: CadenceFilterConfig) => {

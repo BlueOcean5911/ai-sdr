@@ -167,6 +167,7 @@ export const addLeadsToExistingCadence = async ({
   leadIds: string[];
   cadenceId: string;
 }) => {
+  // console.log("add lead to existing cadence", leadIds, cadenceId);
   const response = await api.post(`/api/cadences/${cadenceId}/leads`, {
     leadIds,
   });
@@ -175,4 +176,9 @@ export const addLeadsToExistingCadence = async ({
     console.log("addLeadsToExistingCadence", response.status, response.data);
     throw new Error("Failed to add leads to existing cadence");
   }
+  return {
+    data: {
+      id: response.data?.surrogateId,
+    },
+  };
 };

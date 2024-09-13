@@ -11,7 +11,8 @@ interface EmailFilterConfig {
   params: { [key: string]: string };
   isOpen: boolean;
   fromUser: Option | Option[] | null;
-  fromEmail: string;
+  fromEmail: Option | Option[] | null;
+  search: string;
 }
 
 interface EmailFilterContextType {
@@ -29,7 +30,8 @@ export const EmailFilterProvider = ({ children }: { children: ReactNode }) => {
       params: {},
       isOpen: true,
       fromUser: [],
-      fromEmail: "",
+      fromEmail: [],
+      search: "",
     }
   );
 
