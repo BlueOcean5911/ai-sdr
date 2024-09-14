@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { handleError, runService } from "@/utils/service_utils";
-import { getUsers, UserModel } from "@/services/userService";
+import { getUsers, sendInviteLink, UserModel } from "@/services/userService";
 import {
   EllipsisHorizontalIcon,
   PlusCircleIcon,
@@ -40,9 +40,9 @@ const ManageStuff = () => {
       {invite && (
         <InviteUser
           open={invite}
-          handleInvite={() => {
+          handleInvite={(email: string) => {
+            sendInviteLink(email);
             setInvite(false);
-            toast.success("Invite sent successfully!");
           }}
           handleClose={() => setInvite(false)}
         />

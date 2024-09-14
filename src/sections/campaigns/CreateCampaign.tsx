@@ -61,7 +61,7 @@ const CreateCampaign = ({
           <div className="flex min-h-full items-center justify-center p-4 ">
             <DialogPanel
               transition
-              className="w-full max-w-sm rounded-xl bg-white backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
+              className="w-full max-w-lg rounded-xl bg-gray-100 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
             >
               <DialogTitle
                 as="h3"
@@ -75,13 +75,15 @@ const CreateCampaign = ({
                   <XMarkIcon className="w-5 h-5" />
                 </div>
               </DialogTitle>
-              <div className="p-6 max-w-sm w-full flex flex-col gap-3 rounded-md bg-gray-100">
+              <div className="p-6 w-full flex flex-col gap-3 rounded-md bg-gray-100">
                 <label
                   htmlFor="description"
-                  className="text-base text-justify indent-4"
+                  className="text-base text-center pb-12 text-gray-500 font-semibold"
                 >
-                  Fill in the title, amount, and description for your campaign.
-                  Choose the status to indicate its progress.
+                  Please fill out the fields below to create your new campaign.
+                  Ensure that all information is accurate to effectively
+                  communicate your campaign's goals and attract potential
+                  supporters.
                 </label>
                 <div className="flex items-center">
                   <label className="min-w-24 text-sm" htmlFor="title">
