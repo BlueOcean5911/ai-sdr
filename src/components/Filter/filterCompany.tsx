@@ -43,7 +43,7 @@ export default function FilterCompany() {
             }}
           />
         </FilterItem>
-        <FilterItem
+        {/* <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
           title="Employees"
         >
@@ -81,7 +81,7 @@ export default function FilterCompany() {
               searchIcon: "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
             }}
           ></Select>
-        </FilterItem>
+        </FilterItem> */}
         <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
           title="Industry & Keywords"
@@ -89,11 +89,11 @@ export default function FilterCompany() {
           <input
             type="text"
             className="input-primary w-full"
-            value={companyFilterConfig.keyword}
+            value={companyFilterConfig.industry}
             onChange={(e) => {
               setCompanyFilterConfig({
                 ...companyFilterConfig,
-                keyword: e.target.value,
+                industry: e.target.value,
               });
             }}
           />

@@ -43,7 +43,14 @@ const CompanyTable = () => {
     const offset = pageSize * (currentPage - 1);
     const limit = pageSize;
     runService(
-      { offset, limit, targeted },
+      {
+        offset,
+        limit,
+        targeted,
+        company: companyFilterConfig.company,
+        location: companyFilterConfig.location,
+        industry: companyFilterConfig.industry,
+      },
       getCompanies,
       (data) => {
         console.log("company data", data);
@@ -57,9 +64,15 @@ const CompanyTable = () => {
 
   const fetchTotalCount = (targeted: boolean = false) => {
     runService(
-      { targeted },
+      {
+        targeted,
+        company: companyFilterConfig.company,
+        location: companyFilterConfig.location,
+        industry: companyFilterConfig.industry,
+      },
       getCompanyTotalCount,
       (data: CountModel) => {
+        console.log("company total count", data);
         setTotalCount(data?.count ? data?.count : 0);
       },
       (status, error) => {

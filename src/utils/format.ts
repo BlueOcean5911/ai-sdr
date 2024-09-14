@@ -73,3 +73,18 @@ export function formatDateTimeReadable(dateTime: Date | string) {
     .toString()
     .padStart(2, "0")} ${ampm}`;
 }
+
+export const getFormettedInterval = (interval: number | undefined) => {
+  if (!interval) return "Deliver email now";
+
+  const days = Math.floor(interval / 1440);
+  const hours = Math.floor((interval % 1440) / 60);
+  const mins = interval % 60;
+
+  const parts = [];
+  if (days > 0) parts.push(`${days} day${days !== 1 ? "s" : ""}`);
+  if (hours > 0) parts.push(`${hours} hour${hours !== 1 ? "s" : ""}`);
+  if (mins > 0) parts.push(`${mins} minute${mins !== 1 ? "s" : ""}`);
+
+  return "Deliver email in " + parts.join(", ") || "0 minutes";
+};

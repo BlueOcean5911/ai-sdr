@@ -4,6 +4,10 @@ import { EMAIL_STATUS } from "@/types/enums";
 import { CompanyModel } from "./companyService";
 interface FetchLeadsProps extends FetchProps {
   targeted?: boolean;
+  jobTitle?: string;
+  companyName?: string;
+  location?: string;
+  industry?: string;
 }
 
 export interface LeadModel extends BaseLeadModel {
@@ -86,12 +90,26 @@ export const addLead = async (lead: BaseLeadModel) => {
 export const getLeads = async (
   props: FetchLeadsProps = { offset: 0, limit: 100, targeted: undefined }
 ): Promise<ApiLeadResponse> => {
-  const { offset, limit, targeted } = props;
+  const { offset, limit, targeted, jobTitle, companyName, industry, location } =
+    props;
   let url = `/api/leads/?offset=${offset}&limit=${limit}`;
 
   if (targeted) {
     url += `&targeted=true`; // Conditionally add targeted parameter
   }
+  if (jobTitle) {
+    url += `&jobTitle=${jobTitle}`;
+  }
+  if (companyName) {
+    url += `&companyName=${companyName}`;
+  }
+  if (industry) {
+    url += `&industry=${industry}`;
+  }
+  if (location) {
+    url += `&location=${location}`;
+  }
+
   const response = await api.get(url);
 
   let leads: Array<LeadModelWithCompanyModel> = [];
@@ -144,12 +162,32 @@ export const updateLeadsAsTargeted = async (
 
 export const getLeadTotalCount = async ({
   targeted,
+  jobTitle,
+  companyName,
+  location,
+  industry,
 }: {
-  targeted: boolean;
+  targeted?: boolean;
+  jobTitle?: string;
+  companyName?: string;
+  location?: string;
+  industry?: string;
 }): Promise<ApiCountResponse> => {
-  let url = `/api/leads/total-count`;
+  let url = `/api/leads/statistics/total-count?`;
   if (targeted) {
-    url += `?targeted=true`; // Conditionally add targeted parameter
+    url += `&targeted=true`; // Conditionally add targeted parameter
+  }
+  if (jobTitle) {
+    url += `&jobTitle=${jobTitle}`;
+  }
+  if (companyName) {
+    url += `&companyName=${companyName}`;
+  }
+  if (industry) {
+    url += `&industry=${industry}`;
+  }
+  if (location) {
+    url += `&location=${location}`;
   }
   const response = await api.get(url);
   return {

@@ -35,7 +35,15 @@ const LeadTable = () => {
     const offset = pageSize * (currentPage - 1);
     const limit = pageSize;
     runService(
-      { offset, limit, targeted },
+      {
+        offset,
+        limit,
+        targeted,
+        jobTitle: leadFilterConfig.title,
+        companyName: leadFilterConfig.company,
+        location: leadFilterConfig.location,
+        industry: leadFilterConfig.industry,
+      },
       getLeads,
       (data) => {
         setTotalLeads([...data]); // if total changed, leads will update
@@ -48,7 +56,13 @@ const LeadTable = () => {
 
   const fetchTotalCount = (targeted: boolean = false) => {
     runService(
-      { targeted },
+      {
+        targeted,
+        jobTitle: leadFilterConfig.title,
+        companyName: leadFilterConfig.company,
+        location: leadFilterConfig.location,
+        industry: leadFilterConfig.industry,
+      },
       getLeadTotalCount,
       (data: CountModel) => {
         setTotalCount(data?.count ? data?.count : 0);
@@ -65,14 +79,6 @@ const LeadTable = () => {
   }, []);
 
   useEffect(() => {
-    console.log(totalCount);
-  }, [totalCount]);
-
-  useEffect(() => {
-    console.log("total leads", totalLeads);
-  }, [totalLeads]);
-
-  useEffect(() => {
     const currentParams = Object.fromEntries(searchParams);
     if (currentParams.targeted) {
       fetchTotalCount(true);
@@ -82,32 +88,6 @@ const LeadTable = () => {
       fetchLeads(false);
     }
   }, [leadFilterConfig, searchParams, currentPage, pageSize]);
-
-  // useEffect(() => {
-  //   const filteredLeads = totalLeads.filter((lead: any) => {
-  //     if (
-  //       leadFilterConfig.title &&
-  //       !contain(lead.title, leadFilterConfig.title)
-  //     ) {
-  //       return false;
-  //     }
-  //     if (
-  //       leadFilterConfig.company &&
-  //       !contain(lead.companyName, leadFilterConfig.company)
-  //     ) {
-  //       return false;
-  //     }
-  //     if (
-  //       leadFilterConfig.location &&
-  //       !contain(lead.currentLocation, leadFilterConfig.location)
-  //     ) {
-  //       return false;
-  //     }
-  //     return true;
-  //   });
-  //   setLeads(filteredLeads);
-  //   console.log("leadFilterConfig: ", leadFilterConfig);
-  // }, [leadFilterConfig]);
 
   const handleAllSelected = (id: any, checked: boolean) => {
     if (checked) {

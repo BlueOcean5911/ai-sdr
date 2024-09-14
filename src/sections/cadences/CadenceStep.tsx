@@ -9,14 +9,17 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { CadenceStepModel } from "@/services/cadenceStepService";
+import { getFormettedInterval } from "@/utils/format";
 
 export default function CadenceStep({
   cadenceStep,
+  handleTemplateOpen,
 }: {
   cadenceStep: CadenceStepModel;
+  handleTemplateOpen: (id: string | undefined) => void;
 }) {
   const router = useRouter();
-
+  console.log("cadenceStep", cadenceStep);
   return (
     <div className="w-full h-min-40 flex flex-col bg-white rounded-md shadow-md">
       <div className="w-full h-12 flex text-nowrap">
@@ -49,7 +52,9 @@ export default function CadenceStep({
           </div>
         </div>
         <div className="flex px-2 gap-2 justify-end items-center">
-          <div className="justify-end text-xs">Deliver email in 30 minutes</div>
+          <div className="justify-end text-xs">
+            {getFormettedInterval(cadenceStep.interval)}
+          </div>
           <Menu>
             <MenuButton className="">
               <div className="p-1 border rounded-md">
@@ -97,8 +102,11 @@ export default function CadenceStep({
           <div className="min-w-10 flex justify-center">
             <ToggleButton checked={true} handleChange={() => {}} />
           </div>
-          <div className="min-w-40 px-4 flex">New Thread</div>
-          <div className="min-w-60 px-4 flex flex-1 flex-col gap-1">
+          {/* <div className="min-w-40 px-4 flex">New Thread</div> */}
+          <div
+            className="h-full min-w-60 px-4 flex flex-1 flex-col gap-1"
+            onClick={() => handleTemplateOpen(cadenceStep.templateId)}
+          >
             <div className="text-base font-semibold">
               {cadenceStep.template?.subject}
             </div>

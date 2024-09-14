@@ -13,7 +13,7 @@ interface CompanyFilterConfig {
   company: string;
   location: string;
   employee: Option | Option[] | null;
-  keyword: string;
+  industry: string;
 }
 
 interface CompanyFilterContextType {
@@ -39,7 +39,7 @@ export const CompanyFilterProvider = ({
       company: "",
       location: "",
       employee: [],
-      keyword: "",
+      industry: "",
     });
 
   const updateCompanyFilterConfig = (config: CompanyFilterConfig) => {

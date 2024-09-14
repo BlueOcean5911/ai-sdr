@@ -19,16 +19,47 @@ import {
   LockClosedIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
+import { number } from "yup";
+
+interface Interval {
+  interval: number;
+  intervalType: number;
+}
 
 export default function AddStep({
+  order,
+  cadenceId,
   handleCreateStep,
 }: {
+  order: number;
+  cadenceId: string;
   handleCreateStep: (data: BaseCadenceStepModel) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [more, setMore] = useState(false);
   const [startNow, setStartNow] = useState(true);
+  const [stepData, setStepData] = useState<BaseCadenceStepModel>({
+    cadenceId: cadenceId,
+    order: order,
+    name: "Automatic Email",
+    interval: 0,
+  });
+  const [intervalData, setIntervalData] = useState<Interval>({
+    interval: 30,
+    intervalType: 1,
+  });
+
+  useEffect(() => {
+    setStepData((prev) => ({
+      ...prev,
+      interval: intervalData.interval * intervalData.intervalType,
+    }));
+  }, [intervalData]);
+
+  useEffect(() => {
+    console.log(stepData);
+  }, [stepData]);
 
   function closeModal() {
     setIsOpen(false);
@@ -41,10 +72,7 @@ export default function AddStep({
   }
 
   const createStep = () => {
-    const step: BaseCadenceStepModel = {
-      // name:
-    };
-    handleCreateStep(step);
+    handleCreateStep(stepData);
     setIsOpen(false);
   };
 
@@ -253,7 +281,16 @@ export default function AddStep({
                       </div>
                       <div className="flex gap-2 items-center">
                         <label className="text-sm text-nowrap">Step Name</label>
-                        <input className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-900  sm:text-sm sm:leading-6 " />
+                        <input
+                          value={stepData.name}
+                          onChange={(e) => {
+                            setStepData((prev) => ({
+                              ...prev,
+                              name: e.target.value,
+                            }));
+                          }}
+                          className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-900  sm:text-sm sm:leading-6 "
+                        />
                       </div>
                       <div className="flex flex-col gap-2">
                         <span>When to start this step:</span>
@@ -264,7 +301,10 @@ export default function AddStep({
                             name="start"
                             id="startNow"
                             checked={startNow}
-                            onChange={() => setStartNow(!startNow)}
+                            onChange={() => {
+                              setStartNow(!startNow);
+                              setStepData((prev) => ({ ...prev, interval: 0 }));
+                            }}
                           />
                           <label
                             htmlFor="startNow"
@@ -286,17 +326,39 @@ export default function AddStep({
                             type="number"
                             name="amount"
                             id="amount"
-                            defaultValue={30}
+                            value={intervalData.interval}
+                            onChange={(e) => {
+                              setIntervalData((prev) => ({
+                                ...prev,
+                                interval: parseInt(e.target.value),
+                              }));
+                            }}
                             className="max-w-24 input-primary"
                             disabled={startNow}
                           />
                           <select
                             disabled={startNow}
+                            defaultValue={1}
                             className="max-w-32  input-primary"
+                            onChange={(e) => {
+                              const typeToIntervalInitialVal: {
+                                [key: string]: number;
+                              } = {
+                                1: 30,
+                                60: 1,
+                                1440: 1,
+                              };
+                              setIntervalData((prev) => ({
+                                ...prev,
+                                intervalType: parseInt(e.target.value),
+                                interval:
+                                  typeToIntervalInitialVal[e.target.value],
+                              }));
+                            }}
                           >
-                            <option value="minutes">minutes</option>
-                            <option value="hours">hours</option>
-                            <option value="days">days</option>
+                            <option value={1}>minutes</option>
+                            <option value={60}>hours</option>
+                            <option value={1440}>days</option>
                           </select>
                           <label
                             htmlFor="startAfter"

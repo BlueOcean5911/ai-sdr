@@ -25,6 +25,12 @@ import {
   CadenceStepModel,
   getCadenceStepsByCadenceId,
 } from "@/services/cadenceStepService";
+import {
+  getTemplate,
+  TemplateModel,
+  updateTemplate,
+} from "@/services/templatesService";
+import { toast } from "react-toastify";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -32,6 +38,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const [active, setActive] = useState(false);
   const [cadence, setCadence] = useState<FetchCadenceModel>();
   const [cadenceSteps, setCadenceSteps] = useState<CadenceStepModel[]>([]);
+  const [template, setTemplate] = useState<TemplateModel>({});
   const [edit, setEdit] = useState(false);
   const router = useRouter();
 
@@ -100,6 +107,66 @@ export default function Page({ params }: { params: { id: string } }) {
     setActive(cadence?.isActive ? true : false);
   }, [cadence]);
 
+  const handleTemplateOpen = (id: string | undefined) => {
+    if (!id) {
+      return;
+    }
+    // fetch template by id
+    runService(
+      id,
+      getTemplate,
+      (data) => {
+        setTemplate(data);
+        setEdit(true);
+      },
+      (status, error) => {
+        console.log(status, error);
+        handleError(status, error);
+      }
+    );
+  };
+
+  const handleSaveTemplate = () => {
+    runService(
+      {
+        id: template.id,
+        updateData: {
+          subject: template.subject,
+          bodyText: template.bodyText,
+          bodyHtml: template.bodyHtml,
+          clonedFromId: template.clonedFromId,
+          shareType: template.shareType,
+        },
+      },
+      updateTemplate,
+      (data) => {
+        setCadenceSteps(
+          cadenceSteps.map((step) => {
+            if (step.templateId === template.id) {
+              return { ...step, template: template };
+            }
+            return step;
+          })
+        );
+        toast.success("Template updated successfully");
+        setEdit(false);
+      },
+      (status, error) => {
+        console.log(status, error);
+        handleError(status, error);
+      }
+    );
+  };
+
+  const handleCancelTemplate = () => {
+    setTemplate({});
+    setEdit(false);
+  };
+
+  const handleTestTemplate = () => {
+    toast.success("Successfully send email to test!");
+  };
+
   return (
     <>
       {edit ? (
@@ -117,6 +184,13 @@ export default function Page({ params }: { params: { id: string } }) {
                       type="text"
                       name="subject"
                       id="subject"
+                      value={template?.subject ? template.subject : ""}
+                      onChange={(e) => {
+                        setTemplate({
+                          ...template,
+                          subject: e.target.value,
+                        });
+                      }}
                       className="input-primary border-none outline-none focus:ring-0"
                     />
                   </div>
@@ -125,6 +199,13 @@ export default function Page({ params }: { params: { id: string } }) {
                   <textarea
                     name="message"
                     id="message"
+                    value={template?.bodyText ? template.bodyText : ""}
+                    onChange={(e) => {
+                      setTemplate({
+                        ...template,
+                        bodyText: e.target.value,
+                      });
+                    }}
                     className="input-primary border-none outline-none focus:ring-0 overflow-hidden"
                   />
                 </div>
@@ -155,19 +236,19 @@ export default function Page({ params }: { params: { id: string } }) {
             <div className="flex justify-end gap-4">
               <button
                 className="px-2 py-1 rounded-md text-sm bg-gray-300 hover:bg-gray-200"
-                onClick={() => setEdit(false)}
+                onClick={() => handleCancelTemplate()}
               >
                 Cancel
               </button>
               <button
                 className="px-2 py-1 rounded-md text-sm bg-gray-300 hover:bg-gray-200"
-                onClick={() => setEdit(false)}
+                onClick={() => handleTestTemplate()}
               >
                 Send test to me
               </button>
               <button
                 className="px-2 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
-                onClick={() => setEdit(false)}
+                onClick={() => handleSaveTemplate()}
               >
                 Save
               </button>
@@ -303,12 +384,18 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
             <div className="w-full p-4 flex flex-col gap-4">
               {cadenceSteps?.map((cadenceStep: CadenceStepModel) => (
-                <CadenceStep cadenceStep={cadenceStep} />
+                <CadenceStep
+                  handleTemplateOpen={handleTemplateOpen}
+                  cadenceStep={cadenceStep}
+                />
               ))}
               <AddStep
-                handleCreateStep={(data: BaseCadenceStepModel) =>
-                  addCadenceStep(data)
-                }
+                cadenceId={id}
+                order={cadence?.stepsCount ? cadence?.stepsCount + 1 : 1}
+                handleCreateStep={async (data: BaseCadenceStepModel) => {
+                  await addCadenceStep(data);
+                  fetchCadenceStepsByCadenceId();
+                }}
               />
               <div className="h-4 w-full" />
             </div>
