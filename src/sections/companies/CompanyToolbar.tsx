@@ -53,7 +53,6 @@ const CompanyToolbar = () => {
         }
       );
       setSelectedCompanies([]);
-      toast.success("Companies saved successfully");
     } else {
       toast.info("Please select one company to save");
     }

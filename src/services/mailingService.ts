@@ -114,8 +114,43 @@ export const getMailings = async (
   };
 };
 
-export const getMailingTotalCount = async (): Promise<ApiCountResponse> => {
-  const response = await api.get(`/api/mailings/total-count`);
+export const getMailingTotalCount = async (
+  data: FetchMailingsProps = { params: {} }
+): Promise<ApiCountResponse> => {
+  let url = `/api/mailings/statistics/total-count?`;
+  //  get search params from current params
+  const keys = Object.keys(data.params);
+  let searchParams = "";
+
+  if (keys.length > 0) {
+    searchParams =
+      "&" + keys.map((key) => `${key}=${data.params[key]}`).join("&");
+  }
+  if (data.campaignId) {
+    url += `&campaignId=${data.campaignId}`;
+  }
+  if (data.cadenceId) {
+    url += `&cadenceId=${data.cadenceId}`;
+  }
+  let userIds: string[] = [];
+  if (Array.isArray(data.fromUser)) {
+    userIds = data.fromUser.map((option) => option.value);
+  } else if (data.fromUser) {
+    userIds = [data.fromUser.value];
+  } else {
+    userIds = [];
+  }
+  for (const userId of userIds) {
+    url += `&fromUser=${userId}`;
+  }
+  if (data.search) {
+    url += `&search=${data.search}`;
+  }
+  if (searchParams) {
+    url += searchParams;
+  }
+  const response = await api.get(url);
+
   return {
     data: {
       count: response.data?.count,
@@ -133,9 +168,24 @@ export const getMailingsStatistics =
   };
 
 export const addMailing = async (mailing: SendMailingModel) => {
+  console.log("mailing data", mailing);
   const response = await api.post("api/mailings", mailing);
-
+  console.log("send mailing", response.data);
   if (response.status !== 200) {
     throw new Error("Failed to create mailing");
+  }
+
+  return {
+    data: {
+      id: response.data.surrogateId,
+    },
+  };
+};
+
+export const sendMailing = async (id: string) => {
+  const response = await api.post(`api/mailings/send/${id}`);
+
+  if (response.status !== 200) {
+    throw new Error("Failed to send email");
   }
 };

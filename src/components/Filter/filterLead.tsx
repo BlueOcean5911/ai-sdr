@@ -11,7 +11,7 @@ export default function FilterLead() {
     <div className="card p-2 w-64 h-full flex flex-col">
       <h3 className="p-2 border-b-2 border-gray-100">Search</h3>
       <div className="flex-1 flex flex-col gap-2 p-2 overflow-auto">
-        <FilterItem
+        {/* <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
           title="Persona"
         >
@@ -50,7 +50,7 @@ export default function FilterLead() {
               searchIcon: "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
             }}
           ></Select>
-        </FilterItem>
+        </FilterItem> */}
         <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
           title="Job Title"
@@ -101,36 +101,8 @@ export default function FilterLead() {
               }}
             />
           </div>
-          <div>
-            <label className="text-sm text-gray-500">State</label>
-            <input
-              type="text"
-              className="input-primary w-full"
-              value={leadFilterConfig.location}
-              onChange={(e) => {
-                setLeadFilterConfig({
-                  ...leadFilterConfig,
-                  location: e.target.value,
-                });
-              }}
-            />
-          </div>
-          <div>
-            <label className="text-sm text-gray-500">City</label>
-            <input
-              type="text"
-              className="input-primary w-full"
-              value={leadFilterConfig.location}
-              onChange={(e) => {
-                setLeadFilterConfig({
-                  ...leadFilterConfig,
-                  location: e.target.value,
-                });
-              }}
-            />
-          </div>
         </FilterItem>
-        <FilterItem
+        {/* <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
           title="Employees"
         >
@@ -168,19 +140,19 @@ export default function FilterLead() {
               searchIcon: "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
             }}
           ></Select>
-        </FilterItem>
+        </FilterItem> */}
         <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
-          title="Industry & Keywords"
+          title="Industry"
         >
           <input
             type="text"
             className="input-primary w-full"
-            value={leadFilterConfig.keyword}
+            value={leadFilterConfig.industry}
             onChange={(e) => {
               setLeadFilterConfig({
                 ...leadFilterConfig,
-                keyword: e.target.value,
+                industry: e.target.value,
               });
             }}
           />

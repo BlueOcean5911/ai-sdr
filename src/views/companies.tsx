@@ -44,9 +44,7 @@ export default function Companies() {
     }
   };
 
-  const handleSave = () => {
-    setCreate(false);
-  };
+  const handleSave = () => {};
 
   const handleClose = () => {
     setCreate(false);

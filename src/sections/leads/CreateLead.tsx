@@ -101,18 +101,18 @@ export default function CreateLead({
                       email: Yup.string()
                         .required("Email is required")
                         .email("Invalid Email"),
-                      emailStatus: Yup.string().required("Status is required"),
+                      // emailStatus: Yup.string().required("Status is required"),
                       phone: Yup.string().required("Phone is required"),
-                      phoneStatus: Yup.string().required("Status is required"),
+                      // phoneStatus: Yup.string().required("Status is required"),
                       jobTitle: Yup.string().required("Job Title is required"),
                       company: Yup.string().required("Company is required"),
                       linkedin: Yup.string()
                         .required("LinkedIn is required")
                         .url("Invalid URL"),
                       location: Yup.string().required("Location is required"),
-                      leadOwner: Yup.string().required(
-                        "Lead Owner is required"
-                      ),
+                      // leadOwner: Yup.string().required(
+                      //   "Lead Owner is required"
+                      // ),
                     })}
                     onSubmit={async (
                       values,
@@ -146,7 +146,6 @@ export default function CreateLead({
                         companyId: undefined,
                         ownerId: values.leadOwner,
                       };
-                      console.log("here lead", lead);
                       runService(
                         lead,
                         addLead,
@@ -156,6 +155,7 @@ export default function CreateLead({
                             createdLeadId: data.surrogateId,
                           }));
                           toast.success("Lead created successfully");
+                          handleClose();
                         },
                         (status, error) => {
                           console.log(status, error);

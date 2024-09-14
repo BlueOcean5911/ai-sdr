@@ -18,6 +18,7 @@ export interface BaseCadenceStepModel {
   name?: string;
   order?: number;
   taskNote?: string;
+  interval?: number;
   stepType?: CADENCE_STEP_TYPE | string;
 
   activeCount?: number;
@@ -32,6 +33,7 @@ export interface BaseCadenceStepModel {
   interestedCount?: number;
   optOutCount?: number;
 
+  cadenceId?: string;
   templateId?: string;
 }
 
@@ -96,6 +98,8 @@ export const getCadenceStepsByCadenceId = async ({
       taskNote: item?.taskNote,
       stepType: item?.stepType,
 
+      interval: item?.interval,
+
       activeCount: item?.activeCount,
       pausedCount: item?.pausedCount,
       notSentCount: item?.notSentCount,
@@ -138,7 +142,7 @@ export const getCadenceStepTotalCount = async ({
 export const addCadenceStep = async (
   cadenceStep: BaseCadenceStepModel
 ): Promise<ApiCadenceStepResponse> => {
-  const response = await api.post("api/cadenceSteps", cadenceStep);
+  const response = await api.post("api/cadence-steps", cadenceStep);
 
   if (response.status !== 200) {
     throw new Error("Failed to create cadenceStep");

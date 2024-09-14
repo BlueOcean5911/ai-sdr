@@ -19,6 +19,7 @@ const config = {
       },
     },
     extend: {
+      light: "0 4px 10px rgba(255, 255, 255, 0.5)",
       fontFamily: {
         space_grotesk: ["var(--font-space-grotesk)", "sans-serif"], // Added fallback font
       },

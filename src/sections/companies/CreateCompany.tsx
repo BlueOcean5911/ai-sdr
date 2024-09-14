@@ -61,9 +61,9 @@ export default function CreateCompany({
                     validationSchema={Yup.object().shape({
                       name: Yup.string().required("Name is required"),
                       phone: Yup.string().required("Phone is required"),
-                      phoneStatus: Yup.string().required("Status is required"),
+                      // phoneStatus: Yup.string().required("Status is required"),
                       type: Yup.string().required("Type is required"),
-                      size: Yup.string().required("Size is required"),
+                      // size: Yup.string().required("Size is required"),
                       linkedin: Yup.string()
                         .required("LinkedIn is required")
                         .url("Invalid URL"),
@@ -97,6 +97,7 @@ export default function CreateCompany({
                             createdCompanyId: data.surrogateId,
                           }));
                           toast.success("Company created successfully");
+                          handleSave();
                           handleClose();
                         },
                         (status, error) => {
@@ -213,7 +214,7 @@ export default function CreateCompany({
                               type="text"
                               placeholder=""
                               className="input-primary"
-                              value={values.name}
+                              value={values.description}
                               onChange={handleChange}
                             />
                           </div>

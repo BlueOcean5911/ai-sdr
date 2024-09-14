@@ -5,7 +5,11 @@ import FilterEmail from "@/components/Filter/filterEmail";
 import EmailToolbar from "@/sections/emails/EmailToolbar";
 import EmailItem from "@/sections/emails/EmailItem";
 import { handleError, runService } from "@/utils/service_utils";
-import { getMailings, MailingModel } from "@/services/mailingService";
+import {
+  getMailings,
+  getMailingTotalCount,
+  MailingModel,
+} from "@/services/mailingService";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -15,6 +19,9 @@ export default function Emails(
     campaignId: "",
   }
 ) {
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalCount, setTotalCount] = useState<number>(0);
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
   const [mailings, setMailings] = useState<MailingModel[]>([]);
   const currentParams = Object.fromEntries(useSearchParams());
@@ -41,13 +48,36 @@ export default function Emails(
     );
   };
 
+  const fetchMailingTotalCount = (params: { [key: string]: string }) => {
+    runService(
+      {
+        campaignId: campaignId,
+        cadenceId: cadenceId,
+        fromUser: emailFilterConfig.fromUser,
+        search: emailFilterConfig.search,
+        params,
+      },
+      getMailingTotalCount,
+      (data) => {
+        console.log("Mailing total", data);
+        setTotalCount(data?.count ? data?.count : 0);
+      },
+      (status, error) => {
+        handleError(status, error);
+        console.log(status, error);
+      }
+    );
+  };
+
   useEffect(() => {
+    fetchMailingTotalCount(currentParams);
     fetchMailings(currentParams);
   }, []);
 
   useEffect(() => {
-    fetchMailings(emailFilterConfig.params);
-  }, [emailFilterConfig]);
+    fetchMailingTotalCount(currentParams);
+    fetchMailings(currentParams);
+  }, [emailFilterConfig, currentPage, pageSize]);
 
   return (
     <div className="flex gap-2 flex-1 overflow-auto">
@@ -75,12 +105,12 @@ export default function Emails(
         <div className="flex justify-end">
           <Pagination
             className="pagination-bar"
-            totalCount={0}
-            onPageChange={
-              (pageSize: number, currentPage: number) =>
-                console.log(pageSize, currentPage)
-              // handlePageChange(pageSize, currentPage)
-            }
+            totalCount={totalCount}
+            pageSize={pageSize}
+            onPageChange={(pageSize: number, currentPage: number) => {
+              setPageSize(pageSize);
+              setCurrentPage(currentPage);
+            }}
           />
         </div>
       </div>

@@ -5,6 +5,9 @@ import { boolean } from "yup";
 
 interface FetchCompaniesProps extends FetchProps {
   targeted?: boolean;
+  industry?: string;
+  company?: string;
+  location?: string;
 }
 
 export interface CompanyModel extends BaseCompanyModel {
@@ -38,10 +41,19 @@ interface ApiCountResponse {
 export const getCompanies = async (
   data: FetchCompaniesProps = { offset: 0, limit: 100, targeted: false }
 ): Promise<ApiCompaniesResponse> => {
-  const { offset, limit, targeted } = data;
+  const { offset, limit, targeted, company, location, industry } = data;
   let url = `/api/companies?offset=${offset}&limit=${limit}`;
   if (targeted) {
     url += "&targeted=true";
+  }
+  if (company) {
+    url += `&companyName=${company}`;
+  }
+  if (location) {
+    url += `&location=${location}`;
+  }
+  if (industry) {
+    url += `&industry=${industry}`;
   }
   const response = await api.get(url);
 
@@ -68,12 +80,27 @@ export const getCompanies = async (
 
 export const getCompanyTotalCount = async ({
   targeted,
+  company,
+  location,
+  industry,
 }: {
   targeted: boolean;
+  company?: string;
+  location?: string;
+  industry?: string;
 }): Promise<ApiCountResponse> => {
-  let url = "/api/companies/total-count";
+  let url = "/api/companies/statistics/total-count?";
   if (targeted) {
-    url += "?targeted=true";
+    url += "&targeted=true";
+  }
+  if (company) {
+    url += `&companyName=${company}`;
+  }
+  if (location) {
+    url += `&location=${location}`;
+  }
+  if (industry) {
+    url += `&industry=${industry}`;
   }
   const response = await api.get(url);
   return {

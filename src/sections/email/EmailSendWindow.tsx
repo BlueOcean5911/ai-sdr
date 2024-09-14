@@ -1,7 +1,7 @@
 import Select from "@/components/extends/Select/default";
 import { useLeadFilter } from "@/contexts/FilterLeadContext";
 import { useLeadSelection } from "@/contexts/LeadSelectionContext";
-import { addMailing } from "@/services/mailingService";
+import { addMailing, sendMailing } from "@/services/mailingService";
 import { getUsers, UserModel } from "@/services/userService";
 import { MAILING_STATE } from "@/types/enums";
 import { handleError, runService } from "@/utils/service_utils";
@@ -23,8 +23,12 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
     id: "",
   });
   const [sendLater, setSendLater] = useState(false);
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<string | null>(null);
   const [users, setUsers] = useState<UserForSelect[]>([]);
+
+  useEffect(() => {
+    console.log(date);
+  }, [date]);
 
   const [values, setValues] = useState({
     from: "",
@@ -92,18 +96,24 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
           message: values.message,
           leadId: selectedLeads[0].id,
           ownerId: owner.id,
-          fromEmail: selectedLeads[0].email,
-          toEmail: owner.name,
+          fromEmail: owner.name,
+          toEmail: selectedLeads[0].email,
           scheduledAt: date,
-          mailingStatus: MAILING_STATE.SCHEDULED,
+          mailingStatus: sendLater
+            ? MAILING_STATE.SCHEDULED
+            : MAILING_STATE.DELIVERED,
         },
         addMailing,
-        () => {},
+        (data) => {
+          if (!sendLater) {
+            sendMailing(data.id);
+          }
+          toast.success("Email sent successfully");
+        },
         (status, error) => {
           handleError(status, error);
         }
       );
-      toast.success("Email sent successfully");
     }
   };
 
@@ -116,7 +126,7 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
         toEmail: owner.name,
         subject: values.subject,
         bodyText: values.message,
-        scheduledAt: date?.toDateString(),
+        scheduledAt: date,
         mailingStatus: MAILING_STATE.SCHEDULED,
       },
       addMailing,
@@ -130,7 +140,7 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
 
   return (
     <>
-      <div className="z-20 flex flex-col fixed bottom-2 right-14 w-[500px] h-[80vh] shadow-lg bg-white border-2 border-gray-100 rounded-md">
+      <div className="z-20 flex flex-col fixed bottom-2 right-14 w-[500px] h-[80vh] shadow-[0px_8px_24px_rgba(0,0,0,0.5)] bg-white border-2 border-gray-100 rounded-md">
         <div className="px-4 py-2 flex justify-between items-center border-b-2">
           Send Email
           <XMarkIcon
@@ -215,7 +225,14 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
             {sendLater && (
               <div className="flex items-center gap-4">
                 <label htmlFor="sendDate">Send Date:</label>
-                <input type="date" name="sendDate" id="sendDate" />
+                <input
+                  type="date"
+                  name="sendDate"
+                  id="sendDate"
+                  defaultValue={new Date().toISOString().split("T")[0]} // Set default to today
+                  value={date ? date : new Date().toISOString().split("T")[0]}
+                  onChange={(e) => setDate(e.target.value)}
+                />
               </div>
             )}
           </div>

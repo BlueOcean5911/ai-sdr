@@ -69,7 +69,7 @@ export default function InviteUser({
                       <form noValidate onSubmit={handleSubmit}>
                         <div className="px-6 py-3 flex flex-col gap-2 text-sm bg-gray-50 rounded-md">
                           <div className="flex flex-col">
-                            <p className="text-lg text-gray-600 py-4">
+                            <p className="text-base text-gray-600 py-4">
                               Revolutionize your sales team with our
                               cutting-edge AI-powered Sales Development
                               Representative project.

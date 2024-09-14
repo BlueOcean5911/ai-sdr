@@ -15,7 +15,7 @@ interface LeadFilterConfig {
   company: string;
   location: string;
   employee: Option | Option[] | null;
-  keyword: string;
+  industry: string;
 }
 
 interface LeadFilterContextType {
@@ -36,7 +36,7 @@ export const LeadFilterProvider = ({ children }: { children: ReactNode }) => {
     company: "",
     location: "",
     employee: [],
-    keyword: "",
+    industry: "",
   });
 
   const updateLeadFilterConfig = (config: LeadFilterConfig) => {
