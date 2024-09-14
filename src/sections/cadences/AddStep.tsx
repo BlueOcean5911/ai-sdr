@@ -6,6 +6,7 @@ import LinkedinRequestIcon from "@/components/Icons/linkedinrequest.icon";
 import LinkedinViewIcon from "@/components/Icons/linkedinview.icon";
 import ManualEmailIcon from "@/components/Icons/manualmail.icon";
 import PhoneCallIcon from "@/components/Icons/phonecall.icon";
+import { BaseCadenceStepModel } from "@/services/cadenceStepService";
 import {
   Dialog,
   DialogPanel,
@@ -21,9 +22,9 @@ import {
 import React, { Fragment, useState } from "react";
 
 export default function AddStep({
-  handleContinue,
+  handleCreateStep,
 }: {
-  handleContinue: () => void;
+  handleCreateStep: (data: BaseCadenceStepModel) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [more, setMore] = useState(false);
@@ -38,6 +39,14 @@ export default function AddStep({
     setMore(false);
     setStartNow(true);
   }
+
+  const createStep = () => {
+    const step: BaseCadenceStepModel = {
+      // name:
+    };
+    handleCreateStep(step);
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -242,6 +251,10 @@ export default function AddStep({
                           </div>
                         </div>
                       </div>
+                      <div className="flex gap-2 items-center">
+                        <label className="text-sm text-nowrap">Step Name</label>
+                        <input className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-900  sm:text-sm sm:leading-6 " />
+                      </div>
                       <div className="flex flex-col gap-2">
                         <span>When to start this step:</span>
                         <div className="flex items-center gap-2">
@@ -302,9 +315,11 @@ export default function AddStep({
                         </button>
                         <button
                           className="px-3 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
-                          onClick={handleContinue}
+                          onClick={() => {
+                            createStep();
+                          }}
                         >
-                          Continue
+                          Create Step
                         </button>
                       </div>
                     </div>

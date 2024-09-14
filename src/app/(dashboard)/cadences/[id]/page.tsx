@@ -20,6 +20,8 @@ import {
   updateCadence,
 } from "@/services/cadenceService";
 import {
+  addCadenceStep,
+  BaseCadenceStepModel,
   CadenceStepModel,
   getCadenceStepsByCadenceId,
 } from "@/services/cadenceStepService";
@@ -303,7 +305,11 @@ export default function Page({ params }: { params: { id: string } }) {
               {cadenceSteps?.map((cadenceStep: CadenceStepModel) => (
                 <CadenceStep cadenceStep={cadenceStep} />
               ))}
-              <AddStep handleContinue={() => setEdit(true)} />
+              <AddStep
+                handleCreateStep={(data: BaseCadenceStepModel) =>
+                  addCadenceStep(data)
+                }
+              />
               <div className="h-4 w-full" />
             </div>
           </div>
