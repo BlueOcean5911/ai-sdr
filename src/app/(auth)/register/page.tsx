@@ -5,13 +5,13 @@ import { ROUTE_DASHBOARD, ROUTE_LOGIN } from "@/data/routes";
 import Logo from "@/components/extends/Logo";
 import { LOGIN_BG_URL, LOGIN_SUB_IMAGE_001_URL } from "@/data/urls/images.url";
 import Image from "next/image";
-import { Formik } from "formik";
+import { Formik, yupToFormErrors } from "formik";
 import * as Yup from "yup";
 import FormHelperText from "@/components/extends/FormHelperText";
 import Select from "@/components/extends/Select/default";
 import { handleError, runService } from "@/utils/service_utils";
 import { register, saveToken } from "@/services/authService";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const companySizeOptions = [
   { value: "1-10", name: "1-10" },
@@ -27,19 +27,29 @@ const companySizeOptions = [
   { value: "10001+", name: "10001+" },
 ];
 
-export default function SignIn() {
+export default function Page() {
+  const invite = Object.fromEntries(useSearchParams())?.invite;
   const router = useRouter();
-
   const handleRegister = (
     email: string,
     password: string,
     firstName: string,
     lastName: string,
-    companyName: string,
-    companySize: string
+    companyName?: string,
+    companySize?: string
   ) => {
     runService(
-      { email, password, firstName, lastName, companyName, companySize },
+      {
+        user: {
+          email,
+          password,
+          firstName,
+          lastName,
+          companyName,
+          companySize,
+        },
+        invite,
+      },
       register,
       (data) => {
         saveToken(data.token);
@@ -77,21 +87,28 @@ export default function SignIn() {
                   initialValues={{
                     firstName: "",
                     lastName: "",
-                    companyName: "",
-                    companySize: "",
+                    companyName: undefined,
+                    companySize: undefined,
                     email: "",
                     password: "",
+                    invite: invite ? true : false,
                     submit: null,
                   }}
                   validationSchema={Yup.object().shape({
                     firstName: Yup.string().required("First name is required"),
                     lastName: Yup.string().required("Last name is required"),
-                    companyName: Yup.string().required(
-                      "Company name is required"
-                    ),
-                    companySize: Yup.string().required(
-                      "Company size is required"
-                    ),
+                    companyName: Yup.string().when("invite", {
+                      is: false,
+                      then: (schema) =>
+                        schema.required("Company name is required"),
+                      otherwise: (schema) => schema.notRequired(),
+                    }),
+                    companySize: Yup.string().when("invite", {
+                      is: false,
+                      then: (schema) =>
+                        schema.required("Company size is required"),
+                      otherwise: (schema) => schema.notRequired(),
+                    }),
                     email: Yup.string()
                       .email("Must be a valid email")
                       .max(255)
@@ -104,6 +121,7 @@ export default function SignIn() {
                     values,
                     { setErrors, setStatus, setSubmitting }
                   ) => {
+                    console.log("123123");
                     await handleRegister(
                       values.email,
                       values.password,
@@ -179,59 +197,61 @@ export default function SignIn() {
                           )}
                         </div>
                       </div>
-                      <div className="flex gap-4">
-                        <div>
-                          <label
-                            htmlFor="companyName"
-                            className="block text-sm font-medium leading-6 "
-                          >
-                            Company Name
-                          </label>
-                          <div className="mt-2">
-                            <input
-                              id="companyName"
-                              name="companyName"
-                              type="text"
-                              value={values.companyName}
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                              required
-                              autoComplete="text"
-                              className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
-                            />
+                      {(invite === undefined || invite === "") && (
+                        <div className="flex gap-4">
+                          <div>
+                            <label
+                              htmlFor="companyName"
+                              className="block text-sm font-medium leading-6 "
+                            >
+                              Company Name
+                            </label>
+                            <div className="mt-2">
+                              <input
+                                id="companyName"
+                                name="companyName"
+                                type="text"
+                                value={values.companyName}
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                required
+                                autoComplete="text"
+                                className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
+                              />
+                            </div>
+                            {touched.companyName && errors.companyName && (
+                              <FormHelperText>
+                                {errors.companyName}
+                              </FormHelperText>
+                            )}
                           </div>
-                          {touched.companyName && errors.companyName && (
-                            <FormHelperText>
-                              {errors.companyName}
-                            </FormHelperText>
-                          )}
-                        </div>
-                        <div>
-                          <label
-                            htmlFor="companyName"
-                            className="block text-sm font-medium leading-6 "
-                          >
-                            Company Size
-                          </label>
-                          <div className="mt-2">
-                            <Select
-                              data={companySizeOptions}
-                              onChange={(selectedItem) => {
-                                if (selectedItem.value !== values.companySize)
-                                  setFieldValue(
-                                    "companySize",
-                                    selectedItem.value
-                                  );
-                              }}
-                            />
+                          <div>
+                            <label
+                              htmlFor="companyName"
+                              className="block text-sm font-medium leading-6 "
+                            >
+                              Company Size
+                            </label>
+                            <div className="mt-2">
+                              <Select
+                                data={companySizeOptions}
+                                onChange={(selectedItem) => {
+                                  if (selectedItem.value !== values.companySize)
+                                    setFieldValue(
+                                      "companySize",
+                                      selectedItem.value
+                                    );
+                                }}
+                              />
+                            </div>
+                            {touched.companySize && errors.companySize && (
+                              <FormHelperText>
+                                {errors.companySize}
+                              </FormHelperText>
+                            )}
                           </div>
-                          {touched.companySize && errors.companySize && (
-                            <FormHelperText>
-                              {errors.companySize}
-                            </FormHelperText>
-                          )}
                         </div>
-                      </div>
+                      )}
                       <div>
                         <label
                           htmlFor="email"

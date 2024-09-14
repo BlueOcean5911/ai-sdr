@@ -43,7 +43,7 @@ export interface CreateModelProps {
 
 export interface InviteUserProps {
   open: boolean;
-  handleInvite: () => void;
+  handleInvite: (email: string) => void;
   handleClose: () => void;
 }
 

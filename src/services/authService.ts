@@ -14,14 +14,20 @@ export const login = ({
 interface RegisterModel {
   firstName: string;
   lastName: string;
-  companyName: string;
-  companySize: string;
+  companyName?: string;
+  companySize?: string;
   email: string;
   password: string;
 }
 
-export const register = (data: RegisterModel) => {
-  return api.post("/auth/register", data);
+export const register = (data: { user: RegisterModel; invite?: string }) => {
+  const { user, invite } = data;
+  console.log("register user", user);
+  let url = `/auth/register`;
+  if (invite) {
+    url += `?invite=${invite}`;
+  }
+  return api.post(url, user);
 };
 
 export const saveToken = (token: string) => {

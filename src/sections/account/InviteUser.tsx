@@ -32,7 +32,7 @@ export default function InviteUser({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <DialogPanel className="max-w-md w-full flex flex-col rounded-md bg-white text-left align-middle shadow-xl transition-all">
+                <DialogPanel className="max-w-lg w-full flex flex-col rounded-md bg-white text-left align-middle shadow-xl transition-all">
                   <DialogTitle
                     as="h3"
                     className="px-6 py-3 text-lg font-semibold leading-6 bg-white text-gray-900 rounded-md"
@@ -52,7 +52,9 @@ export default function InviteUser({
                       values,
                       { setErrors, setStatus, setSubmitting }
                     ) => {
-                      handleInvite();
+                      setSubmitting(false);
+                      handleInvite(values.email);
+                      setSubmitting(true);
                     }}
                   >
                     {({
@@ -67,7 +69,21 @@ export default function InviteUser({
                       <form noValidate onSubmit={handleSubmit}>
                         <div className="px-6 py-3 flex flex-col gap-2 text-sm bg-gray-50 rounded-md">
                           <div className="flex flex-col">
-                            <label htmlFor="email">Email:</label>
+                            <p className="text-lg text-gray-600 py-4">
+                              Revolutionize your sales team with our
+                              cutting-edge AI-powered Sales Development
+                              Representative project.
+                              <br />
+                              Join us in unlocking unparalleled efficiency and
+                              success. Click the invite button below to onboard
+                              your top talent and witness the future of sales.
+                            </p>
+                            <label
+                              htmlFor="email"
+                              className="font-semibold py-2"
+                            >
+                              Email:
+                            </label>
                             <div className="flex gap-4">
                               <div className="w-full flex flex-col">
                                 <input
