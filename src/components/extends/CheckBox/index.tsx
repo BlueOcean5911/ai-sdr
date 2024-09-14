@@ -23,7 +23,8 @@ export default function CheckBox({
         <input
           type="checkbox"
           id={id}
-          className="hidden-xs-up input-cbx"
+          // className="hidden-xs-up input-cbx"
+          className="text-blue-500 focus:ring-0"
           checked={checked}
           onChange={(e) => {
             if (handleClick) {
@@ -35,7 +36,7 @@ export default function CheckBox({
             }
           }}
         />
-        <label htmlFor={id} className="cbx"></label>
+        {/* <label htmlFor={id} className="cbx"></label> */}
       </div>
       <label htmlFor={id} className="label-cbx mx-2 cursor-pointer">
         {content}
