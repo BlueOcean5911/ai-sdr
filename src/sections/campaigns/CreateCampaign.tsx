@@ -4,7 +4,23 @@ import { handleError, runService } from "@/utils/service_utils";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import FormHelperText from "@/components/extends/FormHelperText";
+
+const campaignStatuses = [
+  {
+    name: "Not Started",
+    value: "not-started",
+  },
+  { name: "Discovery", value: "discovery" },
+  { name: "Value-proposition", value: "value-proposition" },
+  { name: "PROPOSAL", value: "proposal" },
+  { name: "NEGOTIATING", value: "negotiating" },
+  { name: "CLOSED_WON", value: "closed-won" },
+  { name: "CLOSED_LOST", value: "closed-lost" },
+  { name: "ACCOUNT_PLAN", value: "account-plan" },
+];
 
 const CreateCampaign = ({
   close,
@@ -14,13 +30,7 @@ const CreateCampaign = ({
   click?: () => void;
 }) => {
   const router = useRouter();
-  const [campaign, setCampaign] = useState<BaseCampaignModel>({
-    title: "",
-    description: "",
-    amount: 0,
-    status: "",
-  });
-  const handelCreateCampaign = () => {
+  const handelCreateCampaign = (campaign: BaseCampaignModel) => {
     runService(
       campaign,
       addCampaign,
@@ -35,19 +45,7 @@ const CreateCampaign = ({
       }
     );
   };
-  const campaignStatuses = [
-    {
-      name: "Not Started",
-      value: "not-started",
-    },
-    { name: "Discovery", value: "discovery" },
-    { name: "Value-proposition", value: "value-proposition" },
-    { name: "PROPOSAL", value: "proposal" },
-    { name: "NEGOTIATING", value: "negotiating" },
-    { name: "CLOSED_WON", value: "closed-won" },
-    { name: "CLOSED_LOST", value: "closed-lost" },
-    { name: "ACCOUNT_PLAN", value: "account-plan" },
-  ];
+
   return (
     <>
       <Dialog
@@ -75,98 +73,131 @@ const CreateCampaign = ({
                   <XMarkIcon className="w-5 h-5" />
                 </div>
               </DialogTitle>
-              <div className="p-6 w-full flex flex-col gap-3 rounded-md bg-gray-100">
-                <label
-                  htmlFor="description"
-                  className="text-base text-center pb-12 text-gray-500 font-semibold"
-                >
-                  Please fill out the fields below to create your new campaign.
-                  Ensure that all information is accurate to effectively
-                  communicate your campaign's goals and attract potential
-                  supporters.
-                </label>
-                <div className="flex items-center">
-                  <label className="min-w-24 text-sm" htmlFor="title">
-                    Title:
-                  </label>
-                  <input
-                    id="title"
-                    type="text"
-                    className="input-primary"
-                    value={campaign.title}
-                    onChange={(e) =>
-                      setCampaign((prev) => ({
-                        ...prev,
-                        title: e.target?.value,
-                      }))
-                    }
-                  />
-                </div>
-                <div className="flex items-center">
-                  <label className="min-w-24 text-sm" htmlFor="amount">
-                    Amount:
-                  </label>
-                  <input
-                    id="amount"
-                    type="number"
-                    className="input-primary"
-                    onChange={(e) =>
-                      setCampaign((prev) => ({
-                        ...prev,
-                        amount: parseInt(e.target?.value),
-                      }))
-                    }
-                    value={campaign.amount}
-                  />
-                </div>
-                <div className="flex items-center">
-                  <label className="min-w-24 text-sm" htmlFor="description">
-                    Description:
-                  </label>
-                  <input
-                    id="description"
-                    type="text"
-                    className="input-primary"
-                    onChange={(e) =>
-                      setCampaign((prev) => ({
-                        ...prev,
-                        description: e.target.value,
-                      }))
-                    }
-                    value={campaign.description}
-                  />
-                </div>
-                <div className="flex items-center">
-                  <label className="min-w-24 text-sm" htmlFor="status">
-                    Status:
-                  </label>
-                  <Select
-                    data={campaignStatuses}
-                    onChange={(item) => {
-                      if (campaign.status !== item.value) {
-                        setCampaign((prev) => ({
-                          ...prev,
-                          status: item.value,
-                        }));
-                      }
-                    }}
-                  />
-                </div>
-                <div className="flex items-center gap-6">
-                  <button
-                    className="w-full p-1 text-sm rounded-md text-white bg-blue-500 hover:bg-blue-400"
-                    onClick={() => handelCreateCampaign()}
-                  >
-                    Save
-                  </button>
-                  <button
-                    className="w-full p-0.5 text-sm rounded-md border-2 bg-white border-gray-300 hover:bg-gray-200"
-                    onClick={close}
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
+              <Formik
+                initialValues={{
+                  title: "",
+                  amount: 0,
+                  description: "",
+                  status: campaignStatuses[0],
+                }}
+                validationSchema={Yup.object().shape({
+                  title: Yup.string().required("Title is required"),
+                })}
+                onSubmit={async (
+                  values,
+                  { setErrors, setStatus, setSubmitting }
+                ) => {
+                  setSubmitting(true);
+                  handelCreateCampaign({
+                    title: values.title,
+                    description: values.description,
+                    amount: values.amount,
+                    status: values.status.value,
+                  });
+                  setSubmitting(false);
+                }}
+              >
+                {({
+                  errors,
+                  handleBlur,
+                  handleChange,
+                  handleSubmit,
+                  setFieldValue,
+                  isSubmitting,
+                  touched,
+                  values,
+                }) => (
+                  <form noValidate onSubmit={handleSubmit}>
+                    <div className="p-6 w-full flex flex-col gap-3 rounded-md bg-gray-100">
+                      <label
+                        htmlFor="description"
+                        className="text-base text-center pb-12 text-gray-500 font-semibold"
+                      >
+                        Please fill out the fields below to create your new
+                        campaign. Ensure that all information is accurate to
+                        effectively communicate your campaign's goals and
+                        attract potential supporters.
+                      </label>
+                      <div className="flex flex-col">
+                        <div className="flex items-center">
+                          <label className="min-w-24 text-sm" htmlFor="title">
+                            Title:
+                          </label>
+                          <input
+                            id="title"
+                            type="text"
+                            className="input-primary"
+                            value={values.title}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                          />
+                        </div>
+                        {touched.title && errors.title && (
+                          <div className="pl-24">
+                            <FormHelperText>{errors.title}</FormHelperText>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex items-center">
+                        <label className="min-w-24 text-sm" htmlFor="amount">
+                          Amount:
+                        </label>
+                        <input
+                          id="amount"
+                          type="number"
+                          className="input-primary"
+                          value={values.amount}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          className="min-w-24 text-sm"
+                          htmlFor="description"
+                        >
+                          Description:
+                        </label>
+                        <input
+                          id="description"
+                          type="text"
+                          className="input-primary"
+                          value={values.description}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label className="min-w-24 text-sm" htmlFor="status">
+                          Status:
+                        </label>
+                        <Select
+                          data={campaignStatuses}
+                          value={values.status}
+                          onChange={(item) => {
+                            if (item !== values.status) {
+                              setFieldValue("status", item);
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="flex items-center gap-6">
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="w-full p-1 text-sm rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                        >
+                          Save
+                        </button>
+                        <button
+                          className="w-full p-0.5 text-sm rounded-md border-2 bg-white border-gray-300 hover:bg-gray-200"
+                          onClick={close}
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                )}
+              </Formik>
             </DialogPanel>
           </div>
         </div>
