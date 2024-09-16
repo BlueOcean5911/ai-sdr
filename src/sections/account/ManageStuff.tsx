@@ -1,9 +1,16 @@
 import { useState, useEffect } from "react";
 import { handleError, runService } from "@/utils/service_utils";
-import { getUsers, sendInviteLink, UserModel } from "@/services/userService";
+import {
+  getUsers,
+  updateOther,
+  deleteUser,
+  sendInviteLink,
+  UserModel,
+} from "@/services/userService";
 import {
   EllipsisHorizontalIcon,
   PlusCircleIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
 import {
   EllipsisVerticalIcon,
@@ -13,6 +20,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import InviteUser from "./InviteUser";
 import { setIn } from "formik";
 import { toast } from "react-toastify";
+import ToggleButton from "@/components/extends/Button/ToggleButton";
 
 const ManageStuff = () => {
   const [users, setUsers] = useState<UserModel[]>();
@@ -25,6 +33,39 @@ const ManageStuff = () => {
       (data) => {
         console.log("users: ", data);
         setUsers(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  const handleUpdate = (userData: UserModel) => {
+    runService(
+      userData,
+      updateOther,
+      (data) => {
+        setUsers(
+          users?.map((user) =>
+            user.id !== data.id ? user : { ...user, enabled: data.enabled }
+          )
+        );
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  const handleDelete = (userId: string) => {
+    runService(
+      userId,
+      deleteUser,
+      (data) => {
+        if (data === true) {
+          toast.success("Successfully deleted.");
+          setUsers(users?.filter((user: UserModel) => user.id !== userId));
+        } else toast.error("Something goes wrong.");
       },
       (status, error) => {
         handleError(status, error);
@@ -117,10 +158,8 @@ const ManageStuff = () => {
                 </th>
                 <th
                   scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Action
-                </th>
+                  className="py-3.5 text-left text-sm font-semibold text-gray-900"
+                ></th>
               </tr>
             </thead>
             <tbody className="bg-white overflow-auto">
@@ -139,11 +178,25 @@ const ManageStuff = () => {
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {user.title}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <td className="whitespace-nowraptext-sm text-gray-500">
                       {user.phone}
                     </td>
-                    <td className="whitespace-nowrap text-sm text-gray-500">
-                      <Menu>
+                    <td className="py-4 flex flex-1 justify-center items-center gap-4">
+                      <ToggleButton
+                        checked={user.enabled ? user.enabled : false}
+                        handleChange={() => {
+                          handleUpdate({ id: user.id, enabled: !user.enabled });
+                        }}
+                      />
+                      <div
+                        className="p-1 rounded-md cursor-pointer hover:bg-gray-100"
+                        onClick={() =>
+                          handleDelete(user.id ? user.id : "fakeUserId")
+                        }
+                      >
+                        <TrashIcon className="w-5 h-5 stroke-red-500" />
+                      </div>
+                      {/* <Menu>
                         <MenuButton className="">
                           <div className="p-1 border rounded-md hover:bg-white">
                             <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
@@ -164,7 +217,7 @@ const ManageStuff = () => {
                             </button>
                           </MenuItem>
                         </MenuItems>
-                      </Menu>
+                      </Menu> */}
                     </td>
                   </tr>
                 ))}
