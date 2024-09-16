@@ -35,6 +35,10 @@ export function formatDateTimeReadable(dateTime: Date | string) {
     dateTime = new Date(dateTime);
   }
 
+  if (dateTime === null) {
+    return "";
+  }
+
   const months = [
     "January",
     "February",
