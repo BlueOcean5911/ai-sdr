@@ -12,6 +12,7 @@ export interface BaseUserModel {
   email?: string;
   phone?: string;
   title?: string;
+  enabled?: boolean;
 }
 
 interface ApiUserResponse {
@@ -27,6 +28,7 @@ export const getMe = async (data: undefined): Promise<ApiUserResponse> => {
       email: response.data?.email,
       title: response.data?.title,
       phone: response.data?.phone,
+      enabled: response.data?.enabled,
       id: response.data?.surrogateId,
     },
   };
@@ -42,6 +44,7 @@ export const getUsers = async (data: undefined): Promise<ApiUserResponse> => {
       email: user?.email,
       title: user?.title,
       phone: user?.phone,
+      enabled: user?.enabled,
     })),
   };
 };
@@ -55,6 +58,24 @@ export const updateUser = async (data: UserModel): Promise<ApiUserResponse> => {
       email: response.data?.email,
       title: response.data?.title,
       phone: response.data?.phone,
+      enabled: response.data?.enabled,
+      id: response.data?.surrogateId,
+    },
+  };
+};
+
+export const updateOther = async (
+  data: UserModel
+): Promise<ApiUserResponse> => {
+  const response = await api.put(`/api/users/${data.id}`, data);
+  return {
+    data: {
+      firstName: response.data?.firstName,
+      lastName: response.data?.lastName,
+      email: response.data?.email,
+      title: response.data?.title,
+      phone: response.data?.phone,
+      enabled: response.data?.enabled,
       id: response.data?.surrogateId,
     },
   };
@@ -87,4 +108,11 @@ export const sendInviteLink = async (email: string) => {
   } catch (e) {
     handleError(undefined, "Invalid Invite");
   }
+};
+
+export const deleteUser = async (userId: string): Promise<ApiUserResponse> => {
+  const response = await api.delete(`/api/users/${userId}`);
+  return {
+    data: response.data?.ok,
+  };
 };
