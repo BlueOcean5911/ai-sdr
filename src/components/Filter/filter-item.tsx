@@ -1,3 +1,4 @@
+"use client";
 import { classNames } from "@/utils";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
