@@ -2,9 +2,17 @@
 import Link from "next/link";
 import { classNames } from "@/utils";
 import { usePathname } from "next/navigation";
-import { EnvelopeIcon, PhoneIcon, UserIcon } from "@heroicons/react/24/outline";
+import {
+  BellAlertIcon,
+  CheckIcon,
+  EnvelopeIcon,
+  PhoneIcon,
+  UserIcon,
+  UserPlusIcon,
+} from "@heroicons/react/24/outline";
 import NavTitle from "@/components/DashboardLayout/Nav/Title";
 import { ROUTE_DASHBOARD } from "@/data/routes";
+import { PenIcon } from "lucide-react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -132,20 +140,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
         <div className="p-5 flex flex-1 flex-col gap-3 rounded-lg bg-white shadow-md">
           <span className="text-lg font-semibold">Workspace</span>
-          <div className="w-full flex items-center gap-4 border-b">
+          <div className="w-full flex items-center gap-6 border-b">
             <Link
               href="/dashboard/emails"
               className=" rounded-md text-sm hover:bg-gray-100"
             >
               <span
                 className={classNames(
-                  "py-2 flex flex-row items-center gap-2 border-b border-transparent",
+                  "p-2 flex flex-row items-center gap-2 border-b border-transparent",
                   endpoint === "/dashboard/emails"
                     ? "font-semibold border-black"
                     : ""
                 )}
               >
-                <UserIcon className="w-4 h-4" />
+                <EnvelopeIcon className="w-3.5 h-3.5" />
                 Recent Replies
               </span>
             </Link>
@@ -155,11 +163,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             >
               <span
                 className={classNames(
-                  "py-2 flex flex-row items-center gap-2 border-b border-transparent",
+                  "p-2 flex flex-row items-center gap-2 border-b border-transparent",
                   endpoint === "/dashboard/" ? "font-semibold border-black" : ""
                 )}
               >
-                <UserIcon className="w-4 h-4" />
+                <UserPlusIcon className="w-3.5 h-3.5" />
                 Recommended prospects
               </span>
             </Link>
@@ -169,11 +177,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             >
               <span
                 className={classNames(
-                  "py-2 flex flex-row items-center gap-2 border-b border-transparent",
+                  "p-2 flex flex-row items-center gap-2 border-b border-transparent",
                   endpoint === "/dashboard/" ? "font-semibold border-black" : ""
                 )}
               >
-                <UserIcon className="w-4 h-4" />
+                <PenIcon className="w-3 h-3" />
                 Message optimizations
               </span>
             </Link>
@@ -183,13 +191,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             >
               <span
                 className={classNames(
-                  "py-2 flex flex-row items-center gap-2 border-b border-transparent",
+                  "p-2 flex flex-row items-center gap-2 border-b border-transparent",
                   endpoint === "/dashboard/tasks"
                     ? "font-semibold border-black"
                     : ""
                 )}
               >
-                <UserIcon className="w-4 h-4" />
+                <CheckIcon className="w-3.5 h-3.5" />
                 Tasks
               </span>
             </Link>
@@ -199,11 +207,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             >
               <span
                 className={classNames(
-                  "py-2 flex flex-row items-center gap-2 border-b border-transparent",
+                  "p-2 flex flex-row items-center gap-2 border-b border-transparent",
                   endpoint === "/dashboard/" ? "font-semibold border-black" : ""
                 )}
               >
-                <UserIcon className="w-4 h-4" />
+                <BellAlertIcon className="w-3.5 h-3.5" />
                 Alerts
               </span>
             </Link>
