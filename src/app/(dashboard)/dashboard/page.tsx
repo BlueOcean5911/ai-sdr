@@ -1,60 +1,33 @@
 import Image from "next/image";
 
+const navs = [
+  { color: "bg-green-500", content: "Willing to meet", count: 0 },
+  { color: "bg-sky-500", content: "Follow-up question", count: 0 },
+  { color: "bg-indigo-500", content: "Referred to other person", count: 0 },
+  { color: "bg-orange-500", content: "Out of office", count: 0 },
+  { color: "bg-red-500", content: "Not the right person", count: 0 },
+  { color: "bg-gray-500", content: "Not interested", count: 0 },
+  { color: "bg-pink-500", content: "Unsubscribed", count: 0 },
+  { color: "bg-slate-200", content: "Uncategorized", count: 0 },
+];
+
 export default function Page() {
   return (
     <>
       <div className="flex flex-1 flex-row gap-2">
-        <div className="w-60 p-2 flex flex-col gap-2 gap rounded-md border">
+        <div className="w-80 px-4 py-6 flex flex-col gap-4 gap rounded-md border">
           <div className="flex flex-row justify-between gap-2 text-sm">
             <span>All messages</span>
-            <span>0</span>
+            <span className="text-xs">0</span>
           </div>
           <span>STATUS</span>
-          <div className="flex flex-row gap-2 text-sm">
-            <span>*</span>
-            <span className="grow">Willing to meet</span>
-            <span>0</span>
-          </div>
-          <div className="flex flex-row gap-2 text-sm">
-            <span>*</span>
-            <span className="grow">Follow-up question</span>
-            <span>0</span>
-          </div>
-          <div className="flex flex-row gap-2 text-sm">
-            <span>*</span>
-            <span className="grow">Referred to other person</span>
-            <span>0</span>
-          </div>
-          <div className="flex flex-row gap-2 text-sm">
-            <span>*</span>
-            <span className="grow">Out of office</span>
-            <span>0</span>
-          </div>
-          <div className="flex flex-row gap-2 text-sm">
-            <span>*</span>
-            <span className="grow">Not the right person</span>
-            <span>0</span>
-          </div>
-          <div className="flex flex-row gap-2 text-sm">
-            <span>*</span>
-            <span className="grow">Not interested</span>
-            <span>0</span>
-          </div>
-          <div className="flex flex-row gap-2 text-sm">
-            <span>*</span>
-            <span className="grow">Unsubscibed</span>
-            <span>0</span>
-          </div>
-          <div className="flex flex-row gap-2 text-sm">
-            <span>*</span>
-            <span className="grow">Uncategorized</span>
-            <span>0</span>
-          </div>
-          <span>MAILBOX</span>
-          <div className="flex flex-row gap-2 text-sm">
-            <span className="grow">dev.freshworks@gmail.com</span>
-            <span>0</span>
-          </div>
+          {navs.map((nav, idx) => (
+            <div key={idx} className="flex flex-row items-center gap-2 text-sm">
+              <span className={`w-2 h-2 rounded-full ${nav.color}`} />
+              <span className="grow">{nav.content}</span>
+              <span className="text-xs">{nav.count}</span>
+            </div>
+          ))}
         </div>
         <div className="p-2 flex flex-1 rounded-md border">
           <div className="flex flex-1 flex-col justify-center items-center text-center gap-2">
