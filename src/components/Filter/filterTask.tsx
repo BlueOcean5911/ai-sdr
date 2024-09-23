@@ -6,25 +6,26 @@ import {
 import FilterItem from "./filter-item";
 import { useTaskFilter } from "@/contexts/FilterTaskContext";
 import Select from "react-tailwindcss-select";
-import { fromUserOptions } from "@/data/filter.data";
+import { fromUserOptions, priorityOptions } from "@/data/filter.data";
 import { runService } from "@/utils/service_utils";
 import { getUsers, UserModel } from "@/services/userService";
 import { useEffect, useState } from "react";
 
 export default function FilterTask() {
   const { taskFilterConfig, setTaskFilterConfig } = useTaskFilter();
-  const [fromTaskOptions, setFromTaskOptions] = useState(fromUserOptions);
+  const [fromUserOption, setFromUserOption] = useState(fromUserOptions);
+  const [priorityOption, setPriorityOption] = useState(priorityOptions);
 
   const fetchUsers = () => {
     runService(
       undefined,
       getUsers,
       (users) => {
-        const fromTaskOptions = users.map((user: UserModel) => ({
+        const usersOption = users.map((user: UserModel) => ({
           value: user.id,
           label: user.firstName + " " + user.lastName,
         }));
-        setFromTaskOptions(fromTaskOptions);
+        setFromUserOption(usersOption);
       },
       (status, error) => {
         console.error(error);
@@ -75,7 +76,7 @@ export default function FilterTask() {
                 fromUser: value,
               })
             }
-            options={fromTaskOptions}
+            options={fromUserOption}
             isMultiple={true}
             isSearchable={true}
             primaryColor={"indigo"}
@@ -104,22 +105,47 @@ export default function FilterTask() {
             }}
           ></Select>
         </FilterItem>
-        {/* <FilterItem
+        <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
-          title="From Task"
+          title="Priority"
         >
-          <input
-            type="text"
-            className="input-primary w-full"
-            value={taskFilterConfig.fromTask}
-            onChange={(e) => {
+          <Select
+            value={taskFilterConfig.priority}
+            onChange={(value) =>
               setTaskFilterConfig({
                 ...taskFilterConfig,
-                fromTask: e.target.value,
-              });
+                priority: value,
+              })
+            }
+            options={priorityOption}
+            isMultiple={true}
+            isSearchable={true}
+            primaryColor={"indigo"}
+            classNames={{
+              menuButton: (value) => {
+                const isDisabled = value?.isDisabled;
+                return `flex text-xs text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
+                  isDisabled
+                    ? "bg-gray-200"
+                    : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
+                }`;
+              },
+              menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-xs text-gray-700",
+              listItem: (value) => {
+                const isSelected = value?.isSelected;
+                return `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${
+                  isSelected
+                    ? `text-white bg-blue-500`
+                    : `text-gray-500 hover:bg-blue-100 hover:text-blue-500`
+                }`;
+              },
+
+              searchBox:
+                "text-xs w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none",
+              searchIcon: "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
             }}
-          />
-        </FilterItem> */}
+          ></Select>
+        </FilterItem>
       </div>
     </div>
   );

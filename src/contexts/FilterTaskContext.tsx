@@ -11,7 +11,7 @@ interface TaskFilterConfig {
   params: { [key: string]: string };
   isOpen: boolean;
   fromUser: Option | Option[] | null;
-  fromTask: Option | Option[] | null;
+  priority: Option | Option[] | null;
   search: string;
 }
 
@@ -29,7 +29,7 @@ export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {
     params: {},
     isOpen: true,
     fromUser: [],
-    fromTask: [],
+    priority: [],
     search: "",
   });
 

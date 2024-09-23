@@ -11,10 +11,7 @@ export default function Page() {
             width={120}
             height={120}
           />
-          <span>No new messages</span>
-          <span className="w-1/2 text-xs">
-            You'll see new email message here whenever they come in.
-          </span>
+          <span>No new alerts</span>
         </div>
       </div>
     </>

@@ -34,6 +34,13 @@ export const fromUserOptions = [
   { value: "You", label: "You" },
 ];
 
+export const priorityOptions = [
+  { value: "Critical", label: "Critical" },
+  { value: "High", label: "High" },
+  { value: "Medium", label: "Medium" },
+  { value: "Low", label: "Low" },
+];
+
 export const cadenceStatusOptions = [
   { value: "Active", label: "Active" },
   { value: "Paused", label: "Paused" },
