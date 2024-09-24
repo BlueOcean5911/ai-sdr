@@ -12,6 +12,7 @@ import {
   getCompanies,
   getCompanyTotalCount,
 } from "@/services/companyService";
+import CompanyOverview from "./CompanyOverview";
 
 const CompanyTable = () => {
   const { companyFilterConfig } = useCompanyFilter();
@@ -24,6 +25,8 @@ const CompanyTable = () => {
     setSelectedCompanies,
   } = useCompanySelection();
 
+  const [overview, setOverview] = useState(false);
+  const [selected, setSelected] = useState<CompanyModel>();
   const [totalCount, setTotalCount] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -99,26 +102,6 @@ const CompanyTable = () => {
     setAllSelected(false);
   }, [companyFilterConfig, searchParams, currentPage, pageSize]);
 
-  // useEffect(() => {
-  //   const filteredCompanies = totalCompanies.filter((company: any) => {
-  //     if (
-  //       companyFilterConfig.company &&
-  //       !contain(company.companyName, companyFilterConfig.company)
-  //     ) {
-  //       return false;
-  //     }
-  //     if (
-  //       companyFilterConfig.location &&
-  //       !contain(company.currentLocation, companyFilterConfig.location)
-  //     ) {
-  //       return false;
-  //     }
-  //     return true;
-  //   });
-  //   setCompanies(filteredCompanies);
-  //   console.log("companyFilterConfig: ", companyFilterConfig);
-  // }, [companyFilterConfig]);
-
   const handleAllSelected = (id: any, checked: boolean) => {
     if (checked) {
       setSelectedCompanies(totalCompanies.map((company: any) => company));
@@ -130,6 +113,11 @@ const CompanyTable = () => {
   return (
     <>
       <div className="flex-1 flex flex-col overflow-auto">
+        <CompanyOverview
+          show={overview}
+          company={selected}
+          handleClose={() => setOverview(false)}
+        />
         {/* Table */}
         <div className="flex-1 overflow-auto">
           <table className="min-w-full divide-y divide-gray-300 overflow-auto">
@@ -152,12 +140,6 @@ const CompanyTable = () => {
                     Company Name
                   </div>
                 </th>
-                {/* <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Name
-                </th> */}
                 <th
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
@@ -185,62 +167,59 @@ const CompanyTable = () => {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {totalCompanies
-                // .slice(pageSize * (currentPage - 1), pageSize * currentPage)
-                .map((company: CompanyModel) => (
-                  <tr
-                    key={company.id}
-                    className="even:bg-blue-50 hover:bg-gray-300 "
-                  >
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
-                      <div className="flex gap-2">
-                        <CheckBox
-                          id={company.id}
-                          key={company.id}
-                          content=""
-                          value={company}
-                          checked={selectedCompanies.find(
-                            (itemCompany: any) => itemCompany.id === company.id
-                          )}
-                          onChange={(changedCompany, checked) => {
-                            if (!checked) {
-                              setSelectedCompanies(
-                                selectedCompanies.filter(
-                                  (company: any) =>
-                                    changedCompany.id !== company.id
-                                )
-                              );
-                            } else {
-                              console.log(checked);
-                              setSelectedCompanies([
-                                ...selectedCompanies,
-                                changedCompany,
-                              ]);
-                            }
-                          }}
-                        />
-                        <a
-                          className="hover:underline hover:text-blue-900"
-                          href={company.linkedin}
-                        >
-                          {company.name}
-                        </a>
-                      </div>
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {company.phone}
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {company.location}
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {company.size}
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {company.industry}
-                    </td>
-                  </tr>
-                ))}
+              {totalCompanies.map((company: CompanyModel) => (
+                <tr
+                  key={company.id}
+                  className="even:bg-blue-50 hover:bg-gray-300 cursor-pointer"
+                  onClick={() => {
+                    setSelected(company);
+                    setOverview(true);
+                  }}
+                >
+                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
+                    <div className="flex gap-2">
+                      <CheckBox
+                        id={company.id}
+                        key={company.id}
+                        content=""
+                        value={company}
+                        checked={selectedCompanies.find(
+                          (itemCompany: any) => itemCompany.id === company.id
+                        )}
+                        onChange={(changedCompany, checked) => {
+                          if (!checked) {
+                            setSelectedCompanies(
+                              selectedCompanies.filter(
+                                (company: any) =>
+                                  changedCompany.id !== company.id
+                              )
+                            );
+                          } else {
+                            console.log(checked);
+                            setSelectedCompanies([
+                              ...selectedCompanies,
+                              changedCompany,
+                            ]);
+                          }
+                        }}
+                      />
+                      {company.name}
+                    </div>
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    {company.phone}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    {company.location}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    {company.size}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    {company.industry}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

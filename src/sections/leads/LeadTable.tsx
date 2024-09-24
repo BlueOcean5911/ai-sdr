@@ -13,6 +13,7 @@ import {
   LeadModelWithCompanyModel,
 } from "@/services/leadService";
 import Link from "next/link";
+import LeadOverview from "./LeadOverview";
 
 const LeadTable = () => {
   const { leadFilterConfig } = useLeadFilter();
@@ -25,6 +26,8 @@ const LeadTable = () => {
     setSelectedLeads,
   } = useLeadSelection();
 
+  const [overview, setOverview] = useState(false);
+  const [selected, setSelected] = useState<LeadModelWithCompanyModel>();
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -100,6 +103,11 @@ const LeadTable = () => {
   return (
     <>
       <div className="flex-1 flex flex-col overflow-auto">
+        <LeadOverview
+          show={overview}
+          lead={selected}
+          handleClose={() => setOverview(false)}
+        />
         {/* Table */}
         <div className="flex-1 overflow-auto">
           <table className="min-w-full divide-y divide-gray-300 overflow-auto">
@@ -182,7 +190,11 @@ const LeadTable = () => {
               {totalLeads.map((lead: LeadModelWithCompanyModel) => (
                 <tr
                   key={lead.id}
-                  className="even:bg-blue-50 hover:bg-gray-300 "
+                  onClick={() => {
+                    setSelected(lead);
+                    setOverview(true);
+                  }}
+                  className="cursor-pointer even:bg-blue-50 hover:bg-gray-300 "
                 >
                   <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
                     <div className="flex gap-2">
@@ -206,13 +218,8 @@ const LeadTable = () => {
                             setSelectedLeads([...selectedLeads, changedLead]);
                           }
                         }}
-                      />{" "}
-                      <a
-                        className="hover:underline hover:text-blue-900 hover:cursor-pointer"
-                        href={lead.linkedin}
-                      >
-                        {lead.firstName} {lead.lastName}
-                      </a>
+                      />
+                      {lead.firstName} {lead.lastName}
                     </div>
                   </td>
                   {/* <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">

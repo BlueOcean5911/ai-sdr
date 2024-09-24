@@ -34,7 +34,7 @@ export default function Tasks(
         limit: 100,
         campaignId: campaignId,
         cadenceId: cadenceId,
-        fromUser: taskFilterConfig.fromUser,
+        priority: taskFilterConfig.priority,
         search: taskFilterConfig.search,
         params,
       },
@@ -54,7 +54,7 @@ export default function Tasks(
       {
         campaignId: campaignId,
         cadenceId: cadenceId,
-        fromUser: taskFilterConfig.fromUser,
+        priority: taskFilterConfig.priority,
         search: taskFilterConfig.search,
         params,
       },
@@ -101,10 +101,7 @@ export default function Tasks(
                 width={120}
                 height={120}
               />
-              <span>No new messages</span>
-              <span className="w-1/2 text-xs">
-                You'll see new task message here whenever they come in.
-              </span>
+              <span>No new tasks</span>
             </div>
             {/* )} */}
           </div>

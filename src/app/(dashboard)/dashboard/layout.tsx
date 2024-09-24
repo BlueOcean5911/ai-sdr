@@ -202,13 +202,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </span>
             </Link>
             <Link
-              href="/dashboard/"
+              href="/dashboard/alerts"
               className=" rounded-md text-sm hover:bg-gray-100"
             >
               <span
                 className={classNames(
                   "p-2 flex flex-row items-center gap-2 border-b border-transparent",
-                  endpoint === "/dashboard/" ? "font-semibold border-black" : ""
+                  endpoint === "/dashboard/alerts"
+                    ? "font-semibold border-black"
+                    : ""
                 )}
               >
                 <BellAlertIcon className="w-3.5 h-3.5" />
