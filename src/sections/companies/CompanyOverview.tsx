@@ -27,8 +27,8 @@ const CompanyOverview = ({
     <>
       <div
         className={classNames(
-          "absolute right-0 top-0 bottom-0 z-20 w-1/2 flex flex-1 flex-col border-l bg-white overflow-scroll transition-all duration-500",
-          !show && "-right-full"
+          "absolute top-0 bottom-0 z-20 w-1/2 flex flex-1 flex-col border-l bg-white overflow-scroll transition-all duration-500",
+          show ? "right-0" : "-right-full"
         )}
       >
         <div className="px-5 py-2 flex items-center gap-2">
