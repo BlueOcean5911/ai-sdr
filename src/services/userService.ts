@@ -1,5 +1,5 @@
 import { api } from "@/utils/api";
-import { handleError } from "@/utils/service_utils";
+import { handleError, runService } from "@/utils/service_utils";
 import { toast } from "react-toastify";
 
 export interface UserModel extends BaseUserModel {
@@ -94,20 +94,10 @@ export const updatePassword = async ({
   });
 };
 
-export const sendInviteLink = async (email: string) => {
-  const data = {
-    email,
-  };
-  try {
-    const response = await api.post("/api/users/invite", data);
-    if (response.status === 200) {
-      toast.success("Invite Sent");
-    } else {
-      handleError(undefined, "Invalid Invite");
-    }
-  } catch (e) {
-    handleError(undefined, "Invalid Invite");
-  }
+export const sendInviteLink = async (props: { email: string }) => {
+  const { email } = props;
+  const data = { email };
+  return await api.post("/api/users/invite", data);
 };
 
 export const deleteUser = async (userId: string): Promise<ApiUserResponse> => {

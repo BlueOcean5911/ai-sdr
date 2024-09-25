@@ -82,7 +82,18 @@ const ManageStuff = () => {
         <InviteUser
           open={invite}
           handleInvite={(email: string) => {
-            sendInviteLink(email);
+            runService(
+              { email },
+              sendInviteLink,
+              (data) => {
+                if (data.success === true) {
+                  toast.success("Successfully sent invite.");
+                } else toast.error("Something goes wrong.");
+              },
+              (status, error) => {
+                handleError(status, error);
+              }
+            );
             setInvite(false);
           }}
           handleClose={() => setInvite(false)}
