@@ -4,38 +4,38 @@ import {
   StarIcon,
 } from "@heroicons/react/24/outline";
 import FilterItem from "./filter-item";
-import { useTaskFilter } from "@/contexts/FilterTaskContext";
+import { useCallFilter } from "@/contexts/FilterCallContext";
 import Select from "react-tailwindcss-select";
 import { fromUserOptions, priorityOptions } from "@/data/filter.data";
 import { runService } from "@/utils/service_utils";
 import { getUsers, UserModel } from "@/services/userService";
 import { useEffect, useState } from "react";
 
-export default function FilterTask() {
-  const { taskFilterConfig, setTaskFilterConfig } = useTaskFilter();
+export default function FilterCall() {
+  const { callFilterConfig, setCallFilterConfig } = useCallFilter();
   const [fromUserOption, setFromUserOption] = useState(fromUserOptions);
   const [priorityOption, setPriorityOption] = useState(priorityOptions);
 
-  // const fetchUsers = () => {
-  //   runService(
-  //     undefined,
-  //     getUsers,
-  //     (users) => {
-  //       const usersOption = users.map((user: UserModel) => ({
-  //         value: user.id,
-  //         label: user.firstName + " " + user.lastName,
-  //       }));
-  //       setFromUserOption(usersOption);
-  //     },
-  //     (status, error) => {
-  //       console.error(error);
-  //     }
-  //   );
-  // };
+  const fetchUsers = () => {
+    runService(
+      undefined,
+      getUsers,
+      (users) => {
+        const usersOption = users.map((user: UserModel) => ({
+          value: user.id,
+          label: user.firstName + " " + user.lastName,
+        }));
+        setFromUserOption(usersOption);
+      },
+      (status, error) => {
+        console.error(error);
+      }
+    );
+  };
 
-  // useEffect(() => {
-  //   fetchUsers();
-  // }, []);
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <div className="p-2 w-64 h-full flex flex-col rounded-xl bg-white">
@@ -53,10 +53,10 @@ export default function FilterTask() {
             id="search-field"
             name="search"
             type="search"
-            placeholder="Search Tasks..."
-            value={taskFilterConfig.search}
+            placeholder="Search Calls..."
+            value={callFilterConfig.search}
             onChange={(e) => {
-              setTaskFilterConfig((prev) => ({
+              setCallFilterConfig((prev) => ({
                 ...prev,
                 search: e.target.value,
               }));
@@ -69,10 +69,10 @@ export default function FilterTask() {
           title="From User"
         >
           <Select
-            value={taskFilterConfig.fromUser}
+            value={callFilterConfig.fromUser}
             onChange={(value) =>
-              setTaskFilterConfig({
-                ...taskFilterConfig,
+              setCallFilterConfig({
+                ...callFilterConfig,
                 fromUser: value,
               })
             }
@@ -110,10 +110,10 @@ export default function FilterTask() {
           title="Priority"
         >
           <Select
-            value={taskFilterConfig.priority}
+            value={callFilterConfig.priority}
             onChange={(value) =>
-              setTaskFilterConfig({
-                ...taskFilterConfig,
+              setCallFilterConfig({
+                ...callFilterConfig,
                 priority: value,
               })
             }

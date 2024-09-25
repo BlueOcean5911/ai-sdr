@@ -92,3 +92,11 @@ export const getFormettedInterval = (interval: number | undefined) => {
 
   return "Deliver email in " + parts.join(", ") || "0 minutes";
 };
+
+export function getInitials(fullName: string, maxLength: number = 2): string {
+  return fullName
+    .split(" ")
+    .map((name) => name.charAt(0).toUpperCase())
+    .join("")
+    .slice(0, maxLength);
+}

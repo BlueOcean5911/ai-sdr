@@ -133,8 +133,8 @@ export const navigations = [
         current: false,
       },
       {
-        name: "Meetings",
-        href: "/meetings",
+        name: "Tasks",
+        href: "/tasks",
         icon: CalendarCheck,
         current: false,
       },
