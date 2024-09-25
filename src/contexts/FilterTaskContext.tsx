@@ -49,7 +49,7 @@ export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {
 export const useTaskFilter = (): TaskFilterContextType => {
   const context = useContext(TaskFilterContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an ");
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
