@@ -11,7 +11,7 @@ export const ROUTE_MEETINGS = "/meetings";
 export const ROUTE_ACCOUNT = "/account";
 export const ROUTE_SETTING = "/setting";
 export const ROUTE_LOGIN = "/login";
-export const ROUTE_REGISTER = "/register";
+export const ROUTE_REQUEST_DEMO = "/request-demo";
 
 export const ROUTE_SETTING_APPEARANCE = "/setting/appearance";
 export const ROUTE_SETTING_SECURITY = "/setting/security";

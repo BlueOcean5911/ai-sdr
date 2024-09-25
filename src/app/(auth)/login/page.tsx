@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 
-import { ROUTE_DASHBOARD, ROUTE_REGISTER } from "@/data/routes";
+import { ROUTE_DASHBOARD, ROUTE_REQUEST_DEMO } from "@/data/routes";
 import Logo from "@/components/extends/Logo";
 import CheckBox from "@/components/extends/CheckBox";
 import { LOGIN_BG_URL, LOGIN_SUB_IMAGE_001_URL } from "@/data/urls/images.url";
@@ -44,10 +44,10 @@ export default function SignIn() {
               <p className="mt-2 text-sm leading-6 ">
                 Not a member?{" "}
                 <Link
-                  href={ROUTE_REGISTER}
+                  href={ROUTE_REQUEST_DEMO}
                   className="font-semibold underline hover:text-blue-500"
                 >
-                  Register
+                  Request a demo
                 </Link>
               </p>
             </div>
