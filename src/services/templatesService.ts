@@ -31,7 +31,7 @@ interface ApiTemplateResponse {
 
 const getModelFromResponse = (response: any): TemplateModel => {
   return {
-    id: response.data?.surrogateId,
+    id: response.data?.id,
     archivedAt: response.data?.archivedAt,
     bodyHtml: response.data?.bodyHtml,
     bodyText: response.data?.bodyText,

@@ -1,5 +1,5 @@
 import { api } from "@/utils/api";
-import { handleError } from "@/utils/service_utils";
+import { handleError, runService } from "@/utils/service_utils";
 import { toast } from "react-toastify";
 
 export interface UserModel extends BaseUserModel {
@@ -29,7 +29,7 @@ export const getMe = async (data: undefined): Promise<ApiUserResponse> => {
       title: response.data?.title,
       phone: response.data?.phone,
       enabled: response.data?.enabled,
-      id: response.data?.surrogateId,
+      id: response.data?.id,
     },
   };
 };
@@ -38,7 +38,7 @@ export const getUsers = async (data: undefined): Promise<ApiUserResponse> => {
   const response = await api.get("/api/users");
   return {
     data: response.data?.map((user: any) => ({
-      id: user?.surrogateId,
+      id: user?.id,
       firstName: user?.firstName,
       lastName: user?.lastName,
       email: user?.email,
@@ -59,7 +59,7 @@ export const updateUser = async (data: UserModel): Promise<ApiUserResponse> => {
       title: response.data?.title,
       phone: response.data?.phone,
       enabled: response.data?.enabled,
-      id: response.data?.surrogateId,
+      id: response.data?.id,
     },
   };
 };
@@ -76,7 +76,7 @@ export const updateOther = async (
       title: response.data?.title,
       phone: response.data?.phone,
       enabled: response.data?.enabled,
-      id: response.data?.surrogateId,
+      id: response.data?.id,
     },
   };
 };
@@ -94,20 +94,10 @@ export const updatePassword = async ({
   });
 };
 
-export const sendInviteLink = async (email: string) => {
-  const data = {
-    email,
-  };
-  try {
-    const response = await api.post("/api/users/invite", data);
-    if (response.status === 200) {
-      toast.success("Invite Sent");
-    } else {
-      handleError(undefined, "Invalid Invite");
-    }
-  } catch (e) {
-    handleError(undefined, "Invalid Invite");
-  }
+export const sendInviteLink = async (props: { email: string }) => {
+  const { email } = props;
+  const data = { email };
+  return await api.post("/api/users/invite", data);
 };
 
 export const deleteUser = async (userId: string): Promise<ApiUserResponse> => {

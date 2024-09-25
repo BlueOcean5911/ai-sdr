@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { space_grotesk } from "@/utils/fonts";
+import { space_grotesk, roboto } from "@/utils/fonts";
 import { ToastContainer, toast } from "react-toastify";
 import NextTopLoader from "nextjs-toploader";
 
@@ -24,9 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={space_grotesk}>
+      <body className={roboto}>
         <NextTopLoader color="#4571B6" />
-        <main className="font-space_grotesk h-dvh flex">
+        <main className="font-roboto h-dvh flex">
           <ThemeProvider attribute="class">{children}</ThemeProvider>
         </main>
         <ToastContainer />

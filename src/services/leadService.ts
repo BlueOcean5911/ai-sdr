@@ -61,7 +61,7 @@ export const addLead = async (lead: BaseLeadModel) => {
   console.log("response", response);
   return {
     data: {
-      id: response?.data?.surrogateId,
+      id: response?.data?.id,
       firstName: response?.data?.firstName,
       lastName: response?.data?.lastName,
       title: response?.data?.title,
@@ -76,7 +76,7 @@ export const addLead = async (lead: BaseLeadModel) => {
       replyCount: response?.data?.replyCount,
       targeted: response?.data?.targeted,
       company: {
-        id: response?.data?.company?.surrogateId,
+        id: response?.data?.company?.id,
         name: response?.data?.company?.name,
         companyType: response?.data?.company?.companyType,
         phone: response?.data?.company?.phone,
@@ -119,7 +119,7 @@ export const getLeads = async (
   let leads: Array<LeadModelWithCompanyModel> = [];
   response.data.forEach((item: any) => {
     leads.push({
-      id: item?.surrogateId,
+      id: item?.id,
       firstName: item?.firstName,
       lastName: item?.lastName,
       title: item?.title,
@@ -134,7 +134,7 @@ export const getLeads = async (
       replyCount: item?.replyCount,
       targeted: item?.targeted,
       company: {
-        id: item?.company?.surrogateId,
+        id: item?.company?.id,
         name: item?.company?.name,
         companyType: item?.company?.companyType,
         phone: item?.company?.phone,
@@ -161,7 +161,7 @@ export const getLeadById = async (props: {
   const response = await api.get(url);
 
   let lead: LeadModel = {
-    id: response.data?.surrogateId,
+    id: response.data?.id,
     firstName: response.data?.firstName,
     lastName: response.data?.lastName,
     title: response.data?.title,
@@ -250,7 +250,7 @@ export const addLeadsToExistingCadence = async ({
   }
   return {
     data: {
-      id: response.data?.surrogateId,
+      id: response.data?.id,
     },
   };
 };

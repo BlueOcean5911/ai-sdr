@@ -54,6 +54,9 @@ export default function Page() {
       requestDemo,
       (data) => {
         saveToken(data.token);
+        toast.success(
+          "Successfully requested a demo! We'll contact to you soon."
+        );
         router.push(ROUTE_DASHBOARD);
       },
       (statusCode, error) => {
@@ -130,9 +133,6 @@ export default function Page() {
                       values.lastName,
                       values.companyName,
                       values.companySize
-                    );
-                    toast.success(
-                      "Successfully requested a demo! We'll contact to you soon."
                     );
                   }}
                 >
@@ -313,6 +313,17 @@ export default function Page() {
                           className="btn-primary flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                           Request a demo
+                        </button>
+
+                        <button
+                          className="w-full h-32"
+                          onClick={() =>
+                            toast.success(
+                              "Successfully requested a demo! We'll contact to you soon."
+                            )
+                          }
+                        >
+                          Hey
                         </button>
                       </div>
                     </form>

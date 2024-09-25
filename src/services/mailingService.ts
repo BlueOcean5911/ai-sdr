@@ -177,7 +177,7 @@ export const addMailing = async (mailing: SendMailingModel) => {
 
   return {
     data: {
-      id: response.data.surrogateId,
+      id: response.data.id,
     },
   };
 };

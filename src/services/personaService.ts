@@ -31,7 +31,7 @@ export const getPersonas = async (
   );
   return {
     data: {
-      id: response.data?.surrogateId,
+      id: response.data?.id,
       name: response.data?.name,
       jobTitles: response.data?.jobTitles,
       industries: response.data?.industries,

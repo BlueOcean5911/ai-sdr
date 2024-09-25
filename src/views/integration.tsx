@@ -33,7 +33,9 @@ export default function Integration() {
       description:
         "HubSpot's free CRM powers your customer support, sales, and marketing with easy-to-use features like live chat, meeting scheduling, and email tracking.",
       integrationBtn: "Connect",
-      onClick: () => router.push("#"),
+      onClick: () => {
+        window.open(process.env.NEXT_PUBLIC_HUSPOT_OAUTH_URL, "_blank");
+      },
     },
     {
       icon: (
