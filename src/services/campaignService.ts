@@ -49,7 +49,7 @@ export const addCampaign = async (
 
   return {
     data: {
-      id: response.data?.surrogateId,
+      id: response.data?.id,
       title: response.data?.title,
       amount: response.data?.amount,
       description: response.data?.description,
@@ -66,7 +66,7 @@ export const getCampaigns = async (
   );
   return {
     data: response.data.map((item: any) => ({
-      id: item?.surrogateId,
+      id: item?.id,
       title: item?.title,
       amount: item?.amount,
       description: item?.description,
@@ -92,7 +92,7 @@ export const getCampaign = async (id: string): Promise<ApiCampaignResponse> => {
 
   return {
     data: {
-      id: response.data?.surrogateId,
+      id: response.data?.id,
       title: response.data?.title,
       amount: response.data?.amount,
       description: response.data?.description,

@@ -29,7 +29,7 @@ export const getMe = async (data: undefined): Promise<ApiUserResponse> => {
       title: response.data?.title,
       phone: response.data?.phone,
       enabled: response.data?.enabled,
-      id: response.data?.surrogateId,
+      id: response.data?.id,
     },
   };
 };
@@ -38,7 +38,7 @@ export const getUsers = async (data: undefined): Promise<ApiUserResponse> => {
   const response = await api.get("/api/users");
   return {
     data: response.data?.map((user: any) => ({
-      id: user?.surrogateId,
+      id: user?.id,
       firstName: user?.firstName,
       lastName: user?.lastName,
       email: user?.email,
@@ -59,7 +59,7 @@ export const updateUser = async (data: UserModel): Promise<ApiUserResponse> => {
       title: response.data?.title,
       phone: response.data?.phone,
       enabled: response.data?.enabled,
-      id: response.data?.surrogateId,
+      id: response.data?.id,
     },
   };
 };
@@ -76,7 +76,7 @@ export const updateOther = async (
       title: response.data?.title,
       phone: response.data?.phone,
       enabled: response.data?.enabled,
-      id: response.data?.surrogateId,
+      id: response.data?.id,
     },
   };
 };

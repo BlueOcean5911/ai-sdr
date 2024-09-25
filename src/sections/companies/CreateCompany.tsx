@@ -94,7 +94,7 @@ export default function CreateCompany({
                         (data) => {
                           setCompanyFilterConfig((prev) => ({
                             ...prev,
-                            createdCompanyId: data.surrogateId,
+                            createdCompanyId: data.id,
                           }));
                           toast.success("Company created successfully");
                           handleSave();

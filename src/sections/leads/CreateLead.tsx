@@ -152,7 +152,7 @@ export default function CreateLead({
                         (data) => {
                           setLeadFilterConfig((prev) => ({
                             ...prev,
-                            createdLeadId: data.surrogateId,
+                            createdLeadId: data.id,
                           }));
                           toast.success("Lead created successfully");
                           handleClose();

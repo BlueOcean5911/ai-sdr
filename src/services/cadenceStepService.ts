@@ -54,7 +54,7 @@ export const getCadenceSteps = async (): Promise<ApiCadenceStepsResponse> => {
 
   return {
     data: response.data?.map((item: any) => ({
-      id: item?.surrogateId,
+      id: item?.id,
       name: item?.name,
       order: item?.order,
       taskNote: item?.taskNote,
@@ -92,7 +92,7 @@ export const getCadenceStepsByCadenceId = async ({
 
   return {
     data: response.data?.map((item: any) => ({
-      id: item?.surrogateId,
+      id: item?.id,
       name: item?.name,
       order: item?.order,
       taskNote: item?.taskNote,
@@ -150,7 +150,7 @@ export const addCadenceStep = async (
   const item = response.data;
   return {
     data: {
-      id: item?.surrogateId,
+      id: item?.id,
       name: item?.name,
       order: item?.order,
       taskNote: item?.taskNote,

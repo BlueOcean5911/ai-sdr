@@ -65,7 +65,7 @@ export const getCadenceById = async (
 
   return {
     data: {
-      id: response.data?.surrogateId,
+      id: response.data?.id,
       name: response.data?.name,
       activeCount: response.data?.activeCount,
       pausedCount: response.data?.pausedCount,
@@ -84,7 +84,7 @@ export const getCadenceById = async (
       ownerId: response.data?.ownerId,
       clonedFromId: response.data?.clonedFromId,
       owner: {
-        id: response.data?.owner?.surrogateId,
+        id: response.data?.owner?.id,
         firstName: response.data?.owner?.firstName,
         lastName: response.data?.owner?.lastName,
         email: response.data?.owner?.email,
@@ -118,7 +118,7 @@ export const getCadences = async (
   console.log(response, url);
   return {
     data: response.data?.map((item: any) => ({
-      id: item?.surrogateId,
+      id: item?.id,
       name: item?.name,
       activeCount: item?.activeCount,
       pausedCount: item?.pausedCount,
@@ -137,7 +137,7 @@ export const getCadences = async (
       ownerId: item?.ownerId,
       clonedFromId: item?.clonedFromId,
       owner: {
-        id: item?.owner?.surrogateId,
+        id: item?.owner?.id,
         firstName: item?.owner?.firstName,
         lastName: item?.owner?.lastName,
         email: item?.owner?.email,
@@ -164,7 +164,7 @@ export const addCadence = async (cadence: BaseCadenceModel) => {
 
   return {
     data: {
-      id: response.data?.surrogateId,
+      id: response.data?.id,
     },
   };
 };
@@ -181,7 +181,7 @@ export const updateCadence = async ({
 
   return {
     data: {
-      id: response.data?.surrogateId,
+      id: response.data?.id,
       name: response.data?.name,
       activeCount: response.data?.activeCount,
       pausedCount: response.data?.pausedCount,
@@ -200,7 +200,7 @@ export const updateCadence = async ({
       ownerId: response.data?.ownerId,
       clonedFromId: response.data?.clonedFromId,
       owner: {
-        id: response.data?.owner?.surrogateId,
+        id: response.data?.owner?.id,
         firstName: response.data?.owner?.firstName,
         lastName: response.data?.owner?.lastName,
         email: response.data?.owner?.email,

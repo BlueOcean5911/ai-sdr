@@ -64,7 +64,7 @@ export const getCompanies = async (
   let companies: Array<CompanyModel> = [];
   response.data.forEach((item: any) => {
     companies.push({
-      id: item?.surrogateId,
+      id: item?.id,
       name: item?.name,
       linkedin: item?.linkedin,
       companyType: item?.companyType,
@@ -91,7 +91,7 @@ export const getCompanyById = async (data: {
   const response = await api.get(url);
 
   let company: CompanyModel = {
-    id: response.data?.surrogateId,
+    id: response.data?.id,
     name: response.data?.name,
     linkedin: response.data?.linkedin,
     companyType: response.data?.companyType,
@@ -151,7 +151,7 @@ export const addCompany = async (
 
   return {
     data: {
-      id: response.data?.surrogateId,
+      id: response.data?.id,
       name: response.data?.name,
       linkedin: response.data?.linkedin,
       companyType: response.data?.companyType,
