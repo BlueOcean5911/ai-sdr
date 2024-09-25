@@ -10,8 +10,9 @@ import * as Yup from "yup";
 import FormHelperText from "@/components/extends/FormHelperText";
 import Select from "@/components/extends/Select/default";
 import { handleError, runService } from "@/utils/service_utils";
-import { register, saveToken } from "@/services/authService";
+import { requestDemo, saveToken } from "@/services/authService";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 const companySizeOptions = [
   { value: "1-10", name: "1-10" },
@@ -50,7 +51,7 @@ export default function Page() {
         },
         invite,
       },
-      register,
+      requestDemo,
       (data) => {
         saveToken(data.token);
         router.push(ROUTE_DASHBOARD);
@@ -69,7 +70,7 @@ export default function Page() {
             <div>
               <Logo />
               <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
-                Sign Up to your account
+                Request a demo
               </h2>
             </div>
             <p className="mt-2 text-sm leading-6 ">
@@ -129,6 +130,9 @@ export default function Page() {
                       values.lastName,
                       values.companyName,
                       values.companySize
+                    );
+                    toast.success(
+                      "Successfully requested a demo! We'll contact to you soon."
                     );
                   }}
                 >
@@ -199,7 +203,7 @@ export default function Page() {
                       </div>
                       {(invite === undefined || invite === "") && (
                         <div className="flex gap-4">
-                          <div>
+                          <div className="w-full">
                             <label
                               htmlFor="companyName"
                               className="block text-sm font-medium leading-6 "
@@ -225,7 +229,7 @@ export default function Page() {
                               </FormHelperText>
                             )}
                           </div>
-                          <div>
+                          <div className="w-full">
                             <label
                               htmlFor="companyName"
                               className="block text-sm font-medium leading-6 "
@@ -257,7 +261,7 @@ export default function Page() {
                           htmlFor="email"
                           className="block text-sm font-medium leading-6 "
                         >
-                          Email address
+                          Business Email
                         </label>
                         <div className="mt-2">
                           <input
@@ -308,7 +312,7 @@ export default function Page() {
                           disabled={isSubmitting}
                           className="btn-primary flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
-                          Sign Up
+                          Request a demo
                         </button>
                       </div>
                     </form>

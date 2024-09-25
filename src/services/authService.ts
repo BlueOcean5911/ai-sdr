@@ -20,9 +20,8 @@ interface RegisterModel {
   password: string;
 }
 
-export const register = (data: { user: RegisterModel; invite?: string }) => {
+export const requestDemo = (data: { user: RegisterModel; invite?: string }) => {
   const { user, invite } = data;
-  console.log("register user", user);
   let url = `/auth/register`;
   if (invite) {
     url += `?invite=${invite}`;
