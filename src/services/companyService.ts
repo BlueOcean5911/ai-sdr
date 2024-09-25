@@ -30,6 +30,10 @@ export interface BaseCompanyModel {
 interface ApiCompaniesResponse {
   data: CompanyModel[]; // The structure of the data returned from the API
 }
+
+interface ApiCompanyResponse {
+  data: CompanyModel; // The structure of the data returned from the API
+}
 interface ApiCompanyResponse {
   data: CompanyModel; // The structure of the data returned from the API
 }
@@ -75,6 +79,32 @@ export const getCompanies = async (
   });
   return {
     data: companies,
+  };
+};
+
+export const getCompanyById = async (data: {
+  id: string;
+}): Promise<ApiCompanyResponse> => {
+  const { id } = data;
+  let url = `/api/companies/${id}`;
+
+  const response = await api.get(url);
+
+  let company: CompanyModel = {
+    id: response.data?.surrogateId,
+    name: response.data?.name,
+    linkedin: response.data?.linkedin,
+    companyType: response.data?.companyType,
+    phone: response.data?.phone,
+    phoneStatus: response.data?.phoneStatus,
+    description: response.data?.description,
+    industry: response.data?.industry,
+    location: response.data?.location,
+    size: response.data?.size,
+    targeted: response.data?.targeted,
+  };
+  return {
+    data: company,
   };
 };
 

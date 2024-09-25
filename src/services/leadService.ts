@@ -41,8 +41,12 @@ export interface BaseLeadModel {
   targeted?: boolean;
 }
 
-interface ApiLeadResponse {
+interface ApiLeadsResponse {
   data: Array<LeadModelWithCompanyModel>; // The structure of the data returned from the API
+}
+
+interface ApiLeadResponse {
+  data: LeadModel;
 }
 
 interface ApiCountResponse {
@@ -89,7 +93,7 @@ export const addLead = async (lead: BaseLeadModel) => {
 
 export const getLeads = async (
   props: FetchLeadsProps = { offset: 0, limit: 100, targeted: undefined }
-): Promise<ApiLeadResponse> => {
+): Promise<ApiLeadsResponse> => {
   const { offset, limit, targeted, jobTitle, companyName, industry, location } =
     props;
   let url = `/api/leads/?offset=${offset}&limit=${limit}`;
@@ -145,6 +149,36 @@ export const getLeads = async (
   });
   return {
     data: leads,
+  };
+};
+
+export const getLeadById = async (props: {
+  id: string;
+}): Promise<ApiLeadResponse> => {
+  const { id } = props;
+  let url = `/api/leads/${id}`;
+
+  const response = await api.get(url);
+
+  let lead: LeadModel = {
+    id: response.data?.surrogateId,
+    firstName: response.data?.firstName,
+    lastName: response.data?.lastName,
+    title: response.data?.title,
+    email: response.data?.email,
+    emailStatus: response.data?.emailStatus,
+    phone: response.data?.phone,
+    phoneStatus: response.data?.phoneStatus,
+    linkedin: response.data?.linkedin,
+    companyId: response.data?.companyId,
+    location: response.data?.location,
+    clickCount: response.data?.clickCount,
+    replyCount: response.data?.replyCount,
+    targeted: response.data?.targeted,
+  };
+
+  return {
+    data: lead,
   };
 };
 
