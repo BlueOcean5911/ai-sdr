@@ -1,5 +1,5 @@
 import { api } from "@/utils/api";
-import { ApiCountResponse, CountModel, FetchProps } from "@/types";
+import { ApiCountResponse, FetchProps } from "@/types";
 import { MAILING_STATE } from "@/types/enums";
 
 interface Option {
@@ -18,19 +18,23 @@ interface FetchCallsProps extends FetchProps {
   params: { [key: string]: string };
 }
 
-// interface CallModel extends BaseCallModel {
-//   id?: string;
-// }
-
-export interface CallModel {
+export interface CallModel extends BaseCallModel {
   id: string;
-  title: string;
-  description: string;
-  type: string;
-  priority: string;
-  status: string;
-  assignee: string;
-  dueDate: string;
+}
+
+export interface BaseCallModel {
+  direction: boolean;
+  user: string;
+  userPhone: string;
+  contact: string;
+  contactPhone: string;
+  time: string;
+  date: string;
+  state: string;
+  duration: string;
+  purpose: string;
+  disposition: string;
+  note: string;
 }
 
 export interface SendCallModel {
@@ -46,14 +50,15 @@ export interface SendCallModel {
   callStatus?: MAILING_STATE;
 }
 
-export interface CallsStatistics {
-  totalCount?: number;
-  draftedCount?: number;
-  scheduledCount?: number;
-  deliveredCount?: number;
-  notSentCount?: number;
-  bouncedCount?: number;
-  notOpenedCount?: number;
+export interface CallStatistics {
+  total?: number;
+  active?: number;
+  no_answer?: number;
+  left_voicemail?: number;
+  busy?: number;
+  gatekeeper?: number;
+  connected?: number;
+  no_deposition?: number;
 }
 
 interface ApiCallResponse {
@@ -65,7 +70,7 @@ interface ApiCallsResponse {
 }
 
 interface ApiStatisticsResponse {
-  data: CallsStatistics;
+  data: CallStatistics;
 }
 
 export const getCalls = async (
@@ -154,7 +159,7 @@ export const getCallTotalCount = async (
   };
 };
 
-export const getCallsStatistics = async (): Promise<ApiStatisticsResponse> => {
+export const getCallStatistics = async (): Promise<ApiStatisticsResponse> => {
   const response = await api.get(`api/calls/statistics`);
   console.log(response);
   return {

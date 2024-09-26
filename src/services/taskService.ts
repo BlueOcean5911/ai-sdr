@@ -1,5 +1,5 @@
 import { api } from "@/utils/api";
-import { ApiCountResponse, CountModel, FetchProps } from "@/types";
+import { ApiCountResponse, FetchProps } from "@/types";
 import { MAILING_STATE } from "@/types/enums";
 
 interface Option {
@@ -18,9 +18,9 @@ interface FetchTasksProps extends FetchProps {
   params: { [key: string]: string };
 }
 
-// interface TaskModel extends BaseTaskModel {
-//   id?: string;
-// }
+export interface TaskModel extends BaseTaskModel {
+  id: string;
+}
 
 export interface BaseTaskModel {
   contacts: string;
@@ -29,10 +29,6 @@ export interface BaseTaskModel {
   priority: string;
   dueDate: string;
   note: string;
-}
-
-export interface TaskModel extends BaseTaskModel {
-  id: string;
 }
 
 export interface SendTaskModel {
