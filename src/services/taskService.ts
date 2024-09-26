@@ -22,15 +22,17 @@ interface FetchTasksProps extends FetchProps {
 //   id?: string;
 // }
 
-export interface TaskModel {
-  id: string;
-  title: string;
-  description: string;
+export interface BaseTaskModel {
+  contacts: string;
+  assignee: string;
   type: string;
   priority: string;
-  status: string;
-  assignee: string;
   dueDate: string;
+  note: string;
+}
+
+export interface TaskModel extends BaseTaskModel {
+  id: string;
 }
 
 export interface SendTaskModel {

@@ -1,3 +1,5 @@
+import { TaskModel } from "@/services/taskService";
+
 export type SelectDefaultType = Array<{
   id: number;
   name: string | number | null;
@@ -37,6 +39,7 @@ export interface ContactStepProps {}
 
 export interface CreateModelProps {
   open: boolean;
+  task?: TaskModel;
   handleSave: () => void;
   handleClose: () => void;
 }
