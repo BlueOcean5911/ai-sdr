@@ -168,7 +168,7 @@
   }
 
   .input-primary {
-    @apply block h-full w-full pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-xs border-2 border-gray-300 hover:border-gray-500 rounded-md focus:border-gray-500;
+    @apply block h-full w-full px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-sm border border-gray-300 hover:border-gray-500 rounded-md focus:border-gray-500;
   }
 
   @keyframes jelly {
@@ -291,4 +291,24 @@
 
 .Toastify__toast-body {
   font-size: 14px;
+}
+
+label {
+  color: #555555;
+}
+
+.critical {
+  background-color: blue;
+}
+
+.high {
+  background-color: red;
+}
+
+.medium {
+  background-color: orange;
+}
+
+.low {
+  background-color: green;
 }

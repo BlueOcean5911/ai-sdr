@@ -23,7 +23,15 @@ import {
   getInitials,
 } from "@/utils/format";
 
-export default function TaskItem({ task }: { task: TaskModel }) {
+export default function TaskItem({
+  task,
+  handleEdit,
+  handleDelete,
+}: {
+  task: TaskModel;
+  handleEdit: () => void;
+  handleDelete: () => void;
+}) {
   const [starred, setStarred] = useState(false);
   return (
     <div className="w-full h-20 px-4 py-2 flex items-center gap-2 border-b hover:bg-gray-100">
@@ -39,13 +47,11 @@ export default function TaskItem({ task }: { task: TaskModel }) {
         />
       </div>
       <div className="flex items-center flex-1 gap-4 cursor-pointer">
-        <div className="min-w-96 max-w-96 flex flex-col gap-1 overflow-hidden">
+        <div className="w-1/2 max-w-96 lg:max-w-xl xl:max-w-2xl flex flex-col gap-1 overflow-hidden">
           <span className="text-sm font-semibold text-blue-900 line-clamp-1">
-            {task.title}
+            {task.contacts}
           </span>
-          <span className="text-xs line-clamp-1">
-            {task.status}: {task.description}
-          </span>
+          <span className="text-xs line-clamp-1">{task.note}</span>
         </div>
 
         <div className="min-w-64 flex flex-1 flex-row justify-between items-center gap-2">
@@ -54,7 +60,9 @@ export default function TaskItem({ task }: { task: TaskModel }) {
           </span>
 
           <div className="flex items-center gap-4 text-xs">
-            <span className="px-1 flex flex-1 justify-center rounded-sm bg-orange-500 text-white">
+            <span
+              className={`px-1 flex flex-1 justify-center capitalize rounded-sm ${task.priority} text-white`}
+            >
               {task.priority}
             </span>
             <span>{formatDate(task.dueDate)}</span>
@@ -74,20 +82,26 @@ export default function TaskItem({ task }: { task: TaskModel }) {
           </MenuButton>
           <MenuItems
             anchor="bottom end"
-            className="flex flex-col w-56 origin-top-right bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
+            className="flex flex-col w-32 origin-top-right bg-white rounded-md shadow-md border-2 border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
           >
             <MenuItem>
-              <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+              <button
+                className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                onClick={handleEdit}
+              >
                 Edit
               </button>
             </MenuItem>
             <MenuItem>
-              <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+              <button
+                className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                onClick={handleDelete}
+              >
                 Delete
               </button>
             </MenuItem>
             <MenuItem>
-              <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+              <button className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100">
                 CRM Sync History
               </button>
             </MenuItem>
