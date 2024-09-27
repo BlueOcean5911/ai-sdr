@@ -15,9 +15,9 @@ const FilterItem = ({
   const [open, setOpen] = useState(false);
   return (
     <>
-      <div className="border-2 border-gray-100 rounded-md">
+      <div className="border-0 border-gray-100 rounded-md">
         <div
-          className="flex items-center px-2 py-2 bg-gray-50"
+          className="flex items-center px-2 py-2 bg-gray-100"
           onClick={() => setOpen(!open)}
         >
           {icon}
@@ -35,7 +35,7 @@ const FilterItem = ({
         </div>
 
         {open && (
-          <div className="px-2 py-2 bg-gray-50 border-t-2 border-gray-100">
+          <div className="px-2 py-2 bg-gray-0 border-y-2 border-gray-100">
             <div className="space-y-2 text-sm">{children}</div>
           </div>
         )}

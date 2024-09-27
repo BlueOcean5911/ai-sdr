@@ -10,21 +10,37 @@ import ExcelIcon from "@/components/Icons/excel.icon";
 
 import { useRouter } from "next/navigation";
 import {
-  ROUTE_INTEGRATION_CONQUER,
   ROUTE_INTEGRATION_EXCEL,
   ROUTE_INTEGRATION_HUBSPOT,
-  ROUTE_INTEGRATION_OUTREACH,
-  ROUTE_INTEGRATION_SALESFORCE,
-  ROUTE_INTEGRATION_SALESLOFT,
 } from "@/data/routes";
 import OutreachIcon from "@/components/Icons/outreach.icon";
 import SalesloftIcon from "@/components/Icons/salesloft.icon";
 import ConquorIcon from "@/components/Icons/conquor.icon";
+import { handleError, runService } from "@/utils/service_utils";
+import { checkIfConnectionExists } from "@/services/integrationService";
 
 const displayType = "grid"; // You can switch to "flex" if needed
 
 export default function Integration() {
   const router = useRouter();
+
+  const handleHubspotConnection = () => {
+    runService(
+      {},
+      checkIfConnectionExists,
+      (data) => {
+        console.log("data", data);
+        if (data.success == true) {
+          router.push(ROUTE_INTEGRATION_HUBSPOT);
+        } else {
+          window.open(process.env.NEXT_PUBLIC_HUSPOT_OAUTH_URL);
+        }
+      },
+      (statusCode, error) => {
+        handleError(statusCode, error);
+      }
+    );
+  };
 
   const toolCards = [
     {
@@ -34,7 +50,7 @@ export default function Integration() {
         "HubSpot's free CRM powers your customer support, sales, and marketing with easy-to-use features like live chat, meeting scheduling, and email tracking.",
       integrationBtn: "Connect",
       onClick: () => {
-        window.open(process.env.NEXT_PUBLIC_HUSPOT_OAUTH_URL, "_blank");
+        handleHubspotConnection();
       },
     },
     {

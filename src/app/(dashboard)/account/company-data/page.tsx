@@ -8,6 +8,7 @@ import {
 } from "@/data/routes";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import ComingSoon from "@/components/coming-soon";
+import CompanyData from "@/views/companyData";
 
 const Page = () => {
   return (
@@ -51,7 +52,7 @@ const Page = () => {
       <div className="relative p-2 flex-1 bg-gray-100 overflow-auto">
         <div className="relative card min-h-full overflow-auto flex flex-col">
           <div className="flex-1 flex-center">
-            <ComingSoon />
+            <CompanyData />
           </div>
         </div>
       </div>

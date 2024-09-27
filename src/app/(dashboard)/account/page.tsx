@@ -118,7 +118,7 @@ export default function Account() {
 
       <div className="p-2 flex flex-1 bg-gray-100 overflow-auto text-sm">
         <div className="flex flex-1 justify-center items-center rounded-md bg-white">
-          <div className="p-8 max-w-lg w-full flex flex-col gap-5 rounded-md bg-gray-100">
+          <div className="p-8 max-w-lg w-full flex flex-col gap-5 rounded-md border-2 border-gray-100 shadow-lg">
             <Formik
               enableReinitialize={true}
               initialValues={{

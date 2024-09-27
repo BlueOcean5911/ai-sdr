@@ -67,8 +67,8 @@ export default function Leads() {
           <div className="border-b-2 border-gray-100 flex gap-2 overflow-auto">
             <button
               className={classNames(
-                "pb-1 px-3 text-sm/6 font-semibold focus:outline-none hover:text-blue-500 border-b-2",
-                currentParams.targeted ? "" : "text-blue-600 border-b-blue-500"
+                "pb-1 px-3 text-sm/6 font-semibold focus:outline-none hover:text-blue-400 border-b-2",
+                currentParams.targeted ? "" : "text-blue-500 border-b-blue-500"
               )}
               onClick={() => handleTotalView()}
             >
@@ -76,8 +76,8 @@ export default function Leads() {
             </button>
             <button
               className={classNames(
-                "pb-1 px-3 text-sm/6 font-semibold focus:outline-none hover:text-blue-500 border-b-2",
-                currentParams.targeted ? "text-blue-600 border-b-blue-500" : ""
+                "pb-1 px-3 text-sm/6 font-semibold focus:outline-none hover:text-blue-400 border-b-2",
+                currentParams.targeted ? "text-blue-500 border-b-blue-500" : ""
               )}
               onClick={() => handleSavedView()}
             >

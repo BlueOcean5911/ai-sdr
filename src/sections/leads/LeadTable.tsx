@@ -190,10 +190,6 @@ const LeadTable = () => {
               {totalLeads.map((lead: LeadModelWithCompanyModel) => (
                 <tr
                   key={lead.id}
-                  onClick={() => {
-                    setSelected(lead);
-                    setOverview(true);
-                  }}
                   className="cursor-pointer even:bg-blue-50 hover:bg-gray-300 "
                 >
                   <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
@@ -219,7 +215,15 @@ const LeadTable = () => {
                           }
                         }}
                       />
-                      {lead.firstName} {lead.lastName}
+                      <span
+                        className="hover:underline hover:text-blue-500"
+                        onClick={() => {
+                          setSelected(lead);
+                          setOverview(true);
+                        }}
+                      >
+                        {lead.firstName} {lead.lastName}
+                      </span>
                     </div>
                   </td>
                   {/* <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
@@ -240,7 +244,7 @@ const LeadTable = () => {
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     <a
                       className="hover:underline hover:text-blue-900"
-                      href={lead.company?.linkedin}
+                      href={`companies/${lead.company?.id}`}
                     >
                       {lead.company?.name}
                     </a>
