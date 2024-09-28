@@ -7,19 +7,16 @@ import {
   CheckIcon,
   EnvelopeIcon,
   PhoneIcon,
-  UserIcon,
-  UserPlusIcon,
 } from "@heroicons/react/24/outline";
 import NavTitle from "@/components/DashboardLayout/Nav/Title";
 import { ROUTE_DASHBOARD } from "@/data/routes";
-import { PenIcon } from "lucide-react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   const endpoint =
     pathname.split("/").length > 1 ? pathname.split("/").at(1) : "";
-
+  console.log(pathname);
   return (
     <>
       <NavTitle>
@@ -143,12 +140,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="w-full flex items-center gap-6 border-b">
             <Link
               href="/dashboard/emails"
-              className=" rounded-md text-sm hover:bg-gray-100"
+              className={classNames(
+                "text-sm hover:bg-gray-100",
+                pathname === "/dashboard/emails"
+                  ? "border-b-2 border-blue-500"
+                  : ""
+              )}
             >
               <span
                 className={classNames(
                   "p-2 flex flex-row items-center gap-2 border-b border-transparent",
-                  endpoint === "/dashboard/emails"
+                  pathname === "/dashboard/emails"
                     ? "font-semibold border-black"
                     : ""
                 )}
@@ -158,41 +160,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </span>
             </Link>
             <Link
-              href="/dashboard/"
-              className=" rounded-md text-sm hover:bg-gray-100"
-            >
-              <span
-                className={classNames(
-                  "p-2 flex flex-row items-center gap-2 border-b border-transparent",
-                  endpoint === "/dashboard/" ? "font-semibold border-black" : ""
-                )}
-              >
-                <UserPlusIcon className="w-3.5 h-3.5" />
-                Recommended prospects
-              </span>
-            </Link>
-            <Link
-              href="/dashboard/"
-              className=" rounded-md text-sm hover:bg-gray-100"
-            >
-              <span
-                className={classNames(
-                  "p-2 flex flex-row items-center gap-2 border-b border-transparent",
-                  endpoint === "/dashboard/" ? "font-semibold border-black" : ""
-                )}
-              >
-                <PenIcon className="w-3 h-3" />
-                Message optimizations
-              </span>
-            </Link>
-            <Link
               href="/dashboard/tasks"
-              className=" rounded-md text-sm hover:bg-gray-100"
+              className={classNames(
+                "text-sm hover:bg-gray-100",
+                pathname === "/dashboard/tasks"
+                  ? "border-b-2 border-blue-500"
+                  : ""
+              )}
             >
               <span
                 className={classNames(
                   "p-2 flex flex-row items-center gap-2 border-b border-transparent",
-                  endpoint === "/dashboard/tasks"
+                  pathname === "/dashboard/tasks"
                     ? "font-semibold border-black"
                     : ""
                 )}
@@ -203,12 +182,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Link>
             <Link
               href="/dashboard/alerts"
-              className=" rounded-md text-sm hover:bg-gray-100"
+              className={classNames(
+                "text-sm hover:bg-gray-100",
+                pathname === "/dashboard/alerts"
+                  ? "border-b-2 border-blue-500"
+                  : ""
+              )}
             >
               <span
                 className={classNames(
                   "p-2 flex flex-row items-center gap-2 border-b border-transparent",
-                  endpoint === "/dashboard/alerts"
+                  pathname === "/dashboard/alerts"
                     ? "font-semibold border-black"
                     : ""
                 )}
