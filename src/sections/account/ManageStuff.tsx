@@ -50,6 +50,7 @@ const ManageStuff = () => {
             user.id !== data.id ? user : { ...user, enabled: data.enabled }
           )
         );
+        toast.success("User updated successfully!");
       },
       (status, error) => {
         handleError(status, error);
@@ -62,10 +63,12 @@ const ManageStuff = () => {
       userId,
       deleteUser,
       (data) => {
-        if (data === true) {
-          toast.success("Successfully deleted.");
+        if (data.success) {
           setUsers(users?.filter((user: UserModel) => user.id !== userId));
-        } else toast.error("Something goes wrong.");
+          toast.success("Successfully deleted.");
+        } else {
+          toast.error("Failed to delete.");
+        }
       },
       (status, error) => {
         handleError(status, error);
@@ -101,7 +104,8 @@ const ManageStuff = () => {
       )}
       <div className="p-4 flex flex-1 flex-col gap-2 rounded-md bg-white overflow-auto">
         <div className="flex justify-between items-center">
-          <form action="#" method="GET" className="relative hidden md:flex ">
+          <div />
+          {/* <form action="#" method="GET" className="relative hidden md:flex ">
             <label htmlFor="search-field" className="sr-only">
               Search
             </label>
@@ -116,7 +120,7 @@ const ManageStuff = () => {
               placeholder="Search..."
               className="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
             />
-          </form>
+          </form> */}
           <div className="flex gap-4">
             <div className="px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200">
               <EllipsisVerticalIcon className="w-4 h-4" />

@@ -1,6 +1,5 @@
+import { ApiSuccessResponse } from "@/types";
 import { api } from "@/utils/api";
-import { handleError, runService } from "@/utils/service_utils";
-import { toast } from "react-toastify";
 
 export interface UserModel extends BaseUserModel {
   id?: string;
@@ -102,9 +101,11 @@ export const sendInviteLink = async (props: { email: string }) => {
   return await api.post("/api/users/invite", data);
 };
 
-export const deleteUser = async (userId: string): Promise<ApiUserResponse> => {
+export const deleteUser = async (
+  userId: string
+): Promise<ApiSuccessResponse> => {
   const response = await api.delete(`/api/users/${userId}`);
   return {
-    data: response.data?.ok,
+    data: { success: response.data.success },
   };
 };
