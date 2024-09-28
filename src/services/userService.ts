@@ -92,6 +92,8 @@ export const updatePassword = async ({
     oldPassword,
     newPassword,
   });
+
+  return response;
 };
 
 export const sendInviteLink = async (props: { email: string }) => {
