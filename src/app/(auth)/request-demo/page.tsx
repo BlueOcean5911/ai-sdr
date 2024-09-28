@@ -57,7 +57,7 @@ export default function Page() {
         toast.success(
           "Successfully requested a demo! We'll contact to you soon."
         );
-        router.push(ROUTE_DASHBOARD);
+        router.push(ROUTE_LOGIN);
       },
       (statusCode, error) => {
         handleError(statusCode, error);
@@ -125,7 +125,7 @@ export default function Page() {
                     values,
                     { setErrors, setStatus, setSubmitting }
                   ) => {
-                    console.log("123123");
+                    setSubmitting(true);
                     await handleRegister(
                       values.email,
                       values.password,
@@ -134,6 +134,7 @@ export default function Page() {
                       values.companyName,
                       values.companySize
                     );
+                    setSubmitting(false);
                   }}
                 >
                   {({
@@ -310,20 +311,9 @@ export default function Page() {
                         <button
                           type="submit"
                           disabled={isSubmitting}
-                          className="btn-primary flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                          className="btn-primary flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:bg-gray-400"
                         >
                           Request a demo
-                        </button>
-
-                        <button
-                          className="w-full h-32"
-                          onClick={() =>
-                            toast.success(
-                              "Successfully requested a demo! We'll contact to you soon."
-                            )
-                          }
-                        >
-                          Hey
                         </button>
                       </div>
                     </form>
