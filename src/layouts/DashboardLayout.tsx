@@ -37,7 +37,7 @@ import {
 } from "@/data/navigation.data";
 import Link from "next/link";
 import ThemeToggle from "@/components/Theme/ThemeToggle";
-import HeaderNotification from "@/components/DashboardLayout/Notification/header-notification";
+import HeaderAlert from "@/components/DashboardLayout/Alert/header-alert";
 import { navigations } from "@/data/navigation.data";
 import { signOut } from "@/services/authService";
 import { getMe } from "@/services/userService";
@@ -329,7 +329,7 @@ export default function DashboardLayout({
                 />
               </form>
               <div className="flex items-center gap-x-4 lg:gap-x-6">
-                <HeaderNotification />
+                <HeaderAlert />
                 {/* <ThemeToggle /> */}
 
                 {/* Separator */}

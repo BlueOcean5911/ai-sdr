@@ -1,15 +1,65 @@
 import Image from "next/image";
 import { replyData } from "@/data/reply.data";
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import { getInitials } from "@/utils/format";
+
+interface ReplyTypeColors {
+  [key: string]: string;
+}
+
+const typeToColor: ReplyTypeColors = {
+  willing_to_meet: "bg-green-500",
+  follow_up_question: "bg-sky-500",
+  referred_to_other_person: "bg-indigo-500",
+  out_of_office: "bg-orange-500",
+  not_the_right_person: "bg-red-500",
+  not_interested: "bg-gray-500",
+  unsubscribed: "bg-pink-500",
+  uncategorized: "bg-slate-200",
+};
 
 const navs = [
-  { color: "bg-green-500", content: "Willing to meet", count: 0 },
-  { color: "bg-sky-500", content: "Follow-up question", count: 0 },
-  { color: "bg-indigo-500", content: "Referred to other person", count: 0 },
-  { color: "bg-orange-500", content: "Out of office", count: 0 },
-  { color: "bg-red-500", content: "Not the right person", count: 0 },
-  { color: "bg-gray-500", content: "Not interested", count: 0 },
-  { color: "bg-pink-500", content: "Unsubscribed", count: 0 },
-  { color: "bg-slate-200", content: "Uncategorized", count: 0 },
+  {
+    color: "bg-green-500",
+    content: "Willing to meet",
+    count: 0,
+  },
+  {
+    color: "bg-sky-500",
+    content: "Follow-up question",
+    count: 0,
+  },
+  {
+    color: "bg-indigo-500",
+    content: "Referred to other person",
+    count: 0,
+  },
+  {
+    color: "bg-orange-500",
+    content: "Out of office",
+    count: 0,
+  },
+  {
+    color: "bg-red-500",
+    content: "Not the right person",
+    count: 0,
+  },
+  {
+    color: "bg-gray-500",
+    content: "Not interested",
+    count: 0,
+  },
+  {
+    color: "bg-pink-500",
+    content: "Unsubscribed",
+    count: 0,
+  },
+  {
+    color: "bg-slate-200",
+    content: "Uncategorized",
+    count: 0,
+  },
 ];
 
 export default function Page() {
@@ -30,16 +80,55 @@ export default function Page() {
             </div>
           ))}
         </div>
-        <div className="p-2 flex flex-1 flex-col rounded-md border">
+        <div className="flex flex-1 flex-col rounded-md border">
           {replyData.length > 0 ? (
             replyData.map((reply, idx) => (
-              <div className="w-full p-4 flex flex-row items-center gap-2">
-                <span>{reply.from}</span>
-                <div className="flex flex-col gap-1">
-                  <span>{reply.subject}</span>
-                  <span>{reply.content}</span>
+              <div
+                key={idx}
+                className="w-full p-4 flex flex-row items-center gap-4 border-b hover:bg-gray-200"
+              >
+                <div className="w-40 flex flex-col gap-1">
+                  <span className="text-xs font-semibold">From:</span>
+                  <span className="text-sm text-ellipsis overflow-hidden">
+                    {reply.from}
+                  </span>
                 </div>
-                <span className="flex justify-end">{reply.type}</span>
+                <div className="flex flex-1 flex-row justify-between gap-2 items-center">
+                  <div className="flex flex-col gap-1">
+                    <span className="font-semibold">{reply.subject}</span>
+                    <span className="text-sm">{reply.content}</span>
+                  </div>
+                  <div className="w-20 flex flex-col justify-center items-center gap-1">
+                    <div
+                      className={`w-6 h-6 p-1 text-xs text-center rounded-full aspect-square ${
+                        typeToColor[reply.type]
+                      }`}
+                    >
+                      {getInitials(reply.type)}
+                    </div>
+                    <span className="text-xs text-nowrap">{reply.date}</span>
+                  </div>
+                </div>
+                <Menu>
+                  <MenuButton className="p-1 border rounded-md bg-white hover:border-blue-500">
+                    <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
+                  </MenuButton>
+                  <MenuItems
+                    anchor="bottom end"
+                    className="flex flex-col w-40 origin-top-right bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
+                  >
+                    <MenuItem>
+                      <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                        Send email to this thread
+                      </button>
+                    </MenuItem>
+                    <MenuItem>
+                      <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                        Finish Cadence
+                      </button>
+                    </MenuItem>
+                  </MenuItems>
+                </Menu>
               </div>
             ))
           ) : (
