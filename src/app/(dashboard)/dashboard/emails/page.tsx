@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { replyData } from "@/data/reply.data";
 
 const navs = [
   { color: "bg-green-500", content: "Willing to meet", count: 0 },
@@ -29,19 +30,32 @@ export default function Page() {
             </div>
           ))}
         </div>
-        <div className="p-2 flex flex-1 rounded-md border">
-          <div className="flex flex-1 flex-col justify-center items-center text-center gap-2">
-            <Image
-              src={"/assets/images/nodata.svg"}
-              alt={"nodata"}
-              width={120}
-              height={120}
-            />
-            <span>No new messages</span>
-            <span className="w-1/2 text-xs">
-              You'll see new email message here whenever they come in.
-            </span>
-          </div>
+        <div className="p-2 flex flex-1 flex-col rounded-md border">
+          {replyData.length > 0 ? (
+            replyData.map((reply, idx) => (
+              <div className="w-full p-4 flex flex-row items-center gap-2">
+                <span>{reply.from}</span>
+                <div className="flex flex-col gap-1">
+                  <span>{reply.subject}</span>
+                  <span>{reply.content}</span>
+                </div>
+                <span className="flex justify-end">{reply.type}</span>
+              </div>
+            ))
+          ) : (
+            <div className="flex flex-1 flex-col justify-center items-center text-center gap-2">
+              <Image
+                src={"/assets/images/nodata.svg"}
+                alt={"nodata"}
+                width={120}
+                height={120}
+              />
+              <span>No new messages</span>
+              <span className="w-1/2 text-xs">
+                You'll see new email message here whenever they come in.
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </>
