@@ -1,19 +1,35 @@
 import ComingSoon from "@/components/coming-soon";
+import UploadedFiles from "@/components/CompanyData/UploadedFiles";
+import Upload from "@/components/upload";
 import { UploadIcon } from "lucide-react";
+import { useState } from "react";
+import Dropzone from "react-dropzone";
 
 const CompanyData = () => {
+  const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
+  const [currentFile, setCurrentFile] = useState(undefined);
+  const [progress, setProgress] = useState(0);
+
+  const upload = () => {};
+
+  const onDrop = (files: any) => {
+    if (files.length > 0) {
+      setSelectedFiles(files);
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="rounded-lg border bg-card text-card-foreground shadow-sm mb-8">
         <div className="flex flex-col space-y-1.5 p-6">
-          <h2>Upload Training Documents</h2>
+          <h2>Upload Defined ICP and Outbound Metrics</h2>
         </div>
         <div className="p-6">
           <div className="space-y-6">
             <div>
               <h3 className="text-lg font-semibold mb-2">Define ICP:</h3>
-              <div className="grid gap-4">
-                <div>
+              <div className="grid gap-4 pl-4">
+                <div className="flex flex-col gap-2">
                   <label
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     htmlFor="company-size"
@@ -21,12 +37,12 @@ const CompanyData = () => {
                     Company Size
                   </label>
                   <input
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="input-primary"
                     id="company-size"
                     placeholder="e.g., 50-200 employees"
                   />
                 </div>
-                <div>
+                <div className="flex flex-col gap-2">
                   <label
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     htmlFor="industry"
@@ -34,12 +50,12 @@ const CompanyData = () => {
                     Industry
                   </label>
                   <input
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="input-primary"
                     id="industry"
                     placeholder="e.g., SaaS, Fintech"
                   />
                 </div>
-                <div>
+                <div className="flex flex-col gap-2">
                   <label
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     htmlFor="pain-points"
@@ -47,8 +63,7 @@ const CompanyData = () => {
                     Key Pain Points
                   </label>
                   <textarea
-                    className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    id="pain-points"
+                    className="input-primary"
                     placeholder="Describe the main challenges your ICP faces"
                   />
                 </div>
@@ -57,76 +72,21 @@ const CompanyData = () => {
 
             <div>
               <h3 className="text-lg font-semibold mb-2">
-                Case Studies and Testimonials:
-              </h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Upload Case Studies
-                  </label>
-                  <div className="flex items-center space-x-2">
-                    <input
-                      id="case-studies"
-                      type="file"
-                      className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 hidden"
-                    />
-                    <label
-                      htmlFor="case-studies"
-                      className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-500 text-primary-foreground hover:bg-blue-400 h-10 px-4 py-2 cursor-pointer text-white"
-                    >
-                      <UploadIcon className="w-4 h-4 stroke-white" />
-                      &nbsp; Upload Case Studies
-                    </label>
-                    <span className="text-sm text-gray-500">
-                      No file chosen
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <label
-                    htmlFor="testimonials"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Upload Testimonials
-                  </label>
-                  <div className="flex items-center space-x-2">
-                    <input
-                      id="testimonials"
-                      type="file"
-                      className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 hidden"
-                    />
-                    <label
-                      htmlFor="testimonials"
-                      className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-500 text-primary-foreground hover:bg-blue-400 h-10 px-4 py-2 cursor-pointer text-white"
-                    >
-                      <UploadIcon className="w-4 h-4 stroke-white" />
-                      &nbsp; Upload Testimonials
-                    </label>
-                    <span className="text-sm text-gray-500">
-                      No file chosen
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-2">
                 Outbound Metrics and Sales Metrics:
               </h3>
-              <div className="grid gap-4">
-                <div>
+              <div className="grid gap-4 pl-4">
+                <div className="flex flex-col gap-2">
                   <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                     Current Response Rate (%)
                   </label>
                   <input
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="input-primary"
                     id="response-rate"
                     type="number"
                     placeholder="e.g., 15"
                   />
                 </div>
-                <div>
+                <div className="flex flex-col gap-2">
                   <label
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     htmlFor="conversion-rate"
@@ -134,13 +94,13 @@ const CompanyData = () => {
                     Current Conversion Rate (%)
                   </label>
                   <input
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="input-primary"
                     id="conversion-rate"
                     type="number"
                     placeholder="e.g., 5"
                   />
                 </div>
-                <div>
+                <div className="flex flex-col gap-2">
                   <label
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     htmlFor="avg-deal-size"
@@ -148,7 +108,7 @@ const CompanyData = () => {
                     Average Deal Size ($)
                   </label>
                   <input
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="input-primary"
                     id="avg-deal-size"
                     type="number"
                     placeholder="e.g., 10000"
@@ -156,13 +116,50 @@ const CompanyData = () => {
                 </div>
               </div>
             </div>
+
+            <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-500 text-primary-foreground hover:bg-blue-400/90 h-10 px-4 py-2 w-full text-white mb-8">
+              Save
+            </button>
           </div>
         </div>
       </div>
 
-      <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-500 text-primary-foreground hover:bg-blue-400/90 h-10 px-4 py-2 w-full text-white">
-        Save
-      </button>
+      <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
+        <div className="flex flex-col space-y-1.5 p-6">
+          <h2>Upload Training Documents</h2>
+        </div>
+        <div className="p-6">
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-lg font-semibold mb-2">
+                Case Studies and Testimonials:
+              </h3>
+              <div className="pl-4 flex sm:flex-col md:flex-row gap-4">
+                <div className="sm:w-full md:w-1/2 space-y-2">
+                  <label
+                    htmlFor="testimonials"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Case Study
+                  </label>
+                  <UploadedFiles type="case-study" />
+                  <Upload type="case-study" />
+                </div>
+                <div className="sm:w-full md:w-1/2 space-y-2">
+                  <label
+                    htmlFor="testimonials"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Testimonials
+                  </label>
+                  <UploadedFiles type="testimonial" />
+                  <Upload type="testimonial" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
