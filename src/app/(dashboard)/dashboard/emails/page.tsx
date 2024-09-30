@@ -115,21 +115,16 @@ export default function Page() {
                   </MenuButton>
                   <MenuItems
                     anchor="bottom end"
-                    className="flex flex-col w-56 origin-top-right bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
+                    className="flex flex-col w-40 origin-top-right bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
                   >
                     <MenuItem>
                       <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                        Retry
+                        Send email to this thread
                       </button>
                     </MenuItem>
                     <MenuItem>
                       <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                        Skip Email and Continue Cadence
-                      </button>
-                    </MenuItem>
-                    <MenuItem>
-                      <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                        Delete Email and Finish Cadence
+                        Finish Cadence
                       </button>
                     </MenuItem>
                   </MenuItems>
