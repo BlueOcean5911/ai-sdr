@@ -184,7 +184,7 @@ export default function Page({}: {}) {
               />
             </form>
             <div className="flex flex-4 gap-4">
-              <Upload text="Add CSV File" />
+              <Upload type="Add CSV File" />
             </div>
           </div>
         </div>

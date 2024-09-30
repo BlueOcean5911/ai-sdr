@@ -61,8 +61,8 @@ const Upload = ({ type }: { type: string }) => {
             className="progress-bar progress-bar-info progress-bar-striped"
             role="progressbar"
             aria-valuenow={progress}
-            aria-valuemin="0"
-            aria-valuemax="100"
+            aria-valuemin={0}
+            aria-valuemax={100}
             style={{ width: `${progress}%` }}
           >
             {progress}%

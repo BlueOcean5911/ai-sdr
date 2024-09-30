@@ -241,6 +241,7 @@ export default function CreateTask({
                               {task ? "Updte" : "Save"} Task
                             </button>
                             <button
+                              type="button"
                               className="px-2 py-1 rounded-md border border-gray-300 hover:bg-gray-200"
                               onClick={handleClose}
                             >
