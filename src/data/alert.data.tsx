@@ -6,7 +6,7 @@ import MessageIcon from "@/components/Icons/message.icon";
 import SuccessIcon from "@/components/Icons/success.icon";
 import UserIcon from "@/components/Icons/user.icon";
 
-export const notificationIcons: any = {
+export const alertIcons: any = {
   leadAdded: <CubeIcon />,
   campaignAdded: <LaunchIcon />,
   userRegistered: <UserIcon />,
@@ -16,7 +16,7 @@ export const notificationIcons: any = {
   error: <ErrorIcon />,
 };
 
-export const headerNotificationList = [
+export const headerAlertList = [
   {
     id: "leadAdded",
     title: "New Lead Added",
