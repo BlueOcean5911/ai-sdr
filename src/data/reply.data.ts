@@ -5,14 +5,16 @@ export const replyData = [
     subject: "Interested in your product",
     content:
       "I would love to learn more about your offerings. Can we schedule a call?",
-    type: "willing-to-meet",
+    type: "willing_to_meet",
+    date: "now",
   },
   {
     id: "2",
     from: "bob@example.com",
     subject: "Follow-up on our last conversation",
     content: "Just checking in to see if you received my previous email.",
-    type: "follow-up-question",
+    type: "follow_up_question",
+    date: "5 minutes ago",
   },
   {
     id: "3",
@@ -20,14 +22,16 @@ export const replyData = [
     subject: "Referral for your services",
     content:
       "I think my colleague would benefit from your product. I will connect you two.",
-    type: "referred-to-other-person",
+    type: "referred_to_other_person",
+    date: "2 hours ago",
   },
   {
     id: "4",
     from: "diana@example.com",
     subject: "Out of office",
     content: "I am currently out of the office and will return next week.",
-    type: "out-of-office",
+    type: "out_of_office",
+    date: "1 day ago",
   },
   {
     id: "5",
@@ -35,7 +39,8 @@ export const replyData = [
     subject: "Not the right fit",
     content:
       "Thank you for your offer, but we are not looking for this at the moment.",
-    type: "not-the-right-person",
+    type: "not_the_right_person",
+    date: "3 days ago",
   },
   {
     id: "6",
@@ -43,7 +48,8 @@ export const replyData = [
     subject: "Not interested in your proposal",
     content:
       "I appreciate the information, but we are not interested right now.",
-    type: "not-interested",
+    type: "not_interested",
+    date: "4 days ago",
   },
   {
     id: "7",
@@ -51,6 +57,7 @@ export const replyData = [
     subject: "Unsubscribed from mailing list",
     content: "Please remove me from your mailing list.",
     type: "unsubscribed",
+    date: "1 week ago",
   },
   {
     id: "8",
@@ -58,20 +65,23 @@ export const replyData = [
     subject: "General inquiry about services",
     content: "Can you provide more details about your services?",
     type: "uncategorized",
+    date: "2 weeks ago",
   },
   {
     id: "9",
     from: "ian@example.com",
     subject: "Looking for a demo",
     content: "I’d like to see a demo of your product before making a decision.",
-    type: "willing-to-meet",
+    type: "willing_to_meet",
+    date: "now",
   },
   {
     id: "10",
     from: "julia@example.com",
     subject: "Quick question regarding pricing",
     content: "Could you clarify your pricing structure for me?",
-    type: "follow-up-question",
+    type: "follow_up_question",
+    date: "15 minutes ago",
   },
   {
     id: "11",
@@ -79,7 +89,8 @@ export const replyData = [
     subject: "Referral to my manager",
     content:
       "I will forward your details to my manager for further discussion.",
-    type: "referred-to-other-person",
+    type: "referred_to_other_person",
+    date: "30 minutes ago",
   },
   {
     id: "12",
@@ -87,21 +98,24 @@ export const replyData = [
     subject: "Out of office until next month.",
     content:
       "I will be out of the office and unable to respond until next month.",
-    type: "out-of-office",
+    type: "out_of_office",
+    date: "1 day ago",
   },
   {
     id: "13",
     from: "mike@example.com",
     subject: "Not the right contact person.",
     content: "You may want to reach out to someone else in our team.",
-    type: "not-the-right-person",
+    type: "not_the_right_person",
+    date: "2 days ago",
   },
   {
     id: "14",
     from: "nina@example.com",
     subject: "Not interested in further discussions.",
     content: "Thank you, but I am not interested in pursuing this further.",
-    type: "not-interested",
+    type: "not_interested",
+    date: "3 days ago",
   },
   {
     id: "15",
@@ -110,6 +124,7 @@ export const replyData = [
     content:
       "I no longer wish to receive emails regarding your services. Please unsubscribe me.",
     type: "unsubscribed",
+    date: "4 days ago",
   },
   {
     id: "16",
@@ -117,34 +132,39 @@ export const replyData = [
     subject: "Inquiry about bulk orders",
     content: "Can you provide information on bulk order discounts?",
     type: "uncategorized",
+    date: "5 days ago",
   },
   {
     id: "17",
     from: "quinn@example.com",
     subject: "Looking forward to our meeting",
     content: "Excited to discuss potential collaboration next week.",
-    type: "willing-to-meet",
+    type: "willing_to_meet ",
+    date: "6 days ago",
   },
   {
     id: "18",
     from: "rachel@example.com",
-    subject: "Follow-up on proposal sent",
+    subject: "Follow_up on proposal sent",
     content: "Just following up on the proposal I sent last week.",
-    type: "follow-up-question",
+    type: "follow_up_question ",
+    date: "7 days ago",
   },
   {
     id: "19",
     from: "samuel@example.com",
     subject: "Referred by a friend",
     content: "My friend suggested I reach out to you regarding your services.",
-    type: "referred-to-other-person",
+    type: "referred_to_other_person ",
+    date: "8 days ago",
   },
   {
     id: "20",
     from: "tina@example.com",
     subject: "Out of office until next week",
     content: "I am currently out of the office and will return next week.",
-    type: "out-of-office",
+    type: "out_of_office ",
+    date: "9 days ago",
   },
   {
     id: "21",
@@ -152,14 +172,16 @@ export const replyData = [
     subject: "Not the right fit for us",
     content:
       "We appreciate your offer but it doesn't align with our current needs.",
-    type: "not-the-right-person",
+    type: "not_the_right_person ",
+    date: "10 days ago",
   },
   {
     id: "22",
     from: "victor@example.com",
-    subject: "Not interested at this time",
+    subject: "Not interested at this time ",
     content: "Thank you for reaching out, but we are not looking at this time.",
-    type: "not-interested",
+    type: "not_interested ",
+    date: "",
   },
   {
     id: "23",
@@ -167,6 +189,7 @@ export const replyData = [
     subject: "",
     content: "Please remove me from your mailing list.",
     type: "unsubscribed",
+    date: "2 days ago",
   },
   {
     id: "24",
@@ -174,27 +197,31 @@ export const replyData = [
     subject: "Inquiry about partnership opportunities",
     content: "I would like to explore potential partnership opportunities.",
     type: "uncategorized",
+    date: "1 day ago",
   },
   {
     id: "25",
     from: "yara@example.com",
     subject: "Meeting request",
     content: "Can we schedule a meeting to discuss potential collaboration?",
-    type: "willing-to-meet",
+    type: "willing_to_meet",
+    date: "5 hours ago",
   },
   {
     id: "26",
     from: "zachary@example.com",
     subject: "Checking in on proposal",
     content: "Just checking in on the proposal I submitted last month.",
-    type: "follow-up-question",
+    type: "follow_up_question",
+    date: "3 days ago",
   },
   {
     id: "27",
     from: "ana@example.com",
     subject: "Referral for consulting services",
-    content: "I believe my team could benefit greatly. I’ll connect you.",
-    type: "referred-to-other-person",
+    content: "I believe my team could benefit greatly. I'll connect you.",
+    type: "referred_to_other_person",
+    date: "1 week ago",
   },
   {
     id: "28",
@@ -202,14 +229,16 @@ export const replyData = [
     subject: "Out of office response",
     content:
       "I am currently out of the office and will respond upon my return.",
-    type: "out-of-office",
+    type: "out_of_office",
+    date: "now",
   },
   {
     id: "29",
     from: "clara@example.com",
     subject: "Not the right person to contact",
     content: "You may want to reach out to someone else regarding this matter.",
-    type: "not-the-right-person",
+    type: "not_the_right_person",
+    date: "4 days ago",
   },
   {
     id: "30",
@@ -217,6 +246,7 @@ export const replyData = [
     subject: "Not interested in further offers",
     content:
       "Thank you for considering us, but we are not interested at this time.",
-    type: "not-interested",
+    type: "not_interested",
+    date: "2 weeks ago",
   },
 ];
