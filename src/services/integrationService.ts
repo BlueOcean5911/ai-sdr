@@ -9,3 +9,9 @@ export const oauthHubspot = async (props: { code: string }) => {
 
   return response;
 };
+
+export const checkIfConnectionExists = async (props: { code: string }) => {
+  const response = await api.get("api/integration/hubspot/connection-exists");
+
+  return response;
+};

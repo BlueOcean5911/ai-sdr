@@ -54,6 +54,14 @@ export interface CountModel {
   count?: number;
 }
 
+export interface SuccessModel {
+  success: boolean;
+}
+
+export interface ApiSuccessResponse {
+  data: SuccessModel;
+}
+
 export interface FetchProps {
   offset?: number;
   limit?: number;

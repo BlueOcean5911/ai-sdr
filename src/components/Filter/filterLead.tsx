@@ -10,7 +10,7 @@ export default function FilterLead() {
   return (
     <div className="card p-2 w-64 h-full flex flex-col">
       <h3 className="p-2 border-b-2 border-gray-100">Search</h3>
-      <div className="flex-1 flex flex-col gap-2 p-2 overflow-auto">
+      <div className="flex-1 flex flex-col gap-0 p-2 overflow-auto">
         {/* <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
           title="Persona"

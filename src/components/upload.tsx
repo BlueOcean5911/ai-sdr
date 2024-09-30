@@ -1,16 +1,51 @@
 "use client";
 
-import { Dialog, DialogPanel } from "@headlessui/react";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import UploadFilesService from "@/services/uploadFilesService";
+import { UploadIcon } from "lucide-react";
 import { useState } from "react";
 import Dropzone from "react-dropzone";
 
-const Upload = ({ text = "Add" }: { text: string }) => {
+const Upload = ({ type }: { type: string }) => {
   let [isOpen, setIsOpen] = useState(false);
 
   const [selectedFiles, setSelectedFiles] = useState<any>(undefined);
-  const [currentFile, setCurrentFile] = useState(undefined);
   const [progress, setProgress] = useState(0);
+  const [uploading, setUploading] = useState<boolean>(false);
+
+  const upload = ({ type }: { type: string }) => {
+    setProgress(0);
+    setUploading(true);
+    if (type === "testimonial") {
+      UploadFilesService.uploadTestimonials(selectedFiles, (event: any) => {
+        setProgress(Math.round((100 * event.loaded) / event.total));
+      })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((e) => {
+          setProgress(0);
+        })
+        .finally(() => {
+          setUploading(false);
+        });
+    } else if (type == "case-study") {
+      UploadFilesService.uploadCaseStudies(selectedFiles, (event: any) => {
+        setProgress(Math.round((100 * event.loaded) / event.total));
+      })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((e) => {
+          setProgress(0);
+          setSelectedFiles([]);
+        })
+        .finally(() => {
+          setUploading(false);
+        });
+    }
+    setUploading(false);
+    setSelectedFiles(undefined);
+  };
 
   const onDrop = (files: any) => {
     if (files.length > 0) {
@@ -20,23 +55,7 @@ const Upload = ({ text = "Add" }: { text: string }) => {
 
   return (
     <>
-      <div
-        className="btn-primary flex-center gap-2 p-2"
-        onClick={() => setIsOpen(true)}
-      >
-        <PlusCircleIcon className="w-4 h-4 stroke-white" />
-        {text}
-      </div>
-      <Dialog
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        className="relative z-50"
-      >
-        <div className="fixed inset-0 flex w-screen items-center justify-center p-4 bg-gray-500 opacity-75" />
-        <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="max-w-lg space-y-4 border bg-white p-12 card">
-            <div>
-              {/* {currentFile && (
+      {uploading && (
         <div className="progress mb-3">
           <div
             className="progress-bar progress-bar-info progress-bar-striped"
@@ -44,42 +63,57 @@ const Upload = ({ text = "Add" }: { text: string }) => {
             aria-valuenow={progress}
             aria-valuemin="0"
             aria-valuemax="100"
-            style={{ width: progress + "%" }}
+            style={{ width: `${progress}%` }}
           >
             {progress}%
           </div>
         </div>
-      )} */}
-
-              <Dropzone onDrop={onDrop} multiple={false}>
-                {({ getRootProps, getInputProps }) => (
-                  <section className="card bg-gray-200 border-dashed border-4 border-gray-300 contain-content">
-                    <div {...getRootProps({ className: "dropzone" })}>
-                      <input {...getInputProps()} />
-                      {selectedFiles && selectedFiles[0].name ? (
-                        <div className="selected-file">
-                          {selectedFiles && selectedFiles[0].name}
-                        </div>
-                      ) : (
-                        <p>Upload or drag your file</p>
-                      )}
-                    </div>
-                  </section>
+      )}
+      <Dropzone onDrop={onDrop} multiple={true}>
+        {({ getRootProps, getInputProps }) => (
+          <section>
+            <div {...getRootProps({ className: "dropzone" })}>
+              <input {...getInputProps()} />
+              <div className="flex gap-2 flex-wrap">
+                {selectedFiles ? (
+                  selectedFiles.map(
+                    (file: any) =>
+                      file?.name && (
+                        <span className="text-xs selected-file border-2 px-4 py-1 rounded-full whitespace-nowrap max-w-36 text-ellipsis overflow-hidden">
+                          {file && file?.name}
+                        </span>
+                      )
+                  )
+                ) : (
+                  <div className="m-auto">
+                    Drop {type} for training to upload
+                  </div>
                 )}
-              </Dropzone>
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <label htmlFor="description">Description</label>
-              <input
-                className="block w-full rounded-md py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset  sm:text-sm sm:leading-6 focus:border-gray-500 focus:border-2 border-2 border-gray-100"
-                name="description"
-                id="description"
-              />
-            </div>
-            <div className="btn-primary text-center p-2">Upload</div>
-          </DialogPanel>
-        </div>
-      </Dialog>
+            <aside className="selected-file-wrapper space-x-2">
+              <button
+                disabled={!selectedFiles}
+                onClick={upload}
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-500 text-primary-foreground hover:bg-blue-400 h-10 px-4 py-2 cursor-pointer text-white capitalize"
+              >
+                <UploadIcon className="w-4 h-4 stroke-white" />
+                &nbsp; Upload {type}
+              </button>
+              <button
+                disabled={!selectedFiles}
+                onClick={() => {
+                  setSelectedFiles(undefined);
+                }}
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-100 text-primary-foreground hover:bg-gray-200 h-10 px-4 py-2 cursor-pointer text-gray-900 capitalize border-2 border-gray-400"
+              >
+                <div className="h-4 stroke-white" />
+                Cancel
+              </button>
+            </aside>
+          </section>
+        )}
+      </Dropzone>
     </>
   );
 };

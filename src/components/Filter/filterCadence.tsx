@@ -36,63 +36,64 @@ export default function FilterCadence() {
             className="flex w-full border-0 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
           />
         </form>
-        <FilterItem
-          icon={<ListBulletIcon className="w-4 h-4" />}
-          title="Starred"
-        >
-          <div
-            className="flex justify-between items-center"
-            onClick={() =>
-              setCadenceFilterConfig({
-                ...cadenceFilterConfig,
-                starred: !cadenceFilterConfig.starred,
-              })
-            }
+        <div>
+          <FilterItem
+            icon={<ListBulletIcon className="w-4 h-4" />}
+            title="Starred"
           >
-            <span className="inline-flex gap-2 items-center">
-              {cadenceFilterConfig.starred ? (
-                <StarIcon className="w-4 h-4 fill-blue-500 stroke-blue-500" />
-              ) : (
-                <StarIcon className="w-4 h-4" />
-              )}
-              Starred
-            </span>
-            <input
-              type="checkbox"
-              className="input-cbx focus:ring-0"
-              checked={cadenceFilterConfig.starred}
-            />
-          </div>
-        </FilterItem>
-        <FilterItem
-          icon={<ListBulletIcon className="w-4 h-4" />}
-          title="Active"
-        >
-          <div
-            className="flex justify-between items-center"
-            onClick={() =>
-              setCadenceFilterConfig({
-                ...cadenceFilterConfig,
-                isActive: !cadenceFilterConfig.isActive,
-              })
-            }
+            <div
+              className="flex justify-between items-center"
+              onClick={() =>
+                setCadenceFilterConfig({
+                  ...cadenceFilterConfig,
+                  starred: !cadenceFilterConfig.starred,
+                })
+              }
+            >
+              <span className="inline-flex gap-2 items-center">
+                {cadenceFilterConfig.starred ? (
+                  <StarIcon className="w-4 h-4 fill-blue-500 stroke-blue-500" />
+                ) : (
+                  <StarIcon className="w-4 h-4" />
+                )}
+                Starred
+              </span>
+              <input
+                type="checkbox"
+                className="input-cbx focus:ring-0"
+                checked={cadenceFilterConfig.starred}
+              />
+            </div>
+          </FilterItem>
+          <FilterItem
+            icon={<ListBulletIcon className="w-4 h-4" />}
+            title="Active"
           >
-            <span className="inline-flex gap-2 items-center">
-              {cadenceFilterConfig.isActive ? (
-                <StarIcon className="w-4 h-4 fill-blue-500 stroke-blue-500" />
-              ) : (
-                <StarIcon className="w-4 h-4" />
-              )}
-              Active
-            </span>
-            <input
-              type="checkbox"
-              className="input-cbx focus:ring-0"
-              checked={cadenceFilterConfig.isActive}
-            />
-          </div>
-        </FilterItem>
-        {/* <FilterItem
+            <div
+              className="flex justify-between items-center"
+              onClick={() =>
+                setCadenceFilterConfig({
+                  ...cadenceFilterConfig,
+                  isActive: !cadenceFilterConfig.isActive,
+                })
+              }
+            >
+              <span className="inline-flex gap-2 items-center">
+                {cadenceFilterConfig.isActive ? (
+                  <StarIcon className="w-4 h-4 fill-blue-500 stroke-blue-500" />
+                ) : (
+                  <StarIcon className="w-4 h-4" />
+                )}
+                Active
+              </span>
+              <input
+                type="checkbox"
+                className="input-cbx focus:ring-0"
+                checked={cadenceFilterConfig.isActive}
+              />
+            </div>
+          </FilterItem>
+          {/* <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
           title="Owned By"
         >
@@ -132,6 +133,7 @@ export default function FilterCadence() {
             }}
           ></Select>
         </FilterItem> */}
+        </div>
       </div>
     </div>
   );
