@@ -1,0 +1,316 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --text-color: #8b9373;
+  --primary-color: #8b9373;
+  --primary-hover-color: #8b9373;
+  --check-bg-color: #8b9373;
+  --background-color: #ffffff;
+  --button-background: #ffffff;
+  --nav-primary: #8b9373;
+  --btn-color: #8b9373;
+  --toogle-white: #ffffff;
+}
+
+.dark {
+  --text-color: #ffffff;
+  --primary-color: #ffffff;
+  --check-bg-color: #555555;
+  --background-color: #000000; /* Dark mode background */
+  --button-background: #000000; /* Dark mode button background */
+  --btn-color: #555555; /* Dark mode text color */
+  --nav-primary: #ffffff;
+  --toogle-white: #111111;
+}
+
+@layer utilities {
+  title .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  * {
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+    font-family: var(--font-space-grotesk);
+  }
+
+  h2 {
+    @apply text-2xl text-gray-900;
+  }
+
+  h3 {
+    @apply text-lg text-gray-900;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .color-primary {
+    color: var(--primary-color);
+  }
+
+  .toogle-white {
+    background-color: var(--toogle-white);
+  }
+}
+
+@layer components {
+  * {
+    @apply text-gray-900;
+  }
+
+  .btn-primary {
+    @apply flex-center rounded-md text-white cursor-pointer bg-blue-900 border-2 border-blue-900 p-1 min-w-36 h-10;
+    transition: scale 0.2s ease-in-out;
+  }
+
+  .btn-primary * {
+    color: white;
+  }
+
+  .btn-primary:hover {
+    scale: 1.05;
+  }
+
+  .btn-primary:active {
+    scale: 1;
+  }
+
+  .btn-secondary {
+    @apply rounded-md border-2 border-gray-150 cursor-pointer p-1 min-w-36 h-10;
+    transition: scale 0.2s ease-in-out;
+  }
+
+  .btn-secondary:hover {
+    scale: 1.05;
+  }
+
+  .btn-secondary:active {
+    scale: 1;
+  }
+
+  .nav {
+    font-size: 1rem;
+  }
+
+  .title {
+    @apply relative z-40 -top-9 text-lg font-bold inline-block px-6 h-0;
+  }
+
+  .card {
+    @apply bg-white rounded-xl p-2 pt-4;
+  }
+
+  .cadence-navbar {
+    @apply p-2 px-4 flex items-center gap-2 text-base border-2 border-blue-500 rounded-lg text-blue-900 !stroke-blue-900 bg-white hover:bg-blue-500 hover:text-white transition-colors duration-200;
+  }
+
+  .cadence-navbar * {
+    @apply !stroke-blue-500 hover:stroke-white text-blue-900;
+  }
+
+  .cadence-navbar:hover * {
+    @apply !stroke-white text-white;
+  }
+}
+
+@layer utilities {
+  .cbx {
+    position: relative;
+    top: 1px;
+    width: 23px;
+    height: 23px;
+    border: 1px solid #c8ccd4;
+    border-radius: 3px;
+    transition: background 0.1s ease;
+    cursor: pointer;
+    display: block;
+  }
+
+  .cbx:after {
+    content: "";
+    position: absolute;
+    top: 1px;
+    left: 7px;
+    width: 7px;
+    height: 14px;
+    opacity: 0;
+    transform: rotate(45deg) scale(0);
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transition: all 0.3s ease;
+    transition-delay: 0.15s;
+  }
+
+  .lbl {
+    margin-left: 5px;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+
+  .input-cbx:checked ~ .cbx {
+    @apply bg-blue-900;
+    border-color: transparent;
+    animation: jelly 0.6s ease;
+  }
+
+  .input-cbx:checked ~ .cbx:after {
+    opacity: 1;
+    transform: rotate(45deg) scale(1);
+  }
+
+  .cntr {
+    position: relative;
+  }
+
+  .input-primary {
+    @apply block h-full w-full px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-sm border border-gray-300 hover:border-gray-500 rounded-md focus:border-gray-500;
+  }
+
+  @keyframes jelly {
+    from {
+      transform: scale(1, 1);
+    }
+
+    30% {
+      transform: scale(1.25, 0.75);
+    }
+
+    40% {
+      transform: scale(0.75, 1.25);
+    }
+
+    50% {
+      transform: scale(1.15, 0.85);
+    }
+
+    65% {
+      transform: scale(0.95, 1.05);
+    }
+
+    75% {
+      transform: scale(1.05, 0.95);
+    }
+
+    to {
+      transform: scale(1, 1);
+    }
+  }
+
+  .hidden-xs-up {
+    display: none !important;
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.dropzone {
+  text-align: center;
+  padding: 30px;
+  border: 3px dashed #eeeeee;
+  background-color: #fafafa;
+  color: #bdbdbd;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.pagination-item {
+  padding: 0 12px;
+  height: 32px;
+  text-align: center;
+  margin: auto 4px;
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  letter-spacing: 0.01071em;
+  border-radius: 8px;
+  line-height: 1.43;
+  font-size: 12px;
+  min-width: 32px;
+}
+.pagination-item .dots:hover {
+  background-color: transparent;
+  cursor: default;
+}
+.pagination-item:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+}
+
+.pagination-item.selected {
+  border: 1px solid #0066ff;
+  border-radius: 8px;
+}
+
+.pagination-item.disabled {
+  pointer-events: none;
+  opacity: 0.5; /* Optional: to indicate it's disabled */
+}
+
+.pagination-item.selected {
+  border: 1px solid #0066ff;
+  border-radius: 8px;
+}
+
+.pagination-item.disabled {
+  pointer-events: none;
+  opacity: 0.5; /* Optional: to indicate it's disabled */
+}
+
+.pagination-item.selected {
+  border: 1px solid #0066ff;
+  border-radius: 8px;
+}
+
+.pagination-item.disabled {
+  pointer-events: none;
+  opacity: 0.5; /* Optional: to indicate it's disabled */
+}
+
+.Toastify__toast-body {
+  font-size: 14px;
+}
+
+label {
+  color: #555555;
+}
+
+.critical {
+  background-color: blue;
+}
+
+.high {
+  background-color: red;
+}
+
+.medium {
+  background-color: orange;
+}
+
+.low {
+  background-color: green;
+}
