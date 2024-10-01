@@ -1,8 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import { replyData } from "@/data/reply.data";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { getInitials } from "@/utils/format";
+import { toast } from "react-toastify";
 
 interface ReplyTypeColors {
   [key: string]: string;
@@ -23,22 +26,22 @@ const navs = [
   {
     color: "bg-green-500",
     content: "Willing to meet",
-    count: 0,
+    count: 1,
   },
   {
     color: "bg-sky-500",
     content: "Follow-up question",
-    count: 0,
+    count: 1,
   },
   {
     color: "bg-indigo-500",
     content: "Referred to other person",
-    count: 0,
+    count: 1,
   },
   {
     color: "bg-orange-500",
     content: "Out of office",
-    count: 0,
+    count: 1,
   },
   {
     color: "bg-red-500",
@@ -69,16 +72,21 @@ export default function Page() {
         <div className="w-80 px-4 py-6 flex flex-col gap-4 gap rounded-md border">
           <div className="flex flex-row justify-between gap-2 text-sm">
             <span>All messages</span>
-            <span className="text-xs">0</span>
+            <span className="text-xs">4</span>
           </div>
           <span>STATUS</span>
-          {navs.map((nav, idx) => (
-            <div key={idx} className="flex flex-row items-center gap-2 text-sm">
-              <span className={`w-2 h-2 rounded-full ${nav.color}`} />
-              <span className="grow">{nav.content}</span>
-              <span className="text-xs">{nav.count}</span>
-            </div>
-          ))}
+          <div className="flex flex-col">
+            {navs.map((nav, idx) => (
+              <div
+                key={idx}
+                className="flex flex-row items-center gap-2 text-sm hover:cursor-pointer hover:bg-gray-100 py-2 px-4 rounded-full"
+              >
+                <span className={`w-2 h-2 rounded-full ${nav.color}`} />
+                <span className="grow">{nav.content}</span>
+                <span className="text-xs">{nav.count}</span>
+              </div>
+            ))}
+          </div>
         </div>
         <div className="flex flex-1 flex-col rounded-md border">
           {replyData.length > 0 ? (
@@ -123,7 +131,12 @@ export default function Page() {
                       </button>
                     </MenuItem>
                     <MenuItem>
-                      <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                      <button
+                        className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                        onClick={() => {
+                          toast.success("Successfully cadence finished!");
+                        }}
+                      >
                         Finish Cadence
                       </button>
                     </MenuItem>
