@@ -22,6 +22,7 @@ import {
 import Link from "next/link";
 import GeneralContacts from "@/views/generalContacts";
 import CadenceContacts from "@/views/cadenceContacts";
+import { ROUTE_LEADS } from "@/data/routes";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id: cadenceId } = params;
@@ -136,9 +137,11 @@ export default function Page({ params }: { params: { id: string } }) {
                 </MenuItem>
               </MenuItems>
             </Menu> */}
-            <button className="px-2 py-1 rounded-md text-white bg-blue-900">
-              Add Contracts
-            </button>
+            <Link href={ROUTE_LEADS}>
+              <button className="px-2 py-1 rounded-md text-white bg-blue-900">
+                Add Contracts
+              </button>
+            </Link>
           </div>
         </div>
         <div className="w-full h-8 px-5 flex items-center gap-2">

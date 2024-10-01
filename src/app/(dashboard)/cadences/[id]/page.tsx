@@ -31,6 +31,7 @@ import {
   updateTemplate,
 } from "@/services/templatesService";
 import { toast } from "react-toastify";
+import { ROUTE_LEADS } from "@/data/routes";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -292,7 +293,9 @@ export default function Page({ params }: { params: { id: string } }) {
             <div className="flex items-center gap-3">
               <button className="p-2 flex-center gap-2 rounded-md bg-blue-500 hover:bg-blue-400 cursor-pointer">
                 <PlusCircleIcon className="w-4 h-4 stroke-white" />
-                <span className="text-sm text-white">Add Contracts</span>
+                <Link href={ROUTE_LEADS}>
+                  <span className="text-sm text-white">Add Contracts</span>
+                </Link>
               </button>
             </div>
           </div>
