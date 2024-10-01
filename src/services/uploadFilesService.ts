@@ -20,7 +20,7 @@ class UploadFilesService {
       formData.append("files", files[i]);
     }
 
-    return api.post("api/training-data/upload-case-study", formData, {
+    return api.post("api/training-data/upload-case-studies", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
