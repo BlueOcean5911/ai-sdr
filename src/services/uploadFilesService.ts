@@ -16,9 +16,11 @@ class UploadFilesService {
   uploadCaseStudies(files: any, onUploadProgress: any) {
     let formData = new FormData();
 
-    formData.append("files", files);
+    for (let i = 0; i < files.length; i++) {
+      formData.append("files", files[i]);
+    }
 
-    return api.post("/analysis/stu-perf-analysis", formData, {
+    return api.post("api/training-data/upload-case-study", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

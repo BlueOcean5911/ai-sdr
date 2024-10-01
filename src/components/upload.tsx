@@ -94,7 +94,7 @@ const Upload = ({ type }: { type: string }) => {
             <aside className="selected-file-wrapper space-x-2">
               <button
                 disabled={!selectedFiles}
-                onClick={upload}
+                onClick={() => upload({ type })}
                 className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-500 text-primary-foreground hover:bg-blue-400 h-10 px-4 py-2 cursor-pointer text-white capitalize"
               >
                 <UploadIcon className="w-4 h-4 stroke-white" />
