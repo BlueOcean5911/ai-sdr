@@ -75,6 +75,7 @@ export const addLead = async (lead: BaseLeadModel) => {
       clickCount: response?.data?.clickCount,
       replyCount: response?.data?.replyCount,
       targeted: response?.data?.targeted,
+      personalNote1: response?.data?.personalNote1,
       company: {
         id: response?.data?.company?.id,
         name: response?.data?.company?.name,
@@ -115,7 +116,7 @@ export const getLeads = async (
   }
 
   const response = await api.get(url);
-
+  console.log("response leads", response);
   let leads: Array<LeadModelWithCompanyModel> = [];
   response.data.forEach((item: any) => {
     leads.push({
@@ -133,6 +134,7 @@ export const getLeads = async (
       clickCount: item?.clickCount,
       replyCount: item?.replyCount,
       targeted: item?.targeted,
+      personalNote1: item?.personalNote1,
       company: {
         id: item?.company?.id,
         name: item?.company?.name,
@@ -175,6 +177,7 @@ export const getLeadById = async (props: {
     clickCount: response.data?.clickCount,
     replyCount: response.data?.replyCount,
     targeted: response.data?.targeted,
+    personalNote1: response?.data?.personalNote1,
   };
 
   return {
