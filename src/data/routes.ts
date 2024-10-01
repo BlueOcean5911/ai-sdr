@@ -22,6 +22,10 @@ export const ROUTE_SETTING_BUSINESS = "/setting/business";
 export const ROUTE_SETTING_DISCOUNT = "/setting/discount";
 
 export const ROUTE_INTEGRATION_HUBSPOT = "/integration/hubspot";
+export const ROUTE_INTEGRATION_HUBSPOT_COMPANIES =
+  "/integration/hubspot/companies";
+export const ROUTE_INTEGRATION_HUBSPOT_CONTACTS =
+  "/integration/hubspot/contacts";
 export const ROUTE_INTEGRATION_SALESFORCE = "/integration/salesforce";
 export const ROUTE_INTEGRATION_EXCEL = "/integration/excel";
 export const ROUTE_INTEGRATION_OUTREACH = "/integration/outreach";
