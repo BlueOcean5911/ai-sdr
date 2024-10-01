@@ -1,4 +1,6 @@
 import ComingSoon from "@/components/coming-soon";
+import CaseStudy from "@/components/CompanyData/CaseStudy";
+import Testimonial from "@/components/CompanyData/Testimonial";
 import UploadedFiles from "@/components/CompanyData/UploadedFiles";
 import Upload from "@/components/upload";
 import {
@@ -235,24 +237,10 @@ const CompanyData = () => {
               </h3>
               <div className="pl-4 flex sm:flex-col md:flex-row gap-4">
                 <div className="sm:w-full md:w-1/2 space-y-2">
-                  <label
-                    htmlFor="testimonials"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Case Study
-                  </label>
-                  <UploadedFiles type="case-study" />
-                  <Upload type="case-study" />
+                  <CaseStudy />
                 </div>
                 <div className="sm:w-full md:w-1/2 space-y-2">
-                  <label
-                    htmlFor="testimonials"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Testimonials
-                  </label>
-                  <UploadedFiles type="testimonial" />
-                  <Upload type="testimonial" />
+                  <Testimonial />
                 </div>
               </div>
             </div>
