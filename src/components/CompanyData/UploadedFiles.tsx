@@ -1,3 +1,6 @@
+import { deleteTrainingDocument } from "@/services/trainingDataService";
+import { TrainingDocument } from "@/types";
+import { runService } from "@/utils/service_utils";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 
@@ -29,24 +32,27 @@ const staticFiles = [
   },
 ];
 
-const UploadedFiles = ({ type }: { type: string }) => {
-  const [files, setFiles] = useState<any[]>(staticFiles);
-
-  const deleteFile = (id: string) => {
-    setFiles(files.filter((file) => file.id !== id));
-  };
+const UploadedFiles = ({
+  type,
+  files,
+  onDelete,
+}: {
+  type: string;
+  files: TrainingDocument[] | undefined;
+  onDelete: (id: string) => void;
+}) => {
   return (
     <>
-      {files.length > 0 && (
+      {files && files?.length > 0 && (
         <div className="flex flex-wrap gap-2 ">
           {files.map((file) => (
             <div className="flex border-2 rounded-full items-center px-4 py-1">
               <span className="text-xs selected-file  whitespace-nowrap max-w-36 text-ellipsis overflow-hidden">
-                {file.name} &nbsp;
+                {file.fileName} &nbsp;
               </span>
               <XMarkIcon
                 className="w-4 h-4 hover:cursor-pointer"
-                onClick={() => deleteFile(file.id)}
+                onClick={() => onDelete(file.id)}
               />
             </div>
           ))}
