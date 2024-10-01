@@ -134,8 +134,8 @@ const LeadOverview = ({
                 {lead?.company?.industry} * {lead?.company?.location} *{" "}
                 {lead?.company?.size} employees
               </div>
-              <div className="flex flex-row items-center gap-2">
-                <div className="p-2 flex justify-center items-center rounded-full bg-gray-200">
+              <div className="flex flex-row items-start gap-2">
+                <div className="p-2 flex justify-start items-start rounded-full bg-gray-200">
                   <FaInfo className="w-3 h-3" />
                 </div>
                 <span className="text-sm">{lead?.company?.description}</span>
