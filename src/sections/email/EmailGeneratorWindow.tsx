@@ -71,10 +71,6 @@ const EmailGeneratorWindow = ({
 
     if (activeView === PERSONALIZED_VIEW.SETTING_VIEW) {
       setActiveView(PERSONALIZED_VIEW.EMAIL_VIEW);
-      setGeneratedEmails({
-        subjects: [],
-        bodies: [],
-      });
     }
   };
 
