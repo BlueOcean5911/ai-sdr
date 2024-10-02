@@ -4,29 +4,59 @@ import { GeneratedEmailsModel, GeneratedSubjectModel } from "@/types";
 
 const dummyEmails = {
   subjects: [
-    { id: "subject1", text: "FinAdvantage's Growth Journey" },
-    { id: "subject2", text: "FinAdvantage's Growth Potential" },
+    { id: "subject1", text: "Elevate Your Sales Strategy with Aivio" },
+    { id: "subject2", text: "Transform Your Sales Development with AI" },
   ],
   bodies: [
     {
       id: "body1",
-      text: `Hi Poonam,
+      text: `Hello,
 
-Congratulations on FinAdvantage's impressive growth! Your team's expansion in tech-powered finance solutions is commendable and speaks volumes about your dedication to innovation.
+I hope this message finds you well! 
 
-At 123, we specialize in optimizing finance processes, enabling businesses to scale effectively. Imagine having streamlined operations that enhance your bottom line, freeing up time for strategic initiatives.
+I wanted to introduce you to Aivio, our AI-powered sales development representative platform designed to streamline your sales process and boost productivity. With Aivio, you can leverage advanced AI technology to identify and engage potential leads more effectively, allowing your team to focus on closing deals rather than searching for prospects.
 
-I'd love to discuss how we can support your ongoing success. Are you available for a brief call this week?`,
+Key benefits of Aivio include:
+- **Automated Lead Generation:** Save time by letting our AI identify high-quality leads tailored to your business.
+- **Personalized Outreach:** Enhance your engagement with prospects through tailored messaging that resonates with their needs.
+- **Real-Time Analytics:** Gain insights into your outreach efforts and optimize your strategy based on data-driven decisions.
+
+I’d love to schedule a quick call to discuss how Aivio can transform your sales approach. Are you available for a brief chat this week?
+
+Looking forward to your response!
+
+Best regards,
+
+[Your Name]  
+[Your Position]  
+Aivio  
+[Your Phone Number]  
+[Your Email Address]`,
     },
     {
       id: "body2",
-      text: `Hi Poonam,
-  
-Congratulations on FinAdvantage's impressive growth! Your team's expansion in tech-powered finance solutions is commendable and speaks volumes about your dedication to innovation.
+      text: `Hello,
 
-At 123, we specialize in optimizing finance processes, enabling businesses to scale effectively. Imagine having streamlined operations that enhance your bottom line, freeing up time for strategic initiatives.
+I hope you're having a great day!
 
-I'd love to discuss how we can support your ongoing success. Are you available for a brief call this week?`,
+I'm reaching out to share how Aivio, our AI-powered sales development representative platform, can revolutionize your sales efforts. In today’s competitive market, having the right tools is crucial for staying ahead, and Aivio provides exactly that.
+
+With Aivio, you can:
+- **Boost Efficiency:** Automate repetitive tasks and free up your team to focus on what they do best—selling!
+- **Enhance Lead Quality:** Our AI analyzes data to ensure you’re targeting leads that are most likely to convert.
+- **Track Performance:** Monitor your campaigns with real-time analytics to refine your approach continuously.
+
+I would love the opportunity to discuss how Aivio can benefit your organization. Would you be open to a quick call this week?
+
+Thank you for considering Aivio as your partner in sales development!
+
+Best, 
+
+[Your Name]  
+[Your Position]  
+Aivio  
+[Your Phone Number]  
+[Your Email Address]`,
     },
   ],
 };
