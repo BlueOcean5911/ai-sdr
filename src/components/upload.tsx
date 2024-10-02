@@ -13,8 +13,6 @@ const Upload = ({
   type: string;
   onUpload: (data: TrainingDocument[]) => void;
 }) => {
-  let [isOpen, setIsOpen] = useState(false);
-
   const [selectedFiles, setSelectedFiles] = useState<any>(undefined);
   const [progress, setProgress] = useState(0);
   const [uploading, setUploading] = useState<boolean>(false);
@@ -42,7 +40,6 @@ const Upload = ({
         .then((response) => {
           onUpload(response.data);
           setSelectedFiles(undefined);
-          console.log(response.data);
         })
         .catch((e) => {
           setProgress(0);
@@ -57,13 +54,6 @@ const Upload = ({
       setSelectedFiles(files);
     }
   };
-
-  useEffect(() => {
-    console.log("uploading", uploading);
-  }, [uploading]);
-  useEffect(() => {
-    console.log("uploading", progress);
-  }, [progress]);
 
   return (
     <>

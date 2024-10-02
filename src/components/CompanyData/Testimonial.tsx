@@ -1,12 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Upload from "../upload";
 import UploadedFiles from "./UploadedFiles";
 import { TrainingDocument } from "@/types";
-import { runService } from "@/utils/service_utils";
+import { handleError, runService } from "@/utils/service_utils";
 import { deleteTrainingDocument } from "@/services/trainingDataService";
+import { getTestimonials } from "@/services/trainingDocumentService";
 
 const Testimonial = () => {
   const [testimonials, setTestimonials] = useState<TrainingDocument[]>();
+
+  useEffect(() => {
+    console.log("Testimonial------->");
+    runService(
+      {},
+      getTestimonials,
+      (data) => {
+        setTestimonials(data);
+      },
+      (statusCode, error) => {
+        handleError(statusCode, error);
+      }
+    );
+  }, []);
 
   const handleDeleteFile = (id: string) => {
     runService(
