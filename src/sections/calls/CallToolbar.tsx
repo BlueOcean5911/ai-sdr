@@ -22,23 +22,23 @@ const CallToolbar = () => {
     no_deposition: 0,
   });
 
-  const fetchStatistics = () => {
-    runService(
-      undefined,
-      getCallStatistics,
-      (data) => {
-        setStatistics(data);
-      },
-      (status, error) => {
-        console.log(status, error);
-        handleError(status, error);
-      }
-    );
-  };
+  // const fetchStatistics = () => {
+  //   runService(
+  //     undefined,
+  //     getCallStatistics,
+  //     (data) => {
+  //       setStatistics(data);
+  //     },
+  //     (status, error) => {
+  //       console.log(status, error);
+  //       handleError(status, error);
+  //     }
+  //   );
+  // };
 
-  useEffect(() => {
-    fetchStatistics();
-  }, []);
+  // useEffect(() => {
+  //   fetchStatistics();
+  // }, []);
 
   return (
     <div className="flex items-center gap-2">

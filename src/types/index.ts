@@ -1,4 +1,5 @@
 import { TaskModel } from "@/services/taskService";
+import { DOCUMENT_TYPE } from "./enums";
 
 export type SelectDefaultType = Array<{
   id: number;
@@ -69,4 +70,86 @@ export interface FetchProps {
 
 export interface ApiCountResponse {
   data: CountModel; // The structure of the data returned from the API;
+}
+
+export enum DML_TYPE {
+  INSERT = "INSERT",
+  UPDATE = "UPDATE",
+  DELETE = "DELETE",
+}
+
+export interface TrainingDataMetrics {
+  companySize?: string; // Optional
+  industry?: string; // Optional
+  keyPainPoints?: string; // Optional
+  currentResponseRate?: number; // Optional
+  currentConversionRate?: number; // Optional
+  averageDealSize?: number | null; // Optional, can be null
+  // dmlId?: string | null; // Optional, can be null
+  // dmlAt: Date; // Required, using Date for datetime
+  // dmlType: DML_TYPE; // Required, using the DML_TYPE enum
+}
+
+export interface TrainingDataMetrics {
+  companySize?: string; // Optional
+  industry?: string; // Optional
+  keyPainPoints?: string; // Optional
+  currentResponseRate?: number; // Optional
+  currentConversionRate?: number; // Optional
+  averageDealSize?: number | null; // Optional, can be null
+}
+
+export interface ApiResponseTrainingDataMetrics {
+  data: TrainingDataMetrics;
+}
+
+export interface TrainingDocument {
+  id: string;
+  type: DOCUMENT_TYPE;
+  fileName?: string;
+  fileType?: string;
+}
+
+export interface ApiResponseTrainingDocument {
+  data: TrainingDocument;
+}
+
+export interface ApiResponseTrainingDocuments {
+  data: TrainingDocument[];
+}
+
+export interface RecipientInfo {
+  companyDescription: string;
+  companyIndustry: string;
+  contactName: string;
+  contactTitle: string;
+}
+
+export interface ProductInfo {
+  productName: string;
+  customerKeyPainPoints: string;
+  valueProposition: string;
+  callToAction: string;
+  companyOverview: string;
+  additionalContext: string;
+}
+
+export interface PersonalizedSettingModel {
+  recipientInfo: RecipientInfo;
+  productInfo: ProductInfo;
+}
+
+export interface GeneratedSubjectModel {
+  id: string;
+  text: string;
+}
+
+export interface GeneratedBodyModel {
+  id: string;
+  text: string;
+}
+
+export interface GeneratedEmailsModel {
+  subjects: GeneratedSubjectModel[];
+  bodies: GeneratedBodyModel[];
 }

@@ -1,5 +1,10 @@
 import { api } from "@/utils/api";
-import { ApiCountResponse, CountModel, FetchProps } from "@/types";
+import {
+  ApiCountResponse,
+  CountModel,
+  FetchProps,
+  PersonalizedSettingModel,
+} from "@/types";
 import { MAILING_STATE } from "@/types/enums";
 
 interface Option {
@@ -188,4 +193,8 @@ export const sendMailing = async (id: string) => {
   if (response.status !== 200) {
     throw new Error("Failed to send email");
   }
+};
+
+export const generateEmail = async (setting: PersonalizedSettingModel) => {
+  return await api.post("api/mailing/generate", setting);
 };

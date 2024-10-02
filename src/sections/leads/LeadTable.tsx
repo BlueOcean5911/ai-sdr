@@ -49,6 +49,7 @@ const LeadTable = () => {
       },
       getLeads,
       (data) => {
+        console.log("leads data", data);
         setTotalLeads([...data]); // if total changed, leads will update
       },
       (status, error) => {
