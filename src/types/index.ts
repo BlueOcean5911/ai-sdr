@@ -117,3 +117,39 @@ export interface ApiResponseTrainingDocument {
 export interface ApiResponseTrainingDocuments {
   data: TrainingDocument[];
 }
+
+export interface RecipientInfo {
+  companyDescription: string;
+  companyIndustry: string;
+  contactName: string;
+  contactTitle: string;
+}
+
+export interface ProductInfo {
+  productName: string;
+  customerKeyPainPoints: string;
+  valueProposition: string;
+  callToAction: string;
+  companyOverview: string;
+  additionalContext: string;
+}
+
+export interface PersonalizedSettingModel {
+  recipientInfo: RecipientInfo;
+  productInfo: ProductInfo;
+}
+
+export interface GeneratedSubjectModel {
+  id: string;
+  text: string;
+}
+
+export interface GeneratedBodyModel {
+  id: string;
+  text: string;
+}
+
+export interface GeneratedEmailsModel {
+  subjects: GeneratedSubjectModel[];
+  bodies: GeneratedBodyModel[];
+}

@@ -1,13 +1,18 @@
 import Select from "@/components/extends/Select/default";
-import { useLeadFilter } from "@/contexts/FilterLeadContext";
 import { useLeadSelection } from "@/contexts/LeadSelectionContext";
 import { addMailing, sendMailing } from "@/services/mailingService";
 import { getUsers, UserModel } from "@/services/userService";
 import { MAILING_STATE } from "@/types/enums";
 import { handleError, runService } from "@/utils/service_utils";
-import { XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowPathIcon,
+  MagnifyingGlassIcon,
+  PencilSquareIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import EmailGeneratorWindow from "./EmailGeneratorWindow";
 
 interface UserForSelect {
   name: string;
@@ -25,6 +30,8 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
   const [sendLater, setSendLater] = useState(false);
   const [date, setDate] = useState<string | null>(null);
   const [users, setUsers] = useState<UserForSelect[]>([]);
+  const [isOpenEmailGeneratorWindow, setIsOpenEmailGeneratorWindow] =
+    useState<boolean>(false);
 
   useEffect(() => {
     console.log(date);
@@ -140,22 +147,22 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
 
   return (
     <>
-      <div className="z-20 flex flex-col fixed bottom-2 right-14 w-[500px] h-[80vh] shadow-[0px_8px_24px_rgba(0,0,0,0.5)] bg-white border-2 border-gray-100 rounded-md">
-        <div className="px-4 py-2 flex justify-between items-center border-b-2">
+      <div className="z-20 flex flex-col fixed bottom-2 right-2 w-[500px] h-[80vh] shadow-[0px_4px_24px_rgba(0,0,0,0.3)] bg-white border-2 border-gray-100 rounded-md">
+        <div className="px-4 py-2 flex justify-between items-center border-b-2 text-base">
           Send Email
           <XMarkIcon
             className="w-5 h-5 hover:stroke-gray-600 cursor-pointer"
             onClick={close}
           />
         </div>
-        <div className="px-4 py-2 flex flex-1 flex-col gap-2 bg-gray-100">
-          <div className="flex justify-between items-center gap-2">
-            <label className="min-w-20">From</label>
+        <div className="px-4 py-2 flex flex-1 flex-col gap-2">
+          <div className="flex flex-col justify-between">
+            <label className="min-w-20 text-xs">From</label>
             <Select data={users} onChange={(item) => setOwner(item)} />
           </div>
 
-          <div className="flex justify-between items-center gap-2">
-            <label className="min-w-20">To</label>
+          <div className="flex flex-col justify-between">
+            <label className="min-w-20 text-xs">To</label>
             <input
               className="input-primary"
               type="text"
@@ -179,8 +186,8 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
             /> */}
           </div>
 
-          <div className="flex justify-between items-center gap-2">
-            <label className="min-w-20">Subject*</label>
+          <div className="flex flex-col justify-between">
+            <label className="min-w-20 text-xs">Subject*</label>
             <input
               className="input-primary"
               value={values.subject}
@@ -195,6 +202,23 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
           {errors.subject.length > 0 && (
             <p className="pl-24 text-red-500 text-xs">{errors.subject}</p>
           )}
+          <div className="flex space-x-2 justify-end">
+            <button
+              className="flex items-center px-4 py-1 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400"
+              onClick={() => setIsOpenEmailGeneratorWindow(true)}
+            >
+              <PencilSquareIcon className="w-5 h-5 mr-2 stroke-white" />
+              Write with AI
+            </button>
+            <button className="flex items-center px-4 py-1 text-sm font-medium border-2 rounded hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+              <ArrowPathIcon className="w-5 h-5 mr-2" />
+              Rephrase
+            </button>
+            <button className="flex items-center px-4 py-1 text-sm font-medium border-2 rounded hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+              <MagnifyingGlassIcon className="w-5 h-5 mr-2" />
+              Analyze
+            </button>
+          </div>
           <div className="flex flex-1 flex-col gap-2">
             <label className="">Message*</label>
             <textarea
@@ -252,6 +276,18 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
           </div>
         </div>
       </div>
+      {isOpenEmailGeneratorWindow && (
+        <EmailGeneratorWindow
+          lead={selectedLeads[0]}
+          onChange={(text: string, type: string) =>
+            setValues({
+              ...values,
+              [type]: text,
+            })
+          }
+          close={() => setIsOpenEmailGeneratorWindow(false)}
+        />
+      )}
     </>
   );
 };
