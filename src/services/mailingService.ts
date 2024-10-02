@@ -196,5 +196,6 @@ export const sendMailing = async (id: string) => {
 };
 
 export const generateEmail = async (setting: PersonalizedSettingModel) => {
-  return await api.post("api/mailing/generate", setting);
+  console.log("generate email data", setting);
+  return await api.post("api/mailings/generate", setting);
 };

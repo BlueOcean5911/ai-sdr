@@ -5,6 +5,9 @@ import PersonalizedSetting from "./PersonalizedSetting";
 import PersonalizedEmail from "./PersonalizedEmail";
 import { SettingsIcon } from "lucide-react";
 import { GeneratedEmailsModel, PersonalizedSettingModel } from "@/types";
+import { handleError, runService } from "@/utils/service_utils";
+import { generateEmail } from "@/services/mailingService";
+import { toast } from "react-toastify";
 
 enum PERSONALIZED_VIEW {
   EMAIL_VIEW = "personalized-email-vew",
@@ -47,9 +50,25 @@ const EmailGeneratorWindow = ({
 
   const handleGenerateEmail = () => {
     setIsGenerating(true);
-    setTimeout(() => {
-      setIsGenerating(false);
-    }, 5000);
+
+    runService(
+      personalizedSetting,
+      generateEmail,
+      (data) => {
+        setGeneratedEmails(data);
+        setIsGenerating(false);
+        toast.success("Email generated successfully");
+      },
+      (statusCode, error) => {
+        setIsGenerating(false);
+        handleError(statusCode, error);
+      }
+    );
+
+    // setTimeout(() => {
+    //   setIsGenerating(false);
+    // }, 5000);
+
     if (activeView === PERSONALIZED_VIEW.SETTING_VIEW) {
       setActiveView(PERSONALIZED_VIEW.EMAIL_VIEW);
       setGeneratedEmails({
