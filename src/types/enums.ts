@@ -78,3 +78,8 @@ export enum MAILING_STATE {
   CLICKED = "clicked",
   REPLIED = "replied",
 }
+
+export enum DOCUMENT_TYPE {
+  CASE_STUDY = "case-study",
+  TESTIMONIAL = "testimonial",
+}

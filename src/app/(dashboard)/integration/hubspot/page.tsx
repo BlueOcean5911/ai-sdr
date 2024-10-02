@@ -1,6 +1,8 @@
 "use client";
 import { oauthHubspot } from "@/services/integrationService";
 import { handleError, runService } from "@/utils/service_utils";
+import HubspotCompanyTable from "@/views/hubpsotCompanyTable";
+import HubspotContactTable from "@/views/hubpsotContactTable";
 import { useSearchParams } from "next/navigation";
 import React from "react";
 
@@ -32,7 +34,12 @@ const Page = () => {
     }
   });
 
-  return <></>;
+  return (
+    <div>
+      <HubspotCompanyTable />
+      <HubspotContactTable />
+    </div>
+  );
 };
 
 export default Page;
