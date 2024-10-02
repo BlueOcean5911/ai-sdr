@@ -101,7 +101,7 @@ export default function Page() {
                     {reply.from}
                   </span>
                 </div>
-                <div className="flex flex-1 flex-row justify-between gap-2 items-center">
+                <div className="flex flex-1 flex-row justify-between gap-2 items-center text-sm">
                   <div className="flex flex-col gap-1 overflow-hidden">
                     <span className="font-semibold line-clamp-1">
                       {reply.subject}
