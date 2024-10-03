@@ -45,7 +45,7 @@ export default function CallItem({
         )}
       </div>
       <div className="flex items-center flex-1 gap-4 cursor-pointer">
-        <div className="flex flex-col gap-1">
+        <div className="min-w-32 flex flex-col gap-1">
           <span className="text-sm font-semibold text-blue-900 line-clamp-1">
             {call.user}
           </span>
@@ -59,7 +59,7 @@ export default function CallItem({
           <span className="text-xs line-clamp-1">{call.contactPhone}</span>
         </div>
 
-        <div className="flex flex-col gap-1">
+        <div className="min-w-20 flex flex-col gap-1">
           <span className="text-sm">{call.time}</span>
           <span className="text-xs">{call.date}</span>
         </div>

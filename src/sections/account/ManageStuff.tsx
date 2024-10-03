@@ -102,7 +102,7 @@ const ManageStuff = () => {
           handleClose={() => setInvite(false)}
         />
       )}
-      <div className="p-4 flex flex-1 flex-col gap-2 rounded-md bg-white overflow-auto">
+      <div className="card flex flex-1 flex-col gap-2 bg-white overflow-auto">
         <div className="flex justify-between items-center">
           <div />
           {/* <form action="#" method="GET" className="relative hidden md:flex ">

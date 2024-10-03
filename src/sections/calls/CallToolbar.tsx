@@ -52,34 +52,38 @@ const CallToolbar = () => {
         }}
       >
         <AdjustmentsHorizontalIcon className="w-4 h-4" />
-        <span>{callFilterConfig.isOpen ? "Hide Filters" : "Show Filters"}</span>
+        <span className="text-sm">
+          {callFilterConfig.isOpen ? "Hide Filters" : "Show Filters"}
+        </span>
       </button>
-      {Object.entries(statistics).map(([key, count]) => (
-        <Link key={key} href={`${path}?${key}=true`}>
-          <div
-            className={classNames(
-              "w-24 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
-              currentParams[key]
-                ? "border-b-blue-500 bg-gray-100"
-                : "hover:bg-gray-100 hover:border-b-blue-500"
-            )}
-            onClick={() =>
-              setCallFilterConfig((prev) => ({
-                ...prev,
-                params: { [key]: "true" },
-              }))
-            }
-          >
-            <span className="text-inherit">{count}</span>
-            <span className="text-inherit capitalize">
-              {key
-                .split("_")
-                .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                .join(" ")}
-            </span>
-          </div>
-        </Link>
-      ))}
+      <div className="flex flex-1 gap-2 overflow-auto">
+        {Object.entries(statistics).map(([key, count]) => (
+          <Link key={key} href={`${path}?${key}=true`}>
+            <div
+              className={classNames(
+                "w-24 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
+                currentParams[key]
+                  ? "border-b-blue-500 bg-gray-100"
+                  : "hover:bg-gray-100 hover:border-b-blue-500"
+              )}
+              onClick={() =>
+                setCallFilterConfig((prev) => ({
+                  ...prev,
+                  params: { [key]: "true" },
+                }))
+              }
+            >
+              <span className="text-inherit">{count}</span>
+              <span className="text-inherit capitalize">
+                {key
+                  .split("_")
+                  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                  .join(" ")}
+              </span>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };
