@@ -14,7 +14,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <div className="relative p-2 flex flex-1 bg-gray-100 overflow-auto">
+      <div className="relative flex flex-1 bg-gray-100 overflow-auto">
         <div className="overflow-auto flex-1 flex flex-col">
           <CadenceFilterProvider>
             <CadenceSelectionProvider>

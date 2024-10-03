@@ -49,7 +49,7 @@ const Page = () => {
         </Link>
       </div>
 
-      <div className="relative p-2 flex-1 bg-gray-100 overflow-auto">
+      <div className="relative p-4 flex-1 bg-gray-100 overflow-auto">
         <div className="relative card min-h-full overflow-auto flex flex-col">
           <div className="flex-1 flex-center">
             <CompanyData />

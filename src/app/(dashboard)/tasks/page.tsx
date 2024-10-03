@@ -13,7 +13,7 @@ export default function Page() {
       <NavTitle>
         <Link href={ROUTE_CATENCES}>Tasks</Link>
       </NavTitle>
-      <div className="relative p-2 flex flex-1 bg-gray-100 overflow-auto">
+      <div className="relative flex flex-1 bg-gray-100 overflow-auto">
         <div className="overflow-auto flex-1 flex flex-col">
           <TaskFilterProvider>
             <TaskSelectionProvider>

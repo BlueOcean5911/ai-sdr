@@ -9,8 +9,8 @@ export default function Page() {
       <NavTitle>
         <Link href={ROUTE_CAMPAIGNS}>Campaigns</Link>
       </NavTitle>
-      <div className="relative py-2 px-2 flex-1 bg-gray-100 overflow-auto">
-        <div className="h-full flex flex-col overflow-auto">
+      <div className="relative flex-1 bg-gray-100 overflow-auto">
+        <div className="h-full p-4 flex flex-col overflow-auto shadow-lg">
           <Campaigns />
         </div>
       </div>
