@@ -8,8 +8,8 @@ export default function FilterCompany() {
   const { companyFilterConfig, setCompanyFilterConfig } = useCompanyFilter();
 
   return (
-    <div className="card p-2 w-64 h-full flex flex-col">
-      <h3 className="p-2 border-b-2 border-gray-100">Search</h3>
+    <div className="card px-2 w-64 h-full flex flex-col shadow-lg">
+      <h3 className="p-2 border-b border-gray-100">Search</h3>
       <div className="flex-1 flex flex-col gap-0 p-2 overflow-auto">
         <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
