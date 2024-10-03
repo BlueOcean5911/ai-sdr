@@ -21,7 +21,7 @@ export const ROUTE_SETTING_EMAIL = "/setting/email";
 export const ROUTE_SETTING_BUSINESS = "/setting/business";
 export const ROUTE_SETTING_DISCOUNT = "/setting/discount";
 
-export const ROUTE_INTEGRATION_HUBSPOT = "/integration/hubspot";
+export const ROUTE_INTEGRATION_HUBSPOT = "/integration/hubspot/companies";
 export const ROUTE_INTEGRATION_HUBSPOT_COMPANIES =
   "/integration/hubspot/companies";
 export const ROUTE_INTEGRATION_HUBSPOT_CONTACTS =
