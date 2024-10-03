@@ -51,7 +51,7 @@ export default function Companies() {
   };
 
   return (
-    <div className="flex gap-2 overflow-auto flex-1">
+    <div className="flex p-4 gap-4 overflow-auto flex-1">
       {create && (
         <CreateCompany
           open={create}
@@ -60,13 +60,15 @@ export default function Companies() {
         />
       )}
       {companyFilterConfig.isOpen && <FilterCompany />}
-      <div className="card flex-1 flex flex-col overflow-auto">
+      <div className="card p-4 pt-7 flex-1 flex flex-col overflow-auto shadow-lg">
         <div className="flex-1 flex flex-col gap-2 overflow-auto">
-          <div className="border-b-2 border-gray-100 flex gap-2 overflow-auto">
+          <div className="border-b border-gray-100 flex gap-2 overflow-auto">
             <button
               className={classNames(
-                "pb-1 px-3 text-sm/6 font-semibold focus:outline-none hover:text-blue-400 border-b-2",
-                currentParams.targeted ? "" : "text-blue-500 border-b-blue-500"
+                "pb-1 px-3 text-sm/6 font-semibold focus:outline-none hover:text-blue-400",
+                currentParams.targeted
+                  ? ""
+                  : "border-b-2 text-blue-500 border-b-blue-500"
               )}
               onClick={() => handleTotalView()}
             >
@@ -74,14 +76,16 @@ export default function Companies() {
             </button>
             <button
               className={classNames(
-                "pb-1 px-3 text-sm/6 font-semibold focus:outline-none hover:text-blue-400 border-b-2",
-                currentParams.targeted ? "text-blue-600 border-b-blue-500" : ""
+                "pb-1 px-3 text-sm/6 font-semibold focus:outline-none hover:text-blue-400 ",
+                currentParams.targeted
+                  ? "border-b-2 text-blue-500 border-b-blue-400"
+                  : ""
               )}
               onClick={() => handleSavedView()}
             >
               Saved
             </button>
-            <div className="px-4 flex flex-1 justify-end items-center">
+            <div className="flex flex-1 justify-end items-center">
               <Menu>
                 <MenuButton className="px-2 py-1 flex flex-row items-center gap-1 rounded-md bg-blue-500 hover:bg-blue-400">
                   <span className="text-sm text-white">Import</span>

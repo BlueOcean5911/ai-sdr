@@ -100,7 +100,7 @@ export default function Integration() {
   ];
 
   return (
-    <div className="p-4 min-h-full flex flex-col flex-1 gap-y-4">
+    <div className="min-h-full flex flex-col flex-1 gap-y-4">
       <h2 className="text-gray-500">
         Select and connect tools you use to integrate with your workflow
       </h2>
