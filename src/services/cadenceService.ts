@@ -26,6 +26,8 @@ export interface BaseCadenceModel {
 
   scheduledCount?: number;
   deliveredCount?: number;
+  openedCount?: number;
+  clickedCount?: number;
   replyCount?: number;
   interestedCount?: number;
   optOutCount?: number;
@@ -74,6 +76,8 @@ export const getCadenceById = async (
       finishedCount: response.data?.finishedCount,
       scheduledCount: response.data?.scheduledCount,
       deliveredCount: response.data?.deliveredCount,
+      openedCount: response.data?.openedCount,
+      clickedCount: response.data?.clickedCount,
       replyCount: response.data?.replyCount,
       interestedCount: response.data?.interestedCount,
       optOutCount: response.data?.optOutCount,

@@ -19,6 +19,7 @@ import { classNames } from "@/utils";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import FormHelperText from "@/components/extends/FormHelperText";
+import CadenceNavbarItem from "@/components/Cadence/CadenceNavbarItem";
 
 export default function Account() {
   const [change, setChange] = useState(false);
@@ -96,24 +97,16 @@ export default function Account() {
         </Link>
       </div>
       <div className="w-full h-8 px-5 flex items-center gap-2">
-        <Link href={ROUTE_ACCOUNT_PROFILE}>
-          <span className="flex flex-col rounded-md text-sm hover:bg-gray-100">
-            <span className="p-1.5 cursor-pointer font-semibold">Profile</span>
-            <span className="w-full border-b-2 border-black"></span>
-          </span>
-        </Link>
-        <Link href={ROUTE_ACCOUNT_USERS}>
-          <span className="flex flex-col rounded-md text-sm hover:bg-gray-100">
-            <span className="p-1.5 cursor-pointer">Users</span>
-            <span className="w-full border-b-2"></span>
-          </span>
-        </Link>
-        <Link href={ROUTE_ACCOUNT_COMPANY_DATA}>
-          <span className="flex flex-col rounded-md text-sm hover:bg-gray-100">
-            <span className="p-1.5 cursor-pointer">Company Data</span>
-            <span className="w-full border-b-2"></span>
-          </span>
-        </Link>
+        <CadenceNavbarItem
+          content="Profile"
+          link={ROUTE_ACCOUNT_PROFILE}
+          active={true}
+        />
+        <CadenceNavbarItem content="Users" link={ROUTE_ACCOUNT_USERS} />
+        <CadenceNavbarItem
+          content="Company Data"
+          link={ROUTE_ACCOUNT_COMPANY_DATA}
+        />
       </div>
 
       <div className="p-4 flex flex-1 bg-gray-100 overflow-auto text-sm">
