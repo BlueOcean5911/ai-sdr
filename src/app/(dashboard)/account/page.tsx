@@ -118,7 +118,7 @@ export default function Account() {
 
       <div className="p-4 flex flex-1 bg-gray-100 overflow-auto text-sm">
         <div className="card flex flex-1 justify-center items-center bg-white">
-          <div className="p-8 max-w-lg w-full flex flex-col gap-5 rounded-md border-2 border-gray-100 shadow-lg">
+          <div className="p-8 max-w-lg w-full flex flex-col gap-5 rounded-lg border-2 border-gray-100 shadow-lg">
             <Formik
               enableReinitialize={true}
               initialValues={{
@@ -277,7 +277,7 @@ export default function Account() {
               <div
                 className={classNames(
                   "flex flex-col gap-2 ",
-                  change ? "p-4 border-2 border-gray-300 rounded-md" : ""
+                  change ? "p-4 border border-gray-300 rounded-md" : ""
                 )}
               >
                 <button
