@@ -1,4 +1,8 @@
-import { ApiResponseTrainingDataMetrics, TrainingDataMetrics } from "@/types";
+import {
+  ApiResponseTrainingDataMetrics,
+  SuccessModel,
+  TrainingDataMetrics,
+} from "@/types";
 import { api } from "@/utils/api";
 
 export const getTrainingDataMetrics =
@@ -17,4 +21,12 @@ export const updateTrainingDataMetrics = async (
   );
 
   return response;
+};
+
+export const deleteTrainingDocument = async ({
+  id,
+}: {
+  id: string;
+}): Promise<SuccessModel> => {
+  return await api.delete(`/api/training-data/training-document/${id}`);
 };

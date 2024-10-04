@@ -69,12 +69,12 @@ export default function Page() {
   return (
     <>
       <div className="flex flex-1 flex-row gap-2">
-        <div className="w-80 px-4 py-6 flex flex-col gap-4 gap rounded-md border">
-          <div className="flex flex-row justify-between gap-2 text-sm">
+        <div className="w-80 px-4 py-6 flex flex-col gap-2 gap rounded-md border">
+          <div className="flex flex-row items-center justify-between gap-2 text-sm hover:bg-gray-100 py-2 px-4 rounded-full hover:cursor-pointer">
             <span>All messages</span>
             <span className="text-xs">4</span>
           </div>
-          <span>STATUS</span>
+          <span className="text-sm">STATUS</span>
           <div className="flex flex-col">
             {navs.map((nav, idx) => (
               <div
@@ -101,10 +101,14 @@ export default function Page() {
                     {reply.from}
                   </span>
                 </div>
-                <div className="flex flex-1 flex-row justify-between gap-2 items-center">
-                  <div className="flex flex-col gap-1">
-                    <span className="font-semibold">{reply.subject}</span>
-                    <span className="text-sm">{reply.content}</span>
+                <div className="flex flex-1 flex-row justify-between gap-2 items-center text-sm">
+                  <div className="flex flex-col gap-1 overflow-hidden">
+                    <span className="font-semibold line-clamp-1">
+                      {reply.subject}
+                    </span>
+                    <span className="text-xs line-clamp-1">
+                      {reply.content}
+                    </span>
                   </div>
                   <div className="w-20 flex flex-col justify-center items-center gap-1">
                     <div

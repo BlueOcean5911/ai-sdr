@@ -57,15 +57,15 @@ export default function Contacts({ cadenceId }: { cadenceId: string }) {
   }, []);
 
   return (
-    <div className="flex gap-2 flex-1 overflow-auto">
+    <div className="flex gap-4 p-4 flex-1 overflow-auto">
       {contactFilterConfig.isOpen && <FilterContact />}
-      <div className="card flex-1 flex flex-col overflow-auto">
-        <div className="px-6 overflow-auto">
+      <div className="card p-4 pt-7 flex-1 flex flex-col overflow-auto shadow-lg">
+        <div className="overflow-auto">
           <ContactToolbar data={statistic} />
         </div>
 
         {/* Table */}
-        <div className="flex flex-1 flex-col w-full py-2 align-middle sm:px-4 lg:px-6 overflow-auto">
+        <div className="flex flex-1 flex-col w-full py-2 align-middle overflow-auto">
           <div className="w-full h-full border rounded-md overflow-auto">
             {contactsInCadence.length > 0 ? (
               contactsInCadence.map((contact, index) => (

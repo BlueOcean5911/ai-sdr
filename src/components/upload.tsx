@@ -1,13 +1,18 @@
 "use client";
 
 import UploadFilesService from "@/services/uploadFilesService";
+import { TrainingDocument } from "@/types";
 import { UploadIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Dropzone from "react-dropzone";
 
-const Upload = ({ type }: { type: string }) => {
-  let [isOpen, setIsOpen] = useState(false);
-
+const Upload = ({
+  type,
+  onUpload,
+}: {
+  type: string;
+  onUpload: (data: TrainingDocument[]) => void;
+}) => {
   const [selectedFiles, setSelectedFiles] = useState<any>(undefined);
   const [progress, setProgress] = useState(0);
   const [uploading, setUploading] = useState<boolean>(false);
@@ -20,12 +25,12 @@ const Upload = ({ type }: { type: string }) => {
         setProgress(Math.round((100 * event.loaded) / event.total));
       })
         .then((response) => {
-          console.log(response);
+          onUpload(response.data);
+          setSelectedFiles(undefined);
         })
         .catch((e) => {
           setProgress(0);
-        })
-        .finally(() => {
+          setSelectedFiles(undefined);
           setUploading(false);
         });
     } else if (type == "case-study") {
@@ -33,18 +38,15 @@ const Upload = ({ type }: { type: string }) => {
         setProgress(Math.round((100 * event.loaded) / event.total));
       })
         .then((response) => {
-          console.log(response);
+          onUpload(response.data);
+          setSelectedFiles(undefined);
         })
         .catch((e) => {
           setProgress(0);
-          setSelectedFiles([]);
-        })
-        .finally(() => {
+          setSelectedFiles(undefined);
           setUploading(false);
         });
     }
-    setUploading(false);
-    setSelectedFiles(undefined);
   };
 
   const onDrop = (files: any) => {
@@ -56,16 +58,15 @@ const Upload = ({ type }: { type: string }) => {
   return (
     <>
       {uploading && (
-        <div className="progress mb-3">
-          <div
-            className="progress-bar progress-bar-info progress-bar-striped"
-            role="progressbar"
-            aria-valuenow={progress}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            style={{ width: `${progress}%` }}
-          >
-            {progress}%
+        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div className="relative h-4 flex items-center justify-center">
+            <div
+              className={`absolute top-0 bottom-0 left-0 rounded-lg bg-blue-200`}
+              style={{ width: `${progress}%` }}
+            ></div>
+            <div className="relative text-blue-900 font-medium text-sm">
+              {progress}%
+            </div>
           </div>
         </div>
       )}

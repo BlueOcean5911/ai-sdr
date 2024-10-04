@@ -185,7 +185,7 @@ export default function Page({ params }: { params: { id: string } }) {
             </span>
           </Link>
         </div>
-        <div className="relative p-2 flex flex-1 bg-gray-100 overflow-auto">
+        <div className="relative flex flex-1 bg-gray-100 overflow-auto">
           <div className="overflow-auto flex-1 flex flex-col">
             <EmailFilterProvider>
               <EmailSelectionProvider>

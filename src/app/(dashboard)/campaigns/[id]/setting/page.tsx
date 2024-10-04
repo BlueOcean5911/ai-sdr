@@ -56,8 +56,8 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <div className="p-2 flex flex-1 bg-gray-100 overflow-auto text-sm">
-        <div className="flex flex-1 justify-center items-center rounded-md bg-white">
+      <div className="p-4 flex flex-1 bg-gray-100 overflow-auto text-sm">
+        <div className="card flex flex-1 justify-center items-center bg-white">
           <div className="p-8 max-w-lg w-full flex flex-col gap-5 rounded-md bg-gray-100">
             <div className="flex items-center">
               <label className="min-w-24" htmlFor="title">

@@ -68,10 +68,10 @@ export default function CampaignContacts({
   }, [contacts]);
 
   return (
-    <div className="flex gap-2 flex-1 overflow-auto">
+    <div className="flex gap-4 p-4 flex-1 overflow-auto">
       {contactFilterConfig.isOpen && <FilterContact />}
-      <div className="card flex-1 flex flex-col overflow-auto">
-        <div className="px-6 overflow-auto">
+      <div className="card p-4 pt-7 flex-1 flex flex-col overflow-auto shadow-lg">
+        <div className="overflow-auto">
           <ContactToolbar data={statisticData} />
         </div>
 

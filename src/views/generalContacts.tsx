@@ -11,7 +11,7 @@ export default function GeneralContacts({
   return (
     <>
       {/* Table */}
-      <div className="flex flex-1 flex-col w-full py-2 align-middle sm:px-4 lg:px-6 overflow-auto">
+      <div className="flex flex-1 flex-col w-full py-2 align-middle overflow-auto">
         <div className="w-full h-full border rounded-md overflow-auto">
           {contacts.length > 0 ? (
             contacts.map((contact, index) => (
