@@ -109,6 +109,14 @@ export default function CadenceItem({
               <div className="text-nowrap">Delivered</div>
             </div>
             <div className="w-min-15 px-2">
+              <div>{cadence.openedCount}</div>
+              <div className="text-nowrap">Delivered</div>
+            </div>
+            <div className="w-min-15 px-2">
+              <div>{cadence.clickedCount}</div>
+              <div className="text-nowrap">Delivered</div>
+            </div>
+            <div className="w-min-15 px-2">
               <div>{cadence.replyCount}</div>
               <div className="text-nowrap">Reply</div>
             </div>
