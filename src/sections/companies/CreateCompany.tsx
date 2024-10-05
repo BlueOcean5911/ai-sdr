@@ -1,5 +1,5 @@
 import { employeeOptions, statusOptions } from "@/data/filter.data";
-import { CreateModelProps } from "@/types";
+import { CreateCompanyProps } from "@/types";
 import {
   Dialog,
   DialogPanel,
@@ -19,9 +19,10 @@ import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
 
 export default function CreateCompany({
   open,
+  company = undefined,
   handleSave,
   handleClose,
-}: CreateModelProps) {
+}: CreateCompanyProps) {
   const { setCompanyFilterConfig } = useCompanyFilter();
   return (
     <>
@@ -48,25 +49,30 @@ export default function CreateCompany({
                   </DialogTitle>
                   <Formik
                     initialValues={{
-                      name: "",
-                      phone: "",
+                      name: company ? company.name : "",
+                      phone: company ? company.phone : "",
                       phoneStatus: statusOptions[3],
-                      type: "",
-                      description: "",
+                      companyType: company ? company.companyType : "",
+                      description: company ? company.description : "",
                       size: employeeOptions[0],
-                      industry: "",
-                      linkedin: "",
-                      streetAddress: "",
-                      city: "",
-                      state: "",
-                      country: "",
-                      postalCode: "",
+                      industry: company ? company.industry : "",
+                      linkedin: company ? company.linkedin : "",
+                      streetAddress: company ? company.streetAddress : "",
+                      city: company ? company.city : "",
+                      state: company ? company.state : "",
+                      country: company ? company.country : "",
+                      postalCode: company ? company.postalCode : "",
+                      yearFounded: company ? company.yearFounded : "",
+                      domain: company ? company.domain : "",
+                      annualRevenue: company ? company.annualRevenue : "",
+                      stage: company ? company.stage : "",
+                      keywords: company ? company.keywords : "",
                     }}
                     validationSchema={Yup.object().shape({
                       name: Yup.string().required("Name is required"),
                       phone: Yup.string().required("Phone is required"),
                       // phoneStatus: Yup.string().required("Status is required"),
-                      type: Yup.string().required("Type is required"),
+                      companyType: Yup.string().required("Type is required"),
                       // size: Yup.string().required("Size is required"),
                       linkedin: Yup.string()
                         .required("LinkedIn is required")
@@ -83,7 +89,7 @@ export default function CreateCompany({
                       let company: BaseCompanyModel = {
                         name: values.name,
                         linkedin: values.linkedin,
-                        companyType: values.type,
+                        companyType: values.companyType,
                         phone: values.phone,
                         phoneStatus: phoneStatus,
                         description: values.description,
@@ -93,6 +99,11 @@ export default function CreateCompany({
                         state: values.state,
                         country: values.country,
                         postalCode: values.postalCode,
+                        yearFounded: values.yearFounded,
+                        domain: values.domain,
+                        annualRevenue: values.annualRevenue,
+                        stage: values.stage,
+                        keywords: values.keywords,
                         size: values.size.value,
                         targeted: false,
                       };
@@ -200,18 +211,18 @@ export default function CreateCompany({
                           </div>
 
                           <div className="flex flex-col">
-                            <label htmlFor="type">Company Type</label>
+                            <label htmlFor="companyType">Company Type</label>
                             <input
-                              id="type"
+                              id="companyType"
                               type="text"
                               placeholder="Company Type"
                               className="input-primary"
-                              value={values.type}
+                              value={values.companyType}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
-                            {touched.type && errors.type && (
-                              <FormHelperText>{errors.type}</FormHelperText>
+                            {touched.companyType && errors.companyType && (
+                              <FormHelperText>{errors.companyType}</FormHelperText>
                             )}
                           </div>
 

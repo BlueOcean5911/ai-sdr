@@ -1,5 +1,4 @@
-import { employeeOptions, statusOptions } from "@/data/filter.data";
-import { CreateModelProps } from "@/types";
+import { CreateTaskProps } from "@/types";
 import {
   Dialog,
   DialogPanel,
@@ -24,7 +23,7 @@ export default function CreateTask({
   task = undefined,
   handleSave,
   handleClose,
-}: CreateModelProps) {
+}: CreateTaskProps) {
   const [users, setUsers] = useState<UserModel[]>();
   const { setTaskFilterConfig } = useTaskFilter();
   const fetchUsers = () => {
@@ -64,7 +63,7 @@ export default function CreateTask({
                     as="h3"
                     className="px-6 py-3 text-lg font-semibold leading-6 bg-white text-gray-900 rounded-md"
                   >
-                    {task ? "Edi" : "Create New"} Task
+                    {task ? "Edit" : "Create New"} Task
                   </DialogTitle>
                   <Formik
                     initialValues={{
@@ -87,7 +86,7 @@ export default function CreateTask({
                       values,
                       { setErrors, setStatus, setSubmitting }
                     ) => {
-                      let task: BaseTaskModel = {
+                      let newTask: BaseTaskModel = {
                         contacts: values.contacts,
                         note: values.note,
                         type: values.type,
@@ -96,7 +95,7 @@ export default function CreateTask({
                         dueDate: values.dueDate,
                       };
                       runService(
-                        task,
+                        newTask,
                         addTask,
                         (data) => {
                           setTaskFilterConfig((prev) => ({

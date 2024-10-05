@@ -1,5 +1,6 @@
 import { TaskModel } from "@/services/taskService";
 import { DOCUMENT_TYPE } from "./enums";
+import { CompanyModel } from "@/services/companyService";
 
 export type SelectDefaultType = Array<{
   id: number;
@@ -38,9 +39,23 @@ export interface ContactItemProps {}
 
 export interface ContactStepProps {}
 
-export interface CreateModelProps {
+export interface CreateLeadProps {
+  open: boolean;
+  data?: TaskModel;
+  handleSave: () => void;
+  handleClose: () => void;
+}
+
+export interface CreateTaskProps {
   open: boolean;
   task?: TaskModel;
+  handleSave: () => void;
+  handleClose: () => void;
+}
+
+export interface CreateCompanyProps {
+  open: boolean;
+  company?: CompanyModel;
   handleSave: () => void;
   handleClose: () => void;
 }
