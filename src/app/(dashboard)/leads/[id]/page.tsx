@@ -174,8 +174,8 @@ export default function Page({ params }: { params: { id: string } }) {
                 </a>
               </div>
               <div className="px-5 py-2 text-sm">
-                {company?.industry} * {company?.location} * {company?.size}{" "}
-                employees
+                {company?.industry} * {company?.city} * {company?.state} *{" "}
+                {company?.size} employees
               </div>
               <div className="flex flex-row justify-start items-start gap-2">
                 <div className="p-2 flex justify-start items-start rounded-full bg-gray-200">
