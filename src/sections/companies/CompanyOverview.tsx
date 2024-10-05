@@ -13,6 +13,7 @@ import {
 import { MessageCircleWarning, MoveDiagonal } from "lucide-react";
 import Link from "next/link";
 import { FaLinkedinIn } from "react-icons/fa";
+import { IoIosLink } from "react-icons/io";
 
 const CompanyOverview = ({
   show,
@@ -47,12 +48,23 @@ const CompanyOverview = ({
         </div>
         <div className="px-5 flex flex-row items-center gap-3">
           <span className="text-lg font-semibold">{company?.name}</span>
+          <a href={company?.website}>
+            <IoIosLink className="w-6 h-6 p-1 rounded-md border" />
+          </a>
           <a href={company?.linkedin}>
             <FaLinkedinIn className="w-6 h-6 p-1 rounded-md border" />
           </a>
         </div>
-        <div className="px-5 py-2 text-sm">
-          {company?.industry} * {company?.location} * {company?.size} employees
+        <div className="px-5 py-1 text-sm">
+          {company?.industry} * {company?.size} employees
+        </div>
+        <div className="px-5 py-1 text-sm">
+          {company?.streetAddress} * {company?.city} * {company?.state} *{" "}
+          {company?.country} * {company?.postalCode}
+        </div>
+        <div className="px-5 py-1 text-sm">
+          {company?.yearFounded} * {company?.domain} * {company?.annualRevenue}{" "}
+          * {company?.stage} * {company?.keywords}
         </div>
         <div className="p-4 flex flex-1 flex-col md:flex-row gap-3 bg-gray-100">
           <div className="flex flex-col gap-3">
