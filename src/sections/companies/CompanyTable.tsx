@@ -210,7 +210,7 @@ const CompanyTable = () => {
                     {company.phone}
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {company.location}
+                    {company.streetAddress}
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {company.size}

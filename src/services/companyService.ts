@@ -16,13 +16,26 @@ export interface CompanyModel extends BaseCompanyModel {
 
 export interface BaseCompanyModel {
   name?: string;
+  website?: string;
   linkedin?: string;
   companyType?: string;
   phone?: string;
   phoneStatus?: EMAIL_STATUS;
   description?: string;
   industry?: string;
-  location?: string;
+
+  streetAddress?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  postalCode?: string;
+  
+  yearFounded?: string;
+  domain?: string;
+  annualRevenue?: string;
+  stage?: string;
+  keywords?: string;
+  
   size?: COMPANY_SIZE | string;
   targeted?: boolean;
 }
@@ -66,13 +79,26 @@ export const getCompanies = async (
     companies.push({
       id: item?.id,
       name: item?.name,
+      website: item?.website,
       linkedin: item?.linkedin,
       companyType: item?.companyType,
       phone: item?.phone,
       phoneStatus: item?.phoneStatus,
       description: item?.description,
       industry: item?.industry,
-      location: item?.location,
+
+      streetAddress: item?.streetAddress,
+      city: item?.city,
+      state: item?.state,
+      country: item?.country,
+      postalCode: item?.postalCode,
+
+      yearFounded: item?.yearFounded,
+      domain: item?.domain,
+      annualRevenue: item?.annualRevenue,
+      stage: item?.stage,
+      keywords: item?.keywords,
+
       size: item?.size,
       targeted: item?.targeted,
     });
@@ -93,13 +119,26 @@ export const getCompanyById = async (data: {
   let company: CompanyModel = {
     id: response.data?.id,
     name: response.data?.name,
+    website: response.data?.website,
     linkedin: response.data?.linkedin,
     companyType: response.data?.companyType,
     phone: response.data?.phone,
     phoneStatus: response.data?.phoneStatus,
     description: response.data?.description,
     industry: response.data?.industry,
-    location: response.data?.location,
+
+    streetAddress: response.data?.streetAddress,
+    city: response.data?.city,
+    state: response.data?.state,
+    country: response.data?.country,
+    postalCode: response.data?.postalCode,
+    
+    yearFounded: response.data?.yearFounded,
+    domain: response.data?.domain,
+    annualRevenue: response.data?.annualRevenue,
+    stage: response.data?.stage,
+    keywords: response.data?.keywords,
+    
     size: response.data?.size,
     targeted: response.data?.targeted,
   };
@@ -153,13 +192,26 @@ export const addCompany = async (
     data: {
       id: response.data?.id,
       name: response.data?.name,
+      website: response.data?.website,
       linkedin: response.data?.linkedin,
       companyType: response.data?.companyType,
       phone: response.data?.phone,
       phoneStatus: response.data?.phoneStatus,
       description: response.data?.description,
       industry: response.data?.industry,
-      location: response.data?.location,
+
+      streetAddress: response.data?.streetAddress,
+      city: response.data?.city,
+      state: response.data?.state,
+      country: response.data?.country,
+      postalCode: response.data?.postalCode,
+
+      yearFounded: response.data?.yearFounded,
+      domain: response.data?.domain,
+      annualRevenue: response.data?.annualRevenue,
+      stage: response.data?.stage,
+      keywords: response.data?.keywords,
+
       size: response.data?.size,
       targeted: response.data?.targeted,
     },
