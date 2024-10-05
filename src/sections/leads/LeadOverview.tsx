@@ -131,7 +131,7 @@ const LeadOverview = ({
                 </div>
               </div>
               <div className="flex flex-row items-center gap-6 text-sm">
-                {lead?.company?.industry} * {lead?.company?.location} *{" "}
+                {lead?.company?.industry} * {lead?.company?.streetAddress} *{" "}
                 {lead?.company?.size} employees
               </div>
               <div className="flex flex-row items-start gap-2">

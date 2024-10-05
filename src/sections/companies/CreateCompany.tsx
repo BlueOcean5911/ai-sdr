@@ -56,7 +56,11 @@ export default function CreateCompany({
                       size: employeeOptions[0],
                       industry: "",
                       linkedin: "",
-                      location: "",
+                      streetAddress: "",
+                      city: "",
+                      state: "",
+                      country: "",
+                      postalCode: "",
                     }}
                     validationSchema={Yup.object().shape({
                       name: Yup.string().required("Name is required"),
@@ -84,7 +88,11 @@ export default function CreateCompany({
                         phoneStatus: phoneStatus,
                         description: values.description,
                         industry: values.industry,
-                        location: values.location,
+                        streetAddress: values.streetAddress,
+                        city: values.city,
+                        state: values.state,
+                        country: values.country,
+                        postalCode: values.postalCode,
                         size: values.size.value,
                         targeted: false,
                       };
@@ -277,12 +285,12 @@ export default function CreateCompany({
                               type="text"
                               placeholder="Location / Country"
                               className="input-primary"
-                              value={values.location}
+                              value={values.streetAddress}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
-                            {touched.location && errors.location && (
-                              <FormHelperText>{errors.location}</FormHelperText>
+                            {touched.streetAddress && errors.streetAddress && (
+                              <FormHelperText>{errors.streetAddress}</FormHelperText>
                             )}
                           </div>
 
