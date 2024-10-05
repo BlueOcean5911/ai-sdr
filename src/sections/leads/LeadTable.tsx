@@ -14,6 +14,7 @@ import {
 } from "@/services/leadService";
 import Link from "next/link";
 import LeadOverview from "./LeadOverview";
+import { FaLinkedinIn } from "react-icons/fa";
 
 const LeadTable = () => {
   const { leadFilterConfig } = useLeadFilter();
@@ -225,6 +226,9 @@ const LeadTable = () => {
                       >
                         {lead.firstName} {lead.lastName}
                       </span>
+                      <a href={lead?.linkedin}>
+                        <FaLinkedinIn className="w-6 h-6 p-1 rounded-md border bg-white" />
+                      </a>
                     </div>
                   </td>
                   {/* <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
@@ -251,7 +255,7 @@ const LeadTable = () => {
                     </a>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {lead.company?.location}
+                    {lead.company?.streetAddress}
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {lead.company?.size}

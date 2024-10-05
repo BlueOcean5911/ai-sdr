@@ -86,7 +86,16 @@ export const addLead = async (lead: BaseLeadModel) => {
         industry: response?.data?.company?.industry,
         description: response?.data?.company?.description,
         linkedin: response?.data?.company?.linkedin,
-        location: response?.data?.company?.location,
+        streetAddress: response?.data?.company?.streetAddress,
+        city: response?.data?.company?.city,
+        state: response?.data?.company?.state,
+        country: response?.data?.company?.country,
+        postalCode: response?.data?.company?.postalCode,
+        yearFounded: response?.data?.company?.yearFounded,
+        domain: response?.data?.company?.domain,
+        annualRevenue: response?.data?.company?.annualRevenue,
+        stage: response?.data?.company?.stage,
+        keywords: response?.data?.company?.keywords,
       },
     },
   };
@@ -145,7 +154,18 @@ export const getLeads = async (
         industry: item?.company?.industry,
         description: item?.company?.description,
         linkedin: item?.company?.linkedin,
-        location: item?.company?.location,
+        
+        streetAddress: item?.company?.streetAddress,
+        city: item?.company?.city,
+        state: item?.company?.state,
+        country: item?.company?.country,
+        postalCode: item?.company?.postalCode,
+
+        yearFounded: item?.company?.yearFounded,
+        domain: item?.company?.domain,
+        annualRevenue: item?.company?.annualRevenue,
+        stage: item?.company?.stage,
+        keywords: item?.company?.keywords,
       },
     });
   });
