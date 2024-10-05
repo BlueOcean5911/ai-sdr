@@ -13,6 +13,7 @@ import {
   getCompanyTotalCount,
 } from "@/services/companyService";
 import CompanyOverview from "./CompanyOverview";
+import CreateCompany from "./CreateCompany";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 
@@ -27,6 +28,7 @@ const CompanyTable = () => {
     setSelectedCompanies,
   } = useCompanySelection();
 
+  const [create, setCreate] = useState(false);
   const [overview, setOverview] = useState(false);
   const [selected, setSelected] = useState<CompanyModel>();
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -112,9 +114,22 @@ const CompanyTable = () => {
     }
   };
 
+  const handleSave = () => {};
+
+  const handleClose = () => {
+    setCreate(false);
+    setSelected(undefined);
+  };
+
   return (
     <>
       <div className="flex-1 flex flex-col overflow-auto">
+        <CreateCompany
+          open={create}
+          company={selected}
+          handleSave={handleSave}
+          handleClose={handleClose}
+        />
         <CompanyOverview
           show={overview}
           company={selected}
@@ -213,7 +228,8 @@ const CompanyTable = () => {
                           }
                         }}
                       />
-                      <span className="flex-1 hover:underline"
+                      <span
+                        className="flex-1 hover:underline"
                         onClick={() => {
                           setSelected(company);
                           setOverview(true);
@@ -223,7 +239,7 @@ const CompanyTable = () => {
                       </span>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <td className="whitespace-nowrap text-sm text-gray-500">
                     <Menu>
                       <MenuButton className="">
                         <div className="p-1 border rounded-md bg-white">
@@ -235,7 +251,13 @@ const CompanyTable = () => {
                         className="flex flex-col w-32 origin-top-right bg-white rounded-md shadow-md border-2 border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
                       >
                         <MenuItem>
-                          <button className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100">
+                          <button
+                            className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                            onClick={() => {
+                              setSelected(company);
+                              setCreate(true);
+                            }}
+                          >
                             Edit
                           </button>
                         </MenuItem>
