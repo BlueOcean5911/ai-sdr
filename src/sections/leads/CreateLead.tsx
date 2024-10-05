@@ -1,5 +1,5 @@
 import { employeeOptions, statusOptions } from "@/data/filter.data";
-import { CreateModelProps } from "@/types";
+import { CreateLeadProps } from "@/types";
 import {
   Dialog,
   DialogPanel,
@@ -23,7 +23,7 @@ export default function CreateLead({
   open,
   handleSave,
   handleClose,
-}: CreateModelProps) {
+}: CreateLeadProps) {
   const [users, setUsers] = useState<UserModel[]>();
   const { setLeadFilterConfig } = useLeadFilter();
   const fetchUsers = () => {

@@ -39,6 +39,13 @@ export interface ContactItemProps {}
 
 export interface ContactStepProps {}
 
+export interface CreateLeadProps {
+  open: boolean;
+  data?: TaskModel;
+  handleSave: () => void;
+  handleClose: () => void;
+}
+
 export interface CreateTaskProps {
   open: boolean;
   task?: TaskModel;
