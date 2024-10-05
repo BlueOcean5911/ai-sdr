@@ -66,8 +66,8 @@ export default function Page({ params }: { params: { id: string } }) {
         </div>
         <div className="px-5 flex flex-row justify-between gap-2">
           <div className="flex flex-row items-center gap-6 text-sm">
-            {company?.industry} * {company?.location} * {company?.size}{" "}
-            employees
+            {company?.industry} * {company?.city} * {company?.state} *{" "}
+            {company?.size} employees
           </div>
           <div className="flex flex-row justify-end gap-2">
             <button className="m-auto p-1 flex justify-center items-center gap-2 text-sm text-nowrap border rounded-md border-gray-300 hover:bg-gray-200">
