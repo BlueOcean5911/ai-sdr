@@ -14,6 +14,7 @@ import { MessageCircleWarning, MoveDiagonal } from "lucide-react";
 import Link from "next/link";
 import { FaLinkedinIn } from "react-icons/fa";
 import { IoIosLink } from "react-icons/io";
+import { CiLocationOn } from "react-icons/ci";
 
 const CompanyOverview = ({
   show,
@@ -56,15 +57,8 @@ const CompanyOverview = ({
           </a>
         </div>
         <div className="px-5 py-1 text-sm">
-          {company?.industry} * {company?.size} employees
-        </div>
-        <div className="px-5 py-1 text-sm">
-          {company?.streetAddress} * {company?.city} * {company?.state} *{" "}
-          {company?.country} * {company?.postalCode}
-        </div>
-        <div className="px-5 py-1 text-sm">
-          {company?.yearFounded} * {company?.domain} * {company?.annualRevenue}{" "}
-          * {company?.stage} * {company?.keywords}
+          {company?.industry} * {company?.city} {company?.state} *{" "}
+          {company?.size} employees * {company?.annualRevenue}
         </div>
         <div className="p-4 flex flex-1 flex-col md:flex-row gap-3 bg-gray-100">
           <div className="flex flex-col gap-3">
@@ -72,25 +66,41 @@ const CompanyOverview = ({
               <div className="flex flex-row justify-between items-center">
                 <span className="font-semibold">Contact information</span>
               </div>
-              <div className="flex flex-row justify-between items-center">
-                <div className="flex flex-row justify-end items-center gap-2">
-                  <div className="p-2 flex justify-center items-center rounded-full bg-gray-200">
+              <div className="flex flex-row items-center text-sm">
+                <span className="w-1/3">Phone</span>
+                <div className="w-2/3 flex flex-row items-center gap-2">
+                  <span className="p-2 flex justify-center items-center rounded-full bg-gray-200">
                     <PhoneIcon className="w-3 h-3" />
-                  </div>
-                  <span className="text-sm">{company?.phone}</span>
+                  </span>
+                  <span className="flex-1">{company?.phone}</span>
+                  {company?.phoneStatus === "verified" && (
+                    <CheckBadgeIcon className="w-5 h-5 stroke-green-500" />
+                  )}
+                  {company?.phoneStatus === "questionable" && (
+                    <QuestionMarkCircleIcon className="w-5 h-5 stroke-yellow-500" />
+                  )}
+                  {company?.phoneStatus === "invalid" && (
+                    <MessageCircleWarning className="w-5 h-5 stroke-red-500" />
+                  )}
+                  {company?.phoneStatus === "noStatus" && (
+                    <NoSymbolIcon className="w-5 h-5 stroke-gray-500" />
+                  )}
                 </div>
-                {company?.phoneStatus === "verified" && (
-                  <CheckBadgeIcon className="w-5 h-5 stroke-green-500" />
-                )}
-                {company?.phoneStatus === "questionable" && (
-                  <QuestionMarkCircleIcon className="w-5 h-5 stroke-yellow-500" />
-                )}
-                {company?.phoneStatus === "invalid" && (
-                  <MessageCircleWarning className="w-5 h-5 stroke-red-500" />
-                )}
-                {company?.phoneStatus === "noStatus" && (
-                  <NoSymbolIcon className="w-5 h-5 stroke-gray-500" />
-                )}
+              </div>
+              <div className="flex flex-row text-sm">
+                <span className="w-1/3">Stage</span>
+                <span className="p-1 rounded-md bg-gray-200">{company?.stage}</span>
+              </div>
+              <div className="flex flex-row text-sm">
+                <span className="w-1/3">Location</span>
+                <div className="w-2/3 flex flex-row items-center gap-2">
+                  <span className="p-1 flex justify-center items-center rounded-full bg-gray-200">
+                    <CiLocationOn className="w-5 h-5" />
+                  </span>
+                  {company?.streetAddress}, {company?.city}, {company?.state}
+                  {", "}
+                  {company?.country}, {company?.postalCode}
+                </div>
               </div>
             </div>
             <div className="p-3 flex flex-col gap-3 rounded-md border bg-white">
@@ -98,6 +108,31 @@ const CompanyOverview = ({
                 <span className="font-semibold">About</span>
               </div>
               <span className="text-sm">{company?.description}</span>
+              <div className="flex flex-row text-sm">
+                <span className="w-1/3">Keywords</span>
+                <div className="w-2/3 space-x-2">
+                  {company?.keywords?.split(",").map((item, idx) => (
+                    <span
+                      key={idx}
+                      className="px-1 text-nowrap rounded-md bg-gray-200"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="flex flex-row text-sm">
+                <span className="w-1/3">Annual revenue</span>
+                <span className="w-2/3">{company?.annualRevenue}</span>
+              </div>
+              <div className="flex flex-row text-sm">
+                <span className="w-1/3">Founded</span>
+                <span className="w-2/3">{company?.yearFounded}</span>
+              </div>
+              <div className="flex flex-row text-sm">
+                <span className="w-1/3">Industry</span>
+                <span className="w-2/3">{company?.industry}</span>
+              </div>
             </div>
           </div>
         </div>
