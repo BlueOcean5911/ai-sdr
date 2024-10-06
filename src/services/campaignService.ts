@@ -1,5 +1,10 @@
 import { api } from "@/utils/api";
-import { ApiCountResponse, CountModel, FetchProps } from "@/types";
+import {
+  ApiCountResponse,
+  CountModel,
+  FetchProps,
+  SuccessModel,
+} from "@/types";
 import { CAMPAIGN_STAGE, COMPANY_SIZE, EMAIL_STATUS } from "@/types/enums";
 import internal from "stream";
 import { UserModel } from "./userService";
@@ -10,10 +15,11 @@ export interface CampaignModel extends BaseCampaignModel {
   id?: string;
 }
 
-export interface CampaignModelWithCreator extends CampaignModel {
+export interface CampaignModelWithCreatorAndOwner extends CampaignModel {
   createdAt: string;
   creatorId: string;
   creator: UserModel;
+  owner: UserModel;
 }
 
 export interface BaseCampaignModel {
@@ -34,7 +40,7 @@ interface ApiCampaignsResponse {
 }
 
 interface ApiCampaignsWithCreatorResponse {
-  data: CampaignModelWithCreator[];
+  data: CampaignModelWithCreatorAndOwner[];
 }
 
 export const addCampaign = async (
@@ -76,6 +82,14 @@ export const getCampaigns = async (
       creatorId: item?.creatorId,
       createdAt: item?.createdAt,
       creator: {
+        id: item?.creatorId,
+        firstName: item?.creator.firstName,
+        lastName: item?.creator.lastName,
+        email: item?.email,
+        phone: item?.phone,
+        title: item?.title,
+      },
+      owner: {
         id: item?.creatorId,
         firstName: item?.creator.firstName,
         lastName: item?.creator.lastName,
@@ -126,4 +140,12 @@ export const updateCampaign = async ({
   return {
     data: response.data,
   };
+};
+
+export const deleteCampaign = async ({
+  id,
+}: {
+  id: string;
+}): Promise<SuccessModel> => {
+  return await api.delete(`/api/campaigns/${id}`);
 };
