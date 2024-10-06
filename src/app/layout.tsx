@@ -37,7 +37,7 @@ export default function RootLayout({
         <main className="font-roboto h-dvh flex">
           <ThemeProvider attribute="class">{children}</ThemeProvider>
         </main>
-        <ToastContainer />
+        <ToastContainer autoClose={2000} />
       </body>
     </html>
   );

@@ -290,14 +290,6 @@ export default function Page({ params }: { params: { id: string } }) {
                 />
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <button className="p-2 flex-center gap-2 rounded-md bg-blue-500 hover:bg-blue-400 cursor-pointer">
-                <PlusCircleIcon className="w-4 h-4 stroke-white" />
-                <Link href={ROUTE_LEADS}>
-                  <span className="text-sm text-white">Add Contracts</span>
-                </Link>
-              </button>
-            </div>
           </div>
           <div className="w-full h-8 px-5 flex items-center gap-2">
             <Link href={`/cadences/${cadence?.id}`}>
@@ -328,64 +320,8 @@ export default function Page({ params }: { params: { id: string } }) {
             </Link>
           </div>
           <div className="flex flex-1 flex-col bg-gray-100 overflow-auto">
-            <div className="w-full h-10 p-5 flex justify-between items-center border">
-              <span className="text-sm font-semibold uppercase">
-                Statistics
-              </span>
-              <span className="flex flex-row gap-2 items-center text-sm font-semibold uppercase">
-                Email stats per individual contact
-                <span>
-                  <InformationCircleIcon className="w-4 h-4" />
-                </span>
-              </span>
-            </div>
-            <div className="w-full h-14 px-5 flex justify-between items-center border bg-white">
-              <div className="flex items-center font-semibold">
-                <div className="flex flex-col w-min-15 px-2 text-xs">
-                  <span>{cadence?.activeCount}</span>
-                  <span className="text-nowrap">Active</span>
-                </div>
-                <div className="flex flex-col w-min-15 px-2 text-xs">
-                  <span>{cadence?.pausedCount}</span>
-                  <span className="text-nowrap">Paused</span>
-                </div>
-                <div className="flex flex-col w-min-15 px-2 text-xs">
-                  <span>{cadence?.finishedCount}</span>
-                  <span className="text-nowrap">Finished</span>
-                </div>
-                <div className="flex flex-col w-min-15 px-2 text-xs">
-                  <span>{cadence?.bouncedCount}</span>
-                  <span className="text-nowrap">Bounced</span>
-                </div>
-                <div className="flex flex-col w-min-15 px-2 text-xs">
-                  <span>{cadence?.notSentCount}</span>
-                  <span className="text-nowrap">Not sent</span>
-                </div>
-              </div>
-              <div className="flex items-center font-semibold">
-                <div className="flex flex-col w-min-15 px-2 text-xs">
-                  <span>{cadence?.scheduledCount}</span>
-                  <span className="text-nowrap">Scheduled</span>
-                </div>
-                <div className="flex flex-col w-min-15 px-2 text-xs">
-                  <span>{cadence?.deliveredCount}</span>
-                  <span className="text-nowrap">Delivered</span>
-                </div>
-                <div className="flex flex-col w-min-15 px-2 text-xs">
-                  <span>{cadence?.replyCount}</span>
-                  <span className="text-nowrap">Reply</span>
-                </div>
-                <div className="flex flex-col w-min-15 px-2 text-xs">
-                  <span>{cadence?.interestedCount}</span>
-                  <span className="text-nowrap">Interested</span>
-                </div>
-                <div className="flex flex-col w-min-15 px-2 text-xs">
-                  <span>{cadence?.optOutCount}</span>
-                  <span className="text-nowrap">Opt out</span>
-                </div>
-              </div>
-            </div>
             <div className="w-full p-4 flex flex-col gap-4">
+              <h1 className="text-xl font-semibold">Cadence Steps</h1>
               {cadenceSteps?.map((cadenceStep: CadenceStepModel) => (
                 <CadenceStep
                   handleTemplateOpen={handleTemplateOpen}
