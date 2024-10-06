@@ -11,11 +11,13 @@ import {
   CompanyModel,
   getCompanies,
   getCompanyTotalCount,
+  deleteCompany,
 } from "@/services/companyService";
 import CompanyOverview from "./CompanyOverview";
 import CreateCompany from "./CreateCompany";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import { toast } from "react-toastify";
 
 const CompanyTable = () => {
   const { companyFilterConfig } = useCompanyFilter();
@@ -115,6 +117,36 @@ const CompanyTable = () => {
   };
 
   const handleSave = () => {};
+
+  const handleOverview = (company: CompanyModel) => {
+    setSelected(company);
+    setOverview(true);
+  };
+
+  const handleEdit = (company: CompanyModel) => {
+    setSelected(company);
+    setCreate(true);
+  };
+
+  const handleDelete = (companyId: string) => {
+    runService(
+      companyId,
+      deleteCompany,
+      (data) => {
+        if (data.success === true) {
+          toast.success("Company updated successfully");
+          fetchTotalCount();
+          fetchCompanies();
+        } else toast.error("Something went wrong.");
+        handleSave();
+        handleClose();
+      },
+      (status, error) => {
+        console.log(status, error);
+        toast.error(error);
+      }
+    );
+  };
 
   const handleClose = () => {
     setCreate(false);
@@ -230,10 +262,7 @@ const CompanyTable = () => {
                       />
                       <span
                         className="flex-1 hover:underline"
-                        onClick={() => {
-                          setSelected(company);
-                          setOverview(true);
-                        }}
+                        onClick={() => handleOverview(company)}
                       >
                         {company.name}
                       </span>
@@ -253,16 +282,16 @@ const CompanyTable = () => {
                         <MenuItem>
                           <button
                             className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
-                            onClick={() => {
-                              setSelected(company);
-                              setCreate(true);
-                            }}
+                            onClick={() => handleEdit(company)}
                           >
                             Edit
                           </button>
                         </MenuItem>
                         <MenuItem>
-                          <button className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100">
+                          <button
+                            className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                            onClick={() => handleDelete(company.id)}
+                          >
                             Delete
                           </button>
                         </MenuItem>

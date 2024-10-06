@@ -1,5 +1,5 @@
 import { api } from "@/utils/api";
-import { CountModel, FetchProps } from "@/types";
+import { CountModel, FetchProps, SuccessModel } from "@/types";
 import { COMPANY_SIZE, EMAIL_STATUS } from "@/types/enums";
 import { boolean } from "yup";
 
@@ -47,13 +47,15 @@ interface ApiCompaniesResponse {
 interface ApiCompanyResponse {
   data: CompanyModel; // The structure of the data returned from the API
 }
-interface ApiCompanyResponse {
-  data: CompanyModel; // The structure of the data returned from the API
+
+interface ApiSuccessResponse {
+  data: SuccessModel;
 }
 
 interface ApiCountResponse {
   data: CountModel; // The structure of the data returned from the API;
 }
+
 
 export const getCompanies = async (
   data: FetchCompaniesProps = { offset: 0, limit: 100, targeted: false }
@@ -214,6 +216,63 @@ export const addCompany = async (
 
       size: response.data?.size,
       targeted: response.data?.targeted,
+    },
+  };
+};
+
+export const updateCompany = async (data: {
+  id: string;
+  updateData: CompanyModel;
+}): Promise<ApiCompanyResponse> => {
+  const {id, updateData} = data;
+  const response = await api.put(`api/companies/${id}`, updateData);
+
+  if (response.status !== 200) {
+    throw new Error("Failed to update company");
+  }
+
+  return {
+    data: {
+      id: response.data?.id,
+      name: response.data?.name,
+      website: response.data?.website,
+      linkedin: response.data?.linkedin,
+      companyType: response.data?.companyType,
+      phone: response.data?.phone,
+      phoneStatus: response.data?.phoneStatus,
+      description: response.data?.description,
+      industry: response.data?.industry,
+
+      streetAddress: response.data?.streetAddress,
+      city: response.data?.city,
+      state: response.data?.state,
+      country: response.data?.country,
+      postalCode: response.data?.postalCode,
+
+      yearFounded: response.data?.yearFounded,
+      domain: response.data?.domain,
+      annualRevenue: response.data?.annualRevenue,
+      stage: response.data?.stage,
+      keywords: response.data?.keywords,
+
+      size: response.data?.size,
+      targeted: response.data?.targeted,
+    },
+  };
+};
+
+export const deleteCompany = async (
+  companyId: string
+): Promise<ApiSuccessResponse> => {
+  const response = await api.delete(`api/companies/${companyId}`);
+
+  if (response.status !== 200) {
+    throw new Error("Failed to update company");
+  }
+
+  return {
+    data: {
+      success: response.data?.success,
     },
   };
 };
