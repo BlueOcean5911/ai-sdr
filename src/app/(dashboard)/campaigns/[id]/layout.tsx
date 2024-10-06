@@ -31,8 +31,8 @@ const navList = [
   { title: "Contacts", endpoint: "contacts" },
   { title: "Emails", endpoint: "emails" },
   { title: "Tasks", endpoint: "tasks" },
-  { title: "Calls", endpoint: "calls" },
-  { title: "Meetings", endpoint: "meetings" },
+  // { title: "Calls", endpoint: "calls" },
+  // { title: "Meetings", endpoint: "meetings" },
   { title: "Setting", endpoint: "setting" },
 ];
 

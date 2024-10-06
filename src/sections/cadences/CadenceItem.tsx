@@ -9,6 +9,7 @@ import {
   updateCadence,
 } from "@/services/cadenceService";
 import { handleError, runService } from "@/utils/service_utils";
+import Link from "next/link";
 
 export default function CadenceItem({
   cadence,
@@ -61,7 +62,11 @@ export default function CadenceItem({
         onClick={() => router.push(`/cadences/${cadence.id}`)}
       >
         <div className="min-w-64 flex flex-1 flex-col gap-1.5">
-          <div className="text-base font-semibold">{cadence.name}</div>
+          <Link href={`/cadences/${cadence.id}`}>
+            <div className="text-base font-semibold hover:underline">
+              {cadence.name}
+            </div>
+          </Link>
           <div className="flex items-center gap-1.5 text-sm">
             <span className="text-blue-900">
               {cadence?.owner?.firstName} {cadence?.owner?.lastName}
@@ -75,19 +80,19 @@ export default function CadenceItem({
         <div className="flex flex-col gap-0.5">
           <div className="flex text-xs px-2 border-x-2 border-dashed">
             <div className="w-min-15 px-2">
-              <div>{cadence.activeCount}</div>
+              {/* <div>{cadence.activeCount}</div> */}
               <div className="text-nowrap">Active</div>
             </div>
             <div className="w-min-15 px-2">
-              <div>{cadence.pausedCount}</div>
+              {/* <div>{cadence.pausedCount}</div> */}
               <div className="text-nowrap">Paused</div>
             </div>
             <div className="w-min-15 px-2">
-              <div>{cadence.notSentCount}</div>
-              <div className="text-nowrap">Not sent</div>
+              {/* <div>{cadence.notSentCount}</div> */}
+              <div className="text-nowrap">Succed</div>
             </div>
             <div className="w-min-15 px-2">
-              <div>{cadence.bouncedCount}</div>
+              {/* <div>{cadence.bouncedCount}</div> */}
               <div className="text-nowrap">Bounced</div>
             </div>
             {/* <div className="w-min-15 px-2">
@@ -95,34 +100,8 @@ export default function CadenceItem({
               <div className="text-nowrap">Spam Blocked</div>
             </div> */}
             <div className="w-min-15 px-2">
-              <div>{cadence.finishedCount}</div>
+              {/* <div>{cadence.finishedCount}</div> */}
               <div className="text-nowrap">Finished</div>
-            </div>
-          </div>
-          <div className="flex text-xs px-2 border-x-2 border-dashed">
-            <div className="w-min-15 px-2">
-              <div>{cadence.scheduledCount}</div>
-              <div className="text-nowrap">Scheduled</div>
-            </div>
-            <div className="w-min-15 px-2">
-              <div>{cadence.deliveredCount}</div>
-              <div className="text-nowrap">Delivered</div>
-            </div>
-            <div className="w-min-15 px-2">
-              <div>{cadence.openedCount}</div>
-              <div className="text-nowrap">Delivered</div>
-            </div>
-            <div className="w-min-15 px-2">
-              <div>{cadence.clickedCount}</div>
-              <div className="text-nowrap">Delivered</div>
-            </div>
-            <div className="w-min-15 px-2">
-              <div>{cadence.replyCount}</div>
-              <div className="text-nowrap">Reply</div>
-            </div>
-            <div className="w-min-15 px-2">
-              <div>{cadence.interestedCount}</div>
-              <div className="text-nowrap">Interested</div>
             </div>
           </div>
         </div>
@@ -176,7 +155,7 @@ export default function CadenceItem({
                 className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
                 onClick={() => router.push(`/cadences/${cadence.id}`)}
               >
-                Edit
+                Manage
               </button>
             </MenuItem>
           </MenuItems>
