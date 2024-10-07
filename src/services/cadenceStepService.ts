@@ -1,17 +1,31 @@
 import { api } from "@/utils/api";
-import { CountModel, FetchProps } from "@/types";
+import { ApiSuccessResponse, CountModel, FetchProps } from "@/types";
 import { CADENCE_STEP_TYPE, COMPANY_SIZE, EMAIL_STATUS } from "@/types/enums";
 import { boolean } from "yup";
 import { TemplateModel } from "./templatesService";
 
 interface FetchCadenceStepsProps extends FetchProps {}
 
-export interface CadenceStepModel extends CadenceStepWithTemplateModel {
+export interface CadenceStepModel
+  extends CadenceStepWithTemplateAndStatisticsModel {
   id: string;
 }
 
 export interface CadenceStepWithTemplateModel extends BaseCadenceStepModel {
   template: TemplateModel;
+}
+
+export interface CadenceStepStatisticsModel {
+  scheduled: number;
+  delivered: number;
+  bounced: number;
+  opened: number;
+  replied: number;
+}
+
+export interface CadenceStepWithTemplateAndStatisticsModel
+  extends CadenceStepWithTemplateModel {
+  statistics: CadenceStepStatisticsModel;
 }
 
 export interface BaseCadenceStepModel {
@@ -37,6 +51,12 @@ export interface BaseCadenceStepModel {
   templateId?: string;
 }
 
+export interface UpdateCadenceStep {
+  name?: string;
+  interval?: number;
+  stepType?: CADENCE_STEP_TYPE | string;
+}
+
 interface ApiCadenceStepsResponse {
   data: CadenceStepModel[]; // The structure of the data returned from the API
 }
@@ -51,35 +71,8 @@ interface ApiCountResponse {
 export const getCadenceSteps = async (): Promise<ApiCadenceStepsResponse> => {
   let url = `/api/cadence-steps`;
   const response = await api.get(url);
-
-  return {
-    data: response.data?.map((item: any) => ({
-      id: item?.id,
-      name: item?.name,
-      order: item?.order,
-      taskNote: item?.taskNote,
-      stepType: item?.stepType,
-
-      activeCount: item?.activeCount,
-      pausedCount: item?.pausedCount,
-      notSentCount: item?.notSentCount,
-      bouncedCount: item?.bouncedCount,
-      finishedCount: item?.finishedCount,
-
-      scheduledCount: item?.scheduledCount,
-      deliveredCount: item?.deliveredCount,
-      replyCount: item?.replyCount,
-      interestedCount: item?.interestedCount,
-      optOutCount: item?.optOutCount,
-
-      templateId: item?.templateId,
-
-      template: {
-        subject: item?.template?.subject,
-        bodyText: item?.template?.bodyText,
-      },
-    })),
-  };
+  console.log("cadence steps response", response);
+  return response;
 };
 
 export const getCadenceStepsByCadenceId = async ({
@@ -87,39 +80,10 @@ export const getCadenceStepsByCadenceId = async ({
 }: {
   cadenceId: string;
 }) => {
-  let url = `/api/cadence-steps/cadence-id/${cadenceId}`;
+  let url = `/api/cadence-steps?cadenceId=${cadenceId}`;
   const response = await api.get(url);
-
-  return {
-    data: response.data?.map((item: any) => ({
-      id: item?.id,
-      name: item?.name,
-      order: item?.order,
-      taskNote: item?.taskNote,
-      stepType: item?.stepType,
-
-      interval: item?.interval,
-
-      activeCount: item?.activeCount,
-      pausedCount: item?.pausedCount,
-      notSentCount: item?.notSentCount,
-      bouncedCount: item?.bouncedCount,
-      finishedCount: item?.finishedCount,
-
-      scheduledCount: item?.scheduledCount,
-      deliveredCount: item?.deliveredCount,
-      replyCount: item?.replyCount,
-      interestedCount: item?.interestedCount,
-      optOutCount: item?.optOutCount,
-
-      templateId: item?.templateId,
-
-      template: {
-        subject: item?.template?.subject,
-        bodyText: item?.template?.bodyText,
-      },
-    })),
-  };
+  console.log("cadence steps response", response);
+  return response;
 };
 
 export const getCadenceStepTotalCount = async ({
@@ -147,31 +111,28 @@ export const addCadenceStep = async (
   if (response.status !== 200) {
     throw new Error("Failed to create cadenceStep");
   }
-  const item = response.data;
-  return {
-    data: {
-      id: item?.id,
-      name: item?.name,
-      order: item?.order,
-      taskNote: item?.taskNote,
-      stepType: item?.stepType,
 
-      activeCount: item?.activeCount,
-      pausedCount: item?.pausedCount,
-      notSentCount: item?.notSentCount,
-      bouncedCount: item?.bouncedCount,
-      finishedCount: item?.finishedCount,
+  return response;
+};
 
-      scheduledCount: item?.scheduledCount,
-      deliveredCount: item?.deliveredCount,
-      replyCount: item?.replyCount,
-      interestedCount: item?.interestedCount,
-      optOutCount: item?.optOutCount,
-
-      template: {
-        subject: item?.template?.subject,
-        bodyText: item?.template?.bodyText,
-      },
-    },
+export const updateCadenceStep = async ({
+  data,
+}: {
+  data: any;
+}): Promise<ApiSuccessResponse> => {
+  const updatedCadenceStepData: UpdateCadenceStep = {
+    name: data.name,
+    interval: data.interval,
+    stepType: data.stepType,
   };
+
+  return await api.put(`api/cadence-steps/${data.id}`, updatedCadenceStepData);
+};
+
+export const deleteCadenceStep = async ({
+  id,
+}: {
+  id: string;
+}): Promise<ApiSuccessResponse> => {
+  return api.delete(`api/cadence-steps/${id}`);
 };
