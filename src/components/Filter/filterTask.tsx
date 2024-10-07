@@ -13,29 +13,29 @@ import { useEffect, useState } from "react";
 
 export default function FilterTask() {
   const { taskFilterConfig, setTaskFilterConfig } = useTaskFilter();
-  const [fromUserOption, setFromUserOption] = useState(fromUserOptions);
+  const [fromUserOption, setFromUserOption] = useState([]);
   const [priorityOption, setPriorityOption] = useState(priorityOptions);
 
-  // const fetchUsers = () => {
-  //   runService(
-  //     undefined,
-  //     getUsers,
-  //     (users) => {
-  //       const usersOption = users.map((user: UserModel) => ({
-  //         value: user.id,
-  //         label: user.firstName + " " + user.lastName,
-  //       }));
-  //       setFromUserOption(usersOption);
-  //     },
-  //     (status, error) => {
-  //       console.error(error);
-  //     }
-  //   );
-  // };
+  const fetchUsers = () => {
+    runService(
+      undefined,
+      getUsers,
+      (users) => {
+        const usersOption = users.map((user: UserModel) => ({
+          value: user.id,
+          label: user.firstName + " " + user.lastName,
+        }));
+        setFromUserOption(usersOption);
+      },
+      (status, error) => {
+        console.error(error);
+      }
+    );
+  };
 
-  // useEffect(() => {
-  //   fetchUsers();
-  // }, []);
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <div className="card px-2 w-64 h-full flex flex-col rounded-xl bg-white">
@@ -67,7 +67,7 @@ export default function FilterTask() {
         <div>
           <FilterItem
             icon={<ListBulletIcon className="w-4 h-4" />}
-            title="From User"
+            title="From Owner"
           >
             <Select
               value={taskFilterConfig.fromUser}
