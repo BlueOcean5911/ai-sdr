@@ -23,7 +23,9 @@ import {
   addCadenceStep,
   BaseCadenceStepModel,
   CadenceStepModel,
+  deleteCadenceStep,
   getCadenceStepsByCadenceId,
+  updateCadenceStep,
 } from "@/services/cadenceStepService";
 import {
   getTemplate,
@@ -32,6 +34,7 @@ import {
 } from "@/services/templatesService";
 import { toast } from "react-toastify";
 import { ROUTE_LEADS } from "@/data/routes";
+import { SuccessModel } from "@/types";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -168,6 +171,58 @@ export default function Page({ params }: { params: { id: string } }) {
     toast.success("Successfully send email to test!");
   };
 
+  const handledDeleteCadenceStep = (id: string) => {
+    runService(
+      { id },
+      deleteCadenceStep,
+      (data: SuccessModel) => {
+        if (data.success) {
+          setCadenceSteps(
+            cadenceSteps.filter((cadenceStep) => id !== cadenceStep.id)
+          );
+          toast.success("Successfully deleted");
+        }
+      },
+      (statusCode, error) => {
+        handleError(statusCode, error);
+      }
+    );
+  };
+
+  const handleUpdateCadenceStep = (data: CadenceStepModel) => {
+    console.log("here", data);
+    runService(
+      { data: data },
+      updateCadenceStep,
+      (res: SuccessModel) => {
+        console.log("success!!!s");
+        if (res.success) {
+          console.log("success!!!s");
+          setCadenceSteps(
+            cadenceSteps.map((cadenceStep) => {
+              if (cadenceStep.id === data.id) {
+                cadenceStep.name = data.name;
+                cadenceStep.interval = data.interval;
+                cadenceStep.stepType = data.stepType;
+              }
+              return cadenceStep;
+            })
+          );
+
+          cadenceSteps.map((cadenceStep) => {
+            if (cadenceStep.id === data?.id) {
+              cadenceStep.name = data.name;
+            }
+          });
+          toast.success("Successfully updated");
+        }
+      },
+      (statusCode, error) => {
+        handleError(statusCode, error);
+      }
+    );
+  };
+
   return (
     <>
       {edit ? (
@@ -211,28 +266,6 @@ export default function Page({ params }: { params: { id: string } }) {
                   />
                 </div>
               </div>
-              {/* <div className="w-full flex flex-col gap-2">
-                <div className="flex flex-col">
-                  <span className="text-sm">
-                    Generate Preview for Contact (optional)
-                  </span>
-                  <div className="p-2 flex items-center border">
-                    <input
-                      type="text"
-                      name="subject"
-                      id="subject"
-                      className="input-primary"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-1">
-                  <textarea
-                    name="message"
-                    id="message"
-                    className="input-primary"
-                  />
-                </div>
-              </div> */}
             </div>
             <div className="flex justify-end gap-4">
               <button
@@ -321,21 +354,30 @@ export default function Page({ params }: { params: { id: string } }) {
           </div>
           <div className="flex flex-1 flex-col bg-gray-100 overflow-auto">
             <div className="w-full p-4 flex flex-col gap-4">
-              <h1 className="text-xl font-semibold">Cadence Steps</h1>
-              {cadenceSteps?.map((cadenceStep: CadenceStepModel) => (
+              <div className="flex justify-between">
+                <h1 className="text-xl font-semibold">Cadence Steps</h1>
+                <AddStep
+                  cadenceId={id}
+                  order={cadence?.stepsCount ? cadence?.stepsCount + 1 : 1}
+                  handleCreateStep={async (data: BaseCadenceStepModel) => {
+                    await addCadenceStep(data);
+                    fetchCadenceStepsByCadenceId();
+                  }}
+                />
+              </div>
+              {cadenceSteps?.map((cadenceStep: CadenceStepModel, id) => (
                 <CadenceStep
+                  order={id + 1}
                   handleTemplateOpen={handleTemplateOpen}
                   cadenceStep={cadenceStep}
+                  handleDelete={(id: string) => {
+                    handledDeleteCadenceStep(id);
+                  }}
+                  handleUpdate={(data: CadenceStepModel) => {
+                    handleUpdateCadenceStep(data);
+                  }}
                 />
               ))}
-              <AddStep
-                cadenceId={id}
-                order={cadence?.stepsCount ? cadence?.stepsCount + 1 : 1}
-                handleCreateStep={async (data: BaseCadenceStepModel) => {
-                  await addCadenceStep(data);
-                  fetchCadenceStepsByCadenceId();
-                }}
-              />
               <div className="h-4 w-full" />
             </div>
           </div>

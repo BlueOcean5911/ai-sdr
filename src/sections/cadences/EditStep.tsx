@@ -6,7 +6,10 @@ import LinkedinRequestIcon from "@/components/Icons/linkedinrequest.icon";
 import LinkedinViewIcon from "@/components/Icons/linkedinview.icon";
 import ManualEmailIcon from "@/components/Icons/manualmail.icon";
 import PhoneCallIcon from "@/components/Icons/phonecall.icon";
-import { BaseCadenceStepModel } from "@/services/cadenceStepService";
+import {
+  BaseCadenceStepModel,
+  CadenceStepModel,
+} from "@/services/cadenceStepService";
 import {
   Dialog,
   DialogPanel,
@@ -20,7 +23,6 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import React, { Fragment, useEffect, useState } from "react";
-import { number } from "yup";
 
 interface Interval {
   interval: number;
@@ -35,67 +37,64 @@ enum CadenceStepView {
   task = "task",
 }
 
-export default function AddStep({
-  order,
-  cadenceId,
-  handleCreateStep,
+export default function EditStep({
+  cadenceStepData,
+  handleUpdateStep,
+  closeModal,
 }: {
-  order: number;
-  cadenceId: string;
-  handleCreateStep: (data: BaseCadenceStepModel) => void;
+  cadenceStepData: CadenceStepModel;
+  handleUpdateStep: (data: CadenceStepModel) => void;
+  closeModal: () => void;
 }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentView, setCurrentView] = useState(CadenceStepView.step);
-  // const [more, setMore] = useState(false);
+  const [currentView, setCurrentView] = useState(CadenceStepView.autoEmail);
   const [startNow, setStartNow] = useState(true);
-  const [stepData, setStepData] = useState<BaseCadenceStepModel>({
-    cadenceId: cadenceId,
-    order: order,
-    name: "Automatic Email",
-    interval: 0,
-  });
+  const [stepData, setStepData] = useState<CadenceStepModel>(cadenceStepData);
   const [intervalData, setIntervalData] = useState<Interval>({
     interval: 0,
     intervalType: 1,
   });
 
   useEffect(() => {
+    if (stepData?.interval === 0) {
+      setStartNow(true);
+    } else {
+      setStartNow(false);
+    }
+    if (stepData?.interval && stepData?.interval % 1440 === 0) {
+      setIntervalData({
+        interval: stepData?.interval / 1440,
+        intervalType: 1440,
+      });
+    } else if (stepData?.interval && stepData?.interval % 60 === 0) {
+      setIntervalData({ interval: stepData?.interval / 60, intervalType: 60 });
+    } else {
+      setIntervalData({
+        interval: stepData?.interval ? stepData?.interval : 0,
+        intervalType: 1,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     setStepData((prev) => ({
       ...prev,
       interval: intervalData.interval * intervalData.intervalType,
     }));
+    console.log(intervalData, "interval data");
   }, [intervalData]);
 
   useEffect(() => {
     console.log(stepData);
   }, [stepData]);
 
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-    setCurrentView(CadenceStepView.step);
-    setStartNow(true);
-  }
-
-  const createStep = () => {
-    handleCreateStep(stepData);
-    setIsOpen(false);
+  const updateStep = () => {
+    handleUpdateStep(stepData);
+    closeModal();
   };
 
   return (
     <>
-      <div className="w-28 flex items-center">
-        <button
-          className="h-8 px-3 rounded-md text-sm text-white bg-blue-900 data-[focus]:bg-blue-500"
-          onClick={openModal}
-        >
-          Add a step
-        </button>
-      </div>
-      <Transition appear show={isOpen} as={Fragment}>
+      <Transition appear show={true} as={Fragment}>
         <Dialog as="div" className="relative" onClose={closeModal}>
           <div className="fixed inset-0 bg-black/65 z-40" />
           <div className="fixed inset-0 py-10 overflow-y-auto z-40">
@@ -337,6 +336,7 @@ export default function AddStep({
                                 setStepData((prev) => ({
                                   ...prev,
                                   interval: 0,
+                                  intervalType: 1,
                                 }));
                               }}
                             />
@@ -360,6 +360,7 @@ export default function AddStep({
                                   setIntervalData((prev) => ({
                                     ...prev,
                                     interval: 30,
+                                    intervalType: 1,
                                   }));
                                 }
                               }}
@@ -380,7 +381,7 @@ export default function AddStep({
                             />
                             <select
                               disabled={startNow}
-                              defaultValue={1}
+                              value={intervalData.intervalType}
                               className="max-w-32  input-primary"
                               onChange={(e) => {
                                 const typeToIntervalInitialVal: {
@@ -420,10 +421,10 @@ export default function AddStep({
                           <button
                             className="px-3 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
                             onClick={() => {
-                              createStep();
+                              updateStep();
                             }}
                           >
-                            Create Step
+                            Update Step
                           </button>
                         </div>
                       </div>

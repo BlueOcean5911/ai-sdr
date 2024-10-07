@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { CadenceStepProps } from "@/types";
 import ToggleButton from "@/components/extends/Button/ToggleButton";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
@@ -8,23 +8,34 @@ import {
   Bars2Icon,
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
-import { CadenceStepModel } from "@/services/cadenceStepService";
+import {
+  BaseCadenceStepModel,
+  CadenceStepModel,
+} from "@/services/cadenceStepService";
 import { getFormettedInterval } from "@/utils/format";
+import EditStep from "./EditStep";
 
 export default function CadenceStep({
+  order,
   cadenceStep,
   handleTemplateOpen,
+  handleDelete,
+  handleUpdate,
 }: {
+  order: number;
   cadenceStep: CadenceStepModel;
   handleTemplateOpen: (id: string | undefined) => void;
+  handleDelete: (id: string) => void;
+  handleUpdate: (data: CadenceStepModel) => void;
 }) {
   const router = useRouter();
-  console.log("cadenceStep", cadenceStep);
+  const [isOpenUpdateView, setIsOpenUpdateView] = useState(false);
+
   return (
     <div className="w-full h-min-40 flex flex-col bg-white rounded-md shadow-md">
       <div className="w-full h-12 flex text-nowrap">
         <div className="w-12 flex justify-center items-center border-r">
-          <span className="px-2 text-xl">{cadenceStep.order}</span>
+          <span className="px-2 text-xl">{order}</span>
         </div>
         <div className="flex flex-1 items-center gap-2">
           <div className="w-50 px-4 flex justify-between items-center gap-4">
@@ -32,23 +43,6 @@ export default function CadenceStep({
               <EnvelopeIcon className="w-4 h-4" />
             </div>
             <span className="font-semibold">{cadenceStep.name}</span>
-          </div>
-          <div className="flex items-center overflow-hidden">
-            <div className="flex w-15 px-1 text-xs">
-              {cadenceStep.activeCount} Active
-            </div>
-            <div className="flex w-15 px-1 text-xs">
-              {cadenceStep.pausedCount} Paused
-            </div>
-            <div className="flex w-15 px-1 text-xs">
-              {cadenceStep.notSentCount} Not sent
-            </div>
-            <div className="flex w-15 px-1 text-xs">
-              {cadenceStep.bouncedCount} Bounced
-            </div>
-            <div className="flex w-15 px-1 text-xs">
-              {cadenceStep.finishedCount} Finished
-            </div>
           </div>
         </div>
         <div className="flex px-2 gap-2 justify-end items-center">
@@ -66,27 +60,18 @@ export default function CadenceStep({
               className="flex flex-col w-24 origin-top bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
             >
               <MenuItem>
-                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                <button
+                  className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                  onClick={() => setIsOpenUpdateView(true)}
+                >
                   Edit
                 </button>
               </MenuItem>
               <MenuItem>
-                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                  Clone
-                </button>
-              </MenuItem>
-              <MenuItem>
-                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                  Move Up
-                </button>
-              </MenuItem>
-              <MenuItem>
-                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                  Move Down
-                </button>
-              </MenuItem>
-              <MenuItem>
-                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                <button
+                  className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                  onClick={() => handleDelete(cadenceStep.id)}
+                >
                   Delete
                 </button>
               </MenuItem>
@@ -114,7 +99,7 @@ export default function CadenceStep({
               {cadenceStep.template?.bodyText}
             </div>
           </div>
-          <div className="flex items-center overflow-hidden">
+          <div className="flex min-w-48 flex-wrap items-center">
             <div className="flex flex-col w-min-15 px-1 text-xs">
               <span>{cadenceStep.scheduledCount}</span>
               <span className="text-nowrap">Scheduled</span>
@@ -127,59 +112,28 @@ export default function CadenceStep({
               <span>{cadenceStep.bouncedCount}</span>
               <span className="text-nowrap">Bounced</span>
             </div>
-            {/* <div className="flex flex-col w-min-15 px-1 text-xs">
+            <div className="flex flex-col w-min-15 px-1 text-xs">
               <span>-</span>
-              <span className="text-nowrap">Spam Blocked</span>
-            </div> */}
+              <span className="text-nowrap">Replied</span>
+            </div>
             <div className="flex flex-col w-min-15 px-1 text-xs">
               <span>{cadenceStep.replyCount}</span>
-              <span className="text-nowrap">Reply</span>
-            </div>
-            <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>{cadenceStep.interestedCount}</span>
-              <span className="text-nowrap">Interested</span>
-            </div>
-            <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>{cadenceStep.optOutCount}</span>
-              <span className="text-nowrap">Opt out</span>
+              <span className="text-nowrap">Replied</span>
             </div>
           </div>
         </div>
-        <div className="w-8 flex items-center">
-          <Menu>
-            <MenuButton className="">
-              <div className="p-1 border rounded-md">
-                <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
-              </div>
-            </MenuButton>
-            <MenuItems
-              anchor="bottom end"
-              className="flex flex-col w-16 origin-top bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
-            >
-              <MenuItem>
-                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                  Edit
-                </button>
-              </MenuItem>
-              <MenuItem>
-                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                  Clone
-                </button>
-              </MenuItem>
-              <MenuItem>
-                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                  Delete
-                </button>
-              </MenuItem>
-            </MenuItems>
-          </Menu>
-        </div>
       </div>
-      <div className="w-full h-10 px-4 flex items-center">
-        {/* <button className="w-28 h-8 px-2 border rounded-md text-sm font-semibold hover:bg-gray-100">
-          Add A/B Test
-        </button> */}
-      </div>
+      <div className="w-full h-10 px-4 flex items-center"></div>
+      {isOpenUpdateView && (
+        <EditStep
+          cadenceStepData={cadenceStep}
+          handleUpdateStep={(data) => {
+            console.log("udpated!!!");
+            handleUpdate(data);
+          }}
+          closeModal={() => setIsOpenUpdateView(false)}
+        />
+      )}
     </div>
   );
 }
