@@ -58,7 +58,9 @@ export default function CreateCompany({
                       phoneStatus: statusOptions[3],
                       companyType: company ? company.companyType : "",
                       description: company ? company.description : "",
-                      size: employeeOptions[0],
+                      size: company
+                        ? { label: company.size!, value: company.size! }
+                        : employeeOptions[0],
                       industry: company ? company.industry : "",
                       linkedin: company ? company.linkedin : "",
                       streetAddress: company ? company.streetAddress : "",

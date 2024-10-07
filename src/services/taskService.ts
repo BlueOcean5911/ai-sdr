@@ -12,7 +12,7 @@ interface Option {
 interface FetchTasksProps extends FetchProps {
   campaignId?: string;
   cadenceId?: string;
-  fromEmail?: Option | Option[] | null;
+  priority?: Option | Option[] | null;
   fromUser?: Option | Option[] | null;
   search?: string;
   params: { [key: string]: string };
@@ -23,12 +23,12 @@ export interface TaskModel extends BaseTaskModel {
 }
 
 export interface BaseTaskModel {
-  contacts: string;
-  assignee: string;
-  type: string;
-  priority: string;
-  dueDate: string;
-  note: string;
+  title: string;
+  content: string;
+  taskType: string;
+  taskPriority: string;
+  endDate: string;
+  ownerId: string;
 }
 
 export interface SendTaskModel {
@@ -68,8 +68,8 @@ interface ApiStatisticsResponse {
 export const getTasks = async (
   data: FetchTasksProps = { offset: 0, limit: 100, params: {} }
 ): Promise<ApiTasksResponse> => {
-  let url = `/api/calls?offset=${data.offset}&limit=${data.limit}`;
-  //  get search params from current params
+  let url = `/api/tasks?`;
+
   const keys = Object.keys(data.params);
   let searchParams = "";
 
@@ -92,7 +92,18 @@ export const getTasks = async (
     userIds = [];
   }
   for (const userId of userIds) {
-    url += `&fromUser=${userId}`;
+    url += `&userIds=${userId}`;
+  }
+  let priorities: string[] = [];
+  if (Array.isArray(data.priority)) {
+    priorities = data.priority.map((option) => option.value);
+  } else if (data.priority) {
+    priorities = [data.priority.value];
+  } else {
+    priorities = [];
+  }
+  for (const priority of priorities) {
+    url += `&priorities=${priority}`;
   }
   if (data.search) {
     url += `&search=${data.search}`;
@@ -110,7 +121,7 @@ export const getTasks = async (
 export const getTaskTotalCount = async (
   data: FetchTasksProps = { params: {} }
 ): Promise<ApiCountResponse> => {
-  let url = `/api/calls/statistics/total-count?`;
+  let url = `/api/tasks/total-count?`;
   //  get search params from current params
   const keys = Object.keys(data.params);
   let searchParams = "";
@@ -134,7 +145,18 @@ export const getTaskTotalCount = async (
     userIds = [];
   }
   for (const userId of userIds) {
-    url += `&fromUser=${userId}`;
+    url += `&userIds=${userId}`;
+  }
+  let priorities: string[] = [];
+  if (Array.isArray(data.priority)) {
+    priorities = data.priority.map((option) => option.value);
+  } else if (data.priority) {
+    priorities = [data.priority.value];
+  } else {
+    priorities = [];
+  }
+  for (const priority of priorities) {
+    url += `&priorities=${priority}`;
   }
   if (data.search) {
     url += `&search=${data.search}`;
@@ -152,19 +174,19 @@ export const getTaskTotalCount = async (
 };
 
 export const getTasksStatistics = async (): Promise<ApiStatisticsResponse> => {
-  const response = await api.get(`api/calls/statistics`);
+  const response = await api.get(`api/tasks/statistics`);
   console.log(response);
   return {
     data: response.data,
   };
 };
 
-export const addTask = async (call: SendTaskModel) => {
-  console.log("call data", call);
-  const response = await api.post("api/calls", call);
-  console.log("send call", response.data);
+export const addTask = async (task: SendTaskModel) => {
+  console.log("task data", task);
+  const response = await api.post("api/tasks", task);
+  console.log("send task", response.data);
   if (response.status !== 200) {
-    throw new Error("Failed to create call");
+    throw new Error("Failed to create task");
   }
 
   return {
@@ -174,10 +196,34 @@ export const addTask = async (call: SendTaskModel) => {
   };
 };
 
-export const sendTask = async (id: string) => {
-  const response = await api.post(`api/calls/send/${id}`);
-
+export const updateTask = async (data: {
+  taskId: string;
+  updateData: SendTaskModel;
+}) => {
+  const { taskId, updateData } = data;
+  const response = await api.put(`api/tasks/${taskId}`, updateData);
+  console.log("send task", response.data);
   if (response.status !== 200) {
-    throw new Error("Failed to send email");
+    throw new Error("Failed to create task");
   }
+
+  return {
+    data: {
+      id: response.data.surrogateId,
+    },
+  };
+};
+
+export const deleteTask = async (taskId: string) => {
+  const response = await api.delete(`api/tasks/${taskId}`);
+  console.log("delete task", response.data);
+  if (response.status !== 200) {
+    throw new Error("Failed to delete task");
+  }
+
+  return {
+    data: {
+      success: response.data.success,
+    },
+  };
 };

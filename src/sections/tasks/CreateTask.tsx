@@ -9,14 +9,27 @@ import {
 import React, { Fragment, useState, useEffect, useMemo } from "react";
 import { handleError, runService } from "@/utils/service_utils";
 import { getUsers, UserModel } from "@/services/userService";
-import { addTask, BaseTaskModel } from "@/services/taskService";
-import Select from "react-tailwindcss-select";
+import { addTask, BaseTaskModel, updateTask } from "@/services/taskService";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import FormHelperText from "@/components/extends/FormHelperText";
 import { toast } from "react-toastify";
-import RSelect from "@/components/extends/Select/default";
+import Select from "@/components/extends/Select/default";
 import { useTaskFilter } from "@/contexts/FilterTaskContext";
+
+const taskTypeOptions = [
+  { value: "Message", name: "Message" },
+  { value: "Call", name: "Call" },
+  { value: "Meet", name: "Meet" },
+  { value: "Linkedin", name: "LinkedIn" },
+];
+
+const taskPriorityOptions = [
+  { value: "low", name: "Low" },
+  { value: "medium", name: "Medium" },
+  { value: "high", name: "High" },
+  { value: "critical", name: "Critical" },
+];
 
 export default function CreateTask({
   open,
@@ -26,11 +39,20 @@ export default function CreateTask({
 }: CreateTaskProps) {
   const [users, setUsers] = useState<UserModel[]>();
   const { setTaskFilterConfig } = useTaskFilter();
+  const [userOptions, setUserOptions] = useState<any[]>([]);
+
   const fetchUsers = () => {
     runService(
       undefined,
       getUsers,
-      (data) => {
+      (data: any[]) => {
+        const tempUserOptions = data.map((user) => {
+          return {
+            name: user.firstName + " " + user.lastName,
+            value: user.id,
+          };
+        });
+        setUserOptions(tempUserOptions);
         setUsers(data);
       },
       (status, error) => {
@@ -67,49 +89,70 @@ export default function CreateTask({
                   </DialogTitle>
                   <Formik
                     initialValues={{
-                      contacts: task ? task.contacts : "",
-                      type: task ? task.type : "",
-                      assignee: task ? task.assignee : "",
-                      priority: task ? task.priority : "",
-                      dueDate: task ? task.dueDate : "",
-                      note: task ? task.note : "",
+                      title: task ? task.title : "",
+                      taskType: task ? task.taskType : "",
+                      ownerId: task ? task.ownerId : "",
+                      taskPriority: task ? task.taskPriority : "",
+                      endDate: task
+                        ? task.endDate.split("T")[0]
+                        : new Date().toISOString().split("T")[0],
+                      content: task ? task.content : "",
                     }}
                     validationSchema={Yup.object().shape({
-                      contacts: Yup.string().required("Contacts is required"),
-                      note: Yup.string().required("Note is required"),
-                      type: Yup.string().required("Type is required"),
-                      priority: Yup.string().required("Priority is required"),
-                      assignee: Yup.string().required("Assignee is required"),
-                      dueDate: Yup.string().required("Due date is required"),
+                      title: Yup.string().required("Title is required"),
+                      content: Yup.string().required("Note is required"),
+                      taskType: Yup.string().required("Type is required"),
+                      taskPriority: Yup.string().required(
+                        "Priority is required"
+                      ),
+                      ownerId: Yup.string().required("Assignee is required"),
+                      endDate: Yup.string().required("Due date is required"),
                     })}
                     onSubmit={async (
                       values,
                       { setErrors, setStatus, setSubmitting }
                     ) => {
-                      let newTask: BaseTaskModel = {
-                        contacts: values.contacts,
-                        note: values.note,
-                        type: values.type,
-                        priority: values.priority,
-                        assignee: values.assignee,
-                        dueDate: values.dueDate,
+                      let taskData: BaseTaskModel = {
+                        title: values.title,
+                        content: values.content,
+                        taskType: values.taskType,
+                        taskPriority: values.taskPriority,
+                        endDate: values.endDate,
+                        ownerId: values.ownerId,
                       };
-                      runService(
-                        newTask,
-                        addTask,
-                        (data) => {
-                          setTaskFilterConfig((prev) => ({
-                            ...prev,
-                            createdTaskId: data.id,
-                          }));
-                          toast.success("Task created successfully");
-                          handleClose();
-                        },
-                        (status, error) => {
-                          console.log(status, error);
-                          toast.error(error);
-                        }
-                      );
+                      task
+                        ? runService(
+                            { taskId: task.id, updateData: taskData },
+                            updateTask,
+                            (data) => {
+                              setTaskFilterConfig((prev) => ({
+                                ...prev,
+                                createdTaskId: data.id,
+                              }));
+                              toast.success("Task updated successfully");
+                              handleClose();
+                            },
+                            (status, error) => {
+                              console.log(status, error);
+                              toast.error(error);
+                            }
+                          )
+                        : runService(
+                            taskData,
+                            addTask,
+                            (data) => {
+                              setTaskFilterConfig((prev) => ({
+                                ...prev,
+                                createdTaskId: data.id,
+                              }));
+                              toast.success("Task created successfully");
+                              handleClose();
+                            },
+                            (status, error) => {
+                              console.log(status, error);
+                              toast.error(error);
+                            }
+                          );
                     }}
                   >
                     {({
@@ -117,6 +160,7 @@ export default function CreateTask({
                       handleBlur,
                       handleChange,
                       handleSubmit,
+                      setFieldValue,
                       isSubmitting,
                       touched,
                       values,
@@ -124,51 +168,61 @@ export default function CreateTask({
                       <form noValidate onSubmit={handleSubmit}>
                         <div className="px-6 py-3 flex flex-col gap-2 text-sm bg-gray-50 rounded-md">
                           <div className="w-full flex flex-col gap-1">
-                            <label htmlFor="contacts">Contacts:</label>
+                            <label htmlFor="title">Title:</label>
                             <input
-                              id="contacts"
+                              id="title"
                               type="text"
-                              placeholder="Contacts"
+                              placeholder="Title"
                               className="input-primary max-h-9"
-                              value={values.contacts}
+                              value={values.title}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
-                            {touched.contacts && errors.contacts && (
-                              <FormHelperText>{errors.contacts}</FormHelperText>
+                            {touched.title && errors.title && (
+                              <FormHelperText>{errors.title}</FormHelperText>
                             )}
                           </div>
 
                           <div className="flex gap-2">
                             <div className="w-1/2 flex flex-col gap-1">
-                              <label htmlFor="type">Type:</label>
-                              <input
-                                id="type"
-                                type="text"
-                                placeholder="Type"
-                                className="input-primary max-h-9"
-                                value={values.type}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
+                              <label htmlFor="taskType">Type:</label>
+                              <Select
+                                data={taskTypeOptions}
+                                defaultValue={taskTypeOptions.find(
+                                  (option) => option.value === values.taskType
+                                )}
+                                onChange={(selectedItem) => {
+                                  if (selectedItem.value !== values.taskType)
+                                    setFieldValue(
+                                      "taskType",
+                                      selectedItem.value
+                                    );
+                                }}
                               />
-                              {touched.type && errors.type && (
-                                <FormHelperText>{errors.type}</FormHelperText>
+                              {touched.taskType && errors.taskType && (
+                                <FormHelperText>
+                                  {errors.taskType}
+                                </FormHelperText>
                               )}
                             </div>
                             <div className="w-1/2 flex flex-col gap-1">
-                              <label htmlFor="assignee">Assignee:</label>
-                              <input
-                                id="assignee"
-                                type="text"
-                                placeholder="Assignee"
-                                className="input-primary max-h-9"
-                                value={values.assignee}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                              />
-                              {touched.assignee && errors.assignee && (
+                              <label htmlFor="ownerId">Owner:</label>
+                              <Select
+                                data={userOptions}
+                                defaultValue={userOptions.find(
+                                  (option) => option.value === values.ownerId
+                                )}
+                                onChange={(selectedItem) => {
+                                  if (selectedItem.value !== values.ownerId)
+                                    setFieldValue(
+                                      "ownerId",
+                                      selectedItem.value
+                                    );
+                                }}
+                              ></Select>
+                              {touched.ownerId && errors.ownerId && (
                                 <FormHelperText>
-                                  {errors.assignee}
+                                  {errors.ownerId}
                                 </FormHelperText>
                               )}
                             </div>
@@ -176,56 +230,64 @@ export default function CreateTask({
 
                           <div className="flex gap-2">
                             <div className="w-3/4 flex flex-col gap-1">
-                              <label htmlFor="priority">Priority:</label>
-                              <input
-                                id="priority"
-                                type="text"
-                                placeholder="Priority"
-                                className="input-primary max-h-9"
-                                value={values.priority}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
+                              <label htmlFor="taskPriority">Priority:</label>
+                              <Select
+                                data={taskPriorityOptions}
+                                defaultValue={taskPriorityOptions.find(
+                                  (option) => option.value === values.taskPriority
+                                )}
+                                onChange={(selectedItem) => {
+                                  if (
+                                    selectedItem.value !== values.taskPriority
+                                  )
+                                    setFieldValue(
+                                      "taskPriority",
+                                      selectedItem.value
+                                    );
+                                }}
                               />
-                              {touched.priority && errors.priority && (
+                              {touched.taskPriority && errors.taskPriority && (
                                 <FormHelperText>
-                                  {errors.priority}
+                                  {errors.taskPriority}
                                 </FormHelperText>
                               )}
                             </div>
                             <div className="w-1/4 flex flex-col gap-1">
-                              <label htmlFor="dueDate">Due Date:</label>
+                              <label htmlFor="endDate">Due Date:</label>
                               <input
-                                id="dueDate"
-                                type="text"
+                                id="endDate"
+                                type="date"
                                 placeholder="Due Date"
                                 className="input-primary max-h-9"
-                                value={values.dueDate}
+                                value={values.endDate}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                               />
-                              {touched.dueDate && errors.dueDate && (
+                              {touched.endDate && errors.endDate && (
                                 <FormHelperText>
-                                  {errors.dueDate}
+                                  {errors.endDate}
                                 </FormHelperText>
                               )}
                             </div>
                           </div>
 
                           <div className="flex flex-col gap-1">
-                            <label htmlFor="note">Note:</label>
+                            <label htmlFor="content">Note:</label>
                             <div className="flex gap-2">
                               <div className="w-full flex flex-col">
                                 <input
-                                  id="note"
+                                  id="content"
                                   type="text"
                                   placeholder="Note"
                                   className="input-primary max-h-9"
-                                  value={values.note}
+                                  value={values.content}
                                   onChange={handleChange}
                                   onBlur={handleBlur}
                                 />
-                                {touched.note && errors.note && (
-                                  <FormHelperText>{errors.note}</FormHelperText>
+                                {touched.content && errors.content && (
+                                  <FormHelperText>
+                                    {errors.content}
+                                  </FormHelperText>
                                 )}
                               </div>
                             </div>

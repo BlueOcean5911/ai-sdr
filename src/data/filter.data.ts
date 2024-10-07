@@ -35,10 +35,10 @@ export const fromUserOptions = [
 ];
 
 export const priorityOptions = [
-  { value: "Critical", label: "Critical" },
-  { value: "High", label: "High" },
-  { value: "Medium", label: "Medium" },
-  { value: "Low", label: "Low" },
+  { value: "critical", label: "Critical" },
+  { value: "high", label: "High" },
+  { value: "medium", label: "Medium" },
+  { value: "low", label: "Low" },
 ];
 
 export const cadenceStatusOptions = [
