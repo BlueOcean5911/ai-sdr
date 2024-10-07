@@ -17,16 +17,20 @@ import EditStep from "./EditStep";
 
 export default function CadenceStep({
   order,
+  total,
   cadenceStep,
   handleTemplateOpen,
   handleDelete,
   handleUpdate,
+  handleMove,
 }: {
   order: number;
+  total: number;
   cadenceStep: CadenceStepModel;
   handleTemplateOpen: (id: string | undefined) => void;
   handleDelete: (id: string) => void;
   handleUpdate: (data: CadenceStepModel) => void;
+  handleMove: (id: string, value: number) => void;
 }) {
   const router = useRouter();
   const [isOpenUpdateView, setIsOpenUpdateView] = useState(false);
@@ -67,6 +71,26 @@ export default function CadenceStep({
                   Edit
                 </button>
               </MenuItem>
+              {order !== 1 && (
+                <MenuItem>
+                  <button
+                    className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                    onClick={() => handleMove(cadenceStep.id, -1)}
+                  >
+                    Move Up
+                  </button>
+                </MenuItem>
+              )}
+              {order !== total && (
+                <MenuItem>
+                  <button
+                    className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                    onClick={() => handleMove(cadenceStep.id, 1)}
+                  >
+                    Move Down
+                  </button>
+                </MenuItem>
+              )}
               <MenuItem>
                 <button
                   className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"

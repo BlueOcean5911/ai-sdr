@@ -115,6 +115,11 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <Link href={ROUTE_LEADS}>
+              <div className="text-sm px-2 py-1 bg-blue-500 hover:bg-blue-400 text-white rounded hover:cursor-pointer">
+                Add contacts
+              </div>
+            </Link>
             {/* <Menu>
               <MenuButton className="">
                 <div className="p-1 border rounded-md">

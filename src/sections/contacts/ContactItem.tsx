@@ -23,7 +23,7 @@ export default function ContactItem({
         </div>
 
         <div className="flex flex-1 items-center gap-2 text-xs text-nowrap">
-          <span className="p-1 text-white bg-blue-600">
+          <span className="p-1 text-white bg-blue-600 capitalize">
             {contact.currentStepStatus}
           </span>
           <span className="p-1 text-white bg-gray-500">
@@ -61,14 +61,31 @@ export default function ContactItem({
             anchor="bottom end"
             className="flex flex-col w-56 origin-top-right bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
           >
+            {contact.currentStepStatus === "active" && (
+              <MenuItem>
+                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                  Pause sequence now
+                </button>
+              </MenuItem>
+            )}
+            {contact.currentStepStatus === "paused" && (
+              <MenuItem>
+                <button
+                  className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                  // onClick={() => handlePause(contact.)}
+                >
+                  Resume sequence now
+                </button>
+              </MenuItem>
+            )}
             <MenuItem>
               <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                Edit
+                Mark as finished
               </button>
             </MenuItem>
             <MenuItem>
               <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                Delete
+                Remove from cadence
               </button>
             </MenuItem>
           </MenuItems>

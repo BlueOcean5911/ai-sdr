@@ -1,7 +1,7 @@
 import { api } from "@/utils/api";
 import { ApiSuccessResponse, CountModel, FetchProps } from "@/types";
 import { CADENCE_STEP_TYPE, COMPANY_SIZE, EMAIL_STATUS } from "@/types/enums";
-import { boolean } from "yup";
+import { boolean, number } from "yup";
 import { TemplateModel } from "./templatesService";
 
 interface FetchCadenceStepsProps extends FetchProps {}
@@ -113,6 +113,16 @@ export const addCadenceStep = async (
   }
 
   return response;
+};
+
+export const moveCadenceStep = async ({
+  id,
+  value,
+}: {
+  id: string;
+  value: number;
+}): Promise<ApiSuccessResponse> => {
+  return await api.put(`/api/cadence-steps/${id}/move?value=${value}`);
 };
 
 export const updateCadenceStep = async ({

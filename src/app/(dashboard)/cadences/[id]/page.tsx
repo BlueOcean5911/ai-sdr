@@ -25,6 +25,7 @@ import {
   CadenceStepModel,
   deleteCadenceStep,
   getCadenceStepsByCadenceId,
+  moveCadenceStep,
   updateCadenceStep,
 } from "@/services/cadenceStepService";
 import {
@@ -195,27 +196,24 @@ export default function Page({ params }: { params: { id: string } }) {
       { data: data },
       updateCadenceStep,
       (res: SuccessModel) => {
-        console.log("success!!!s");
         if (res.success) {
-          console.log("success!!!s");
-          setCadenceSteps(
-            cadenceSteps.map((cadenceStep) => {
-              if (cadenceStep.id === data.id) {
-                cadenceStep.name = data.name;
-                cadenceStep.interval = data.interval;
-                cadenceStep.stepType = data.stepType;
-              }
-              return cadenceStep;
-            })
-          );
-
-          cadenceSteps.map((cadenceStep) => {
-            if (cadenceStep.id === data?.id) {
-              cadenceStep.name = data.name;
-            }
-          });
+          fetchCadenceStepsByCadenceId();
           toast.success("Successfully updated");
         }
+      },
+      (statusCode, error) => {
+        handleError(statusCode, error);
+      }
+    );
+  };
+
+  const handleCadenceStepMove = (id: string, value: number) => {
+    runService(
+      { id, value },
+      moveCadenceStep,
+      (data) => {
+        fetchCadenceStepsByCadenceId();
+        toast.success("Successfully moved");
       },
       (statusCode, error) => {
         handleError(statusCode, error);
@@ -360,14 +358,24 @@ export default function Page({ params }: { params: { id: string } }) {
                   cadenceId={id}
                   order={cadence?.stepsCount ? cadence?.stepsCount + 1 : 1}
                   handleCreateStep={async (data: BaseCadenceStepModel) => {
-                    await addCadenceStep(data);
-                    fetchCadenceStepsByCadenceId();
+                    runService(
+                      data,
+                      addCadenceStep,
+                      (data) => {
+                        fetchCadenceStepsByCadenceId();
+                        toast.success("Successfully added!");
+                      },
+                      (statusCode, error) => {
+                        handleError(statusCode, error);
+                      }
+                    );
                   }}
                 />
               </div>
               {cadenceSteps?.map((cadenceStep: CadenceStepModel, id) => (
                 <CadenceStep
                   order={id + 1}
+                  total={cadenceSteps.length}
                   handleTemplateOpen={handleTemplateOpen}
                   cadenceStep={cadenceStep}
                   handleDelete={(id: string) => {
@@ -375,6 +383,9 @@ export default function Page({ params }: { params: { id: string } }) {
                   }}
                   handleUpdate={(data: CadenceStepModel) => {
                     handleUpdateCadenceStep(data);
+                  }}
+                  handleMove={(id: string, value: number) => {
+                    handleCadenceStepMove(id, value);
                   }}
                 />
               ))}

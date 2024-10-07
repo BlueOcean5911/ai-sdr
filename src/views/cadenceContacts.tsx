@@ -60,6 +60,7 @@ export default function CadenceContacts(
       getContactsInCadenceStatistics,
       (data) => {
         setStatisticData(data);
+        setTotalCount(data.totalCount);
       },
       (status, error) => {
         handleError(status, error);
@@ -95,7 +96,8 @@ export default function CadenceContacts(
         <div className="flex justify-end">
           <Pagination
             className="pagination-bar"
-            totalCount={0}
+            totalCount={totalCount}
+            pageSize={pageSize}
             onPageChange={(pageSize: number, currentPage: number) => {
               setPageSize(pageSize);
               setCurrentPage(currentPage);
