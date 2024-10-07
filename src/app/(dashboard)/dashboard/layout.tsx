@@ -247,7 +247,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="p-5 flex flex-1 flex-col gap-3 rounded-lg bg-white shadow-md">
           <span className="text-lg font-semibold">Workspace</span>
           <div className="w-full flex items-center gap-6 border-b">
-            <Link
+            {/* <Link
               href="/dashboard/emails"
               className={classNames(
                 "text-sm hover:bg-gray-100",
@@ -267,7 +267,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <EnvelopeIcon className="w-3.5 h-3.5" />
                 Recent Replies
               </span>
-            </Link>
+            </Link> */}
             <Link
               href="/dashboard/tasks"
               className={classNames(

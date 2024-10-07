@@ -75,8 +75,8 @@ export default function Emails(
   }, []);
 
   useEffect(() => {
-    fetchMailingTotalCount(currentParams);
-    fetchMailings(currentParams);
+    fetchMailingTotalCount(emailFilterConfig.params);
+    fetchMailings(emailFilterConfig.params);
   }, [emailFilterConfig, currentPage, pageSize]);
 
   return (

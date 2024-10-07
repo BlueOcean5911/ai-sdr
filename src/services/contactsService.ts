@@ -73,7 +73,7 @@ export const getContactsInCadenceStatistics = async ({
 }: {
   cadenceId: string;
 }): Promise<ApiContactInCadenceStatisticsResponse> => {
-  const url = `api/cadences/${cadenceId}/contacts/statistics`;
+  const url = `api/contacts/statistics?cadenceId=${cadenceId}`;
   const response = await api.get(url);
   return {
     data: {

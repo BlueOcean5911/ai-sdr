@@ -345,12 +345,12 @@ export default function Page({ params }: { params: { id: string } }) {
                 <span className="w-full border-b-2"></span>
               </span>
             </Link>
-            <Link href={`/cadences/${cadence?.id}/settings`}>
+            {/* <Link href={`/cadences/${cadence?.id}/settings`}>
               <span className="flex flex-col rounded-md text-sm hover:bg-gray-100">
                 <span className="p-1.5 cursor-pointer">Settings</span>
                 <span className="w-full border-b-2"></span>
               </span>
-            </Link>
+            </Link> */}
           </div>
           <div className="flex flex-1 flex-col bg-gray-100 overflow-auto">
             <div className="w-full p-4 flex flex-col gap-4">

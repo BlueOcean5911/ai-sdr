@@ -73,7 +73,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 }
               />
             </div>
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <label className="min-w-24" htmlFor="amount">
                 Amount:
               </label>
@@ -89,12 +89,12 @@ export default function Page({ params }: { params: { id: string } }) {
                   }))
                 }
               />
-            </div>
-            <div className="flex items-center">
-              <label className="min-w-24" htmlFor="desctiption">
+            </div> */}
+            <div className="flex">
+              <label className="min-w-24 py-2" htmlFor="desctiption">
                 Description:
               </label>
-              <input
+              <textarea
                 id="desctiption"
                 type="text"
                 className="input-primary"
