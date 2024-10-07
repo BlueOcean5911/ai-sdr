@@ -44,10 +44,6 @@ export default function Leads() {
     }
   };
 
-  const handleSave = () => {
-    setCreate(false);
-  };
-
   const handleClose = () => {
     setCreate(false);
   };
@@ -57,7 +53,6 @@ export default function Leads() {
       {create && (
         <CreateLead
           open={create}
-          handleSave={handleSave}
           handleClose={handleClose}
         />
       )}

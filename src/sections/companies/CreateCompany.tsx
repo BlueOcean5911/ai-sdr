@@ -69,7 +69,6 @@ export default function CreateCompany({
                       yearFounded: company ? company.yearFounded : "",
                       domain: company ? company.domain : "",
                       annualRevenue: company ? company.annualRevenue : "",
-                      stage: company ? company.stage : "",
                       keywords: company ? company.keywords : "",
                     }}
                     validationSchema={Yup.object().shape({
@@ -98,7 +97,6 @@ export default function CreateCompany({
                       annualRevenue: Yup.string().required(
                         "Annual Revenue is required"
                       ),
-                      stage: Yup.string().required("Stage is required"),
                       // keywords: Yup.string().required("Keywords is required"),
                     })}
                     onSubmit={async (
@@ -124,7 +122,6 @@ export default function CreateCompany({
                         yearFounded: values.yearFounded,
                         domain: values.domain,
                         annualRevenue: values.annualRevenue,
-                        stage: values.stage,
                         keywords: values.keywords,
                         size: values.size.value,
                         targeted: false,
@@ -270,13 +267,12 @@ export default function CreateCompany({
 
                           <div className="flex flex-col">
                             <label htmlFor="description">Description</label>
-                            <input
+                            <textarea
                               id="description"
-                              type="text"
-                              placeholder=""
                               className="input-primary"
                               value={values.description}
                               onChange={handleChange}
+                              onBlur={handleBlur}
                             />
                           </div>
 
@@ -330,161 +326,152 @@ export default function CreateCompany({
                               <FormHelperText>{errors.linkedin}</FormHelperText>
                             )}
                           </div>
+                          <div className="flex flex-row gap-2">
+                            <div className="flex flex-col">
+                              <label htmlFor="streetAddress">
+                                Street Address
+                              </label>
+                              <input
+                                id="streetAddress"
+                                type="text"
+                                placeholder="Street Address"
+                                className="input-primary"
+                                value={values.streetAddress}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.streetAddress &&
+                                errors.streetAddress && (
+                                  <FormHelperText>
+                                    {errors.streetAddress}
+                                  </FormHelperText>
+                                )}
+                            </div>
 
-                          <div className="flex flex-col">
-                            <label htmlFor="streetAddress">
-                              Street Address
-                            </label>
-                            <input
-                              id="streetAddress"
-                              type="text"
-                              placeholder="Street Address"
-                              className="input-primary"
-                              value={values.streetAddress}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {touched.streetAddress && errors.streetAddress && (
-                              <FormHelperText>
-                                {errors.streetAddress}
-                              </FormHelperText>
-                            )}
+                            <div className="flex flex-col">
+                              <label htmlFor="city">City</label>
+                              <input
+                                id="city"
+                                type="text"
+                                placeholder="City"
+                                className="input-primary"
+                                value={values.city}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.city && errors.city && (
+                                <FormHelperText>{errors.city}</FormHelperText>
+                              )}
+                            </div>
+
+                            <div className="flex flex-col">
+                              <label htmlFor="state">State</label>
+                              <input
+                                id="state"
+                                type="text"
+                                placeholder="State"
+                                className="input-primary"
+                                value={values.state}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.state && errors.state && (
+                                <FormHelperText>{errors.state}</FormHelperText>
+                              )}
+                            </div>
+
+                            <div className="flex flex-col">
+                              <label htmlFor="country">Country</label>
+                              <input
+                                id="country"
+                                type="text"
+                                placeholder="Country"
+                                className="input-primary"
+                                value={values.country}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.country && errors.country && (
+                                <FormHelperText>
+                                  {errors.country}
+                                </FormHelperText>
+                              )}
+                            </div>
+
+                            <div className="flex flex-col">
+                              <label htmlFor="postalCode">Postal Code</label>
+                              <input
+                                id="postalCode"
+                                type="text"
+                                placeholder="Postal Code"
+                                className="input-primary"
+                                value={values.postalCode}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.postalCode && errors.postalCode && (
+                                <FormHelperText>
+                                  {errors.postalCode}
+                                </FormHelperText>
+                              )}
+                            </div>
                           </div>
 
-                          <div className="flex flex-col">
-                            <label htmlFor="city">City</label>
-                            <input
-                              id="city"
-                              type="text"
-                              placeholder="City"
-                              className="input-primary"
-                              value={values.city}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {touched.city && errors.city && (
-                              <FormHelperText>{errors.city}</FormHelperText>
-                            )}
-                          </div>
+                          <div className="flex flex-row gap-2">
+                            <div className="w-full flex flex-col">
+                              <label htmlFor="yearFounded">Year Founded</label>
+                              <input
+                                id="yearFounded"
+                                type="text"
+                                placeholder="Year Founded"
+                                className="input-primary"
+                                value={values.yearFounded}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.yearFounded && errors.yearFounded && (
+                                <FormHelperText>
+                                  {errors.yearFounded}
+                                </FormHelperText>
+                              )}
+                            </div>
 
-                          <div className="flex flex-col">
-                            <label htmlFor="state">State</label>
-                            <input
-                              id="state"
-                              type="text"
-                              placeholder="State"
-                              className="input-primary"
-                              value={values.state}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {touched.state && errors.state && (
-                              <FormHelperText>{errors.state}</FormHelperText>
-                            )}
-                          </div>
+                            <div className="w-full flex flex-col">
+                              <label htmlFor="domain">Domain</label>
+                              <input
+                                id="domain"
+                                type="text"
+                                placeholder="Domain"
+                                className="input-primary"
+                                value={values.domain}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.domain && errors.domain && (
+                                <FormHelperText>{errors.domain}</FormHelperText>
+                              )}
+                            </div>
 
-                          <div className="flex flex-col">
-                            <label htmlFor="country">Country</label>
-                            <input
-                              id="country"
-                              type="text"
-                              placeholder="Country"
-                              className="input-primary"
-                              value={values.country}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {touched.country && errors.country && (
-                              <FormHelperText>{errors.country}</FormHelperText>
-                            )}
-                          </div>
-
-                          <div className="flex flex-col">
-                            <label htmlFor="postalCode">Postal Code</label>
-                            <input
-                              id="postalCode"
-                              type="text"
-                              placeholder="Postal Code"
-                              className="input-primary"
-                              value={values.postalCode}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {touched.postalCode && errors.postalCode && (
-                              <FormHelperText>
-                                {errors.postalCode}
-                              </FormHelperText>
-                            )}
-                          </div>
-
-                          <div className="flex flex-col">
-                            <label htmlFor="yearFounded">Year Founded</label>
-                            <input
-                              id="yearFounded"
-                              type="text"
-                              placeholder="Year Founded"
-                              className="input-primary"
-                              value={values.yearFounded}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {touched.yearFounded && errors.yearFounded && (
-                              <FormHelperText>
-                                {errors.yearFounded}
-                              </FormHelperText>
-                            )}
-                          </div>
-
-                          <div className="flex flex-col">
-                            <label htmlFor="domain">Domain</label>
-                            <input
-                              id="domain"
-                              type="text"
-                              placeholder="Domain"
-                              className="input-primary"
-                              value={values.domain}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {touched.domain && errors.domain && (
-                              <FormHelperText>{errors.domain}</FormHelperText>
-                            )}
-                          </div>
-
-                          <div className="flex flex-col">
-                            <label htmlFor="annualRevenue">
-                              Annual Revenue
-                            </label>
-                            <input
-                              id="annualRevenue"
-                              type="text"
-                              placeholder="Year Founded"
-                              className="input-primary"
-                              value={values.annualRevenue}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {touched.annualRevenue && errors.annualRevenue && (
-                              <FormHelperText>
-                                {errors.yearFounded}
-                              </FormHelperText>
-                            )}
-                          </div>
-
-                          <div className="flex flex-col">
-                            <label htmlFor="stage">Stage</label>
-                            <input
-                              id="stage"
-                              type="text"
-                              placeholder="Stage"
-                              className="input-primary"
-                              value={values.stage}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {touched.stage && errors.stage && (
-                              <FormHelperText>{errors.stage}</FormHelperText>
-                            )}
+                            <div className="w-full flex flex-col">
+                              <label htmlFor="annualRevenue">
+                                Annual Revenue
+                              </label>
+                              <input
+                                id="annualRevenue"
+                                type="text"
+                                placeholder="Year Founded"
+                                className="input-primary"
+                                value={values.annualRevenue}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.annualRevenue &&
+                                errors.annualRevenue && (
+                                  <FormHelperText>
+                                    {errors.yearFounded}
+                                  </FormHelperText>
+                                )}
+                            </div>
                           </div>
 
                           <div className="flex flex-col">

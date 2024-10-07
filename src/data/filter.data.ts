@@ -63,3 +63,31 @@ export const statusOptions = [
   { value: EMAIL_STATUS.INVALID, label: "Invalid" },
   { value: EMAIL_STATUS.NO_STATUS, label: "No Status" },
 ];
+
+export const leadStageOptions = [
+  { value: "Cold", label: "Cold" },
+  { value: "Approaching", label: "Approaching" },
+  { value: "Replied", label: "Replied" },
+  { value: "Interested", label: "Interested" },
+  { value: "Not Interested", label: "Not Interested" },
+  { value: "Unresponsive", label: "Unresponsive" },
+  { value: "Do Not Contactx", label: "Do Not Contactx" },
+  { value: "Bad Data", label: "Bad Data" },
+  { value: "Changed Job", label: "Changed Job" },
+  { value: "Open", label: "Open" },
+  { value: "Open Deal", label: "Open Deal" },
+  { value: "Unqualified", label: "Unqualified" },
+];
+
+export const companyStageOptions = [
+  { value: "Cold", label: "Cold" },
+  { value: "Current Client", label: "Current Client" },
+  { value: "Active Oppertunity", label: "Active Oppertunity" },
+  { value: "Dead Oppertunity", label: "Dead Oppertunity" },
+  { value: "Do Not Prospect", label: "Do Not Prospect" },
+  { value: "Subscriber", label: "Subscriber" },
+  { value: "Marketing Qualified Lead", label: "Marketing Qualified Lead" },
+  { value: "Sales Qualified Lead", label: "Sales Qualified Lead" },
+  { value: "Evangelist", label: "Evangelist" },
+  { value: "Other", label: "Other" },
+];

@@ -219,12 +219,6 @@ const CompanyTable = () => {
                 >
                   Locaiton
                 </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Stage
-                </th>
               </tr>
             </thead>
             <tbody className="bg-white">
@@ -277,7 +271,7 @@ const CompanyTable = () => {
                       </MenuButton>
                       <MenuItems
                         anchor="bottom end"
-                        className="flex flex-col w-32 origin-top-right bg-white rounded-md shadow-md border-2 border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
+                        className="flex flex-col w-16 origin-top-right bg-white rounded-md shadow-md border-2 border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
                       >
                         <MenuItem>
                           <button
@@ -309,9 +303,6 @@ const CompanyTable = () => {
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {company.city} {company.state}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {company.stage}
                   </td>
                 </tr>
               ))}
