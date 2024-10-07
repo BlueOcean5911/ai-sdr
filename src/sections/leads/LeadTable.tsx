@@ -179,7 +179,7 @@ const LeadTable = () => {
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
-                  Title
+                  Action
                 </th>
                 <th
                   scope="col"
@@ -191,7 +191,7 @@ const LeadTable = () => {
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
-                  Action
+                  Title
                 </th>
                 <th
                   scope="col"
@@ -265,17 +265,6 @@ const LeadTable = () => {
                   {/* <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {lead.name}
                   </td> */}
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {lead.title}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    <a
-                      className="hover:underline hover:text-blue-900"
-                      href={`companies/${lead.company?.id}`}
-                    >
-                      {lead.company?.name}
-                    </a>
-                  </td>
                   <td className="whitespace-nowrap text-sm text-gray-500">
                     <Menu>
                       <MenuButton className="">
@@ -305,6 +294,17 @@ const LeadTable = () => {
                         </MenuItem>
                       </MenuItems>
                     </Menu>
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    {lead.title}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <a
+                      className="hover:underline hover:text-blue-900"
+                      href={`companies/${lead.company?.id}`}
+                    >
+                      {lead.company?.name}
+                    </a>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {lead.company?.city}, {lead.company?.state}
