@@ -10,7 +10,12 @@ import {
 import React, { Fragment, useState, useEffect, useMemo } from "react";
 import { handleError, runService } from "@/utils/service_utils";
 import { getUsers, UserModel } from "@/services/userService";
-import { addLead, BaseLeadModel, LeadModel } from "@/services/leadService";
+import {
+  addLead,
+  BaseLeadModel,
+  LeadModel,
+  updateLead,
+} from "@/services/leadService";
 import Select from "react-tailwindcss-select";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -21,7 +26,7 @@ import { useLeadFilter } from "@/contexts/FilterLeadContext";
 
 export default function CreateLead({
   open,
-  handleSave,
+  lead = undefined,
   handleClose,
 }: CreateLeadProps) {
   const [users, setUsers] = useState<UserModel[]>();
@@ -75,23 +80,33 @@ export default function CreateLead({
                     as="h3"
                     className="px-6 py-3 text-lg font-semibold leading-6 bg-white text-gray-900 rounded-md"
                   >
-                    Create New Lead
+                    {lead ? "Edit Lead" : "Create New Lead"}
                   </DialogTitle>
                   <Formik
                     initialValues={{
-                      firstName: "",
-                      lastName: "",
-                      email: "",
+                      firstName: lead ? lead.firstName : "",
+                      lastName: lead ? lead.lastName : "",
+                      email: lead ? lead.email : "",
                       emailStatus: statusOptions[3],
-                      phone: "",
-                      phoneStatus: statusOptions[3],
-                      jobTitle: "",
-                      company: "",
-                      linkedin: "",
-                      location: "",
-                      note1: "",
-                      note2: "",
-                      leadOwner: "",
+                      workEmail: lead ? lead.workEmail : "",
+                      workEmailStatus: statusOptions[3],
+                      primaryPhone: lead ? lead.primaryPhone : "",
+                      primaryPhoneStatus: statusOptions[3],
+                      mobilePhone: lead ? lead.mobilePhone : "",
+                      mobilePhoneStatus: statusOptions[3],
+                      workPhone: lead ? lead.workPhone : "",
+                      workPhoneStatus: statusOptions[3],
+                      title: lead ? lead.title : "",
+                      companyId: lead ? lead.companyId : "",
+                      linkedin: lead ? lead.linkedin : "",
+                      city: lead ? lead.city : "",
+                      state: lead ? lead.state : "",
+                      country: lead ? lead.country : "",
+                      timeZone: lead ? lead.timeZone : "",
+                      annualRevenue: lead ? lead.annualRevenue : "",
+                      personalNote1: lead ? lead.personalNote1 : "",
+                      personalNote2: lead ? lead.personalNote2 : "",
+                      ownerId: lead ? lead.ownerId : "",
                     }}
                     validationSchema={Yup.object().shape({
                       firstName: Yup.string().required(
@@ -101,16 +116,32 @@ export default function CreateLead({
                       email: Yup.string()
                         .required("Email is required")
                         .email("Invalid Email"),
+                      workEmail: Yup.string()
+                        .required("Work Email is required")
+                        .email("Invalid Email"),
                       // emailStatus: Yup.string().required("Status is required"),
-                      phone: Yup.string().required("Phone is required"),
+                      primaryPhone: Yup.string().required(
+                        "Primary Phone is required"
+                      ),
+                      mobilePhone: Yup.string().required(
+                        "Mobile Phone is required"
+                      ),
+                      workPhone: Yup.string().required(
+                        "Work Phone is required"
+                      ),
                       // phoneStatus: Yup.string().required("Status is required"),
-                      jobTitle: Yup.string().required("Job Title is required"),
-                      company: Yup.string().required("Company is required"),
+                      title: Yup.string().required("Job Title is required"),
+                      companyId: Yup.string().required("Company is required"),
                       linkedin: Yup.string()
                         .required("LinkedIn is required")
                         .url("Invalid URL"),
-                      location: Yup.string().required("Location is required"),
-                      // leadOwner: Yup.string().required(
+                      city: Yup.string().required("City is required"),
+                      state: Yup.string().required("State is required"),
+                      country: Yup.string().required("Country is required"),
+                      annualRevenue: Yup.string().required(
+                        "Annual Revenue is required"
+                      ),
+                      // ownerId: Yup.string().required(
                       //   "Lead Owner is required"
                       // ),
                     })}
@@ -118,50 +149,71 @@ export default function CreateLead({
                       values,
                       { setErrors, setStatus, setSubmitting }
                     ) => {
-                      const phoneStatus = values.phoneStatus.value;
+                      const primaryPhoneStatus =
+                        values.primaryPhoneStatus.value;
                       const emailStatus = values.emailStatus.value;
 
-                      let lead: BaseLeadModel = {
+                      let leadData: BaseLeadModel = {
                         firstName: values.firstName,
                         lastName: values.lastName,
-                        title: values.jobTitle,
+                        title: values.title,
                         email: values.email,
                         emailStatus: emailStatus,
-                        phone: values.phone,
-                        // phoneStatus: values.phoneStatus.value,
-                        phoneStatus: phoneStatus,
+                        primaryPhone: values.primaryPhone,
+                        primaryPhoneStatus: primaryPhoneStatus,
                         linkedin: values.linkedin,
-                        location: values.location,
-                        personalNote1: values.note1,
-                        personalNote2: values.note2,
+                        city: values.city,
+                        state: values.state,
+                        country: values.country,
+                        timeZone: values.timeZone,
+                        annualRevenue: values.annualRevenue,
+                        personalNote1: values.personalNote1,
+                        personalNote2: values.personalNote2,
 
                         clickCount: 0,
                         replyCount: 0,
 
                         targeted: false,
                         // personaId: undefined,
-                        // companyId: values.company,
-                        // ownerId: values.leadOwner,
+                        // companyId: values.companyId,
+                        // ownerId: values.ownerId,
                         personaId: undefined,
                         companyId: undefined,
-                        ownerId: values.leadOwner,
+                        ownerId: values.ownerId,
                       };
-                      runService(
-                        lead,
-                        addLead,
-                        (data) => {
-                          setLeadFilterConfig((prev) => ({
-                            ...prev,
-                            createdLeadId: data.id,
-                          }));
-                          toast.success("Lead created successfully");
-                          handleClose();
-                        },
-                        (status, error) => {
-                          console.log(status, error);
-                          toast.error(error);
-                        }
-                      );
+                      lead
+                        ? runService(
+                            { id: lead.id, updateData: leadData },
+                            updateLead,
+                            (data) => {
+                              setLeadFilterConfig((prev) => ({
+                                ...prev,
+                                createdLeadId: data.id,
+                              }));
+                              toast.success("Lead updated successfully");
+                              handleClose();
+                            },
+                            (status, error) => {
+                              console.log(status, error);
+                              toast.error(error);
+                            }
+                          )
+                        : runService(
+                            leadData,
+                            addLead,
+                            (data) => {
+                              setLeadFilterConfig((prev) => ({
+                                ...prev,
+                                createdLeadId: data.id,
+                              }));
+                              toast.success("Lead created successfully");
+                              handleClose();
+                            },
+                            (status, error) => {
+                              console.log(status, error);
+                              toast.error(error);
+                            }
+                          );
                     }}
                   >
                     {({
@@ -270,29 +322,140 @@ export default function CreateLead({
                           </div>
 
                           <div className="flex flex-col">
-                            <label htmlFor="phone">Phone</label>
+                            <label htmlFor="primaryPhone">Primary Phone</label>
                             <div className="flex gap-4">
                               <div className="w-full flex flex-col">
                                 <input
-                                  id="phone"
+                                  id="primaryPhone"
                                   type="text"
-                                  placeholder="Phone Number"
+                                  placeholder="Primary Phone Number"
                                   className="input-primary max-h-9"
-                                  value={values.phone}
+                                  value={values.primaryPhone}
                                   onChange={handleChange}
                                   onBlur={handleBlur}
                                 />
-                                {touched.phone && errors.phone && (
+                                {touched.primaryPhone &&
+                                  errors.primaryPhone && (
+                                    <FormHelperText>
+                                      {errors.primaryPhone}
+                                    </FormHelperText>
+                                  )}
+                              </div>
+                              <div className="w-full flex flex-col">
+                                <Select
+                                  value={values.primaryPhoneStatus}
+                                  onChange={(item: any) => {
+                                    setFieldValue("primaryPhoneStatus", item);
+                                  }}
+                                  options={statusOptions}
+                                  primaryColor={"indigo"}
+                                  classNames={{
+                                    menuButton: (value) => {
+                                      const isDisabled = value?.isDisabled;
+                                      return `flex text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
+                                        isDisabled
+                                          ? "bg-gray-200"
+                                          : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
+                                      }`;
+                                    },
+                                    menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-gray-700",
+                                    listItem: (value) => {
+                                      const isSelected = value?.isSelected;
+                                      return `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${
+                                        isSelected
+                                          ? `text-white bg-blue-500`
+                                          : `text-gray-500 hover:bg-blue-100 hover:text-blue-500`
+                                      }`;
+                                    },
+                                    searchBox:
+                                      "w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none",
+                                    searchIcon:
+                                      "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
+                                  }}
+                                ></Select>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col">
+                            <label htmlFor="workPhone">Mobile Phone</label>
+                            <div className="flex gap-4">
+                              <div className="w-full flex flex-col">
+                                <input
+                                  id="workPhone"
+                                  type="text"
+                                  placeholder="Mobile Phone Number"
+                                  className="input-primary max-h-9"
+                                  value={values.workPhone}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                />
+                                {touched.workPhone && errors.workPhone && (
                                   <FormHelperText>
-                                    {errors.phone}
+                                    {errors.workPhone}
                                   </FormHelperText>
                                 )}
                               </div>
                               <div className="w-full flex flex-col">
                                 <Select
-                                  value={values.phoneStatus}
+                                  value={values.workPhoneStatus}
                                   onChange={(item: any) => {
-                                    setFieldValue("phoneStatus", item);
+                                    setFieldValue("workPhoneStatus", item);
+                                  }}
+                                  options={statusOptions}
+                                  primaryColor={"indigo"}
+                                  classNames={{
+                                    menuButton: (value) => {
+                                      const isDisabled = value?.isDisabled;
+                                      return `flex text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
+                                        isDisabled
+                                          ? "bg-gray-200"
+                                          : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
+                                      }`;
+                                    },
+                                    menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-gray-700",
+                                    listItem: (value) => {
+                                      const isSelected = value?.isSelected;
+                                      return `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${
+                                        isSelected
+                                          ? `text-white bg-blue-500`
+                                          : `text-gray-500 hover:bg-blue-100 hover:text-blue-500`
+                                      }`;
+                                    },
+                                    searchBox:
+                                      "w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none",
+                                    searchIcon:
+                                      "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
+                                  }}
+                                ></Select>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col">
+                            <label htmlFor="mobilePhone">Work Phone</label>
+                            <div className="flex gap-4">
+                              <div className="w-full flex flex-col">
+                                <input
+                                  id="mobilePhone"
+                                  type="text"
+                                  placeholder="Work Phone Number"
+                                  className="input-primary max-h-9"
+                                  value={values.mobilePhone}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                />
+                                {touched.mobilePhone && errors.mobilePhone && (
+                                  <FormHelperText>
+                                    {errors.mobilePhone}
+                                  </FormHelperText>
+                                )}
+                              </div>
+                              <div className="w-full flex flex-col">
+                                <Select
+                                  value={values.mobilePhoneStatus}
+                                  onChange={(item: any) => {
+                                    setFieldValue("mobilePhoneStatus", item);
                                   }}
                                   options={statusOptions}
                                   primaryColor={"indigo"}
@@ -341,89 +504,150 @@ export default function CreateLead({
                           </div>
 
                           <div className="flex flex-col">
-                            <label htmlFor="company">Company</label>
+                            <label htmlFor="companyId">Company</label>
                             <input
-                              id="company"
+                              id="companyId"
                               type="text"
                               placeholder="Company Name"
                               className="input-primary max-h-9"
-                              value={values.company}
+                              value={values.companyId}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
-                            {touched.company && errors.company && (
-                              <FormHelperText>{errors.company}</FormHelperText>
+                            {touched.companyId && errors.companyId && (
+                              <FormHelperText>
+                                {errors.companyId}
+                              </FormHelperText>
                             )}
                           </div>
 
                           <div className="flex flex-col">
-                            <label htmlFor="jobTitle">Job Title</label>
+                            <label htmlFor="title">Job Title</label>
                             <input
-                              id="jobTitle"
+                              id="title"
                               type="text"
                               placeholder='"Director of Sales", "VP of Marketing", etc.'
                               className="input-primary max-h-9"
-                              value={values.jobTitle}
+                              value={values.title}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
-                            {touched.jobTitle && errors.jobTitle && (
-                              <FormHelperText>{errors.jobTitle}</FormHelperText>
+                            {touched.title && errors.title && (
+                              <FormHelperText>{errors.title}</FormHelperText>
                             )}
                           </div>
 
-                          <div className="flex flex-col">
-                            <label htmlFor="location">Location</label>
-                            <input
-                              id="location"
-                              type="text"
-                              placeholder="Location / Country"
-                              className="input-primary max-h-9"
-                              value={values.location}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {touched.location && errors.location && (
-                              <FormHelperText>{errors.location}</FormHelperText>
-                            )}
+                          <div className="flex flex-row gap-2">
+                            <div className="flex flex-col">
+                              <label htmlFor="city">City</label>
+                              <input
+                                id="city"
+                                type="text"
+                                placeholder="City"
+                                className="input-primary max-h-9"
+                                value={values.city}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.city && errors.city && (
+                                <FormHelperText>{errors.city}</FormHelperText>
+                              )}
+                            </div>
+
+                            <div className="flex flex-col">
+                              <label htmlFor="state">State</label>
+                              <input
+                                id="state"
+                                type="text"
+                                placeholder="State"
+                                className="input-primary max-h-9"
+                                value={values.state}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.state && errors.state && (
+                                <FormHelperText>{errors.state}</FormHelperText>
+                              )}
+                            </div>
+
+                            <div className="flex flex-col">
+                              <label htmlFor="country">Country</label>
+                              <input
+                                id="country"
+                                type="text"
+                                placeholder="Country"
+                                className="input-primary max-h-9"
+                                value={values.country}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.country && errors.country && (
+                                <FormHelperText>
+                                  {errors.country}
+                                </FormHelperText>
+                              )}
+                            </div>
+
+                            <div className="flex flex-col">
+                              <label htmlFor="annualRevenue">
+                                Annual Revenue
+                              </label>
+                              <input
+                                id="annualRevenue"
+                                type="text"
+                                placeholder="Annual Revenue"
+                                className="input-primary max-h-9"
+                                value={values.annualRevenue}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.annualRevenue &&
+                                errors.annualRevenue && (
+                                  <FormHelperText>
+                                    {errors.annualRevenue}
+                                  </FormHelperText>
+                                )}
+                            </div>
                           </div>
 
                           <div className="flex flex-col">
-                            <label htmlFor="note1">Personal Note1</label>
+                            <label htmlFor="personalNote1">
+                              Personal Note1
+                            </label>
                             <textarea
-                              id="note1"
+                              id="personalNote1"
                               className="input-primary"
-                              value={values.note1}
+                              value={values.personalNote1}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
                           </div>
 
                           <div className="flex flex-col">
-                            <label htmlFor="note2">Personal Note2</label>
+                            <label htmlFor="personalNote2">
+                              Personal Note2
+                            </label>
                             <textarea
-                              id="note2"
+                              id="personalNote2"
                               className="input-primary"
-                              value={values.note2}
+                              value={values.personalNote2}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
                           </div>
 
                           <div className="flex flex-col">
-                            <label htmlFor="leadOwner">Lead Owner</label>
+                            <label htmlFor="ownerId">Lead Owner</label>
                             <RSelect
                               data={userOptions}
                               onChange={(item) => {
-                                if (values.leadOwner !== item?.value) {
-                                  setFieldValue("leadOwner", item?.value);
+                                if (values.ownerId !== item?.value) {
+                                  setFieldValue("ownerId", item?.value);
                                 }
                               }}
                             ></RSelect>
-                            {touched.leadOwner && errors.leadOwner && (
-                              <FormHelperText>
-                                {errors.leadOwner}
-                              </FormHelperText>
+                            {touched.ownerId && errors.ownerId && (
+                              <FormHelperText>{errors.ownerId}</FormHelperText>
                             )}
                           </div>
 
@@ -433,7 +657,7 @@ export default function CreateLead({
                               disabled={isSubmitting}
                               className="px-2 py-1 rounded-md text-white bg-blue-500 hover:bg-blue-400"
                             >
-                              Save Lead
+                              {lead ? "Update Lead" : "Create Lead"}
                             </button>
                             <button
                               className="px-2 py-1 rounded-md bg-gray-300 hover:bg-gray-200"

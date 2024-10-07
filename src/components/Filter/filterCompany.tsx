@@ -84,7 +84,7 @@ export default function FilterCompany() {
         </FilterItem> */}
         <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
-          title="Industry & Keywords"
+          title="Industry"
         >
           <input
             type="text"
