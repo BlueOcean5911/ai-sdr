@@ -4,7 +4,7 @@ const nextConfig = {
         return [
             {
                 source: '/dashboard',
-                destination: '/dashboard/emails',
+                destination: '/dashboard/tasks',
                 permanent: true, // Set to true for a permanent redirect (HTTP 308)
             },
         ];

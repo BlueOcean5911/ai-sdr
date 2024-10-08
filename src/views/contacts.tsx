@@ -13,6 +13,8 @@ import {
   getContactsInCadenceStatistics,
 } from "@/services/contactsService";
 import { useEffect, useState } from "react";
+import { SuccessModel } from "@/types";
+import { toast } from "react-toastify";
 
 export default function Contacts({ cadenceId }: { cadenceId: string }) {
   const { contactFilterConfig, setContactFilterConfig } = useContactFilter();
@@ -69,7 +71,14 @@ export default function Contacts({ cadenceId }: { cadenceId: string }) {
           <div className="w-full h-full border rounded-md overflow-auto">
             {contactsInCadence.length > 0 ? (
               contactsInCadence.map((contact, index) => (
-                <ContactItem key={index} contact={contact} />
+                // <ContactItem
+                //   key={index}
+                //   contact={contact}
+                //   handlePause={(cadenceStepId: string) =>
+                //     handlePauseCadenceStep(cadenceStepId)
+                //   }
+                // />
+                <></>
               ))
             ) : (
               <p className="text-gray-500 text-sm">No contacts found.</p>

@@ -13,7 +13,6 @@ const stageDict: Record<string, string> = {
   doNotContactCount: "Do Not Contact",
   badDataCount: "Bad Data",
   changedJobCount: "Changed Job",
-  openCount: "Open",
   // openDealCount: "Open Deal",
 };
 

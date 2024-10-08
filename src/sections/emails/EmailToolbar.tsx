@@ -61,7 +61,7 @@ const EmailToolbar = () => {
           <span>Show Filters</span>
         )}
       </button>
-      <div className="flex flex-1 gap-2 overflow-auto">
+      <div className="flex flex-1 gap-2">
         <Link href={`${path}`}>
           <div
             className={classNames(
@@ -193,6 +193,63 @@ const EmailToolbar = () => {
           >
             <span className="text-inherit">{statistics.notSentCount}</span>
             <span className="text-inherit">Not Sent</span>
+          </div>
+        </Link>
+        <Link href={`${path}?opened=true`}>
+          <div
+            className={classNames(
+              "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
+              currentParams["opened"]
+                ? "border-b-blue-500  bg-gray-100"
+                : "hover:bg-gray-100 hover:border-b-blue-500"
+            )}
+            onClick={() =>
+              setEmailFilterConfig((prev) => ({
+                ...prev,
+                params: { opened: "true" },
+              }))
+            }
+          >
+            <span className="text-inherit">{statistics.openedCount}</span>
+            <span className="text-inherit">Opened</span>
+          </div>
+        </Link>
+        <Link href={`${path}?clicked=true`}>
+          <div
+            className={classNames(
+              "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
+              currentParams["clicked"]
+                ? "border-b-blue-500  bg-gray-100"
+                : "hover:bg-gray-100 hover:border-b-blue-500"
+            )}
+            onClick={() =>
+              setEmailFilterConfig((prev) => ({
+                ...prev,
+                params: { clicked: "true" },
+              }))
+            }
+          >
+            <span className="text-inherit">{statistics.clickedCount}</span>
+            <span className="text-inherit">Clicked</span>
+          </div>
+        </Link>
+        <Link href={`${path}?replied=true`}>
+          <div
+            className={classNames(
+              "w-28 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
+              currentParams["replied"]
+                ? "border-b-blue-500  bg-gray-100"
+                : "hover:bg-gray-100 hover:border-b-blue-500"
+            )}
+            onClick={() =>
+              setEmailFilterConfig((prev) => ({
+                ...prev,
+                params: { replied: "true" },
+              }))
+            }
+          >
+            <span className="text-inherit">{statistics.repliedCount}</span>
+            <span className="text-inherit">Replied</span>
           </div>
         </Link>
       </div>

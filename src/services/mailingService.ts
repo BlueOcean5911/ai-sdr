@@ -63,6 +63,9 @@ export interface MailingsStatistics {
   notSentCount?: number;
   bouncedCount?: number;
   notOpenedCount?: number;
+  openedCount?: number;
+  clickedCount?: number;
+  repliedCount?: number;
 }
 
 interface ApiMailingResponse {

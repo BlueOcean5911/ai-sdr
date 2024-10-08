@@ -96,7 +96,6 @@ export default function Page({ params }: { params: { id: string } }) {
               </label>
               <textarea
                 id="desctiption"
-                type="text"
                 className="input-primary"
                 value={campaign.description}
                 onChange={(e) =>

@@ -3,11 +3,16 @@ import { ContactItemProps } from "@/types";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { ContactInCadence } from "@/services/contactsService";
+import { classNames } from "@/utils";
 
 export default function ContactItem({
   contact,
+  handleUpdate,
+  onDelete,
 }: {
   contact: ContactInCadence;
+  handleUpdate: (id: string, status: string) => void;
+  onDelete: (id: string) => void;
 }) {
   return (
     <div className="w-full py-4 flex items-center border-b hover:bg-gray-100">
@@ -23,7 +28,20 @@ export default function ContactItem({
         </div>
 
         <div className="flex flex-1 items-center gap-2 text-xs text-nowrap">
-          <span className="p-1 text-white bg-blue-600 capitalize">
+          <span
+            className={classNames(
+              "p-1 capitalize",
+              contact.currentStepStatus === "paused"
+                ? "bg-gray-100 text-gray-900"
+                : "",
+              contact.currentStepStatus === "active"
+                ? "bg-blue-500 text-white"
+                : "",
+              contact.currentStepStatus === "finished"
+                ? "bg-green-500 text-white"
+                : ""
+            )}
+          >
             {contact.currentStepStatus}
           </span>
           <span className="p-1 text-white bg-gray-500">
@@ -63,7 +81,15 @@ export default function ContactItem({
           >
             {contact.currentStepStatus === "active" && (
               <MenuItem>
-                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                <button
+                  className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                  onClick={() => {
+                    const cadenceStepId = contact.cadenceStepId
+                      ? contact.cadenceStepId
+                      : "";
+                    handleUpdate(cadenceStepId, "paused");
+                  }}
+                >
                   Pause sequence now
                 </button>
               </MenuItem>
@@ -72,19 +98,52 @@ export default function ContactItem({
               <MenuItem>
                 <button
                   className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
-                  // onClick={() => handlePause(contact.)}
+                  onClick={() => {
+                    const cadenceStepId = contact.cadenceStepId
+                      ? contact.cadenceStepId
+                      : "";
+                    handleUpdate(cadenceStepId, "active");
+                  }}
                 >
                   Resume sequence now
                 </button>
               </MenuItem>
             )}
             <MenuItem>
-              <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                Mark as finished
+              <button
+                className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                onClick={() => {
+                  const cadenceStepId = contact.cadenceStepId
+                    ? contact.cadenceStepId
+                    : "";
+                  handleUpdate(cadenceStepId, "done");
+                }}
+              >
+                Mark as done
               </button>
             </MenuItem>
+            {contact.currentStepStatus !== "finished" && (
+              <MenuItem>
+                <button
+                  className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                  onClick={() => {
+                    const cadenceStepId = contact.cadenceStepId
+                      ? contact.cadenceStepId
+                      : "";
+                    handleUpdate(cadenceStepId, "finished");
+                  }}
+                >
+                  Mark as finished
+                </button>
+              </MenuItem>
+            )}
             <MenuItem>
-              <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+              <button
+                className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                onClick={() => {
+                  onDelete(contact.cadenceStepId);
+                }}
+              >
                 Remove from cadence
               </button>
             </MenuItem>
