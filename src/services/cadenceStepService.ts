@@ -38,14 +38,13 @@ export interface BaseCadenceStepModel {
   activeCount?: number;
   pausedCount?: number;
   notSentCount?: number;
-  bouncedCount?: number;
   finishedCount?: number;
 
+  bouncedCount?: number;
   scheduledCount?: number;
   deliveredCount?: number;
-  replyCount?: number;
-  interestedCount?: number;
-  optOutCount?: number;
+  openedCount?: number;
+  repliedCount?: number;
 
   cadenceId?: string;
   templateId?: string;
