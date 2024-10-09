@@ -125,23 +125,23 @@ export default function CadenceStep({
           </div>
           <div className="flex min-w-48 flex-wrap items-center">
             <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>{cadenceStep.statistics.scheduled}</span>
+              <span>{cadenceStep.scheduledCount}</span>
               <span className="text-nowrap">Scheduled</span>
             </div>
             <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>{cadenceStep.statistics.delivered}</span>
+              <span>{cadenceStep.deliveredCount}</span>
               <span className="text-nowrap">Delivered</span>
             </div>
             <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>{cadenceStep.statistics.opened}</span>
-              <span className="text-nowrap">Replied</span>
+              <span>{cadenceStep.openedCount}</span>
+              <span className="text-nowrap">Opened</span>
             </div>
             <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>{cadenceStep.statistics.bounced}</span>
+              <span>{cadenceStep.bouncedCount}</span>
               <span className="text-nowrap">Bounced</span>
             </div>
             <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>{cadenceStep.statistics.replied}</span>
+              <span>{cadenceStep.repliedCount}</span>
               <span className="text-nowrap">Replied</span>
             </div>
           </div>
