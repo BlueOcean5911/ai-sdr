@@ -35,7 +35,7 @@ const Select = ({
         <ListboxButton
           className={clsx(
             "min-h-10 relative block w-full rounded-lg bg-white py-1.5 pr-8 pl-3 text-left text-sm/6 text-gray-900 border-2 border-gray-200",
-            "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25 text-xs"
+            "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25 text-sm"
           )}
         >
           {selected?.name}
@@ -59,7 +59,7 @@ const Select = ({
               className="group flex cursor-pointer items-center gap-2 rounded-lg py-1.5 px-3 select-none data-[focus]:bg-gray-200"
             >
               <CheckIcon className="invisible size-4 fill-gray-900 group-data-[selected]:visible" />
-              <div className="text-xs text-gray-900">{item.name}</div>
+              <div className="text-sm text-gray-900">{item.name}</div>
             </ListboxOption>
           ))}
         </ListboxOptions>
