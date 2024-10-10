@@ -34,6 +34,7 @@
     "react-loader-spinner": "^6.1.6",
     "react-tailwindcss-select": "^1.8.5",
     "react-toastify": "^10.0.5",
+    "react-tooltip": "^5.28.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "yup": "^1.4.0"
