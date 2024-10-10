@@ -67,7 +67,7 @@ export default function FilterTask() {
         <div>
           <FilterItem
             icon={<ListBulletIcon className="w-4 h-4" />}
-            title="From Owner"
+            title="Assignee"
           >
             <Select
               value={taskFilterConfig.fromUser}
