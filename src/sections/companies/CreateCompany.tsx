@@ -55,7 +55,10 @@ export default function CreateCompany({
                     initialValues={{
                       name: company ? company.name : "",
                       phone: company ? company.phone : "",
-                      phoneStatus: statusOptions[3],
+                      // phoneStatus: statusOptions[3],
+                      phoneStatus: statusOptions.find(
+                        (option) => option.value === company?.phoneStatus
+                      ),
                       companyType: company ? company.companyType : "",
                       description: company ? company.description : "",
                       size: company
@@ -107,7 +110,7 @@ export default function CreateCompany({
                     ) => {
                       console.log("submit");
                       // setSubmitting(true);
-                      const phoneStatus = values.phoneStatus.value;
+                      const phoneStatus = values.phoneStatus?.value;
                       let companyData: BaseCompanyModel = {
                         name: values.name,
                         linkedin: values.linkedin,
@@ -215,7 +218,11 @@ export default function CreateCompany({
                               </div>
                               <div className="w-full flex flex-col">
                                 <Select
-                                  value={values.phoneStatus}
+                                  value={
+                                    values.phoneStatus
+                                      ? values.phoneStatus
+                                      : statusOptions[3]
+                                  }
                                   onChange={(item: any) => {
                                     setFieldValue("phoneStatus", item);
                                   }}

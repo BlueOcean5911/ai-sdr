@@ -299,7 +299,13 @@ const CompanyTable = () => {
                     {company.industry}
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {company.keywords}
+                    <div className="flex gap-2 max-w-56 min-w-32 flex-wrap">
+                      {company?.keywords?.split(",").map((keyword) => (
+                        <span className="p-1 border rounded-full">
+                          {keyword}
+                        </span>
+                      ))}
+                    </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {company.city} {company.state}

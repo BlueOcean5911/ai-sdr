@@ -98,7 +98,7 @@ export default function Emails(
               ))
             ) : (
               <div className="h-full flex flex-1 justify-center items-center">
-                <p>No mailings</p>
+                <p className="text-gray-900 text-sm">No mailings</p>
               </div>
             )}
           </div>

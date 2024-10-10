@@ -109,15 +109,12 @@ const AddCadence = ({
                 </div>
                 <div className="flex items-center gap-6">
                   <button
-                    className="w-full p-1 text-sm rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                    className="btn-primary w-full"
                     onClick={() => handleAddToCadence()}
                   >
                     Save
                   </button>
-                  <button
-                    className="w-full p-0.5 text-sm rounded-md border-2 bg-white border-gray-300 hover:bg-gray-200"
-                    onClick={close}
-                  >
+                  <button className="w-full btn-secondary" onClick={close}>
                     Close
                   </button>
                 </div>

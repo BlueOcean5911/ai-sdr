@@ -32,7 +32,9 @@ export default function GeneralContacts({
               />
             ))
           ) : (
-            <p className="text-gray-500 text-sm">No contacts found.</p>
+            <div className="w-full h-full flex-center">
+              <p className="text-gray-900 text-sm">No contacts found.</p>
+            </div>
           )}
         </div>
       </div>

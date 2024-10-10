@@ -29,13 +29,13 @@ export interface BaseCompanyModel {
   state?: string;
   country?: string;
   postalCode?: string;
-  
+
   yearFounded?: string;
   domain?: string;
   annualRevenue?: string;
   stage?: string;
   keywords?: string;
-  
+
   size?: COMPANY_SIZE | string;
   targeted?: boolean;
 }
@@ -55,7 +55,6 @@ interface ApiSuccessResponse {
 interface ApiCountResponse {
   data: CountModel; // The structure of the data returned from the API;
 }
-
 
 export const getCompanies = async (
   data: FetchCompaniesProps = { offset: 0, limit: 100, targeted: false }
@@ -134,13 +133,13 @@ export const getCompanyById = async (data: {
     state: response.data?.state,
     country: response.data?.country,
     postalCode: response.data?.postalCode,
-    
+
     yearFounded: response.data?.yearFounded,
     domain: response.data?.domain,
     annualRevenue: response.data?.annualRevenue,
     stage: response.data?.stage,
     keywords: response.data?.keywords,
-    
+
     size: response.data?.size,
     targeted: response.data?.targeted,
   };
@@ -224,7 +223,7 @@ export const updateCompany = async (data: {
   id: string;
   updateData: CompanyModel;
 }): Promise<ApiCompanyResponse> => {
-  const {id, updateData} = data;
+  const { id, updateData } = data;
   const response = await api.put(`api/companies/${id}`, updateData);
 
   if (response.status !== 200) {

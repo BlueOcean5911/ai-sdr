@@ -70,30 +70,10 @@ export default function Contacts({ cadenceId }: { cadenceId: string }) {
         <div className="flex flex-1 flex-col w-full py-2 align-middle overflow-auto">
           <div className="w-full h-full border rounded-md overflow-auto">
             {contactsInCadence.length > 0 ? (
-              contactsInCadence.map((contact, index) => (
-                // <ContactItem
-                //   key={index}
-                //   contact={contact}
-                //   handlePause={(cadenceStepId: string) =>
-                //     handlePauseCadenceStep(cadenceStepId)
-                //   }
-                // />
-                <></>
-              ))
+              contactsInCadence.map((contact, index) => <></>)
             ) : (
               <p className="text-gray-500 text-sm">No contacts found.</p>
             )}
-            {/* <ContactItem />
-            <ContactItem />
-            <ContactItem />
-            <ContactItem />
-            <ContactItem />
-            <ContactItem />
-            <ContactItem />
-            <ContactItem />
-            <ContactItem />
-            <ContactItem />
-            <ContactItem /> */}
           </div>
         </div>
         {/* Pagination */}

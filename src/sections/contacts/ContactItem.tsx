@@ -32,7 +32,7 @@ export default function ContactItem({
             className={classNames(
               "p-1 capitalize",
               contact.currentStepStatus === "paused"
-                ? "bg-gray-100 text-gray-900"
+                ? "bg-red-400 text-white"
                 : "",
               contact.currentStepStatus === "active"
                 ? "bg-blue-500 text-white"

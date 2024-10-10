@@ -54,7 +54,7 @@ const ContactToolbar = ({ data }: { data: any }) => {
         )}
       </button>
       <div className="flex gap-2 overflow-auto">
-        <div className="flex-1 overflow-auto flex">
+        <div className="flex-1 overflow-auto flex gap-2">
           {Object.keys(stageDict).map((stage: any) => (
             <div
               key={stage}
