@@ -80,39 +80,23 @@ export default function CadenceItem({
         <div className="flex flex-col gap-0.5">
           <div className="flex text-xs px-2 border-x-2 border-dashed">
             <div className="w-min-15 px-2">
-              <div>
-                {cadence.statistics?.active ? cadence.statistics?.active : "-"}
-              </div>
+              <div>{cadence.activeCount}</div>
               <div className="text-nowrap">Active</div>
             </div>
             <div className="w-min-15 px-2">
-              <div>
-                {cadence.statistics?.paused ? cadence.statistics?.paused : "-"}
-              </div>
+              <div>{cadence.pausedCount}</div>
               <div className="text-nowrap">Paused</div>
             </div>
             <div className="w-min-15 px-2">
-              <div>
-                {cadence.statistics?.bounced
-                  ? cadence.statistics?.bounced
-                  : "-"}
-              </div>
+              <div>{cadence.bouncedCount}</div>
               <div className="text-nowrap">Bounced</div>
             </div>
             <div className="w-min-15 px-2">
-              <div>
-                {cadence.statistics?.finished
-                  ? cadence.statistics?.finished
-                  : "-"}
-              </div>
+              <div>{cadence.finishedCount}</div>
               <div className="text-nowrap">Finished</div>
             </div>
             <div className="w-min-15 px-2">
-              <div>
-                {cadence.statistics?.succeeded
-                  ? cadence.statistics?.succeeded
-                  : "-"}
-              </div>
+              <div>{0}</div>
               <div className="text-nowrap">Succeeded</div>
             </div>
           </div>
