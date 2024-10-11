@@ -39,7 +39,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <NavTitle>
         <Link href={ROUTE_DASHBOARD}>Dashboard</Link>
       </NavTitle>
-      <div className="p-4 flex flex-1 flex-col gap-4 bg-gray-100">
+      <div className="p-4 flex flex-1 flex-col gap-4 bg-gray-100 overflow-auto">
         <div className="w-full flex flex-col xl:flex-row gap-4">
           <div className="w-full p-5 flex flex-col justify-between rounded-lg bg-white shadow-md">
             <div className="flex justify-between items-center">
@@ -244,9 +244,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </div>
-        <div className="p-5 flex flex-1 flex-col gap-3 rounded-lg bg-white shadow-md">
+        <div className="p-5 flex flex-1 flex-col gap-3 rounded-lg bg-white shadow-md overflow-auto">
           <span className="text-lg font-semibold">Workspace</span>
-          <div className="w-full flex items-center gap-6 border-b">
+          <div className="w-full flex items-center gap-2 border-b">
             <Link
               href="/dashboard/emails"
               className={classNames(
@@ -256,7 +256,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   : ""
               )}
             >
-              <span
+              {/* <span
                 className={classNames(
                   "p-2 flex flex-row items-center gap-2 border-b border-transparent",
                   pathname === "/dashboard/emails"
@@ -266,7 +266,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               >
                 <EnvelopeIcon className="w-3.5 h-3.5" />
                 Recent Replies
-              </span>
+              </span> */}
             </Link>
             <Link
               href="/dashboard/tasks"
@@ -311,7 +311,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </span>
             </Link>
           </div>
-          <div className="flex flex-1 flex-col gap-3">{children}</div>
+          <div className="flex flex-1 flex-col gap-3 overflow-auto">
+            {children}
+          </div>
         </div>
       </div>
     </>

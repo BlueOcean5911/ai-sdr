@@ -24,7 +24,7 @@ const HubspotContactTable = () => {
   return (
     <div className="flex-1 overflow-auto border-2 p-2 rounded-md min-h-full">
       <table className="min-w-full divide-y divide-gray-300 overflow-auto">
-        <thead className="bg-white sticky top-0 z-10">
+        <thead className="bg-white">
           <tr>
             <th
               scope="col"

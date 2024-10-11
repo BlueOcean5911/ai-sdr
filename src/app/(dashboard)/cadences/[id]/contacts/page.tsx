@@ -115,6 +115,11 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <Link href={ROUTE_LEADS}>
+              <div className="text-sm px-2 py-1 bg-blue-500 hover:bg-blue-400 text-white rounded hover:cursor-pointer">
+                Add contacts
+              </div>
+            </Link>
             {/* <Menu>
               <MenuButton className="">
                 <div className="p-1 border rounded-md">
@@ -137,11 +142,11 @@ export default function Page({ params }: { params: { id: string } }) {
                 </MenuItem>
               </MenuItems>
             </Menu> */}
-            <Link href={ROUTE_LEADS}>
+            {/* <Link href={ROUTE_LEADS}>
               <button className="px-2 py-1 rounded-md text-white bg-blue-900">
                 Add Contracts
               </button>
-            </Link>
+            </Link> */}
           </div>
         </div>
         <div className="w-full h-8 px-5 flex items-center gap-2">
@@ -178,7 +183,7 @@ export default function Page({ params }: { params: { id: string } }) {
               <span className="w-full border-b-2"></span>
             </span>
           </Link>
-          <Link href={`/cadences/${cadence?.id}/settings`}>
+          {/* <Link href={`/cadences/${cadence?.id}/settings`}>
             <span className="flex flex-col rounded-md text-sm hover:bg-gray-100">
               <span
                 className="p-1.5 cursor-pointer"
@@ -188,7 +193,7 @@ export default function Page({ params }: { params: { id: string } }) {
               </span>
               <span className="w-full border-b-2"></span>
             </span>
-          </Link>
+          </Link> */}
         </div>
         <div className="relative flex flex-1 bg-gray-100 overflow-auto">
           <div className="overflow-auto flex-1 flex flex-col">

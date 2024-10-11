@@ -31,13 +31,13 @@ export const navigationGeneral = [
     icon: UsersIcon,
     current: false,
   },
-  { name: "Campaigns", href: "/campaigns", icon: CubeIcon, current: false },
-  {
-    name: "Personas",
-    href: "/personas",
-    icon: CircleStackIcon,
-    current: false,
-  },
+  // { name: "Campaigns", href: "/campaigns", icon: CubeIcon, current: false },
+  // {
+  //   name: "Personas",
+  //   href: "/personas",
+  //   icon: CircleStackIcon,
+  //   current: false,
+  // },
   {
     name: "Cadences",
     href: "/cadences",
@@ -91,12 +91,12 @@ export const navigations = [
         icon: BuildingOffice2Icon,
         current: false,
       },
-      {
-        name: "Personas",
-        href: "/personas",
-        icon: RectangleStackIcon,
-        current: false,
-      },
+      // {
+      //   name: "Personas",
+      //   href: "/personas",
+      //   icon: RectangleStackIcon,
+      //   current: false,
+      // },
       {
         name: "Integration",
         href: "/integration",
@@ -108,12 +108,12 @@ export const navigations = [
   {
     name: "Engage",
     items: [
-      {
-        name: "Campaigns",
-        href: "/campaigns",
-        icon: LucideMonitorSpeaker,
-        current: false,
-      },
+      // {
+      //   name: "Campaigns",
+      //   href: "/campaigns",
+      //   icon: LucideMonitorSpeaker,
+      //   current: false,
+      // },
       {
         name: "Cadences",
         href: "/cadences",
@@ -126,12 +126,12 @@ export const navigations = [
         icon: MailIcon,
         current: false,
       },
-      {
-        name: "Calls",
-        href: "/calls",
-        icon: PhoneIcon,
-        current: false,
-      },
+      // {
+      //   name: "Calls",
+      //   href: "/calls",
+      //   icon: PhoneIcon,
+      //   current: false,
+      // },
       {
         name: "Tasks",
         href: "/tasks",

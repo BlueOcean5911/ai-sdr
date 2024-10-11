@@ -80,28 +80,40 @@ export default function CadenceItem({
         <div className="flex flex-col gap-0.5">
           <div className="flex text-xs px-2 border-x-2 border-dashed">
             <div className="w-min-15 px-2">
-              {/* <div>{cadence.activeCount}</div> */}
+              <div>
+                {cadence.statistics?.active ? cadence.statistics?.active : "-"}
+              </div>
               <div className="text-nowrap">Active</div>
             </div>
             <div className="w-min-15 px-2">
-              {/* <div>{cadence.pausedCount}</div> */}
+              <div>
+                {cadence.statistics?.paused ? cadence.statistics?.paused : "-"}
+              </div>
               <div className="text-nowrap">Paused</div>
             </div>
             <div className="w-min-15 px-2">
-              {/* <div>{cadence.notSentCount}</div> */}
-              <div className="text-nowrap">Succed</div>
-            </div>
-            <div className="w-min-15 px-2">
-              {/* <div>{cadence.bouncedCount}</div> */}
+              <div>
+                {cadence.statistics?.bounced
+                  ? cadence.statistics?.bounced
+                  : "-"}
+              </div>
               <div className="text-nowrap">Bounced</div>
             </div>
-            {/* <div className="w-min-15 px-2">
-              <div>{cadence.</div>
-              <div className="text-nowrap">Spam Blocked</div>
-            </div> */}
             <div className="w-min-15 px-2">
-              {/* <div>{cadence.finishedCount}</div> */}
+              <div>
+                {cadence.statistics?.finished
+                  ? cadence.statistics?.finished
+                  : "-"}
+              </div>
               <div className="text-nowrap">Finished</div>
+            </div>
+            <div className="w-min-15 px-2">
+              <div>
+                {cadence.statistics?.succeeded
+                  ? cadence.statistics?.succeeded
+                  : "-"}
+              </div>
+              <div className="text-nowrap">Succeeded</div>
             </div>
           </div>
         </div>

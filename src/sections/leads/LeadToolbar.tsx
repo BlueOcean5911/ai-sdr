@@ -151,7 +151,7 @@ const LeadToolbar = () => {
           >
             <MenuItem>
               <button
-                className="group text-xs flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100"
+                className="group text-sm flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100"
                 onClick={() => {
                   if (selectedLeads && selectedLeads.length > 0) {
                     setOpenAddCadence(true);
@@ -166,7 +166,7 @@ const LeadToolbar = () => {
             </MenuItem>
             <MenuItem>
               <button
-                className="group text-xs flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100"
+                className="group text-sm flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100"
                 onClick={() => setOpenCreateCadence(true)}
               >
                 <PlusCircleIcon className="size-4" />
@@ -174,13 +174,13 @@ const LeadToolbar = () => {
               </button>
             </MenuItem>
             {/* <MenuItem>
-              <button className="group text-xs flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100">
+              <button className="group text-sm flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100">
                 <CheckCircleIcon className="size-4" />
                 Mark Cadence as finished
               </button>
             </MenuItem>
             <MenuItem>
-              <button className="group text-xs flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100">
+              <button className="group text-sm flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100">
                 <MinusCircleIcon className="size-4" />
                 Remove from Cadence
               </button>

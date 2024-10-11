@@ -68,7 +68,7 @@ interface ApiStatisticsResponse {
 export const getTasks = async (
   data: FetchTasksProps = { offset: 0, limit: 100, params: {} }
 ): Promise<ApiTasksResponse> => {
-  let url = `/api/tasks?`;
+  let url = `/api/tasks?offset=${data.offset}&limit=${data.limit}`;
 
   const keys = Object.keys(data.params);
   let searchParams = "";

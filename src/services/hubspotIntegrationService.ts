@@ -1,3 +1,4 @@
+import { ApiSuccessResponse } from "@/types";
 import { api } from "@/utils/api";
 
 export const fetchHubspotCompanies = async ({
@@ -22,4 +23,8 @@ export const fetchHubspotContacts = async ({
   return await api.get(
     `/api/integration/hubspot/contacts?limit=${limit}&offset=${offset}`
   );
+};
+
+export const importFromHubspot = async ({}): Promise<ApiSuccessResponse> => {
+  return await api.get(`/api/integration/hubspot/import`);
 };

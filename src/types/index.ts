@@ -168,3 +168,11 @@ export interface GeneratedEmailsModel {
   subjects: GeneratedSubjectModel[];
   bodies: GeneratedBodyModel[];
 }
+
+export interface CadenceStatistics {
+  active: number;
+  paused: number;
+  bounced: number;
+  finished: number;
+  succeeded: number;
+}

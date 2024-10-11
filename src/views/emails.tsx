@@ -27,10 +27,12 @@ export default function Emails(
   const currentParams = Object.fromEntries(useSearchParams());
 
   const fetchMailings = (params: { [key: string]: string }) => {
+    const offset = pageSize * (currentPage - 1);
+    const limit = pageSize;
     runService(
       {
-        offset: 0,
-        limit: 100,
+        offset: offset,
+        limit: limit,
         campaignId: campaignId,
         cadenceId: cadenceId,
         fromUser: emailFilterConfig.fromUser,
@@ -75,8 +77,8 @@ export default function Emails(
   }, []);
 
   useEffect(() => {
-    fetchMailingTotalCount(currentParams);
-    fetchMailings(currentParams);
+    fetchMailingTotalCount(emailFilterConfig.params);
+    fetchMailings(emailFilterConfig.params);
   }, [emailFilterConfig, currentPage, pageSize]);
 
   return (
@@ -96,7 +98,7 @@ export default function Emails(
               ))
             ) : (
               <div className="h-full flex flex-1 justify-center items-center">
-                <p>No mailings</p>
+                <p className="text-gray-900 text-sm">No mailings</p>
               </div>
             )}
           </div>
