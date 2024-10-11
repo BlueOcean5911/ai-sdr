@@ -76,7 +76,7 @@ export default function CampaignContacts({
         </div>
 
         {/* Table */}
-        <GeneralContacts contacts={contacts} />
+        {/* <GeneralContacts contacts={contacts} /> */}
         {/* Pagination */}
         <div className="flex justify-end">
           <Pagination
