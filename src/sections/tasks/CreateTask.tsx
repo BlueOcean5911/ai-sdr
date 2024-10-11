@@ -16,12 +16,12 @@ import FormHelperText from "@/components/extends/FormHelperText";
 import { toast } from "react-toastify";
 import Select from "@/components/extends/Select/default";
 import { useTaskFilter } from "@/contexts/FilterTaskContext";
+import { CADENCE_STEP_TYPE } from "@/types/enums";
 
 const taskTypeOptions = [
-  { value: "Message", name: "Message" },
-  { value: "Call", name: "Call" },
-  { value: "Meet", name: "Meet" },
-  { value: "Linkedin", name: "LinkedIn" },
+  { value: CADENCE_STEP_TYPE.MANUAL_EMAIL, name: "Email" },
+  { value: CADENCE_STEP_TYPE.PHONE_CALL, name: "Phone Call" },
+  { value: CADENCE_STEP_TYPE.ACTION_ITEM, name: "Action Item" },
 ];
 
 const taskPriorityOptions = [
@@ -234,7 +234,8 @@ export default function CreateTask({
                               <Select
                                 data={taskPriorityOptions}
                                 defaultValue={taskPriorityOptions.find(
-                                  (option) => option.value === values.taskPriority
+                                  (option) =>
+                                    option.value === values.taskPriority
                                 )}
                                 onChange={(selectedItem) => {
                                   if (

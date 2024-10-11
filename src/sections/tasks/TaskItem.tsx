@@ -53,14 +53,14 @@ export default function TaskItem({
     fetchUsers();
   }, []);
 
-  const owner = users?.find(user=> user.id === task.ownerId);
+  const owner = users?.find((user) => user.id === task.ownerId);
   let displayName = "";
   if (owner) {
     displayName += owner.firstName ? owner.firstName : " ";
     displayName += " ";
     displayName += owner.lastName ? owner.lastName : " ";
   }
-  
+
   return (
     <div className="w-full h-20 px-4 py-2 flex items-center gap-2 border-b hover:bg-gray-100">
       <input className="shadow-none ring-0 focus:ring-0" type="checkbox" />
@@ -83,7 +83,7 @@ export default function TaskItem({
         </div>
 
         <div className="min-w-64 flex flex-1 flex-row justify-between items-center gap-2">
-          <span className="p-1 text-xs font-semibold text-nowrap rounded-sm bg-gray-100">
+          <span className="p-1 text-xs font-semibold text-nowrap rounded-sm bg-gray-100 capitalize">
             {task.taskType}
           </span>
 

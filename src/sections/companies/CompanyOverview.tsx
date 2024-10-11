@@ -89,7 +89,9 @@ const CompanyOverview = ({
               </div>
               <div className="flex flex-row text-sm">
                 <span className="w-1/3">Stage</span>
-                <span className="p-1 rounded-md bg-gray-200">{company?.stage}</span>
+                <span className="p-1 rounded-md bg-gray-200">
+                  {company?.stage}
+                </span>
               </div>
               <div className="flex flex-row text-sm">
                 <span className="w-1/3">Location</span>
@@ -114,7 +116,7 @@ const CompanyOverview = ({
                   {company?.keywords?.split(",").map((item, idx) => (
                     <span
                       key={idx}
-                      className="px-1 text-nowrap rounded-md bg-gray-200"
+                      className=" px-1 text-nowrap rounded-md bg-gray-200"
                     >
                       {item}
                     </span>
