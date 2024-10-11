@@ -25,6 +25,7 @@ export const runService = async (
 export const handleError = (status: number | undefined, error: any) => {
   let message: string = "";
 
+  console.log(error);
   // Check if the error is due to connection issues
   if (!error?.response) {
     // This indicates a connection error (like ERR_CONNECTION_REFUSED)
@@ -32,7 +33,6 @@ export const handleError = (status: number | undefined, error: any) => {
     toast.info(message);
     return;
   }
-
   switch (status) {
     case 403:
       toast.error(error ? error : "Please login to continue!");

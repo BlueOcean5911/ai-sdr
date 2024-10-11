@@ -14,6 +14,11 @@ import {
 } from "@/services/cadenceStepService";
 import { getFormettedInterval } from "@/utils/format";
 import EditStep from "./EditStep";
+import { CADENCE_STEP_TYPE } from "@/types/enums";
+import PhoneCallIcon from "@/components/Icons/phonecall.icon";
+import ActionItemIcon from "@/components/Icons/actionitem.icon";
+import AutomaticEmailIcon from "@/components/Icons/automaticemail.icon";
+import ManualEmailIcon from "@/components/Icons/manualmail.icon";
 
 export default function CadenceStep({
   order,
@@ -45,6 +50,18 @@ export default function CadenceStep({
           <div className="w-50 px-4 flex justify-between items-center gap-4">
             <div className="w-8 h-8 bg-slate-100 flex justify-center items-center rounded-full">
               <EnvelopeIcon className="w-4 h-4" />
+              {cadenceStep.stepType === CADENCE_STEP_TYPE.AUTO_EMAIL && (
+                <AutomaticEmailIcon />
+              )}
+              {cadenceStep.stepType === CADENCE_STEP_TYPE.MANUAL_EMAIL && (
+                <ManualEmailIcon />
+              )}
+              {cadenceStep.stepType === CADENCE_STEP_TYPE.PHONE_CALL && (
+                <PhoneCallIcon />
+              )}
+              {cadenceStep.stepType === CADENCE_STEP_TYPE.ACTION_ITEM && (
+                <ActionItemIcon />
+              )}
             </div>
             <span className="font-semibold">{cadenceStep.name}</span>
           </div>
@@ -112,39 +129,48 @@ export default function CadenceStep({
             <ToggleButton checked={true} handleChange={() => {}} />
           </div>
           {/* <div className="min-w-40 px-4 flex">New Thread</div> */}
-          <div
-            className="h-full min-w-60 px-4 flex flex-1 flex-col gap-1"
-            onClick={() => handleTemplateOpen(cadenceStep.templateId)}
-          >
-            <div className="text-base font-semibold">
-              {cadenceStep.template?.subject}
+          {cadenceStep.stepType === CADENCE_STEP_TYPE.AUTO_EMAIL && (
+            <div
+              className="h-full min-w-60 px-4 flex flex-1 flex-col gap-1"
+              onClick={() => handleTemplateOpen(cadenceStep.templateId)}
+            >
+              <div className="text-base font-semibold">
+                {cadenceStep.template?.subject}
+              </div>
+              <div className="text-sm line-clamp-2">
+                {cadenceStep.template?.bodyText}
+              </div>
             </div>
-            <div className="text-sm line-clamp-2">
-              {cadenceStep.template?.bodyText}
+          )}
+          {cadenceStep.stepType !== CADENCE_STEP_TYPE.AUTO_EMAIL && (
+            <div className="h-full min-w-60 px-4 flex flex-1 items-center gap-1">
+              <div className="text-sm line-clamp-2">{cadenceStep.taskNote}</div>
             </div>
-          </div>
-          <div className="flex min-w-48 flex-wrap items-center">
-            <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>{cadenceStep.scheduledCount}</span>
-              <span className="text-nowrap">Scheduled</span>
+          )}
+          {cadenceStep.stepType === CADENCE_STEP_TYPE.AUTO_EMAIL && (
+            <div className="flex min-w-48 flex-wrap items-center">
+              <div className="flex flex-col w-min-15 px-1 text-xs">
+                <span>{cadenceStep.scheduledCount}</span>
+                <span className="text-nowrap">Scheduled</span>
+              </div>
+              <div className="flex flex-col w-min-15 px-1 text-xs">
+                <span>{cadenceStep.deliveredCount}</span>
+                <span className="text-nowrap">Delivered</span>
+              </div>
+              <div className="flex flex-col w-min-15 px-1 text-xs">
+                <span>{cadenceStep.openedCount}</span>
+                <span className="text-nowrap">Opened</span>
+              </div>
+              <div className="flex flex-col w-min-15 px-1 text-xs">
+                <span>{cadenceStep.bouncedCount}</span>
+                <span className="text-nowrap">Bounced</span>
+              </div>
+              <div className="flex flex-col w-min-15 px-1 text-xs">
+                <span>{cadenceStep.repliedCount}</span>
+                <span className="text-nowrap">Replied</span>
+              </div>
             </div>
-            <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>{cadenceStep.deliveredCount}</span>
-              <span className="text-nowrap">Delivered</span>
-            </div>
-            <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>{cadenceStep.openedCount}</span>
-              <span className="text-nowrap">Opened</span>
-            </div>
-            <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>{cadenceStep.bouncedCount}</span>
-              <span className="text-nowrap">Bounced</span>
-            </div>
-            <div className="flex flex-col w-min-15 px-1 text-xs">
-              <span>{cadenceStep.repliedCount}</span>
-              <span className="text-nowrap">Replied</span>
-            </div>
-          </div>
+          )}
         </div>
       </div>
       <div className="w-full h-10 px-4 flex items-center"></div>

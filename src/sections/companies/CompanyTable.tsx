@@ -301,7 +301,7 @@ const CompanyTable = () => {
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     <div className="flex gap-2 max-w-56 min-w-32 flex-wrap">
                       {company?.keywords?.split(",").map((keyword) => (
-                        <span className="p-1 border rounded-full">
+                        <span className="p-1 border rounded-full text-xs">
                           {keyword}
                         </span>
                       ))}
