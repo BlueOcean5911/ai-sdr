@@ -219,7 +219,7 @@ export default function Page({ params }: { params: { id: string } }) {
                   {company?.keywords?.split(",").map((item, idx) => (
                     <span
                       key={idx}
-                      className="px-1 text-nowrap rounded-md bg-gray-200"
+                      className=" px-1 text-nowrap rounded-md bg-gray-200"
                     >
                       {item}
                     </span>
