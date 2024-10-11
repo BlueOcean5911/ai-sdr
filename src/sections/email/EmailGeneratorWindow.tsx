@@ -28,6 +28,16 @@ const EmailGeneratorWindow = ({
   const [activeView, setActiveView] = useState<string>(
     PERSONALIZED_VIEW.SETTING_VIEW
   );
+
+  const previousProductInfo = localStorage.getItem("productInfo");
+  const parsedProductInfo = previousProductInfo !== null ? JSON.parse(previousProductInfo) : {  
+    productName: "",  
+    customerKeyPainPoints: "",  
+    valueProposition: "",  
+    callToAction: "",  
+    companyOverview: "",  
+    additionalContext: "",  
+  };  
   const [personalizedSetting, setPersonalizedSetting] =
     useState<PersonalizedSettingModel>({
       recipientInfo: {
@@ -36,14 +46,7 @@ const EmailGeneratorWindow = ({
         contactName: "",
         contactTitle: "",
       },
-      productInfo: {
-        productName: "",
-        customerKeyPainPoints: "",
-        valueProposition: "",
-        callToAction: "",
-        companyOverview: "",
-        additionalContext: "",
-      },
+      productInfo: parsedProductInfo,
       senderId: senderId,
     });
   const [generatedEmails, setGeneratedEmails] = useState<
@@ -78,7 +81,7 @@ const EmailGeneratorWindow = ({
   };
 
   useEffect(() => {
-    console.log("personalized settting  ", personalizedSetting);
+    localStorage.setItem("productInfo", JSON.stringify(personalizedSetting.productInfo))
   }, [personalizedSetting]);
 
   return (

@@ -47,6 +47,7 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
   const [errors, setErrors] = useState({
     subject: "",
     message: "",
+    sender: "",
   });
 
   useEffect(() => {
@@ -94,10 +95,25 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
       newErrors = { ...newErrors, message: "Message is required" };
       isValid = false;
     }
+    if (senderId === "") {
+      newErrors = { ...newErrors, sender: "Sender is required" };
+      isValid = false;  
+    }
 
     setErrors({ ...errors, ...newErrors });
     return isValid;
   };
+
+  const checkSenderSelected = () => {
+    let isValid = true;
+    let newErrors = {};
+    if (senderId === "") {
+      newErrors = { ...newErrors, sender: "Sender is required" };
+      isValid = false;  
+    }
+    setErrors({ ...errors, ...newErrors });
+    return isValid;
+  }
 
   const handleSend = () => {
     if (checkErrors()) {
@@ -149,6 +165,10 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
     toast.success("Email sent successfully");
   };
 
+  useEffect(() => {
+    console.log(errors);
+  }, [errors])
+
   return (
     <>
       <div className="z-20 flex flex-col fixed bottom-2 right-2 w-[500px] h-[80vh] shadow-[0px_4px_24px_rgba(0,0,0,0.3)] bg-white border-2 border-gray-100 rounded-md">
@@ -162,7 +182,10 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
         <div className="px-4 py-2 flex flex-1 flex-col gap-2">
           <div className="flex flex-col justify-between">
             <label className="min-w-20 text-xs">From</label>
-            <Select data={users} onChange={(item) => setOwner(item)} />
+            <Select data={users} onChange={(item) => {setOwner(item); if (senderId) setErrors({ ...errors, sender: "" });}} />
+            {errors.sender.length > 0 && (
+              <p className="text-red-500 text-xs">{errors.sender}</p>
+            )}
           </div>
 
           <div className="flex flex-col justify-between">
@@ -204,12 +227,15 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
             />
           </div>
           {errors.subject.length > 0 && (
-            <p className="pl-24 text-red-500 text-xs">{errors.subject}</p>
+            <p className="text-red-500 text-xs">{errors.subject}</p>
           )}
           <div className="flex space-x-2 justify-end">
             <button
               className="flex items-center px-4 py-1 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400"
-              onClick={() => setIsOpenEmailGeneratorWindow(true)}
+              onClick={() => {
+                checkSenderSelected();
+                setIsOpenEmailGeneratorWindow(true)
+              }}
             >
               <PencilSquareIcon className="w-5 h-5 mr-2 stroke-white" />
               Write with AI

@@ -64,7 +64,7 @@
   }
 
   .btn-primary {
-    @apply min-w-28 flex gap-2 flex-center bg-blue-500 hover:bg-blue-400 text-sm px-2 py-1 text-white rounded hover:cursor-pointer  hover:shadow-md;
+    @apply min-w-28 flex gap-2 flex-center bg-blue-500 hover:bg-blue-400 text-sm px-2 py-1.5 text-white rounded hover:cursor-pointer  hover:shadow-md;
   }
 
   .btn-primary * {
