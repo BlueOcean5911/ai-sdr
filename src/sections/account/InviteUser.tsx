@@ -108,12 +108,12 @@ export default function InviteUser({
                             <button
                               type="submit"
                               disabled={isSubmitting}
-                              className="px-2 py-1 rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                              className="btn-primary"
                             >
                               Invite
                             </button>
                             <button
-                              className="px-2 py-1 rounded-md bg-gray-300 hover:bg-gray-200"
+                              className="btn-secondary"
                               onClick={handleClose}
                             >
                               Close

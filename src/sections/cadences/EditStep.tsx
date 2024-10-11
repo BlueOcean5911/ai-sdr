@@ -10,7 +10,7 @@ import {
   BaseCadenceStepModel,
   CadenceStepModel,
 } from "@/services/cadenceStepService";
-import { CADENCE_STEP_TYPE } from "@/types/enums";
+import { CADENCE_STEP_STATUS, CADENCE_STEP_TYPE } from "@/types/enums";
 import {
   Dialog,
   DialogPanel,
@@ -75,6 +75,15 @@ export default function EditStep({
         intervalType: 1,
       });
     }
+    if (cadenceStepData.stepType === CADENCE_STEP_TYPE.AUTO_EMAIL) {
+      setCurrentView(CadenceStepView.autoEmail)
+    } else if (cadenceStepData.stepType === CADENCE_STEP_TYPE.MANUAL_EMAIL) {
+      setCurrentView(CadenceStepView.manualEmail)
+    } else if (cadenceStepData.stepType === CADENCE_STEP_TYPE.PHONE_CALL) {
+      setCurrentView(CadenceStepView.phoneCall)
+    } else if (cadenceStepData.stepType === CADENCE_STEP_TYPE.ACTION_ITEM) {
+      setCurrentView(CadenceStepView.actionItem)
+    } 
   }, []);
 
   useEffect(() => {

@@ -1,5 +1,4 @@
 import Select from "@/components/extends/Select/default";
-import { useLeadSelection } from "@/contexts/LeadSelectionContext";
 import { addMailing, sendMailing } from "@/services/mailingService";
 import { getUsers, UserModel } from "@/services/userService";
 import { MAILING_STATE } from "@/types/enums";
@@ -13,6 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import EmailGeneratorWindow from "./EmailGeneratorWindow";
+import { LeadModel, LeadModelWithCompanyModel } from "@/services/leadService";
 
 interface UserForSelect {
   name: string;
@@ -20,13 +20,13 @@ interface UserForSelect {
   id: string;
 }
 
-const EmailSendWindow = ({ close }: { close?: () => void }) => {
-  const { selectedLeads } = useLeadSelection();
+const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelWithCompanyModel }) => {
   const [owner, setOwner] = useState<UserForSelect>({
     name: "",
     email: "",
     id: "",
   });
+  const [senderId, setSenderId] = useState("");
   const [sendLater, setSendLater] = useState(false);
   const [date, setDate] = useState<string | null>(null);
   const [users, setUsers] = useState<UserForSelect[]>([]);
@@ -48,6 +48,10 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
     subject: "",
     message: "",
   });
+
+  useEffect(() => {
+    setSenderId(owner ? owner.id : "");
+  }, [owner])
 
   const fetchUsers = () => {
     runService(
@@ -73,7 +77,7 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
     fetchUsers();
     setValues({
       from: "",
-      to: selectedLeads[0].email,
+      to: lead.email ? lead.email : "",
       subject: "",
       message: "",
     });
@@ -101,10 +105,10 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
         {
           subject: values.subject,
           message: values.message,
-          leadId: selectedLeads[0].id,
+          leadId: lead.id,
           ownerId: owner.id,
           fromEmail: owner.name,
-          toEmail: selectedLeads[0].email,
+          toEmail: lead.email,
           scheduledAt: date,
           mailingStatus: sendLater
             ? MAILING_STATE.SCHEDULED
@@ -127,9 +131,9 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
   const handleSaveAsDraft = () => {
     runService(
       {
-        leadId: selectedLeads[0].id,
+        leadId: lead.id,
         owner: owner,
-        fromEma: selectedLeads[0].email,
+        fromEma: lead.email,
         toEmail: owner.name,
         subject: values.subject,
         bodyText: values.message,
@@ -262,13 +266,13 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
           </div>
           <div className="flex items-center gap-4">
             <button
-              className="w-full p-2 rounded-md bg-gray-300 hover:bg-gray-200"
+              className="w-full btn-secondary"
               onClick={close}
             >
               Close
             </button>
             <button
-              className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
+              className="w-full btn-primary"
               onClick={handleSend}
             >
               Send
@@ -276,9 +280,10 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
           </div>
         </div>
       </div>
-      {isOpenEmailGeneratorWindow && (
+      {isOpenEmailGeneratorWindow && senderId && (
         <EmailGeneratorWindow
-          lead={selectedLeads[0]}
+          senderId={senderId}
+          lead={lead}
           onChange={(text: string, type: string) =>
             setValues({
               ...values,

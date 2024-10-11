@@ -16,11 +16,12 @@ import {
   StarIcon,
 } from "@heroicons/react/24/outline";
 import ToggleButton from "@/components/extends/Button/ToggleButton";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { handleError, runService } from "@/utils/service_utils";
 import {
   BaseLeadModel,
   LeadModel,
+  LeadModelWithCompanyModel,
   getLeadById,
   // updateLead,
 } from "@/services/leadService";
@@ -30,13 +31,18 @@ import { FaLinkedinIn } from "react-icons/fa";
 import { LinkedinIcon, MessageCircleWarning } from "lucide-react";
 import { FaInfo } from "react-icons/fa6";
 import { IoIosLink } from "react-icons/io";
+import EmailSendWindow from "@/sections/email/EmailSendWindow";
+import { getDefaultLead } from "@/services/leadService";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
   const [starred, setStarred] = useState(false);
   const [active, setActive] = useState(false);
-  const [lead, setLead] = useState<LeadModel>();
+  const [lead, setLead] = useState<LeadModelWithCompanyModel>();
   const [company, setCompany] = useState<CompanyModel>();
+  const [isOpenSendEmail, setIsOpenSendEmail] = useState(Object.fromEntries(useSearchParams())?.sendEmail ? true : false);
+  const searchParams = useSearchParams();
+  // const []
   const router = useRouter();
 
   useEffect(() => {
@@ -44,11 +50,12 @@ export default function Page({ params }: { params: { id: string } }) {
       { id: id },
       getLeadById,
       (data) => {
+        console.log("123123132", data)
         setLead(data);
       },
       (error) => console.log(error)
     );
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     lead?.companyId &&
@@ -89,14 +96,14 @@ export default function Page({ params }: { params: { id: string } }) {
             {lead?.title} at {company?.name} * {lead?.city}, {lead?.state} *{" "}
             {lead?.annualRevenue}
           </div>
-          <div className="flex flex-row justify-end gap-2">
+          {/* <div className="flex flex-row justify-end gap-2">
             <button className="m-auto p-1 flex justify-center items-center gap-2 text-sm text-nowrap border rounded-md border-gray-300 hover:bg-gray-200">
               Add to list
             </button>
             <button className="m-auto p-1 flex justify-center items-center gap-2 text-sm text-nowrap border rounded-md text-white bg-blue-500 hover:bg-blue-400">
               Access email
             </button>
-          </div>
+          </div> */}
         </div>
         <div className="p-4 flex flex-1 flex-col md:flex-row gap-3 bg-gray-100 overflow-scroll">
           <div className="md:w-1/2 lg:w-1/3 flex flex-col gap-3">
@@ -242,6 +249,11 @@ export default function Page({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
+      {isOpenSendEmail && lead && (
+          <>
+            <EmailSendWindow close={() => setIsOpenSendEmail(false)} lead={lead}/>
+          </>
+        )}
     </>
   );
 }

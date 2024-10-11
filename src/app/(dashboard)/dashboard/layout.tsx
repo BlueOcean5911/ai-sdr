@@ -248,15 +248,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <span className="text-lg font-semibold">Workspace</span>
           <div className="w-full flex items-center gap-2 border-b">
             <Link
-              href="/dashboard/emails"
+              href="/dashboard/mailings"
               className={classNames(
                 "text-sm hover:bg-gray-100",
-                pathname === "/dashboard/emails"
+                pathname === "/dashboard/mailings"
                   ? "border-b-2 border-blue-500"
                   : ""
               )}
             >
-              {/* <span
+              <span
                 className={classNames(
                   "p-2 flex flex-row items-center gap-2 border-b border-transparent",
                   pathname === "/dashboard/emails"
@@ -265,8 +265,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 )}
               >
                 <EnvelopeIcon className="w-3.5 h-3.5" />
-                Recent Replies
-              </span> */}
+                Mailings
+              </span>
             </Link>
             <Link
               href="/dashboard/tasks"

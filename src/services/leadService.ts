@@ -14,6 +14,14 @@ export interface LeadModel extends BaseLeadModel {
   id: string;
 }
 
+export const getDefaultLead = ():LeadModel => {
+  return {
+    firstName: "",
+    lastName: "",
+    id:"",
+  }
+}
+
 export interface LeadModelWithCompanyModel extends LeadModel {
   company?: CompanyModel;
 }
@@ -61,6 +69,12 @@ interface ApiLeadsResponse {
 interface ApiLeadResponse {
   data: LeadModel;
 }
+
+interface ApiLeadWithCompanyModelResponse {
+  data: LeadModelWithCompanyModel;
+}
+
+
 
 interface ApiCountResponse {
   data: CountModel; // The structure of the data returned from the API;
@@ -280,41 +294,66 @@ export const getLeads = async (
 
 export const getLeadById = async (props: {
   id: string;
-}): Promise<ApiLeadResponse> => {
+}): Promise<ApiLeadWithCompanyModelResponse> => {
   const { id } = props;
   let url = `/api/leads/${id}`;
 
   const response = await api.get(url);
+  const item = response.data
+  console.log("Fetched lead data", item)
+  let lead: LeadModelWithCompanyModel = {
+    id: item?.id,
+    firstName: item?.firstName,
+    lastName: item?.lastName,
+    title: item?.title,
+    email: item?.email,
+    emailStatus: item?.emailStatus,
+    workEmail: item?.workEmail,
+    workEmailStatus: item?.workEmailStatus,
+    primaryPhone: item?.primaryPhone,
+    primaryPhoneStatus: item?.primaryPhoneStatus,
+    mobilePhone: item?.mobilePhone,
+    mobilePhoneStatus: item?.mobilePhoneStatus,
+    workPhone: item?.workPhone,
+    workPhoneStatus: item?.workPhoneStatus,
+    streetAddress: item?.streetAddress,
+    city: item?.city,
+    state: item?.state,
+    country: item?.country,
+    timeZone: item?.timeZone,
+    annualRevenue: item?.annualRevenue,
+    source: item?.source,
+    stage: item?.stage,
+    linkedin: item?.linkedin,
+    companyId: item?.companyId,
+    clickCount: item?.clickCount,
+    replyCount: item?.replyCount,
+    targeted: item?.targeted,
+    personalNote1: item?.personalNote1,
+    company: {
+      id: item?.company?.id,
+      name: item?.company?.name,
+      companyType: item?.company?.companyType,
+      phone: item?.company?.phone,
+      phoneStatus: item?.company?.phoneStatus,
+      size: item?.company?.size,
+      industry: item?.company?.industry,
+      description: item?.company?.description,
+      website: item?.company?.website,
+      linkedin: item?.company?.linkedin,
+      
+      streetAddress: item?.company?.streetAddress,
+      city: item?.company?.city,
+      state: item?.company?.state,
+      country: item?.company?.country,
+      postalCode: item?.company?.postalCode,
 
-  let lead: LeadModel = {
-    id: response.data?.id,
-    firstName: response.data?.firstName,
-    lastName: response.data?.lastName,
-    title: response.data?.title,
-    email: response.data?.email,
-    emailStatus: response.data?.emailStatus,
-    workEmail: response.data?.workEmail,
-    workEmailStatus: response.data?.workEmailStatus,
-    primaryPhone: response.data?.primaryPhone,
-    primaryPhoneStatus: response.data?.primaryPhoneStatus,
-    mobilePhone: response.data?.mobilePhone,
-    mobilePhoneStatus: response.data?.mobilePhoneStatus,
-    workPhone: response.data?.workPhone,
-    workPhoneStatus: response.data?.workPhoneStatus,
-    streetAddress: response.data?.streetAddress,
-    city: response.data?.city,
-    state: response.data?.state,
-    country: response.data?.country,
-    timeZone: response.data?.timeZone,
-    annualRevenue: response.data?.annualRevenue,
-    source: response.data?.source,
-    stage: response.data?.stage,
-    linkedin: response.data?.linkedin,
-    companyId: response.data?.companyId,
-    clickCount: response.data?.clickCount,
-    replyCount: response.data?.replyCount,
-    targeted: response.data?.targeted,
-    personalNote1: response?.data?.personalNote1,
+      yearFounded: item?.company?.yearFounded,
+      domain: item?.company?.domain,
+      annualRevenue: item?.company?.annualRevenue,
+      stage: item?.company?.stage,
+      keywords: item?.company?.keywords,
+    },
   };
 
   return {

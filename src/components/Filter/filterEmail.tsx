@@ -7,13 +7,13 @@ import FilterItem from "./filter-item";
 import { useEmailFilter } from "@/contexts/FilterEmailContext";
 import Select from "react-tailwindcss-select";
 import { fromUserOptions } from "@/data/filter.data";
-import { runService } from "@/utils/service_utils";
-import { getUsers, UserModel } from "@/services/userService";
+import { handleError, runService } from "@/utils/service_utils";
+import { getMe, getUsers, UserModel } from "@/services/userService";
 import { useEffect, useState } from "react";
 
 export default function FilterEmail() {
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
-  const [fromEmailOptions, setFromEmailOptions] = useState(fromUserOptions);
+  const [fromEmailOptions, setFromEmailOptions] = useState([]);
 
   const fetchUsers = () => {
     runService(
@@ -25,6 +25,19 @@ export default function FilterEmail() {
           label: user.firstName + " " + user.lastName,
         }));
         setFromEmailOptions(fromEmailOptions);
+        runService(
+          undefined,
+          getMe,
+          (user) => {
+            setEmailFilterConfig({
+              ...emailFilterConfig,
+              fromUser: fromEmailOptions.filter((option: any) => option.value === user.id ),
+            })
+          },
+          (statusCode, error) => {
+            handleError(statusCode, error);
+          }
+        )
       },
       (status, error) => {
         console.error(error);
@@ -32,9 +45,33 @@ export default function FilterEmail() {
     );
   };
 
+  // const fetchCurrentUser = () => {
+  //   runService(
+  //     undefined,
+  //     getMe,
+  //     (user) => {
+  //       console.log("Current User", user);
+  //       console.log("from email options", fromEmailOptions);
+  //       console.log("Result of fromEmailOptions filter", fromEmailOptions.filter(option => option.value === user.id));
+  //       setEmailFilterConfig({
+  //         ...emailFilterConfig,
+  //         fromUser: fromEmailOptions.filter(option => option.value === user.id ),
+  //       })
+  //     },
+  //     (statusCode, error) => {
+  //       handleError(statusCode, error);
+  //     }
+  //   )
+  // }
+
   useEffect(() => {
     fetchUsers();
+    // fetchCurrentUser();
   }, []);
+
+  useEffect(() => {
+    console.log("emailFilterConfig", emailFilterConfig);
+  }, [emailFilterConfig])
 
   return (
     <div className="card px-2 w-64 h-full flex flex-col shadow-lg">

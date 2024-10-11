@@ -225,7 +225,7 @@ const LeadTable = () => {
                   key={lead.id}
                   className="cursor-pointer even:bg-blue-50 hover:bg-gray-300 "
                 >
-                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
+                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     <div className="flex items-center gap-2">
                       <CheckBox
                         id={lead.id}
@@ -262,7 +262,7 @@ const LeadTable = () => {
                       </a>
                     </div>
                   </td>
-                  {/* <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                  {/* <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {lead.name}
                   </td> */}
                   <td className="whitespace-nowrap text-sm text-gray-500">
@@ -295,10 +295,10 @@ const LeadTable = () => {
                       </MenuItems>
                     </Menu>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {lead.title}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     <a
                       className="hover:underline hover:text-blue-900"
                       href={`companies/${lead.company?.id}`}
@@ -306,16 +306,16 @@ const LeadTable = () => {
                       {lead.company?.name}
                     </a>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {lead.company?.city}, {lead.company?.state}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {lead.company?.size}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {lead.company?.industry}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     <div className="flex gap-2 max-w-56 min-w-32 flex-wrap">
                       {lead.company?.keywords?.split(",").map((keyword) => (
                         <span className="p-1 border rounded-full text-xs">

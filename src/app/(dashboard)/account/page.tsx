@@ -150,8 +150,8 @@ export default function Account() {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-col gap-1">
-                      <div className="flex items-center w-full">
-                        <label className="min-w-24" htmlFor="firstName">
+                      <div className="flex flex-col w-full gap-1">
+                        <label className="text-xs min-w-24" htmlFor="firstName">
                           First Name:
                         </label>
                         <input
@@ -171,8 +171,8 @@ export default function Account() {
                       )}
                     </div>
                     <div className="flex flex-col gap-1">
-                      <div className="flex items-center w-full">
-                        <label className="min-w-24" htmlFor="lastName">
+                      <div className="flex flex-col w-full gap-1">
+                        <label className="text-xs min-w-24" htmlFor="lastName">
                           Last Name:
                         </label>
                         <input
@@ -191,11 +191,11 @@ export default function Account() {
                         </div>
                       )}
                     </div>
-                    <div className="flex items-center">
-                      <label className="min-w-24" htmlFor="title">
+                    <div className="flex flex-col w-full gap-2">
+                      <label className="text-xs min-w-24" htmlFor="title">
                         Title:
                       </label>
-                      <div className="flex flex-col w-full">
+                      <div className="flex flex-col w-full gap-1">
                         <input
                           id="title"
                           type="text"
@@ -208,8 +208,8 @@ export default function Account() {
                       </div>
                     </div>
                     <div className="flex flex-col gap-1">
-                      <div className="flex items-center w-full">
-                        <label className="min-w-24" htmlFor="email">
+                      <div className="flex flex-col w-full gap-1">
+                        <label className="text-xs min-w-24" htmlFor="email">
                           Email:
                         </label>
                         <input
@@ -228,11 +228,11 @@ export default function Account() {
                         </div>
                       )}
                     </div>
-                    <div className="flex items-center">
-                      <label className="min-w-24" htmlFor="phone">
+                    <div className="flex flex-col w-full gap-1">
+                      <label className="text-xs min-w-24" htmlFor="phone">
                         Phone:
                       </label>
-                      <div className="flex flex-col w-full">
+                      <div className="flex flex-col w-full gap-1">
                         <input
                           id="phone"
                           type="text"
@@ -250,13 +250,13 @@ export default function Account() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                      className="w-full btn-primary"
                     >
                       Save
                     </button>
                     <button
                       type="reset"
-                      className="w-full p-2 rounded-md bg-gray-300 hover:bg-gray-200"
+                      className="w-full btn-secondary"
                       onClick={() => resetForm()}
                     >
                       Cancel
@@ -266,7 +266,7 @@ export default function Account() {
               )}
             </Formik>
             <div>
-              <div className="pb-2">Password</div>
+              <div className="pb-1 text-xs">Password</div>
               <div
                 className={classNames(
                   "flex flex-col gap-2 ",
@@ -274,7 +274,7 @@ export default function Account() {
                 )}
               >
                 <button
-                  className="min-w-32 px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200"
+                  className="btn-secondary"
                   onClick={() => setChange(!change)}
                 >
                   {change ? "Hide" : "Change Password"}
@@ -325,10 +325,10 @@ export default function Account() {
                       <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="flex flex-col gap-2">
                           <div className="flex items-center">
-                            <label className="min-w-36" htmlFor="oldPassword">
+                            <label className="text-xs min-w-36" htmlFor="oldPassword">
                               Old Password:
                             </label>
-                            <div className="flex flex-col w-full">
+                            <div className="flex flex-col w-full gap-1">
                               <input
                                 id="oldPassword"
                                 type="password"
@@ -345,10 +345,10 @@ export default function Account() {
                             </div>
                           </div>
                           <div className="flex items-center">
-                            <label className="min-w-36" htmlFor="newPassword">
+                            <label className="text-xs min-w-36" htmlFor="newPassword">
                               New Password:
                             </label>
-                            <div className="flex flex-col w-full">
+                            <div className="flex flex-col w-full gap-1">
                               <input
                                 id="newPassword"
                                 type="password"
@@ -366,12 +366,12 @@ export default function Account() {
                           </div>
                           <div className="flex items-center">
                             <label
-                              className="min-w-36"
+           text-xs                    className="min-w-36"
                               htmlFor="confirmPassword"
                             >
                               Confirm Password:
                             </label>
-                            <div className="flex flex-col w-full">
+                            <div className="flex flex-col w-full gap-1">
                               <input
                                 id="confirmPassword"
                                 type="password"
@@ -389,7 +389,7 @@ export default function Account() {
                             </div>
                           </div>
                           <button
-                            className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                            className="w-full btn-primary"
                             disabled={isSubmitting}
                           >
                             Confirm

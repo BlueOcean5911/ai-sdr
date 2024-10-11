@@ -60,7 +60,6 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
           </div>
         </div>
       </div>
-      {/* {send ? <EmailSendWindow close={() => setSend(false)} /> : <></>} */}
       <Transition appear show={sent} as={Fragment}>
         <Dialog as="div" className="relative" onClose={() => setSent(false)}>
           <div className="fixed inset-0 bg-black/65 z-40" />

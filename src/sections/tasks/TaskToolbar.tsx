@@ -43,7 +43,7 @@ const TaskToolbar = ({ handleCreate }: { handleCreate: () => void }) => {
     <div className="flex flex-row justify-between items-center gap-4 text-sm border-b border-gray-100">
       <div className="flex items-center gap-2">
         <button
-          className="min-w-32 px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200"
+          className="btn-secondary"
           onClick={() => {
             setTaskFilterConfig((prev) => ({
               ...prev,
@@ -80,7 +80,7 @@ const TaskToolbar = ({ handleCreate }: { handleCreate: () => void }) => {
       </div>
       <div className="flex flex-row justify-end items-center gap-2">
         <button
-          className="min-w-28 px-2 py-1.5 flex flex-row items-center gap-1 rounded-md bg-blue-500 hover:bg-blue-400"
+          className="btn-primary"
           onClick={handleCreate}
         >
           <IoMdCheckboxOutline className="w-5 h-5 fill-white" />

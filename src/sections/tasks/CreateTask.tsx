@@ -119,6 +119,7 @@ export default function CreateTask({
                         taskPriority: values.taskPriority,
                         endDate: values.endDate,
                         ownerId: values.ownerId,
+                        leadId: "",
                       };
                       task
                         ? runService(
@@ -298,13 +299,13 @@ export default function CreateTask({
                             <button
                               type="submit"
                               disabled={isSubmitting}
-                              className="px-2 py-1 rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                              className="btn-primary"
                             >
                               {task ? "Updte" : "Save"} Task
                             </button>
                             <button
                               type="button"
-                              className="px-2 py-1 rounded-md border border-gray-300 hover:bg-gray-200"
+                              className="btn-secondary"
                               onClick={handleClose}
                             >
                               Close

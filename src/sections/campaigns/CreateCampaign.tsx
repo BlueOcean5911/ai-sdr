@@ -183,7 +183,7 @@ const CreateCampaign = ({
                         <button
                           type="submit"
                           disabled={isSubmitting}
-                          className="w-full p-1 text-sm rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                          className="btn-primary"
                         >
                           Save
                         </button>

@@ -15,10 +15,12 @@ enum PERSONALIZED_VIEW {
 }
 
 const EmailGeneratorWindow = ({
+  senderId,
   lead,
   onChange,
   close,
 }: {
+  senderId: string;
   lead: LeadModelWithCompanyModel;
   onChange: (text: string, type: string) => void;
   close: () => void;
@@ -42,6 +44,7 @@ const EmailGeneratorWindow = ({
         companyOverview: "",
         additionalContext: "",
       },
+      senderId: senderId,
     });
   const [generatedEmails, setGeneratedEmails] = useState<
     GeneratedEmailsModel | undefined
@@ -75,7 +78,7 @@ const EmailGeneratorWindow = ({
   };
 
   useEffect(() => {
-    console.log(personalizedSetting);
+    console.log("personalized settting  ", personalizedSetting);
   }, [personalizedSetting]);
 
   return (
