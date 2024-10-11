@@ -1,12 +1,12 @@
 import { api } from "@/utils/api";
-import { CountModel, FetchProps } from "@/types";
+import { ApiSuccessResponse, CountModel, FetchProps } from "@/types";
 import { EMAIL_STATUS } from "@/types/enums";
 import { CompanyModel } from "./companyService";
 interface FetchLeadsProps extends FetchProps {
   targeted?: boolean;
   jobTitle?: string;
   companyName?: string;
-  location?: string;
+  country?: string;
   industry?: string;
 }
 
@@ -24,10 +24,23 @@ export interface BaseLeadModel {
   title?: string;
   email?: string;
   emailStatus?: EMAIL_STATUS | string;
-  phone?: string;
-  phoneStatus?: EMAIL_STATUS | string;
+  workEmail?: string;
+  workEmailStatus?: EMAIL_STATUS | string;
+  primaryPhone?: string;
+  primaryPhoneStatus?: EMAIL_STATUS | string;
+  mobilePhone?: string;
+  mobilePhoneStatus?: EMAIL_STATUS | string;
+  workPhone?: string;
+  workPhoneStatus?: EMAIL_STATUS | string;
+  streetAddress?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  timeZone?: string;
+  annualRevenue?: string;
+  source?: string;
+  stage?: string;
   linkedin?: string;
-  location?: string;
   personalNote1?: string;
   personalNote2?: string;
 
@@ -67,11 +80,24 @@ export const addLead = async (lead: BaseLeadModel) => {
       title: response?.data?.title,
       email: response?.data?.email,
       emailStatus: response?.data?.emailStatus,
-      phone: response?.data?.phone,
-      phoneStatus: response?.data?.phoneStatus,
+      workEmail: response?.data?.workEmail,
+      workEmailStatus: response?.data?.workEmailStatus,
+      primaryPhone: response?.data?.primaryPhone,
+      primaryPhoneStatus: response?.data?.primaryPhoneStatus,
+      mobilePhone: response?.data?.mobilePhone,
+      mobilePhoneStatus: response?.data?.mobilePhoneStatus,
+      workPhone: response?.data?.workPhone,
+      workPhoneStatus: response?.data?.workPhoneStatus,
+      streetAddress: response?.data?.streetAddress,
+      city: response?.data?.city,
+      state: response?.data?.state,
+      country: response?.data?.country,
+      timeZone: response?.data?.timeZone,
+      annualRevenue: response?.data?.annualRevenue,
+      source: response?.data?.source,
+      stage: response?.data?.stage,
       linkedin: response?.data?.linkedin,
       companyId: response?.data?.companyId,
-      location: response?.data?.location,
       clickCount: response?.data?.clickCount,
       replyCount: response?.data?.replyCount,
       targeted: response?.data?.targeted,
@@ -85,8 +111,81 @@ export const addLead = async (lead: BaseLeadModel) => {
         size: response?.data?.company?.size,
         industry: response?.data?.company?.industry,
         description: response?.data?.company?.description,
+        website: response?.data?.company?.website,
         linkedin: response?.data?.company?.linkedin,
-        location: response?.data?.company?.location,
+        streetAddress: response?.data?.company?.streetAddress,
+        city: response?.data?.company?.city,
+        state: response?.data?.company?.state,
+        country: response?.data?.company?.country,
+        postalCode: response?.data?.company?.postalCode,
+        yearFounded: response?.data?.company?.yearFounded,
+        domain: response?.data?.company?.domain,
+        annualRevenue: response?.data?.company?.annualRevenue,
+        stage: response?.data?.company?.stage,
+        keywords: response?.data?.company?.keywords,
+      },
+    },
+  };
+};
+
+export const updateLead = async (data: { id: string; updateData: LeadModel }) => {
+  const { id, updateData } = data;
+  const response = await api.put(`api/leads/${id}`, updateData);
+  if (response.status !== 200) {
+    throw new Error("Failed to update lead");
+  }
+  console.log("response", response);
+  return {
+    data: {
+      id: response?.data?.id,
+      firstName: response?.data?.firstName,
+      lastName: response?.data?.lastName,
+      title: response?.data?.title,
+      email: response?.data?.email,
+      emailStatus: response?.data?.emailStatus,
+      workEmail: response?.data?.workEmail,
+      workEmailStatus: response?.data?.workEmailStatus,
+      primaryPhone: response?.data?.primaryPhone,
+      primaryPhoneStatus: response?.data?.primaryPhoneStatus,
+      mobilePhone: response?.data?.mobilePhone,
+      mobilePhoneStatus: response?.data?.mobilePhoneStatus,
+      workPhone: response?.data?.workPhone,
+      workPhoneStatus: response?.data?.workPhoneStatus,
+      streetAddress: response?.data?.streetAddress,
+      city: response?.data?.city,
+      state: response?.data?.state,
+      country: response?.data?.country,
+      timeZone: response?.data?.timeZone,
+      annualRevenue: response?.data?.annualRevenue,
+      source: response?.data?.source,
+      stage: response?.data?.stage,
+      linkedin: response?.data?.linkedin,
+      companyId: response?.data?.companyId,
+      clickCount: response?.data?.clickCount,
+      replyCount: response?.data?.replyCount,
+      targeted: response?.data?.targeted,
+      personalNote1: response?.data?.personalNote1,
+      company: {
+        id: response?.data?.company?.id,
+        name: response?.data?.company?.name,
+        companyType: response?.data?.company?.companyType,
+        phone: response?.data?.company?.phone,
+        phoneStatus: response?.data?.company?.phoneStatus,
+        size: response?.data?.company?.size,
+        industry: response?.data?.company?.industry,
+        description: response?.data?.company?.description,
+        website: response?.data?.company?.website,
+        linkedin: response?.data?.company?.linkedin,
+        streetAddress: response?.data?.company?.streetAddress,
+        city: response?.data?.company?.city,
+        state: response?.data?.company?.state,
+        country: response?.data?.company?.country,
+        postalCode: response?.data?.company?.postalCode,
+        yearFounded: response?.data?.company?.yearFounded,
+        domain: response?.data?.company?.domain,
+        annualRevenue: response?.data?.company?.annualRevenue,
+        stage: response?.data?.company?.stage,
+        keywords: response?.data?.company?.keywords,
       },
     },
   };
@@ -95,7 +194,7 @@ export const addLead = async (lead: BaseLeadModel) => {
 export const getLeads = async (
   props: FetchLeadsProps = { offset: 0, limit: 100, targeted: undefined }
 ): Promise<ApiLeadsResponse> => {
-  const { offset, limit, targeted, jobTitle, companyName, industry, location } =
+  const { offset, limit, targeted, jobTitle, companyName, industry, country } =
     props;
   let url = `/api/leads/?offset=${offset}&limit=${limit}`;
 
@@ -111,8 +210,8 @@ export const getLeads = async (
   if (industry) {
     url += `&industry=${industry}`;
   }
-  if (location) {
-    url += `&location=${location}`;
+  if (country) {
+    url += `&country=${country}`;
   }
 
   const response = await api.get(url);
@@ -126,11 +225,24 @@ export const getLeads = async (
       title: item?.title,
       email: item?.email,
       emailStatus: item?.emailStatus,
-      phone: item?.phone,
-      phoneStatus: item?.phoneStatus,
+      workEmail: item?.workEmail,
+      workEmailStatus: item?.workEmailStatus,
+      primaryPhone: item?.primaryPhone,
+      primaryPhoneStatus: item?.primaryPhoneStatus,
+      mobilePhone: item?.mobilePhone,
+      mobilePhoneStatus: item?.mobilePhoneStatus,
+      workPhone: item?.workPhone,
+      workPhoneStatus: item?.workPhoneStatus,
+      streetAddress: item?.streetAddress,
+      city: item?.city,
+      state: item?.state,
+      country: item?.country,
+      timeZone: item?.timeZone,
+      annualRevenue: item?.annualRevenue,
+      source: item?.source,
+      stage: item?.stage,
       linkedin: item?.linkedin,
       companyId: item?.companyId,
-      location: item?.location,
       clickCount: item?.clickCount,
       replyCount: item?.replyCount,
       targeted: item?.targeted,
@@ -144,8 +256,20 @@ export const getLeads = async (
         size: item?.company?.size,
         industry: item?.company?.industry,
         description: item?.company?.description,
+        website: item?.company?.website,
         linkedin: item?.company?.linkedin,
-        location: item?.company?.location,
+        
+        streetAddress: item?.company?.streetAddress,
+        city: item?.company?.city,
+        state: item?.company?.state,
+        country: item?.company?.country,
+        postalCode: item?.company?.postalCode,
+
+        yearFounded: item?.company?.yearFounded,
+        domain: item?.company?.domain,
+        annualRevenue: item?.company?.annualRevenue,
+        stage: item?.company?.stage,
+        keywords: item?.company?.keywords,
       },
     });
   });
@@ -169,11 +293,24 @@ export const getLeadById = async (props: {
     title: response.data?.title,
     email: response.data?.email,
     emailStatus: response.data?.emailStatus,
-    phone: response.data?.phone,
-    phoneStatus: response.data?.phoneStatus,
+    workEmail: response.data?.workEmail,
+    workEmailStatus: response.data?.workEmailStatus,
+    primaryPhone: response.data?.primaryPhone,
+    primaryPhoneStatus: response.data?.primaryPhoneStatus,
+    mobilePhone: response.data?.mobilePhone,
+    mobilePhoneStatus: response.data?.mobilePhoneStatus,
+    workPhone: response.data?.workPhone,
+    workPhoneStatus: response.data?.workPhoneStatus,
+    streetAddress: response.data?.streetAddress,
+    city: response.data?.city,
+    state: response.data?.state,
+    country: response.data?.country,
+    timeZone: response.data?.timeZone,
+    annualRevenue: response.data?.annualRevenue,
+    source: response.data?.source,
+    stage: response.data?.stage,
     linkedin: response.data?.linkedin,
     companyId: response.data?.companyId,
-    location: response.data?.location,
     clickCount: response.data?.clickCount,
     replyCount: response.data?.replyCount,
     targeted: response.data?.targeted,
@@ -182,6 +319,22 @@ export const getLeadById = async (props: {
 
   return {
     data: lead,
+  };
+};
+
+export const deleteLead = async (
+  leadId: string
+): Promise<ApiSuccessResponse> => {
+  const response = await api.delete(`api/leads/${leadId}`);
+
+  if (response.status !== 200) {
+    throw new Error("Failed to update lead");
+  }
+
+  return {
+    data: {
+      success: response.data?.success,
+    },
   };
 };
 
@@ -201,13 +354,13 @@ export const getLeadTotalCount = async ({
   targeted,
   jobTitle,
   companyName,
-  location,
+  country,
   industry,
 }: {
   targeted?: boolean;
   jobTitle?: string;
   companyName?: string;
-  location?: string;
+  country?: string;
   industry?: string;
 }): Promise<ApiCountResponse> => {
   let url = `/api/leads/statistics/total-count?`;
@@ -223,8 +376,8 @@ export const getLeadTotalCount = async ({
   if (industry) {
     url += `&industry=${industry}`;
   }
-  if (location) {
-    url += `&location=${location}`;
+  if (country) {
+    url += `&country=${country}`;
   }
   const response = await api.get(url);
   return {

@@ -1,5 +1,5 @@
 import { employeeOptions, statusOptions } from "@/data/filter.data";
-import { CreateModelProps } from "@/types";
+import { CreateCompanyProps } from "@/types";
 import {
   Dialog,
   DialogPanel,
@@ -12,16 +12,21 @@ import Select from "react-tailwindcss-select";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import FormHelperText from "@/components/extends/FormHelperText";
-import { addCompany, BaseCompanyModel } from "@/services/companyService";
+import {
+  addCompany,
+  updateCompany,
+  BaseCompanyModel,
+} from "@/services/companyService";
 import { runService } from "@/utils/service_utils";
 import { toast } from "react-toastify";
 import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
 
 export default function CreateCompany({
   open,
+  company = undefined,
   handleSave,
   handleClose,
-}: CreateModelProps) {
+}: CreateCompanyProps) {
   const { setCompanyFilterConfig } = useCompanyFilter();
   return (
     <>
@@ -44,30 +49,60 @@ export default function CreateCompany({
                     as="h3"
                     className="px-6 py-3 text-lg font-semibold leading-6 bg-white text-gray-900 rounded-md"
                   >
-                    Create New Company
+                    {company ? "Edit Company" : "Create New Company"}
                   </DialogTitle>
                   <Formik
                     initialValues={{
-                      name: "",
-                      phone: "",
-                      phoneStatus: statusOptions[3],
-                      type: "",
-                      description: "",
-                      size: employeeOptions[0],
-                      industry: "",
-                      linkedin: "",
-                      location: "",
+                      name: company ? company.name : "",
+                      phone: company ? company.phone : "",
+                      // phoneStatus: statusOptions[3],
+                      phoneStatus: statusOptions.find(
+                        (option) => option.value === company?.phoneStatus
+                      ),
+                      companyType: company ? company.companyType : "",
+                      description: company ? company.description : "",
+                      size: company
+                        ? { label: company.size!, value: company.size! }
+                        : employeeOptions[0],
+                      industry: company ? company.industry : "",
+                      linkedin: company ? company.linkedin : "",
+                      streetAddress: company ? company.streetAddress : "",
+                      city: company ? company.city : "",
+                      state: company ? company.state : "",
+                      country: company ? company.country : "",
+                      postalCode: company ? company.postalCode : "",
+                      yearFounded: company ? company.yearFounded : "",
+                      domain: company ? company.domain : "",
+                      annualRevenue: company ? company.annualRevenue : "",
+                      keywords: company ? company.keywords : "",
                     }}
                     validationSchema={Yup.object().shape({
                       name: Yup.string().required("Name is required"),
                       phone: Yup.string().required("Phone is required"),
                       // phoneStatus: Yup.string().required("Status is required"),
-                      type: Yup.string().required("Type is required"),
+                      companyType: Yup.string().required("Type is required"),
                       // size: Yup.string().required("Size is required"),
                       linkedin: Yup.string()
                         .required("LinkedIn is required")
                         .url("Invalid URL"),
-                      location: Yup.string().required("Location is required"),
+                      // location: Yup.string().required("Location is required"),
+                      streetAddress: Yup.string().required(
+                        "Street Address is required"
+                      ),
+                      city: Yup.string().required("City is required"),
+                      state: Yup.string().required("State is required"),
+                      country: Yup.string().required("Country is required"),
+                      postalCode: Yup.string().required(
+                        "Postal Code is required"
+                      ),
+                      yearFounded: Yup.string().required(
+                        "yearFounded is required"
+                      ),
+                      domain: Yup.string().required("Domain is required"),
+                      annualRevenue: Yup.string().required(
+                        "Annual Revenue is required"
+                      ),
+                      // keywords: Yup.string().required("Keywords is required"),
                     })}
                     onSubmit={async (
                       values,
@@ -75,36 +110,62 @@ export default function CreateCompany({
                     ) => {
                       console.log("submit");
                       // setSubmitting(true);
-                      const phoneStatus = values.phoneStatus.value;
-                      let company: BaseCompanyModel = {
+                      const phoneStatus = values.phoneStatus?.value;
+                      let companyData: BaseCompanyModel = {
                         name: values.name,
                         linkedin: values.linkedin,
-                        companyType: values.type,
+                        companyType: values.companyType,
                         phone: values.phone,
                         phoneStatus: phoneStatus,
                         description: values.description,
                         industry: values.industry,
-                        location: values.location,
+                        streetAddress: values.streetAddress,
+                        city: values.city,
+                        state: values.state,
+                        country: values.country,
+                        postalCode: values.postalCode,
+                        yearFounded: values.yearFounded,
+                        domain: values.domain,
+                        annualRevenue: values.annualRevenue,
+                        keywords: values.keywords,
                         size: values.size.value,
                         targeted: false,
                       };
-                      runService(
-                        company,
-                        addCompany,
-                        (data) => {
-                          setCompanyFilterConfig((prev) => ({
-                            ...prev,
-                            createdCompanyId: data.id,
-                          }));
-                          toast.success("Company created successfully");
-                          handleSave();
-                          handleClose();
-                        },
-                        (status, error) => {
-                          console.log(status, error);
-                          toast.error(error);
-                        }
-                      );
+                      company
+                        ? runService(
+                            { id: company.id, updateData: companyData },
+                            updateCompany,
+                            (data) => {
+                              setCompanyFilterConfig((prev) => ({
+                                ...prev,
+                                createdCompanyId: data.id,
+                              }));
+                              toast.success("Company updated successfully");
+                              handleSave();
+                              handleClose();
+                            },
+                            (status, error) => {
+                              console.log(status, error);
+                              toast.error(error);
+                            }
+                          )
+                        : runService(
+                            companyData,
+                            addCompany,
+                            (data) => {
+                              setCompanyFilterConfig((prev) => ({
+                                ...prev,
+                                createdCompanyId: data.id,
+                              }));
+                              toast.success("Company created successfully");
+                              handleSave();
+                              handleClose();
+                            },
+                            (status, error) => {
+                              console.log(status, error);
+                              toast.error(error);
+                            }
+                          );
                       // setSubmitting(false);
                     }}
                   >
@@ -157,7 +218,11 @@ export default function CreateCompany({
                               </div>
                               <div className="w-full flex flex-col">
                                 <Select
-                                  value={values.phoneStatus}
+                                  value={
+                                    values.phoneStatus
+                                      ? values.phoneStatus
+                                      : statusOptions[3]
+                                  }
                                   onChange={(item: any) => {
                                     setFieldValue("phoneStatus", item);
                                   }}
@@ -192,30 +257,31 @@ export default function CreateCompany({
                           </div>
 
                           <div className="flex flex-col">
-                            <label htmlFor="type">Company Type</label>
+                            <label htmlFor="companyType">Company Type</label>
                             <input
-                              id="type"
+                              id="companyType"
                               type="text"
                               placeholder="Company Type"
                               className="input-primary"
-                              value={values.type}
+                              value={values.companyType}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
-                            {touched.type && errors.type && (
-                              <FormHelperText>{errors.type}</FormHelperText>
+                            {touched.companyType && errors.companyType && (
+                              <FormHelperText>
+                                {errors.companyType}
+                              </FormHelperText>
                             )}
                           </div>
 
                           <div className="flex flex-col">
                             <label htmlFor="description">Description</label>
-                            <input
+                            <textarea
                               id="description"
-                              type="text"
-                              placeholder=""
                               className="input-primary"
                               value={values.description}
                               onChange={handleChange}
+                              onBlur={handleBlur}
                             />
                           </div>
 
@@ -269,20 +335,167 @@ export default function CreateCompany({
                               <FormHelperText>{errors.linkedin}</FormHelperText>
                             )}
                           </div>
+                          <div className="flex flex-row gap-2">
+                            <div className="flex flex-col">
+                              <label htmlFor="streetAddress">
+                                Street Address
+                              </label>
+                              <input
+                                id="streetAddress"
+                                type="text"
+                                placeholder="Street Address"
+                                className="input-primary"
+                                value={values.streetAddress}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.streetAddress &&
+                                errors.streetAddress && (
+                                  <FormHelperText>
+                                    {errors.streetAddress}
+                                  </FormHelperText>
+                                )}
+                            </div>
+
+                            <div className="flex flex-col">
+                              <label htmlFor="city">City</label>
+                              <input
+                                id="city"
+                                type="text"
+                                placeholder="City"
+                                className="input-primary"
+                                value={values.city}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.city && errors.city && (
+                                <FormHelperText>{errors.city}</FormHelperText>
+                              )}
+                            </div>
+
+                            <div className="flex flex-col">
+                              <label htmlFor="state">State</label>
+                              <input
+                                id="state"
+                                type="text"
+                                placeholder="State"
+                                className="input-primary"
+                                value={values.state}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.state && errors.state && (
+                                <FormHelperText>{errors.state}</FormHelperText>
+                              )}
+                            </div>
+
+                            <div className="flex flex-col">
+                              <label htmlFor="country">Country</label>
+                              <input
+                                id="country"
+                                type="text"
+                                placeholder="Country"
+                                className="input-primary"
+                                value={values.country}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.country && errors.country && (
+                                <FormHelperText>
+                                  {errors.country}
+                                </FormHelperText>
+                              )}
+                            </div>
+
+                            <div className="flex flex-col">
+                              <label htmlFor="postalCode">Postal Code</label>
+                              <input
+                                id="postalCode"
+                                type="text"
+                                placeholder="Postal Code"
+                                className="input-primary"
+                                value={values.postalCode}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.postalCode && errors.postalCode && (
+                                <FormHelperText>
+                                  {errors.postalCode}
+                                </FormHelperText>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="flex flex-row gap-2">
+                            <div className="w-full flex flex-col">
+                              <label htmlFor="yearFounded">Year Founded</label>
+                              <input
+                                id="yearFounded"
+                                type="text"
+                                placeholder="Year Founded"
+                                className="input-primary"
+                                value={values.yearFounded}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.yearFounded && errors.yearFounded && (
+                                <FormHelperText>
+                                  {errors.yearFounded}
+                                </FormHelperText>
+                              )}
+                            </div>
+
+                            <div className="w-full flex flex-col">
+                              <label htmlFor="domain">Domain</label>
+                              <input
+                                id="domain"
+                                type="text"
+                                placeholder="Domain"
+                                className="input-primary"
+                                value={values.domain}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.domain && errors.domain && (
+                                <FormHelperText>{errors.domain}</FormHelperText>
+                              )}
+                            </div>
+
+                            <div className="w-full flex flex-col">
+                              <label htmlFor="annualRevenue">
+                                Annual Revenue
+                              </label>
+                              <input
+                                id="annualRevenue"
+                                type="text"
+                                placeholder="Year Founded"
+                                className="input-primary"
+                                value={values.annualRevenue}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.annualRevenue &&
+                                errors.annualRevenue && (
+                                  <FormHelperText>
+                                    {errors.yearFounded}
+                                  </FormHelperText>
+                                )}
+                            </div>
+                          </div>
 
                           <div className="flex flex-col">
-                            <label htmlFor="location">Location</label>
+                            <label htmlFor="keywords">Keywords</label>
                             <input
-                              id="location"
+                              id="keywords"
                               type="text"
-                              placeholder="Location / Country"
+                              placeholder="Keywords"
                               className="input-primary"
-                              value={values.location}
+                              value={values.keywords}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
-                            {touched.location && errors.location && (
-                              <FormHelperText>{errors.location}</FormHelperText>
+                            {touched.keywords && errors.keywords && (
+                              <FormHelperText>{errors.keywords}</FormHelperText>
                             )}
                           </div>
 
@@ -292,7 +505,7 @@ export default function CreateCompany({
                               disabled={isSubmitting}
                               className="px-2 py-1 rounded-md text-white bg-blue-500 hover:bg-blue-400"
                             >
-                              Save company
+                              {company ? "Update Company" : "Create Company"}
                             </button>
                             <button
                               className="px-2 py-0.5 rounded-md border-2 bg-white border-gray-300 hover:bg-gray-200"

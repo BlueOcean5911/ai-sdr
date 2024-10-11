@@ -2,18 +2,21 @@
 
 import FilterContact from "@/components/Filter/filterContact";
 import ContactToolbar from "@/sections/contacts/ContactToolbar";
-import ContactItem from "@/sections/contacts/ContactItem";
 import { useContactFilter } from "@/contexts/FilterContactContext";
 import {
   ContactInCadence,
   ContactInCadenceStatistics,
   getContactsInCadence,
   getContactsInCadenceStatistics,
+  updateCadenceState,
 } from "@/services/contactsService";
 import GeneralContacts from "./generalContacts";
 import Pagination from "@/components/extends/Pagination/Pagination";
 import { useEffect, useState } from "react";
 import { handleError, runService } from "@/utils/service_utils";
+import { SuccessModel } from "@/types";
+import { toast } from "react-toastify";
+import { deleteCadenceState } from "@/services/cadenceState";
 
 export default function CadenceContacts(
   { cadenceId, campaignId }: { cadenceId?: string; campaignId?: string } = {
@@ -54,12 +57,57 @@ export default function CadenceContacts(
     );
   };
 
+  const handleUpdateCadenceStep = (id: string, status: string) => {
+    runService(
+      { id, status },
+      updateCadenceState,
+      (data: SuccessModel) => {
+        if (data.success) {
+          setContacts(
+            contacts.map((contact) => {
+              if (contact.cadenceStepId === id) {
+                contact.currentStepStatus = status;
+              }
+              return contact;
+            })
+          );
+          fetchContactsStatistics();
+          toast.success("Cadence step paused successfully.");
+        }
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  const handleDeleteCadenceStep = (id: string) => {
+    runService(
+      { id },
+      deleteCadenceState,
+      (data: SuccessModel) => {
+        if (data.success) {
+          setContacts(
+            contacts.filter((contact) => contact.cadenceStepId !== id)
+          );
+          fetchContactsStatistics();
+          fetchTotalCount();
+          toast.success("Cadence step deleted successfully.");
+        }
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
   const fetchContactsStatistics = () => {
     runService(
       { cadenceId },
       getContactsInCadenceStatistics,
       (data) => {
         setStatisticData(data);
+        setTotalCount(data.totalCount);
       },
       (status, error) => {
         handleError(status, error);
@@ -82,20 +130,27 @@ export default function CadenceContacts(
   }, [contacts]);
 
   return (
-    <div className="flex gap-2 flex-1 overflow-auto">
+    <div className="flex gap-4 p-4 flex-1 overflow-auto">
       {contactFilterConfig.isOpen && <FilterContact />}
-      <div className="card flex-1 flex flex-col overflow-auto">
-        <div className="px-6 overflow-auto">
+      <div className="card p-4 pt-7 flex-1 flex flex-col overflow-auto shadow-lg">
+        <div className="overflow-auto">
           <ContactToolbar data={statisticData} />
         </div>
 
         {/* Table */}
-        <GeneralContacts contacts={contacts} />
+        <GeneralContacts
+          contacts={contacts}
+          handleUpdateCadenceState={(id, status) =>
+            handleUpdateCadenceStep(id, status)
+          }
+          onDeleteOne={(id: string) => handleDeleteCadenceStep(id)}
+        />
         {/* Pagination */}
         <div className="flex justify-end">
           <Pagination
             className="pagination-bar"
-            totalCount={0}
+            totalCount={totalCount}
+            pageSize={pageSize}
             onPageChange={(pageSize: number, currentPage: number) => {
               setPageSize(pageSize);
               setCurrentPage(currentPage);

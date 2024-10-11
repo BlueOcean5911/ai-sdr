@@ -48,7 +48,7 @@ const Page = () => {
         </Link>
       </div>
 
-      <div className="card p-2 h-full flex flex-col bg-gray-100 overflow-auto">
+      <div className="p-4 h-full flex flex-col bg-gray-100 overflow-auto">
         <ManageStuff />
       </div>
     </>

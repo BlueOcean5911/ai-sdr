@@ -13,7 +13,6 @@ const stageDict: Record<string, string> = {
   doNotContactCount: "Do Not Contact",
   badDataCount: "Bad Data",
   changedJobCount: "Changed Job",
-  openCount: "Open",
   // openDealCount: "Open Deal",
 };
 
@@ -54,18 +53,20 @@ const ContactToolbar = ({ data }: { data: any }) => {
           <span>Show Filters</span>
         )}
       </button>
-      <div className="flex-1 overflow-auto flex">
-        {Object.keys(stageDict).map((stage: any) => (
-          <div
-            key={stage}
-            className="min-w-20 max-w-28 py-1 flex flex-col text-xs text-center cursor-pointer border-b hover:bg-gray-100 hover:border-b-blue-600"
-          >
-            <span className="text-inherit">{data ? data[stage] : "-"}</span>
-            <span className="text-inherit text-nowrap overflow-hidden">
-              {stageDict[stage]}
-            </span>
-          </div>
-        ))}
+      <div className="flex gap-2 overflow-auto">
+        <div className="flex-1 overflow-auto flex gap-2">
+          {Object.keys(stageDict).map((stage: any) => (
+            <div
+              key={stage}
+              className="min-w-20 max-w-28 py-1 flex flex-col text-xs text-center cursor-pointer border-b hover:bg-gray-100 hover:border-b-blue-600"
+            >
+              <span className="text-inherit">{data ? data[stage] : "-"}</span>
+              <span className="text-inherit text-nowrap overflow-hidden">
+                {stageDict[stage]}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -6,7 +6,10 @@ import LinkedinRequestIcon from "@/components/Icons/linkedinrequest.icon";
 import LinkedinViewIcon from "@/components/Icons/linkedinview.icon";
 import ManualEmailIcon from "@/components/Icons/manualmail.icon";
 import PhoneCallIcon from "@/components/Icons/phonecall.icon";
-import { BaseCadenceStepModel } from "@/services/cadenceStepService";
+import {
+  BaseCadenceStepModel,
+  CadenceStepModel,
+} from "@/services/cadenceStepService";
 import { CADENCE_STEP_TYPE } from "@/types/enums";
 import {
   Dialog,
@@ -15,7 +18,11 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  InformationCircleIcon,
+  LockClosedIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import React, { Fragment, useEffect, useState } from "react";
 
 interface Interval {
@@ -32,68 +39,64 @@ enum CadenceStepView {
   actionItem = "action-item",
 }
 
-export default function AddStep({
-  order,
-  cadenceId,
-  handleCreateStep,
+export default function EditStep({
+  cadenceStepData,
+  handleUpdateStep,
+  closeModal,
 }: {
-  order: number;
-  cadenceId: string;
-  handleCreateStep: (data: BaseCadenceStepModel) => void;
+  cadenceStepData: CadenceStepModel;
+  handleUpdateStep: (data: CadenceStepModel) => void;
+  closeModal: () => void;
 }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentView, setCurrentView] = useState(CadenceStepView.step);
-  // const [more, setMore] = useState(false);
+  const [currentView, setCurrentView] = useState(CadenceStepView.autoEmail);
   const [startNow, setStartNow] = useState(true);
-  const [stepData, setStepData] = useState<BaseCadenceStepModel>({
-    cadenceId: cadenceId,
-    order: order,
-    name: "Automatic Email",
-    interval: 0,
-    stepType: CADENCE_STEP_TYPE.AUTO_EMAIL,
-  });
+  const [stepData, setStepData] = useState<CadenceStepModel>(cadenceStepData);
   const [intervalData, setIntervalData] = useState<Interval>({
     interval: 0,
     intervalType: 1,
   });
 
   useEffect(() => {
+    if (stepData?.interval === 0) {
+      setStartNow(true);
+    } else {
+      setStartNow(false);
+    }
+    if (stepData?.interval && stepData?.interval % 1440 === 0) {
+      setIntervalData({
+        interval: stepData?.interval / 1440,
+        intervalType: 1440,
+      });
+    } else if (stepData?.interval && stepData?.interval % 60 === 0) {
+      setIntervalData({ interval: stepData?.interval / 60, intervalType: 60 });
+    } else {
+      setIntervalData({
+        interval: stepData?.interval ? stepData?.interval : 0,
+        intervalType: 1,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     setStepData((prev) => ({
       ...prev,
       interval: intervalData.interval * intervalData.intervalType,
     }));
+    console.log(intervalData, "interval data");
   }, [intervalData]);
 
   useEffect(() => {
     console.log(stepData);
   }, [stepData]);
 
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-    setCurrentView(CadenceStepView.step);
-    setStartNow(true);
-  }
-
-  const createStep = () => {
-    handleCreateStep(stepData);
-    setIsOpen(false);
+  const updateStep = () => {
+    handleUpdateStep(stepData);
+    closeModal();
   };
 
   return (
     <>
-      <div className="w-28 flex items-center">
-        <button
-          className="h-8 px-3 rounded-md text-sm text-white bg-blue-900 data-[focus]:bg-blue-500"
-          onClick={openModal}
-        >
-          Add a step
-        </button>
-      </div>
-      <Transition appear show={isOpen} as={Fragment}>
+      <Transition appear show={true} as={Fragment}>
         <Dialog as="div" className="relative" onClose={closeModal}>
           <div className="fixed inset-0 bg-black/65 z-40" />
           <div className="fixed inset-0 py-10 overflow-y-auto z-40">
@@ -108,7 +111,7 @@ export default function AddStep({
                 leaveTo="opacity-0 scale-95"
               >
                 <DialogPanel className="max-w-2xl w-full flex flex-col transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all">
-                  {currentView === CadenceStepView.step ? (
+                  {currentView === CadenceStepView.step && (
                     <>
                       <DialogTitle
                         as="h3"
@@ -236,89 +239,84 @@ export default function AddStep({
                         </div>
 
                         {/* <div className="py-2">
-                          <p className="py-1 flex flex-row items-center gap-1">
-                            <span className="text-sm">LinkedIn tasks</span>
-                            <InformationCircleIcon className="w-4 h-4" />
-                          </p>
-                          <div className="flex flex-col gap-3">
-                            <div className="flex flex-1 justify-between items-center bg-white rounded-md shadow-md border hover:border-blue-600 cursor-pointer">
-                              <div className="w-50 p-4 flex justify-between items-center gap-4">
-                                <LinkedinRequestIcon />
-                                <div className="flex flex-col gap-1">
-                                  <span className="font-semibold">
-                                    LinkedIn - Send connection request
-                                  </span>
-                                  <span className="text-sm">
-                                    Send personalized invitations to connect
-                                    with contacts for a positive first
-                                    impression.
-                                  </span>
-                                </div>
-                              </div>
-                              <div className="px-4 flex items-center">
-                                <LockClosedIcon className="w-5 h-5 stroke-2 stroke-gray-500" />
+                        <p className="py-1 flex flex-row items-center gap-1">
+                          <span className="text-sm">LinkedIn tasks</span>
+                          <InformationCircleIcon className="w-4 h-4" />
+                        </p>
+                        <div className="flex flex-col gap-3">
+                          <div className="flex flex-1 justify-between items-center bg-white rounded-md shadow-md border hover:border-blue-600 cursor-pointer">
+                            <div className="w-50 p-4 flex justify-between items-center gap-4">
+                              <LinkedinRequestIcon />
+                              <div className="flex flex-col gap-1">
+                                <span className="font-semibold">
+                                  LinkedIn - Send connection request
+                                </span>
+                                <span className="text-sm">
+                                  Send personalized invitations to connect with
+                                  contacts for a positive first impression.
+                                </span>
                               </div>
                             </div>
-                            <div className="flex flex-1 justify-between items-center bg-white rounded-md shadow-md border hover:border-blue-600 cursor-pointer">
-                              <div className="w-50 p-4 flex justify-between items-center gap-4">
-                                <LinkedinMessageIcon />
-                                <div className="flex flex-col gap-1">
-                                  <span className="font-semibold">
-                                    LinkedIn - Send message
-                                  </span>
-                                  <span className="text-sm">
-                                    Send personalized direct messages to
-                                    contacts you’re connected with to build
-                                    relationships.
-                                  </span>
-                                </div>
-                              </div>
-                              <div className="px-4 flex items-center">
-                                <LockClosedIcon className="w-5 h-5 stroke-2 stroke-gray-500" />
-                              </div>
-                            </div>
-                            <div className="flex flex-1 justify-between items-center bg-white rounded-md shadow-md border hover:border-blue-600 cursor-pointer">
-                              <div className="w-50 p-4 flex justify-between items-center gap-4">
-                                <LinkedinViewIcon />
-                                <div className="flex flex-col gap-1">
-                                  <span className="font-semibold">
-                                    LinkedIn - View profile
-                                  </span>
-                                  <span className="text-sm">
-                                    View a contact's LinkedIn profile to gather
-                                    key information for more effective
-                                    engagement.
-                                  </span>
-                                </div>
-                              </div>
-                              <div className="px-4 flex items-center">
-                                <LockClosedIcon className="w-5 h-5 stroke-2 stroke-gray-500" />
-                              </div>
-                            </div>
-                            <div className="flex flex-1 justify-between items-center bg-white rounded-md shadow-md border hover:border-blue-600 cursor-pointer">
-                              <div className="w-50 p-4 flex justify-between items-center gap-4">
-                                <LinkedinInteractIcon />
-                                <div className="flex flex-col gap-1">
-                                  <span className="font-semibold">
-                                    LinkedIn - Interact with post
-                                  </span>
-                                  <span className="text-sm">
-                                    View a contact's activities and interact
-                                    with their recent posts to foster engagement
-                                    and boost visibility.
-                                  </span>
-                                </div>
-                              </div>
-                              <div className="px-4 flex items-center">
-                                <LockClosedIcon className="w-5 h-5 stroke-2 stroke-gray-500" />
-                              </div>
+                            <div className="px-4 flex items-center">
+                              <LockClosedIcon className="w-5 h-5 stroke-2 stroke-gray-500" />
                             </div>
                           </div>
-                        </div> */}
+                          <div className="flex flex-1 justify-between items-center bg-white rounded-md shadow-md border hover:border-blue-600 cursor-pointer">
+                            <div className="w-50 p-4 flex justify-between items-center gap-4">
+                              <LinkedinMessageIcon />
+                              <div className="flex flex-col gap-1">
+                                <span className="font-semibold">
+                                  LinkedIn - Send message
+                                </span>
+                                <span className="text-sm">
+                                  Send personalized direct messages to contacts
+                                  you’re connected with to build relationships.
+                                </span>
+                              </div>
+                            </div>
+                            <div className="px-4 flex items-center">
+                              <LockClosedIcon className="w-5 h-5 stroke-2 stroke-gray-500" />
+                            </div>
+                          </div>
+                          <div className="flex flex-1 justify-between items-center bg-white rounded-md shadow-md border hover:border-blue-600 cursor-pointer">
+                            <div className="w-50 p-4 flex justify-between items-center gap-4">
+                              <LinkedinViewIcon />
+                              <div className="flex flex-col gap-1">
+                                <span className="font-semibold">
+                                  LinkedIn - View profile
+                                </span>
+                                <span className="text-sm">
+                                  View a contact's LinkedIn profile to gather
+                                  key information for more effective engagement.
+                                </span>
+                              </div>
+                            </div>
+                            <div className="px-4 flex items-center">
+                              <LockClosedIcon className="w-5 h-5 stroke-2 stroke-gray-500" />
+                            </div>
+                          </div>
+                          <div className="flex flex-1 justify-between items-center bg-white rounded-md shadow-md border hover:border-blue-600 cursor-pointer">
+                            <div className="w-50 p-4 flex justify-between items-center gap-4">
+                              <LinkedinInteractIcon />
+                              <div className="flex flex-col gap-1">
+                                <span className="font-semibold">
+                                  LinkedIn - Interact with post
+                                </span>
+                                <span className="text-sm">
+                                  View a contact's activities and interact with
+                                  their recent posts to foster engagement and
+                                  boost visibility.
+                                </span>
+                              </div>
+                            </div>
+                            <div className="px-4 flex items-center">
+                              <LockClosedIcon className="w-5 h-5 stroke-2 stroke-gray-500" />
+                            </div>
+                          </div>
+                        </div>
+                      </div> */}
                       </div>
                     </>
-                  ) : (
-                    <></>
                   )}
                   {currentView === CadenceStepView.autoEmail && (
                     <>
@@ -468,10 +466,10 @@ export default function AddStep({
                           <button
                             className="px-3 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
                             onClick={() => {
-                              createStep();
+                              updateStep();
                             }}
                           >
-                            Create Step
+                            Update Step
                           </button>
                         </div>
                       </div>
@@ -640,10 +638,10 @@ export default function AddStep({
                           <button
                             className="px-3 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
                             onClick={() => {
-                              createStep();
+                              updateStep();
                             }}
                           >
-                            Create Step
+                            Update Step
                           </button>
                         </div>
                       </div>
@@ -810,10 +808,10 @@ export default function AddStep({
                           <button
                             className="px-3 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
                             onClick={() => {
-                              createStep();
+                              updateStep();
                             }}
                           >
-                            Create Step
+                            Update Step
                           </button>
                         </div>
                       </div>
@@ -980,10 +978,10 @@ export default function AddStep({
                           <button
                             className="px-3 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
                             onClick={() => {
-                              createStep();
+                              updateStep();
                             }}
                           >
-                            Create Step
+                            Update step
                           </button>
                         </div>
                       </div>

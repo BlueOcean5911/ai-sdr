@@ -35,7 +35,7 @@ const FilterItem = ({
         </div>
 
         {open && (
-          <div className="px-2 py-2 bg-gray-0 border-y-2 border-gray-100">
+          <div className="px-2 py-2 bg-gray-0 border-y-2 border-gray-100 border-x-2">
             <div className="space-y-2 text-sm">{children}</div>
           </div>
         )}

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   Menu,
   MenuButton,
@@ -22,6 +22,8 @@ import {
   formatDateTimeReadable,
   getInitials,
 } from "@/utils/format";
+import { getUsers, UserModel } from "@/services/userService";
+import { runService, handleError } from "@/utils/service_utils";
 
 export default function TaskItem({
   task,
@@ -32,7 +34,33 @@ export default function TaskItem({
   handleEdit: () => void;
   handleDelete: () => void;
 }) {
+  const [users, setUsers] = useState<UserModel[]>();
   const [starred, setStarred] = useState(false);
+
+  const fetchUsers = () => {
+    runService(
+      undefined,
+      getUsers,
+      (data) => {
+        setUsers(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const owner = users?.find((user) => user.id === task.ownerId);
+  let displayName = "";
+  if (owner) {
+    displayName += owner.firstName ? owner.firstName : " ";
+    displayName += " ";
+    displayName += owner.lastName ? owner.lastName : " ";
+  }
+
   return (
     <div className="w-full h-20 px-4 py-2 flex items-center gap-2 border-b hover:bg-gray-100">
       <input className="shadow-none ring-0 focus:ring-0" type="checkbox" />
@@ -49,25 +77,25 @@ export default function TaskItem({
       <div className="flex items-center flex-1 gap-4 cursor-pointer">
         <div className="w-1/2 max-w-96 lg:max-w-xl xl:max-w-2xl flex flex-col gap-1 overflow-hidden">
           <span className="text-sm font-semibold text-blue-900 line-clamp-1">
-            {task.contacts}
+            {task.title}
           </span>
-          <span className="text-xs line-clamp-1">{task.note}</span>
+          <span className="text-xs line-clamp-1">{task.content}</span>
         </div>
 
         <div className="min-w-64 flex flex-1 flex-row justify-between items-center gap-2">
-          <span className="p-1 text-xs font-semibold text-nowrap rounded-sm bg-gray-100">
-            {task.type}
+          <span className="p-1 text-xs font-semibold text-nowrap rounded-sm bg-gray-100 capitalize">
+            {task.taskType}
           </span>
 
           <div className="flex items-center gap-4 text-xs">
             <span
-              className={`px-1 flex flex-1 justify-center capitalize rounded-sm ${task.priority} text-white`}
+              className={`px-1 flex flex-1 justify-center capitalize rounded-sm ${task.taskPriority} text-white`}
             >
-              {task.priority}
+              {task.taskPriority}
             </span>
-            <span>{formatDate(task.dueDate)}</span>
+            <span>{formatDate(task.endDate)}</span>
             <p className="p-2 w-8 text-xs text-center rounded-full text-white bg-gray-700 aspect-square">
-              {getInitials(task.assignee)}
+              {getInitials(displayName)}
             </p>
           </div>
         </div>

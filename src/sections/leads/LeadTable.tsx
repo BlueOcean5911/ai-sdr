@@ -8,12 +8,19 @@ import Pagination from "@/components/extends/Pagination/Pagination";
 import { CountModel, LeadProps } from "@/types";
 import { handleError, runService } from "@/utils/service_utils";
 import {
+  deleteLead,
   getLeads,
   getLeadTotalCount,
+  LeadModel,
   LeadModelWithCompanyModel,
 } from "@/services/leadService";
 import Link from "next/link";
 import LeadOverview from "./LeadOverview";
+import { FaLinkedinIn } from "react-icons/fa";
+import CreateLead from "./CreateLead";
+import { toast } from "react-toastify";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 
 const LeadTable = () => {
   const { leadFilterConfig } = useLeadFilter();
@@ -26,6 +33,7 @@ const LeadTable = () => {
     setSelectedLeads,
   } = useLeadSelection();
 
+  const [create, setCreate] = useState(false);
   const [overview, setOverview] = useState(false);
   const [selected, setSelected] = useState<LeadModelWithCompanyModel>();
   const [pageSize, setPageSize] = useState<number>(10);
@@ -101,9 +109,39 @@ const LeadTable = () => {
     }
   };
 
+  const handleEdit = (lead: LeadModel) => {
+    setSelected(lead);
+    setCreate(true);
+  };
+
+  const handleDelete = (leadId: string) => {
+    runService(
+      leadId,
+      deleteLead,
+      (data) => {
+        if (data.success === true) {
+          toast.success("Lead updated successfully");
+          fetchTotalCount();
+          fetchLeads();
+        } else toast.error("Something went wrong.");
+        handleClose();
+      },
+      (status, error) => {
+        console.log(status, error);
+        toast.error(error);
+      }
+    );
+  };
+
+  const handleClose = () => {
+    setCreate(false);
+    setSelected(undefined);
+  };
+
   return (
     <>
       <div className="flex-1 flex flex-col overflow-auto">
+        <CreateLead open={create} lead={selected} handleClose={handleClose} />
         <LeadOverview
           show={overview}
           lead={selected}
@@ -141,31 +179,19 @@ const LeadTable = () => {
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
-                  Title
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Email
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Phone
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Current Location
+                  Action
                 </th>
                 <th
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
                   Company
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Title
                 </th>
                 <th
                   scope="col"
@@ -185,6 +211,12 @@ const LeadTable = () => {
                 >
                   Industry
                 </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Keywords
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white">
@@ -194,7 +226,7 @@ const LeadTable = () => {
                   className="cursor-pointer even:bg-blue-50 hover:bg-gray-300 "
                 >
                   <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
-                    <div className="flex gap-2">
+                    <div className="flex items-center gap-2">
                       <CheckBox
                         id={lead.id}
                         key={lead.id}
@@ -225,22 +257,46 @@ const LeadTable = () => {
                       >
                         {lead.firstName} {lead.lastName}
                       </span>
+                      <a href={lead?.linkedin}>
+                        <FaLinkedinIn className="w-6 h-6 p-1 rounded-md border bg-white" />
+                      </a>
                     </div>
                   </td>
                   {/* <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {lead.name}
                   </td> */}
+                  <td className="whitespace-nowrap text-sm text-gray-500">
+                    <Menu>
+                      <MenuButton className="">
+                        <div className="p-1 border rounded-md bg-white">
+                          <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
+                        </div>
+                      </MenuButton>
+                      <MenuItems
+                        anchor="bottom end"
+                        className="flex flex-col w-16 origin-top-right bg-white rounded-md shadow-md border-2 border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
+                      >
+                        <MenuItem>
+                          <button
+                            className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                            onClick={() => handleEdit(lead)}
+                          >
+                            Edit
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                            onClick={() => handleDelete(lead.id)}
+                          >
+                            Delete
+                          </button>
+                        </MenuItem>
+                      </MenuItems>
+                    </Menu>
+                  </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {lead.title}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {lead.email}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {lead.phone}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {lead.location}
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     <a
@@ -251,13 +307,22 @@ const LeadTable = () => {
                     </a>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {lead.company?.location}
+                    {lead.company?.city}, {lead.company?.state}
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {lead.company?.size}
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {lead.company?.industry}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <div className="flex gap-2 max-w-56 min-w-32 flex-wrap">
+                      {lead.company?.keywords?.split(",").map((keyword) => (
+                        <span className="p-1 border rounded-full text-xs">
+                          {keyword}
+                        </span>
+                      ))}
+                    </div>
                   </td>
                 </tr>
               ))}

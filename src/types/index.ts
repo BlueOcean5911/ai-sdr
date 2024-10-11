@@ -1,5 +1,7 @@
 import { TaskModel } from "@/services/taskService";
 import { DOCUMENT_TYPE } from "./enums";
+import { CompanyModel } from "@/services/companyService";
+import { LeadModel } from "@/services/leadService";
 
 export type SelectDefaultType = Array<{
   id: number;
@@ -38,9 +40,22 @@ export interface ContactItemProps {}
 
 export interface ContactStepProps {}
 
-export interface CreateModelProps {
+export interface CreateLeadProps {
+  open: boolean;
+  lead?: LeadModel;
+  handleClose: () => void;
+}
+
+export interface CreateTaskProps {
   open: boolean;
   task?: TaskModel;
+  handleSave: () => void;
+  handleClose: () => void;
+}
+
+export interface CreateCompanyProps {
+  open: boolean;
+  company?: CompanyModel;
   handleSave: () => void;
   handleClose: () => void;
 }
@@ -152,4 +167,12 @@ export interface GeneratedBodyModel {
 export interface GeneratedEmailsModel {
   subjects: GeneratedSubjectModel[];
   bodies: GeneratedBodyModel[];
+}
+
+export interface CadenceStatistics {
+  active: number;
+  paused: number;
+  bounced: number;
+  finished: number;
+  succeeded: number;
 }

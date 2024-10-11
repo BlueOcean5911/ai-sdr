@@ -11,8 +11,13 @@ import {
   CompanyModel,
   getCompanies,
   getCompanyTotalCount,
+  deleteCompany,
 } from "@/services/companyService";
 import CompanyOverview from "./CompanyOverview";
+import CreateCompany from "./CreateCompany";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import { toast } from "react-toastify";
 
 const CompanyTable = () => {
   const { companyFilterConfig } = useCompanyFilter();
@@ -25,6 +30,7 @@ const CompanyTable = () => {
     setSelectedCompanies,
   } = useCompanySelection();
 
+  const [create, setCreate] = useState(false);
   const [overview, setOverview] = useState(false);
   const [selected, setSelected] = useState<CompanyModel>();
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -110,9 +116,52 @@ const CompanyTable = () => {
     }
   };
 
+  const handleSave = () => {};
+
+  const handleOverview = (company: CompanyModel) => {
+    setSelected(company);
+    setOverview(true);
+  };
+
+  const handleEdit = (company: CompanyModel) => {
+    setSelected(company);
+    setCreate(true);
+  };
+
+  const handleDelete = (companyId: string) => {
+    runService(
+      companyId,
+      deleteCompany,
+      (data) => {
+        if (data.success === true) {
+          toast.success("Company updated successfully");
+          fetchTotalCount();
+          fetchCompanies();
+        } else toast.error("Something went wrong.");
+        handleSave();
+        handleClose();
+      },
+      (status, error) => {
+        console.log(status, error);
+        toast.error(error);
+      }
+    );
+  };
+
+  const handleClose = () => {
+    setCreate(false);
+    setSelected(undefined);
+  };
+
   return (
     <>
       <div className="flex-1 flex flex-col overflow-auto">
+        <CreateCompany
+          open={create}
+          company={selected}
+          handleSave={handleSave}
+          handleClose={handleClose}
+        />
         <CompanyOverview
           show={overview}
           company={selected}
@@ -144,13 +193,7 @@ const CompanyTable = () => {
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
-                  Phone
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Current Location
+                  Action
                 </th>
                 <th
                   scope="col"
@@ -164,6 +207,18 @@ const CompanyTable = () => {
                 >
                   Industry
                 </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Keywords
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Locaiton
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white">
@@ -171,10 +226,6 @@ const CompanyTable = () => {
                 <tr
                   key={company.id}
                   className="even:bg-blue-50 hover:bg-gray-300 cursor-pointer"
-                  onClick={() => {
-                    setSelected(company);
-                    setOverview(true);
-                  }}
                 >
                   <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
                     <div className="flex gap-2">
@@ -203,20 +254,61 @@ const CompanyTable = () => {
                           }
                         }}
                       />
-                      {company.name}
+                      <span
+                        className="flex-1 hover:underline"
+                        onClick={() => handleOverview(company)}
+                      >
+                        {company.name}
+                      </span>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {company.phone}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {company.location}
+                  <td className="whitespace-nowrap text-sm text-gray-500">
+                    <Menu>
+                      <MenuButton className="">
+                        <div className="p-1 border rounded-md bg-white">
+                          <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
+                        </div>
+                      </MenuButton>
+                      <MenuItems
+                        anchor="bottom end"
+                        className="flex flex-col w-16 origin-top-right bg-white rounded-md shadow-md border-2 border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
+                      >
+                        <MenuItem>
+                          <button
+                            className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                            onClick={() => handleEdit(company)}
+                          >
+                            Edit
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                            onClick={() => handleDelete(company.id)}
+                          >
+                            Delete
+                          </button>
+                        </MenuItem>
+                      </MenuItems>
+                    </Menu>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {company.size}
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {company.industry}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <div className="flex gap-2 max-w-56 min-w-32 flex-wrap">
+                      {company?.keywords?.split(",").map((keyword) => (
+                        <span className="p-1 border rounded-full text-xs">
+                          {keyword}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    {company.city} {company.state}
                   </td>
                 </tr>
               ))}

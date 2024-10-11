@@ -4,12 +4,7 @@ const nextConfig = {
         return [
             {
                 source: '/dashboard',
-                destination: '/dashboard/emails',
-                permanent: true, // Set to true for a permanent redirect (HTTP 308)
-            },
-            {
-                source: '/integration/hubspot',
-                destination: '/integration/hubspot/companies',
+                destination: '/dashboard/tasks',
                 permanent: true, // Set to true for a permanent redirect (HTTP 308)
             },
         ];

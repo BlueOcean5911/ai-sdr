@@ -1,4 +1,4 @@
-import { FetchProps } from "@/types";
+import { ApiSuccessResponse, FetchProps } from "@/types";
 import { CADENCE_STEP_STATUS, LEAD_STATUS } from "@/types/enums";
 import { api } from "@/utils/api";
 
@@ -22,6 +22,7 @@ export interface ContactInCadence {
   currentStepStatus?: CADENCE_STEP_STATUS | string;
   cadenceCurrentStep?: number;
   leadStatus?: LEAD_STATUS | string;
+  cadenceStepId: string;
 }
 
 export interface ContactInCampaign {
@@ -73,7 +74,7 @@ export const getContactsInCadenceStatistics = async ({
 }: {
   cadenceId: string;
 }): Promise<ApiContactInCadenceStatisticsResponse> => {
-  const url = `api/cadences/${cadenceId}/contacts/statistics`;
+  const url = `api/contacts/statistics?cadenceId=${cadenceId}`;
   const response = await api.get(url);
   return {
     data: {
@@ -126,6 +127,7 @@ export const getContactsInCadence = async (
       currentStepStatus: item?.currentStepStatus,
       cadenceCurrentStep: item?.cadenceCurrentStep,
       leadStatus: item?.leadStatus,
+      cadenceStepId: item?.cadenceStepId,
     })),
   };
 };
@@ -152,4 +154,16 @@ export const getContactsInCampaign = async ({
       leadStatus: item?.leadStatus,
     })),
   };
+};
+
+export const updateCadenceState = async ({
+  id,
+  status,
+}: {
+  id: string;
+  status: string;
+}): Promise<ApiSuccessResponse> => {
+  return await api.put(`api/cadenceStates/${id}`, {
+    state: status,
+  });
 };

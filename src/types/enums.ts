@@ -44,6 +44,7 @@ export enum CADENCE_STEP_TYPE {
   LINKEDIN_SEND_MESSAGE = "linkedinSendMessage",
   LINKEDIN_VIEW_PROFILE = "linkedinViewProfile",
   LINKEDIN_INTERACT_WITH_POST = "linkedinInteractWithPost",
+  ACTION_ITEM = "actionItem",
 }
 
 export enum LEAD_STATUS {

@@ -56,7 +56,7 @@ const TaskToolbar = ({ handleCreate }: { handleCreate: () => void }) => {
             {taskFilterConfig.isOpen ? "Hide Filters" : "Show Filters"}
           </span>
         </button>
-        {Object.entries(statistics).map(([key, count]) => (
+        {/* {Object.entries(statistics).map(([key, count]) => (
           <Link key={key} href={`${path}?${key}=true`}>
             <div
               className={classNames(
@@ -76,7 +76,7 @@ const TaskToolbar = ({ handleCreate }: { handleCreate: () => void }) => {
               <span className="text-inherit capitalize">{key}</span>
             </div>
           </Link>
-        ))}
+        ))} */}
       </div>
       <div className="flex flex-row justify-end items-center gap-2">
         <button

@@ -1,5 +1,5 @@
 import { api } from "@/utils/api";
-import { CountModel, FetchProps } from "@/types";
+import { CadenceStatistics, CountModel, FetchProps } from "@/types";
 import { SHARE_TYPE } from "@/types/enums";
 import { UserModel } from "./userService";
 
@@ -26,6 +26,8 @@ export interface BaseCadenceModel {
 
   scheduledCount?: number;
   deliveredCount?: number;
+  openedCount?: number;
+  clickedCount?: number;
   replyCount?: number;
   interestedCount?: number;
   optOutCount?: number;
@@ -43,6 +45,7 @@ export interface FetchCadenceModel extends CadenceModel, ExtraCadenceModel {}
 
 interface ExtraCadenceModel {
   owner?: UserModel;
+  statistics?: CadenceStatistics;
 }
 
 export interface ApiCadencesResponse {
@@ -63,34 +66,7 @@ export const getCadenceById = async (
   const url = `/api/cadences/${id}`;
   const response = await api.get(url);
 
-  return {
-    data: {
-      id: response.data?.id,
-      name: response.data?.name,
-      activeCount: response.data?.activeCount,
-      pausedCount: response.data?.pausedCount,
-      notSentCount: response.data?.notSentCount,
-      bouncedCount: response.data?.bouncedCount,
-      finishedCount: response.data?.finishedCount,
-      scheduledCount: response.data?.scheduledCount,
-      deliveredCount: response.data?.deliveredCount,
-      replyCount: response.data?.replyCount,
-      interestedCount: response.data?.interestedCount,
-      optOutCount: response.data?.optOutCount,
-      star: response.data?.star,
-      isActive: response.data?.isActive,
-      stepsCount: response.data?.stepsCount,
-      shareType: response.data?.shareType,
-      ownerId: response.data?.ownerId,
-      clonedFromId: response.data?.clonedFromId,
-      owner: {
-        id: response.data?.owner?.id,
-        firstName: response.data?.owner?.firstName,
-        lastName: response.data?.owner?.lastName,
-        email: response.data?.owner?.email,
-      },
-    },
-  };
+  return response;
 };
 
 export const getCadences = async (

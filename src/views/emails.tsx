@@ -27,10 +27,12 @@ export default function Emails(
   const currentParams = Object.fromEntries(useSearchParams());
 
   const fetchMailings = (params: { [key: string]: string }) => {
+    const offset = pageSize * (currentPage - 1);
+    const limit = pageSize;
     runService(
       {
-        offset: 0,
-        limit: 100,
+        offset: offset,
+        limit: limit,
         campaignId: campaignId,
         cadenceId: cadenceId,
         fromUser: emailFilterConfig.fromUser,
@@ -75,20 +77,20 @@ export default function Emails(
   }, []);
 
   useEffect(() => {
-    fetchMailingTotalCount(currentParams);
-    fetchMailings(currentParams);
+    fetchMailingTotalCount(emailFilterConfig.params);
+    fetchMailings(emailFilterConfig.params);
   }, [emailFilterConfig, currentPage, pageSize]);
 
   return (
-    <div className="flex gap-2 flex-1 overflow-auto">
+    <div className="flex gap-4 p-4 flex-1 overflow-auto">
       {emailFilterConfig.isOpen && <FilterEmail />}
-      <div className="card flex-1 flex flex-col overflow-auto">
-        <div className="px-6 overflow-auto">
+      <div className="card p-4 pt-7 flex-1 flex flex-col overflow-auto shadow-lg">
+        <div className="overflow-auto">
           <EmailToolbar />
         </div>
 
         {/* Table */}
-        <div className="flex flex-1 flex-col w-full py-2 align-middle sm:px-4 lg:px-6 overflow-auto">
+        <div className="flex flex-1 flex-col w-full py-2 align-middle overflow-auto">
           <div className="w-full h-full border rounded-md overflow-auto">
             {mailings.length > 0 ? (
               mailings.map((mailing: MailingModel) => (
@@ -96,7 +98,7 @@ export default function Emails(
               ))
             ) : (
               <div className="h-full flex flex-1 justify-center items-center">
-                <p>No mailings</p>
+                <p className="text-gray-900 text-sm">No mailings</p>
               </div>
             )}
           </div>

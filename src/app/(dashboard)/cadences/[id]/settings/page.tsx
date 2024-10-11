@@ -183,7 +183,7 @@ export default function Page({ params }: { params: { id: string } }) {
               <span className="w-full border-b-2"></span>
             </span>
           </Link>
-          <Link href={`/cadences/${cadence?.id}/settings`}>
+          {/* <Link href={`/cadences/${cadence?.id}/settings`}>
             <span className="flex flex-col rounded-md text-sm hover:bg-gray-100">
               <span
                 className="p-1.5 cursor-pointer font-semibold"
@@ -193,10 +193,10 @@ export default function Page({ params }: { params: { id: string } }) {
               </span>
               <span className="w-full border-b-2 border-black"></span>
             </span>
-          </Link>
+          </Link> */}
         </div>
-        <div className="p-2 flex flex-1 bg-gray-100 overflow-auto text-sm">
-          <div className="flex flex-1 justify-center items-center rounded-md bg-white">
+        <div className="p-4 flex flex-1 bg-gray-100 overflow-auto text-sm">
+          <div className="card flex flex-1 justify-center items-center bg-white">
             <div className="p-8 max-w-lg w-full flex flex-col gap-5 rounded-md bg-gray-100">
               <div className="flex items-center">
                 <label className="min-w-24" htmlFor="name">

@@ -15,7 +15,6 @@ export const runService = async (
     // Check if the error is an Axios error
     if (axios.isAxiosError(error)) {
       const status = error.response?.status;
-      console.log("error", error);
       onError(status, error.response?.data?.detail);
     } else {
       onError(undefined, error);
@@ -25,7 +24,15 @@ export const runService = async (
 
 export const handleError = (status: number | undefined, error: any) => {
   let message: string = "";
-  console.log(status);
+
+  console.log(error);
+  // Check if the error is due to connection issues
+  if (!error?.response) {
+    // This indicates a connection error (like ERR_CONNECTION_REFUSED)
+    message = "We will be back soon.";
+    toast.info(message);
+    return;
+  }
   switch (status) {
     case 403:
       toast.error(error ? error : "Please login to continue!");
@@ -36,7 +43,6 @@ export const handleError = (status: number | undefined, error: any) => {
       toast.error(message);
       break;
     case 409:
-      console.log("error", error);
       message = error ? error : "Provided data already exists";
       toast.error(message);
       break;
@@ -44,7 +50,8 @@ export const handleError = (status: number | undefined, error: any) => {
       toast.error(error ? error : "Internal server error");
       break;
     default:
-      toast.error(error ? error : "An error occurred");
+      toast.error(error ? error : "Something goes wrong!");
+      window.location.replace(ROUTE_LOGIN);
       break;
   }
 };

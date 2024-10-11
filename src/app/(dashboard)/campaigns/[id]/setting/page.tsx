@@ -56,8 +56,8 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <div className="p-2 flex flex-1 bg-gray-100 overflow-auto text-sm">
-        <div className="flex flex-1 justify-center items-center rounded-md bg-white">
+      <div className="p-4 flex flex-1 bg-gray-100 overflow-auto text-sm">
+        <div className="card flex flex-1 justify-center items-center bg-white">
           <div className="p-8 max-w-lg w-full flex flex-col gap-5 rounded-md bg-gray-100">
             <div className="flex items-center">
               <label className="min-w-24" htmlFor="title">
@@ -73,7 +73,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 }
               />
             </div>
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <label className="min-w-24" htmlFor="amount">
                 Amount:
               </label>
@@ -89,14 +89,13 @@ export default function Page({ params }: { params: { id: string } }) {
                   }))
                 }
               />
-            </div>
-            <div className="flex items-center">
-              <label className="min-w-24" htmlFor="desctiption">
+            </div> */}
+            <div className="flex">
+              <label className="min-w-24 py-2" htmlFor="desctiption">
                 Description:
               </label>
-              <input
+              <textarea
                 id="desctiption"
-                type="text"
                 className="input-primary"
                 value={campaign.description}
                 onChange={(e) =>
