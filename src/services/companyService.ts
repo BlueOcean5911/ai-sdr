@@ -36,7 +36,7 @@ export interface BaseCompanyModel {
   stage?: string;
   keywords?: string;
 
-  size?: COMPANY_SIZE | string;
+  size?: number;
   targeted?: boolean;
 }
 

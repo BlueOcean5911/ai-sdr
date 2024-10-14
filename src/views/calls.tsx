@@ -95,7 +95,7 @@ export default function Calls(
   return (
     <div className="flex gap-4 p-4 flex-1 overflow-auto">
       {callFilterConfig.isOpen && <FilterCall />}
-      <div className="card p-4 pt-7 flex-1 flex flex-col overflow-auto shadow-lg">
+      <div className="card p-4 pt-7 flex-1 flex flex-col overflow-auto shadow-lg min-w-[420px]">
         <div className="overflow-auto">
           <CallToolbar />
         </div>

@@ -35,3 +35,5 @@ export const ROUTE_INTEGRATION_CONQUER = "/integration/conquer";
 export const ROUTE_ACCOUNT_PROFILE = "/account";
 export const ROUTE_ACCOUNT_USERS = "/account/users";
 export const ROUTE_ACCOUNT_COMPANY_DATA = "/account/company-data";
+
+export const ROUTE_IMPORT = "/contacts/import";

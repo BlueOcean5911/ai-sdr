@@ -63,7 +63,7 @@ const CompanyData = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="rounded-lg border bg-card text-card-foreground shadow-sm mb-8">
+      <div className="rounded-lg border bg-card text-card-foreground shadow-sm mb-8 max-w-4xl m-auto">
         <div className="flex flex-col space-y-1.5 p-6">
           <h2>Upload Defined ICP and Outbound Metrics</h2>
         </div>
@@ -225,7 +225,7 @@ const CompanyData = () => {
         </div>
       </div>
 
-      <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
+      <div className="rounded-lg border bg-card text-card-foreground shadow-sm max-w-4xl m-auto">
         <div className="flex flex-col space-y-1.5 p-6">
           <h2>Upload Training Documents</h2>
         </div>
@@ -235,11 +235,11 @@ const CompanyData = () => {
               <h3 className="text-lg font-semibold mb-2">
                 Case Studies and Testimonials:
               </h3>
-              <div className="pl-4 flex sm:flex-col md:flex-row gap-4">
-                <div className="sm:w-full md:w-1/2 space-y-2">
+              <div className="pl-4 flex flex-col gap-4">
+                <div className="space-y-2">
                   <CaseStudy />
                 </div>
-                <div className="sm:w-full md:w-1/2 space-y-2">
+                <div className="space-y-2">
                   <Testimonial />
                 </div>
               </div>
