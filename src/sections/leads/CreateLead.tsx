@@ -123,12 +123,6 @@ export default function CreateLead({
                       primaryPhone: Yup.string().required(
                         "Primary Phone is required"
                       ),
-                      mobilePhone: Yup.string().required(
-                        "Mobile Phone is required"
-                      ),
-                      workPhone: Yup.string().required(
-                        "Work Phone is required"
-                      ),
                       // phoneStatus: Yup.string().required("Status is required"),
                       title: Yup.string().required("Job Title is required"),
                       companyId: Yup.string().required("Company is required"),
