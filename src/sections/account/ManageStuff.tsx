@@ -126,10 +126,7 @@ const ManageStuff = () => {
               <EllipsisVerticalIcon className="w-4 h-4" />
               <span className="text-sm">Bulk Action</span>
             </div>
-            <div
-              className="btn-primary"
-              onClick={() => setInvite(true)}
-            >
+            <div className="btn-primary" onClick={() => setInvite(true)}>
               <PlusCircleIcon className="w-4 h-4 stroke-white" />
               <span className="text-sm text-white">Invite User</span>
             </div>
@@ -181,16 +178,16 @@ const ManageStuff = () => {
               {users &&
                 users.map((user, index) => (
                   <tr key={index} className="even:bg-blue-50 hover:bg-gray-300">
-                    <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                    <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       {user.firstName}
                     </td>
-                    <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                    <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       {user.lastName}
                     </td>
-                    <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                    <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       {user.email}
                     </td>
-                    <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                    <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       {user.title}
                     </td>
                     <td className="whitespace-nowraptext-sm text-gray-500">

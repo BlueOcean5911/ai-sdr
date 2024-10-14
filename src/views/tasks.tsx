@@ -114,7 +114,7 @@ export default function Tasks(
   };
 
   return (
-    <div className="flex gap-4 p-4 flex-1 overflow-auto bg-gray-100">
+    <div className="flex gap-4 p-4 flex-1 overflow-auto bg-gray-100 rounded-lg">
       {taskFilterConfig.isOpen && <FilterTask />}
       {
         <CreateTask
