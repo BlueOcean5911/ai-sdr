@@ -18,7 +18,7 @@ export const runService = async (
       onError(status, error.response?.data?.detail);
     } else {
       onError(undefined, error);
-      toast.error("We will be back soon!")
+      toast.error("We will be back soon!");
     }
   }
 };
@@ -42,8 +42,8 @@ export const handleError = (status: number | undefined, error: any) => {
     case 500:
       toast.error(error ? error : "Internal server error");
       break;
-      default:
-        toast.info(error ? error : "We will be back soon");
-        break;
+    default:
+      toast.info(error ? error : "We will be back soon");
+      break;
   }
 };
