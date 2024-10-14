@@ -45,6 +45,7 @@ const CaseStudy = () => {
       </label>
       <Upload
         type="case-study"
+        description="Drop or select case study files to upload for training"
         onUpload={(caseStudies: TrainingDocument[]) =>
           setCaseStudies(caseStudies)
         }

@@ -46,6 +46,7 @@ const Testimonial = () => {
       </label>
       <Upload
         type="testimonial"
+        description="Drop or select testimonials files to upload for training"
         onUpload={(testimonials: TrainingDocument[]) =>
           setTestimonials(testimonials)
         }
