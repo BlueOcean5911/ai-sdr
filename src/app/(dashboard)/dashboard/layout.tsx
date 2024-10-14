@@ -244,7 +244,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </div>
-        <div className="p-5 flex flex-1 flex-col gap-3 rounded-lg bg-white shadow-md overflow-auto">
+        <div className="p-5 flex flex-1 flex-col gap-3 rounded-lg bg-white shadow-md overflow-auto min-h-[768px]">
           <span className="text-lg font-semibold">Workspace</span>
           <div className="w-full flex items-center gap-2 border-b">
             <Link

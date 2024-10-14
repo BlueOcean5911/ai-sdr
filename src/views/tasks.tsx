@@ -114,7 +114,7 @@ export default function Tasks(
   };
 
   return (
-    <div className="flex gap-4 p-4 flex-1 overflow-auto">
+    <div className="flex gap-4 p-4 flex-1 overflow-auto bg-gray-100">
       {taskFilterConfig.isOpen && <FilterTask />}
       {
         <CreateTask
@@ -124,7 +124,7 @@ export default function Tasks(
           handleClose={() => setOpen(false)}
         />
       }
-      <div className="card p-4 pt-7 flex-1 flex flex-col overflow-auto shadow-lg">
+      <div className="card p-4 pt-7 flex-1 flex flex-col overflow-auto shadow-lg min-w-[420px]">
         <div className="overflow-auto">
           <TaskToolbar handleCreate={handleCreate} />
         </div>
