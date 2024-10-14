@@ -1,6 +1,7 @@
 "use client";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
@@ -77,7 +78,9 @@ export default function Page({ params }: { params: { id: string } }) {
             </button>
           </div>
           <hr />
-          <div className="flex justify-center">Download sample template</div>
+          <a href="/csv/sample-csv-contact.csv" download={true}>
+            <div>Download sample template</div>
+          </a>
         </div>
       </div>
 
@@ -136,7 +139,9 @@ export default function Page({ params }: { params: { id: string } }) {
             </button>
           </div>
           <hr />
-          <div className="flex justify-center">Download sample template</div>
+          <a href="/csv/sample-csv-company.csv" download={true}>
+            <div className="flex justify-center">Download sample template</div>
+          </a>
         </div>
       </div>
     </div>
