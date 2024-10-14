@@ -56,7 +56,7 @@ const CallToolbar = () => {
           {callFilterConfig.isOpen ? "Hide Filters" : "Show Filters"}
         </span>
       </button>
-      <div className="flex flex-1 gap-2 overflow-auto">
+      <div className="flex gap-2 overflow-auto">
         {Object.entries(statistics).map(([key, count]) => (
           <Link key={key} href={`${path}?${key}=true`}>
             <div

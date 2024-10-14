@@ -103,7 +103,7 @@ export default function Page() {
                 </div>
                 <div className="flex flex-1 flex-row justify-between gap-2 items-center text-sm">
                   <div className="flex flex-col gap-1 overflow-hidden">
-                    <span className="font-semibold line-clamp-1">
+                    <span className="font-semibold line-clamp-1 text-sm">
                       {reply.subject}
                     </span>
                     <span className="text-xs line-clamp-1">
