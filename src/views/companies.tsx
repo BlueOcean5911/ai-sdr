@@ -87,7 +87,7 @@ export default function Companies() {
             </button>
             <div className="flex flex-1 justify-end items-center">
               <Menu>
-                <MenuButton className="px-2 py-1 flex flex-row items-center gap-1 rounded-md bg-blue-500 hover:bg-blue-400">
+                <MenuButton className="btn-primary">
                   <span className="text-sm text-white">Import</span>
                   <ChevronDownIcon className="w-3 h-3 stroke-white stroke-2" />
                 </MenuButton>

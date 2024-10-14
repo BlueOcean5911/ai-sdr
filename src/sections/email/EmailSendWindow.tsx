@@ -1,5 +1,4 @@
 import Select from "@/components/extends/Select/default";
-import { useLeadSelection } from "@/contexts/LeadSelectionContext";
 import { addMailing, sendMailing } from "@/services/mailingService";
 import { getUsers, UserModel } from "@/services/userService";
 import { MAILING_STATE } from "@/types/enums";
@@ -13,6 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import EmailGeneratorWindow from "./EmailGeneratorWindow";
+import { LeadModel, LeadModelWithCompanyModel } from "@/services/leadService";
 
 interface UserForSelect {
   name: string;
@@ -20,13 +20,13 @@ interface UserForSelect {
   id: string;
 }
 
-const EmailSendWindow = ({ close }: { close?: () => void }) => {
-  const { selectedLeads } = useLeadSelection();
+const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelWithCompanyModel }) => {
   const [owner, setOwner] = useState<UserForSelect>({
     name: "",
     email: "",
     id: "",
   });
+  const [senderId, setSenderId] = useState("");
   const [sendLater, setSendLater] = useState(false);
   const [date, setDate] = useState<string | null>(null);
   const [users, setUsers] = useState<UserForSelect[]>([]);
@@ -47,7 +47,12 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
   const [errors, setErrors] = useState({
     subject: "",
     message: "",
+    sender: "",
   });
+
+  useEffect(() => {
+    setSenderId(owner ? owner.id : "");
+  }, [owner])
 
   const fetchUsers = () => {
     runService(
@@ -73,7 +78,7 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
     fetchUsers();
     setValues({
       from: "",
-      to: selectedLeads[0].email,
+      to: lead.email ? lead.email : "",
       subject: "",
       message: "",
     });
@@ -90,10 +95,25 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
       newErrors = { ...newErrors, message: "Message is required" };
       isValid = false;
     }
+    if (senderId === "") {
+      newErrors = { ...newErrors, sender: "Sender is required" };
+      isValid = false;  
+    }
 
     setErrors({ ...errors, ...newErrors });
     return isValid;
   };
+
+  const checkSenderSelected = () => {
+    let isValid = true;
+    let newErrors = {};
+    if (senderId === "") {
+      newErrors = { ...newErrors, sender: "Sender is required" };
+      isValid = false;  
+    }
+    setErrors({ ...errors, ...newErrors });
+    return isValid;
+  }
 
   const handleSend = () => {
     if (checkErrors()) {
@@ -101,10 +121,10 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
         {
           subject: values.subject,
           message: values.message,
-          leadId: selectedLeads[0].id,
+          leadId: lead.id,
           ownerId: owner.id,
           fromEmail: owner.name,
-          toEmail: selectedLeads[0].email,
+          toEmail: lead.email,
           scheduledAt: date,
           mailingStatus: sendLater
             ? MAILING_STATE.SCHEDULED
@@ -127,9 +147,9 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
   const handleSaveAsDraft = () => {
     runService(
       {
-        leadId: selectedLeads[0].id,
+        leadId: lead.id,
         owner: owner,
-        fromEma: selectedLeads[0].email,
+        fromEma: lead.email,
         toEmail: owner.name,
         subject: values.subject,
         bodyText: values.message,
@@ -145,6 +165,10 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
     toast.success("Email sent successfully");
   };
 
+  useEffect(() => {
+    console.log(errors);
+  }, [errors])
+
   return (
     <>
       <div className="z-20 flex flex-col fixed bottom-2 right-2 w-[500px] h-[80vh] shadow-[0px_4px_24px_rgba(0,0,0,0.3)] bg-white border-2 border-gray-100 rounded-md">
@@ -158,7 +182,10 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
         <div className="px-4 py-2 flex flex-1 flex-col gap-2">
           <div className="flex flex-col justify-between">
             <label className="min-w-20 text-xs">From</label>
-            <Select data={users} onChange={(item) => setOwner(item)} />
+            <Select data={users} onChange={(item) => {setOwner(item); if (senderId) setErrors({ ...errors, sender: "" });}} />
+            {errors.sender.length > 0 && (
+              <p className="text-red-500 text-xs">{errors.sender}</p>
+            )}
           </div>
 
           <div className="flex flex-col justify-between">
@@ -200,12 +227,15 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
             />
           </div>
           {errors.subject.length > 0 && (
-            <p className="pl-24 text-red-500 text-xs">{errors.subject}</p>
+            <p className="text-red-500 text-xs">{errors.subject}</p>
           )}
           <div className="flex space-x-2 justify-end">
             <button
               className="flex items-center px-4 py-1 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400"
-              onClick={() => setIsOpenEmailGeneratorWindow(true)}
+              onClick={() => {
+                checkSenderSelected();
+                setIsOpenEmailGeneratorWindow(true)
+              }}
             >
               <PencilSquareIcon className="w-5 h-5 mr-2 stroke-white" />
               Write with AI
@@ -262,13 +292,13 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
           </div>
           <div className="flex items-center gap-4">
             <button
-              className="w-full p-2 rounded-md bg-gray-300 hover:bg-gray-200"
+              className="w-full btn-secondary"
               onClick={close}
             >
               Close
             </button>
             <button
-              className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
+              className="w-full btn-primary"
               onClick={handleSend}
             >
               Send
@@ -276,9 +306,10 @@ const EmailSendWindow = ({ close }: { close?: () => void }) => {
           </div>
         </div>
       </div>
-      {isOpenEmailGeneratorWindow && (
+      {isOpenEmailGeneratorWindow && senderId && (
         <EmailGeneratorWindow
-          lead={selectedLeads[0]}
+          senderId={senderId}
+          lead={lead}
           onChange={(text: string, type: string) =>
             setValues({
               ...values,

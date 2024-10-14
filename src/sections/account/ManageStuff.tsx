@@ -122,12 +122,12 @@ const ManageStuff = () => {
             />
           </form> */}
           <div className="flex gap-4">
-            <div className="px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200">
+            <div className="btn-secondary">
               <EllipsisVerticalIcon className="w-4 h-4" />
               <span className="text-sm">Bulk Action</span>
             </div>
             <div
-              className="p-2 flex-center gap-2 rounded-md bg-blue-500 hover:bg-blue-400 cursor-pointer"
+              className="btn-primary"
               onClick={() => setInvite(true)}
             >
               <PlusCircleIcon className="w-4 h-4 stroke-white" />
@@ -181,22 +181,22 @@ const ManageStuff = () => {
               {users &&
                 users.map((user, index) => (
                   <tr key={index} className="even:bg-blue-50 hover:bg-gray-300">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
+                    <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       {user.firstName}
                     </td>
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                    <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       {user.lastName}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       {user.email}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       {user.title}
                     </td>
                     <td className="whitespace-nowraptext-sm text-gray-500">
                       {user.phone}
                     </td>
-                    <td className="py-4 flex flex-1 justify-center items-center gap-4">
+                    <td className="py-2 flex flex-1 justify-center items-center gap-4">
                       <ToggleButton
                         checked={user.enabled ? user.enabled : false}
                         handleChange={() => {

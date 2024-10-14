@@ -110,7 +110,7 @@ const LeadToolbar = () => {
     <>
       <div className="flex items-center gap-2 border-b-1 border-gray-100 py-1 text-sm">
         <button
-          className="min-w-32 px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200"
+          className="btn-secondary"
           onClick={() => {
             if (leadFilterConfig.isOpen) {
               setLeadFilterConfig({ ...leadFilterConfig, isOpen: false });
@@ -127,7 +127,7 @@ const LeadToolbar = () => {
         </button>
         {!isSavedView && (
           <button
-            className="min-w-32 px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200"
+            className="btn-secondary"
             onClick={() => handleSaveLead()}
           >
             <PlusIcon className="w-4 h-4" /> Save
@@ -135,13 +135,13 @@ const LeadToolbar = () => {
         )}
 
         <button
-          className="min-w-32 px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200"
+          className="btn-secondary"
           onClick={() => handleSendMail()}
         >
           <EnvelopeIcon className="w-4 h-4" /> Email
         </button>
         <Menu>
-          <MenuButton className="inline-flex items-center gap-2 rounded-md border-2 border-gray-300 py-1.5 px-3 text-gray-900 focus:outline-none data-[hover]:bg-gray-200 data-[open]:bg-gray-200 data-[focus]:outline-1 data-[focus]:outline-white">
+          <MenuButton className="btn-secondary">
             <PaperAirplaneIcon className="w-4 h-4" /> Cadence
           </MenuButton>
           <MenuItems
@@ -189,7 +189,7 @@ const LeadToolbar = () => {
         </Menu>
         {isOpenSendEmail && (
           <>
-            <EmailSendWindow close={() => setIsOpenSendEmail(false)} />
+            <EmailSendWindow close={() => setIsOpenSendEmail(false)} lead={selectedLeads[0]}/>
           </>
         )}
         {openAddCadence && (

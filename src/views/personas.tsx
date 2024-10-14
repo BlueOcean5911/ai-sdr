@@ -296,28 +296,28 @@ export const PersonasTable = ({ data }: { data: any }) => {
             className="even:bg-blue-50 hover:bg-gray-300"
             // onClick={() => }
           >
-            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
+            <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
               {item.name}
             </td>
-            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+            <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
               {item.jobTitle}
             </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+            <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
               {item.keywords}
             </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+            <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
               {item.createdDate}
             </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+            <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
               {item.location}
             </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+            <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
               {item.industrySize}
             </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+            <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
               {item.leadCount}
             </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+            <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
               <Popover>
                 <PopoverButton className="block text-sm/6 font-semibold text-gray-900 focus:outline-none">
                   <EllipsisHorizontalCircleIcon className="w-5 h-5" />
@@ -369,12 +369,12 @@ const Personas = () => {
           />
         </form>
         <div className="flex flex-4 gap-4">
-          <div className="min-w-32 px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200">
+          <div className="btn-secondary">
             <EllipsisVerticalIcon className="w-4 h-4" />
             <span className="text-sm">Bulk Action</span>
           </div>
           <ManagePersona type="create" persona={null}>
-            <div className="p-2 flex-center gap-2 rounded-md bg-blue-500 hover:bg-blue-400 cursor-pointer">
+            <div className="btn-primary">
               <PlusCircleIcon className="w-4 h-4 stroke-white" />
               <span className="text-sm text-white">Create Persona</span>
             </div>

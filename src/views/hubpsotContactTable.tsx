@@ -76,25 +76,25 @@ const HubspotContactTable = () => {
               key={contact.id}
               className="even:bg-blue-50 hover:bg-gray-300 cursor-pointer"
             >
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                 {contact.firstName}
               </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                 {contact.lastName}
               </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                 {contact.jobTitle}
               </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                 {contact.email}
               </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                 {contact.phone}
               </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                 {contact.country}
               </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                 {contact.company}
               </td>
             </tr>

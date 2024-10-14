@@ -24,6 +24,7 @@ import {
 } from "@/utils/format";
 import { getUsers, UserModel } from "@/services/userService";
 import { runService, handleError } from "@/utils/service_utils";
+import Link from "next/link";
 
 export default function TaskItem({
   task,
@@ -75,12 +76,14 @@ export default function TaskItem({
         />
       </div>
       <div className="flex items-center flex-1 gap-4 cursor-pointer">
-        <div className="w-1/2 max-w-96 lg:max-w-xl xl:max-w-2xl flex flex-col gap-1 overflow-hidden">
-          <span className="text-sm font-semibold text-blue-900 line-clamp-1">
-            {task.title}
-          </span>
-          <span className="text-xs line-clamp-1">{task.content}</span>
-        </div>
+        <Link href={`/leads/${task.leadId}?sendEmail=true`}>
+          <div className="w-1/2 max-w-96 lg:max-w-xl xl:max-w-2xl flex flex-col gap-1 overflow-hidden">
+            <span className="text-sm font-semibold text-blue-900 line-clamp-1">
+              {task.title}
+            </span>
+            <span className="text-xs line-clamp-1">{task.content}</span>
+          </div>
+        </Link>
 
         <div className="min-w-64 flex flex-1 flex-row justify-between items-center gap-2">
           <span className="p-1 text-xs font-semibold text-nowrap rounded-sm bg-gray-100 capitalize">

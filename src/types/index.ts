@@ -152,6 +152,7 @@ export interface ProductInfo {
 export interface PersonalizedSettingModel {
   recipientInfo: RecipientInfo;
   productInfo: ProductInfo;
+  senderId: string;
 }
 
 export interface GeneratedSubjectModel {

@@ -15,10 +15,12 @@ enum PERSONALIZED_VIEW {
 }
 
 const EmailGeneratorWindow = ({
+  senderId,
   lead,
   onChange,
   close,
 }: {
+  senderId: string;
   lead: LeadModelWithCompanyModel;
   onChange: (text: string, type: string) => void;
   close: () => void;
@@ -26,6 +28,16 @@ const EmailGeneratorWindow = ({
   const [activeView, setActiveView] = useState<string>(
     PERSONALIZED_VIEW.SETTING_VIEW
   );
+
+  const previousProductInfo = localStorage.getItem("productInfo");
+  const parsedProductInfo = previousProductInfo !== null ? JSON.parse(previousProductInfo) : {  
+    productName: "",  
+    customerKeyPainPoints: "",  
+    valueProposition: "",  
+    callToAction: "",  
+    companyOverview: "",  
+    additionalContext: "",  
+  };  
   const [personalizedSetting, setPersonalizedSetting] =
     useState<PersonalizedSettingModel>({
       recipientInfo: {
@@ -34,14 +46,8 @@ const EmailGeneratorWindow = ({
         contactName: "",
         contactTitle: "",
       },
-      productInfo: {
-        productName: "",
-        customerKeyPainPoints: "",
-        valueProposition: "",
-        callToAction: "",
-        companyOverview: "",
-        additionalContext: "",
-      },
+      productInfo: parsedProductInfo,
+      senderId: senderId,
     });
   const [generatedEmails, setGeneratedEmails] = useState<
     GeneratedEmailsModel | undefined
@@ -75,7 +81,7 @@ const EmailGeneratorWindow = ({
   };
 
   useEffect(() => {
-    console.log(personalizedSetting);
+    localStorage.setItem("productInfo", JSON.stringify(personalizedSetting.productInfo))
   }, [personalizedSetting]);
 
   return (

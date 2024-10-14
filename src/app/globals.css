@@ -64,7 +64,7 @@
   }
 
   .btn-primary {
-    @apply min-w-28 flex gap-2 flex-center bg-blue-500 hover:bg-blue-400 text-sm px-2 py-1 text-white rounded hover:cursor-pointer  hover:shadow-md;
+    @apply min-w-28 flex gap-2 flex-center bg-blue-500 hover:bg-blue-400 text-sm px-2 py-1.5 text-white rounded hover:cursor-pointer  hover:shadow-md;
   }
 
   .btn-primary * {
@@ -72,7 +72,7 @@
   }
 
   .btn-secondary {
-    @apply min-w-28 flex gap-2 flex-center bg-white hover:bg-blue-100 text-sm px-2 py-1 text-gray-900 rounded border-2 border-gray-500 hover:cursor-pointer hover:shadow-md;
+    @apply min-w-28 flex gap-2 flex-center bg-white hover:bg-gray-100 text-sm px-2 py-1 text-gray-900 rounded border-2 border-gray-200 hover:border-gray-300 hover:cursor-pointer hover:shadow-md;
   }
 
   .btn-secondary * {

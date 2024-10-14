@@ -47,7 +47,7 @@ const CadenceToolbar = () => {
     <>
       <div className="flex justify-between items-center gap-2 border-b-1 border-gray-100 py-1 text-sm">
         <button
-          className="min-w-32 px-2 py-1.5 flex justify-center items-center gap-2 border-2 border-gray-300 rounded-md hover:bg-gray-200"
+          className="btn-secondary"
           onClick={() => {
             if (cadenceFilterConfig.isOpen) {
               setCadenceFilterConfig({ ...cadenceFilterConfig, isOpen: false });
@@ -64,7 +64,7 @@ const CadenceToolbar = () => {
           )}
         </button>
         <div
-          className="p-2 flex-center gap-2 rounded-md bg-blue-500 hover:bg-blue-400 cursor-pointer"
+          className="btn-primary"
           onClick={() => setOpenCreateCadence(true)}
         >
           <PlusCircleIcon className="w-4 h-4 stroke-white" />

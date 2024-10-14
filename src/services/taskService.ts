@@ -29,6 +29,7 @@ export interface BaseTaskModel {
   taskPriority: string;
   endDate: string;
   ownerId: string;
+  leadId: string;
 }
 
 export interface SendTaskModel {

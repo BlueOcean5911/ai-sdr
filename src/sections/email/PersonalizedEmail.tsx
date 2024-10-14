@@ -73,8 +73,6 @@ const PersonalizedEmail = ({
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedBody, setSelectedBody] = useState("");
 
-  generatedEmails = dummyEmails;
-
   return (
     <div className="w-full max-w-md bg-white rounded-lg overflow-hidden text-base flex flex-col">
       <div className="p-4 font-semibold">Personalization email</div>

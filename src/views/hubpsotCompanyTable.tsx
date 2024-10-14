@@ -65,19 +65,19 @@ const HubspotCompanyTable = () => {
               key={company.id}
               className="even:bg-blue-50 hover:bg-gray-300 cursor-pointer"
             >
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 rounded-l-md">
+              <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                 <div className="flex gap-2">{company.name}</div>
               </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                 {company.phone}
               </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                 {company.country}
               </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                 {company.employee}
               </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                 {company.industry}
               </td>
             </tr>

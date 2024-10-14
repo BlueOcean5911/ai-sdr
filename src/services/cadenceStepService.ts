@@ -54,6 +54,7 @@ export interface UpdateCadenceStep {
   name?: string;
   interval?: number;
   stepType?: CADENCE_STEP_TYPE | string;
+  taskNote?: string;
 }
 
 interface ApiCadenceStepsResponse {
@@ -133,6 +134,7 @@ export const updateCadenceStep = async ({
     name: data.name,
     interval: data.interval,
     stepType: data.stepType,
+    taskNote: data.taskNote,
   };
 
   return await api.put(`api/cadence-steps/${data.id}`, updatedCadenceStepData);

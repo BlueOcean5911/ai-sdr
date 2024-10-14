@@ -134,14 +134,14 @@ export default function Page({ params }: { params: { id: string } }) {
 
             <div className="flex items-center gap-4">
               <button
-                className="w-full p-2 rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                className="w-full btn-primary"
                 onClick={() => {
                   handleSaveCampaign();
                 }}
               >
                 Save
               </button>
-              <button className="w-full p-2 rounded-md bg-gray-300 hover:bg-gray-200">
+              <button className="w-full btn-secondary">
                 Close
               </button>
             </div>

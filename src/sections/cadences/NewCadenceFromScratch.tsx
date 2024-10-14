@@ -143,13 +143,13 @@ const NewCadenceFromScratch = ({
                   </div>
                   <div className="flex items-center gap-6">
                     <button
-                      className="w-full p-1 text-sm rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                      className="w-full btn-primary"
                       onClick={() => handleCreate()}
                     >
                       Create
                     </button>
                     <button
-                      className="w-full p-1 text-sm rounded-md bg-gray-300 hover:bg-gray-200"
+                      className="w-full btn-secondary"
                       onClick={close}
                     >
                       Close

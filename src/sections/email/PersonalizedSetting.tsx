@@ -109,6 +109,7 @@ const PersonalizedSetting = ({
                   <label className="flex items-center">
                     <input
                       type="checkbox"
+                      defaultChecked
                       className="text-blue-500 focus:ring-0"
                       onChange={(e) =>
                         handlePersonalInfo(e, "companyDescription")
@@ -124,6 +125,7 @@ const PersonalizedSetting = ({
                   <label className="flex items-center">
                     <input
                       type="checkbox"
+                      defaultChecked
                       className="text-blue-500 focus:ring-0"
                       onChange={(e) => handlePersonalInfo(e, "companyIndustry")}
                     />
@@ -140,6 +142,7 @@ const PersonalizedSetting = ({
                   <label className="flex items-center">
                     <input
                       type="checkbox"
+                      defaultChecked
                       className="text-blue-500 focus:ring-0"
                       onChange={(e) => handlePersonalInfo(e, "contactName")}
                     />
@@ -149,6 +152,7 @@ const PersonalizedSetting = ({
                   <label className="flex items-center">
                     <input
                       type="checkbox"
+                      defaultChecked
                       className="text-blue-500 focus:ring-0"
                       onChange={(e) => handlePersonalInfo(e, "contactTitle")}
                     />
