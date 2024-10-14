@@ -1,15 +1,16 @@
 import UploadedFiles from "./UploadedFiles";
-import { TrainingDocument } from "@/types";
+import { SuccessModel, TrainingDocument } from "@/types";
 import { useEffect, useState } from "react";
 import Upload from "../upload";
 import { handleError, runService } from "@/utils/service_utils";
 import { getCaseStudies } from "@/services/trainingDocumentService";
 import { deleteTrainingDocument } from "@/services/trainingDataService";
+import { toast } from "react-toastify";
 
 const CaseStudy = () => {
   const [caseStudies, setCaseStudies] = useState<TrainingDocument[]>();
 
-  useEffect(() => {
+  const fetchCaseStudies = () => {
     runService(
       {},
       getCaseStudies,
@@ -20,6 +21,10 @@ const CaseStudy = () => {
         handleError(statusCode, error);
       }
     );
+  };
+
+  useEffect(() => {
+    fetchCaseStudies();
   }, []);
 
   const handleDeleteFile = (id: string) => {
@@ -46,9 +51,14 @@ const CaseStudy = () => {
       <Upload
         type="case-study"
         description="Drop or select case study files to upload for training"
-        onUpload={(caseStudies: TrainingDocument[]) =>
-          setCaseStudies(caseStudies)
-        }
+        onUpload={(data: SuccessModel) => {
+          if (data.success) {
+            fetchCaseStudies();
+            toast.success("Successfully uploaded");
+          } else {
+            toast.error("Something goes wrong, please contact us!");
+          }
+        }}
       />
       <div className="h-8" />
       {caseStudies && caseStudies.length > 0 && (
