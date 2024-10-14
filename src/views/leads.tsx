@@ -50,14 +50,9 @@ export default function Leads() {
 
   return (
     <div className="flex p-4 gap-4 overflow-auto flex-1">
-      {create && (
-        <CreateLead
-          open={create}
-          handleClose={handleClose}
-        />
-      )}
+      {create && <CreateLead open={create} handleClose={handleClose} />}
       {leadFilterConfig.isOpen && <FilterLead />}
-      <div className="card p-4 pt-7 flex-1 flex flex-col overflow-auto shadow-lg">
+      <div className="card p-4 pt-7 flex-1 flex flex-col overflow-auto shadow-lg min-w-[420px]">
         <div className="flex-1 flex flex-col gap-2 overflow-auto">
           <div className="border-b border-gray-100 flex gap-2 overflow-auto">
             <button
