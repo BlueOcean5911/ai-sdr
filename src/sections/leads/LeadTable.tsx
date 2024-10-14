@@ -124,7 +124,9 @@ const LeadTable = () => {
           toast.success("Lead updated successfully");
           fetchTotalCount();
           fetchLeads();
-        } else toast.error("Something went wrong.");
+        } else {
+          toast.error("Something went wrong.");
+        }
         handleClose();
       },
       (status, error) => {
