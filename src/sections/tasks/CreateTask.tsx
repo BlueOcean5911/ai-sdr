@@ -122,6 +122,7 @@ export default function CreateTask({
                         ? task.endDate.split("T")[0]
                         : new Date().toISOString().split("T")[0],
                       content: task ? task.content : "",
+                      status: task ? task.status : "incomplete",
                     }}
                     validationSchema={Yup.object().shape({
                       title: Yup.string().required("Title is required"),
@@ -145,6 +146,7 @@ export default function CreateTask({
                         endDate: values.endDate,
                         ownerId: values.ownerId,
                         leadId: values.leadId,
+                        status: values.status,
                       };
                       task
                         ? runService(
@@ -325,11 +327,10 @@ export default function CreateTask({
                             <label htmlFor="content">Note:</label>
                             <div className="flex gap-2">
                               <div className="w-full flex flex-col">
-                                <input
+                                <textarea
                                   id="content"
-                                  type="text"
                                   placeholder="Note"
-                                  className="input-primary max-h-9"
+                                  className="input-primary"
                                   value={values.content}
                                   onChange={handleChange}
                                   onBlur={handleBlur}
