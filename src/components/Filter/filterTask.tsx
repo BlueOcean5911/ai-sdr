@@ -39,7 +39,7 @@ export default function FilterTask() {
 
   return (
     <div className="card pt-6 px-2 w-64 h-full flex flex-col rounded-xl bg-white">
-      <h3 className="p-2 border-b border-gray-100">Filters</h3>
+      <h3 className="p-2 border-b border-gray-100">Search</h3>
       <div className="flex-1 flex flex-col gap-2 p-2 border rounded overflow-auto">
         <form action="#" method="GET" className="flex px-3 pt-2 items-center">
           <label htmlFor="search-field" className="sr-only">
