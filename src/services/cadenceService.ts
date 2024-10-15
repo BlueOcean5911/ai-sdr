@@ -65,7 +65,7 @@ export const getCadenceById = async (
 ): Promise<ApiCadenceResponse> => {
   const url = `/api/cadences/${id}`;
   const response = await api.get(url);
-
+  console.log("----------------->", response);
   return response;
 };
 

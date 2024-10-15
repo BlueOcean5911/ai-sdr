@@ -52,21 +52,25 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       </div>
       <div className="w-full h-8 px-5 flex items-center gap-2">
         <TapItem
+          key="profile"
           content="Profile"
           link={ROUTE_ACCOUNT_PROFILE}
           active={path === ROUTE_ACCOUNT_PROFILE}
         />
         <TapItem
+          key="security"
           content="Security"
           link={ROUTE_ACCOUNT_SECURITY}
           active={path === ROUTE_ACCOUNT_SECURITY}
         />
         <TapItem
+          key="users"
           content="Users"
           link={ROUTE_ACCOUNT_USERS}
           active={path === ROUTE_ACCOUNT_USERS}
         />
         <TapItem
+          key="company-data"
           content="Company Data"
           link={ROUTE_ACCOUNT_COMPANY_DATA}
           active={path === ROUTE_ACCOUNT_COMPANY_DATA}
