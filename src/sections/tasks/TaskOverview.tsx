@@ -1,16 +1,18 @@
 import { LeadModelWithCompanyModel } from "@/services/leadService";
 import { classNames } from "@/utils";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { MoveDiagonal } from "lucide-react";
-import Link from "next/link";
-import LeadView from "./LeadView";
+import LeadView from "@/sections/leads/LeadView";
+import { TaskModel } from "@/services/taskService";
+import TaskView from "./TaskView";
 
-const LeadOverview = ({
+const TaskOverview = ({
   show,
+  task,
   lead,
   handleClose,
 }: {
   show: boolean;
+  task?: TaskModel;
   lead?: LeadModelWithCompanyModel;
   handleClose: () => void;
 }) => {
@@ -18,7 +20,7 @@ const LeadOverview = ({
     <>
       <div
         className={classNames(
-          "absolute top-0 bottom-0 z-20 w-2/3 flex flex-1 flex-col border-l bg-white overflow-scroll transition-all duration-500",
+          "absolute top-0 bottom-0 z-20 max-w-6xl flex flex-1 flex-col border-l bg-white overflow-scroll transition-all duration-500",
           show ? "right-0" : "-right-full"
         )}
       >
@@ -29,17 +31,14 @@ const LeadOverview = ({
           >
             <XMarkIcon className="w-5 h-5" />
           </div>
-          <Link
-            href={`/leads/${lead?.id}`}
-            className="p-1 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-200"
-          >
-            <MoveDiagonal className="w-5 h-5" />
-          </Link>
         </div>
-        <LeadView lead={lead} />
+        <div className="flex flex-1 flex-row gap-2">
+          <TaskView task={task} />
+          <LeadView lead={lead} />
+        </div>
       </div>
     </>
   );
 };
 
-export default LeadOverview;
+export default TaskOverview;
