@@ -1,11 +1,10 @@
 import CheckBox from "@/components/extends/CheckBox";
 import { useLeadFilter } from "@/contexts/FilterLeadContext";
 import { useLeadSelection } from "@/contexts/LeadSelectionContext";
-import { contain } from "@/utils/string";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Pagination from "@/components/extends/Pagination/Pagination";
-import { CountModel, LeadProps } from "@/types";
+import { CountModel } from "@/types";
 import { handleError, runService } from "@/utils/service_utils";
 import {
   deleteLead,
@@ -22,17 +21,12 @@ import { toast } from "react-toastify";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { Tooltip } from "react-tooltip";
+import { getFormattedAddress } from "@/utils/format";
 
 const LeadTable = () => {
   const { leadFilterConfig } = useLeadFilter();
-  const {
-    totalLeads,
-    setTotalLeads,
-    savedLeads,
-    setSavedLeads,
-    selectedLeads,
-    setSelectedLeads,
-  } = useLeadSelection();
+  const { totalLeads, setTotalLeads, selectedLeads, setSelectedLeads } =
+    useLeadSelection();
 
   const [create, setCreate] = useState(false);
   const [overview, setOverview] = useState(false);
@@ -51,10 +45,7 @@ const LeadTable = () => {
         offset,
         limit,
         targeted,
-        jobTitle: leadFilterConfig.title,
-        companyName: leadFilterConfig.company,
-        location: leadFilterConfig.location,
-        industry: leadFilterConfig.industry,
+        filter: leadFilterConfig,
       },
       getLeads,
       (data) => {
@@ -71,10 +62,7 @@ const LeadTable = () => {
     runService(
       {
         targeted,
-        jobTitle: leadFilterConfig.title,
-        companyName: leadFilterConfig.company,
-        location: leadFilterConfig.location,
-        industry: leadFilterConfig.industry,
+        filter: leadFilterConfig,
       },
       getLeadTotalCount,
       (data: CountModel) => {
@@ -194,6 +182,12 @@ const LeadTable = () => {
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
+                  Lead Location
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
                   Company
                 </th>
                 <th
@@ -265,9 +259,6 @@ const LeadTable = () => {
                       </Link>
                     </div>
                   </td>
-                  {/* <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                    {lead.name}
-                  </td> */}
                   <td className="whitespace-nowrap text-sm text-gray-500">
                     <Menu>
                       <MenuButton className="">
@@ -302,6 +293,9 @@ const LeadTable = () => {
                     {lead.title}
                   </td>
                   <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                    {getFormattedAddress(lead.city, lead.state, lead.country)}
+                  </td>
+                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     <a
                       className="hover:underline hover:text-blue-900"
                       href={`companies/${lead.company?.id}`}
@@ -310,7 +304,11 @@ const LeadTable = () => {
                     </a>
                   </td>
                   <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                    {lead.company?.city}, {lead.company?.state}
+                    {getFormattedAddress(
+                      lead.company?.city,
+                      lead.company?.state,
+                      lead.company?.country
+                    )}
                   </td>
                   <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {lead.company?.size}

@@ -7,16 +7,33 @@ interface Option {
   isSelected?: boolean;
 }
 
-interface LeadFilterConfig {
+export interface LeadFilterConfig {
   createdLeadId: string;
   isOpen: boolean;
   persona: Option | Option[] | null;
   title: string;
   company: string;
-  location: string;
+  country: string;
+  state: string;
+  city: string;
   employee: Option | Option[] | null;
   industry: string;
 }
+
+export const getDefaultLeadFilterConfig = () => {
+  return {
+    createdLeadId: "",
+    isOpen: true,
+    persona: [],
+    title: "",
+    company: "",
+    country: "",
+    state: "",
+    city: "",
+    employee: [],
+    industry: "",
+  };
+};
 
 interface LeadFilterContextType {
   leadFilterConfig: LeadFilterConfig;
@@ -34,14 +51,12 @@ export const LeadFilterProvider = ({ children }: { children: ReactNode }) => {
     persona: [],
     title: "",
     company: "",
-    location: "",
+    country: "",
+    state: "",
+    city: "",
     employee: [],
     industry: "",
   });
-
-  const updateLeadFilterConfig = (config: LeadFilterConfig) => {
-    setLeadFilterConfig(config);
-  };
 
   return (
     <LeadFilterContext.Provider
