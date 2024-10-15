@@ -95,13 +95,13 @@ export default function Calls(
   return (
     <div className="flex gap-4 p-4 flex-1 overflow-auto">
       {callFilterConfig.isOpen && <FilterCall />}
-      <div className="card p-4 pt-7 flex-1 flex flex-col overflow-auto shadow-lg min-w-[420px]">
+      <div className="card p-4 pt-7 flex-1 flex flex-col gap-2 overflow-auto shadow-lg min-w-[420px]">
         <div className="overflow-auto">
           <CallToolbar />
         </div>
 
         {/* Table */}
-        <div className="flex flex-1 flex-col w-full py-2 align-middle overflow-auto">
+        <div className="flex flex-1 flex-col w-full align-middle overflow-auto">
           <div className="w-full h-full border rounded-md overflow-auto">
             {calls.length > 0 ? (
               calls.map((call: CallModel) => (
