@@ -56,9 +56,7 @@ const CompanyTable = () => {
         offset,
         limit,
         targeted,
-        company: companyFilterConfig.company,
-        location: companyFilterConfig.location,
-        industry: companyFilterConfig.industry,
+        filter: companyFilterConfig,
       },
       getCompanies,
       (data) => {
@@ -75,9 +73,7 @@ const CompanyTable = () => {
     runService(
       {
         targeted,
-        company: companyFilterConfig.company,
-        location: companyFilterConfig.location,
-        industry: companyFilterConfig.industry,
+        filter: companyFilterConfig,
       },
       getCompanyTotalCount,
       (data: CountModel) => {

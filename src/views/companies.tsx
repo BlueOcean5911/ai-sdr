@@ -18,7 +18,7 @@ export default function Companies() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { companyFilterConfig, setCompanyFilterConfig } = useCompanyFilter();
+  const { companyFilterConfig } = useCompanyFilter();
 
   // Get the current query parameters
   const currentParams = Object.fromEntries(searchParams.entries());

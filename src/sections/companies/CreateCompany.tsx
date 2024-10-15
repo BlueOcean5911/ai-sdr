@@ -1,4 +1,4 @@
-import { employeeOptions, statusOptions } from "@/data/filter.data";
+import { statusOptions } from "@/data/filter.data";
 import { CreateCompanyProps } from "@/types";
 import {
   Dialog,
@@ -7,9 +7,9 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import Select from "react-tailwindcss-select";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import FormHelperText from "@/components/extends/FormHelperText";
 import {

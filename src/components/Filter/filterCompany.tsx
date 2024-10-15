@@ -1,8 +1,6 @@
 import { ListBulletIcon } from "@heroicons/react/24/outline";
 import FilterItem from "./filter-item";
 import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
-import Select from "react-tailwindcss-select";
-import { employeeOptions } from "@/data/filter.data";
 
 export default function FilterCompany() {
   const { companyFilterConfig, setCompanyFilterConfig } = useCompanyFilter();
@@ -31,17 +29,78 @@ export default function FilterCompany() {
           icon={<ListBulletIcon className="w-4 h-4" />}
           title="Location"
         >
-          <input
-            type="text"
-            className="input-primary w-full"
-            value={companyFilterConfig.location}
-            onChange={(e) => {
-              setCompanyFilterConfig({
-                ...companyFilterConfig,
-                location: e.target.value,
-              });
-            }}
-          />
+          <div className="">
+            <label htmlFor="country" className="text-xs">
+              Country
+            </label>
+            <input
+              id="country"
+              name="country"
+              type="text"
+              className="input-primary w-full"
+              value={companyFilterConfig.country}
+              onChange={(e) => {
+                setCompanyFilterConfig({
+                  ...companyFilterConfig,
+                  country: e.target.value,
+                });
+              }}
+            />
+          </div>
+          <div className="">
+            <label htmlFor="state" className="text-xs">
+              State
+            </label>
+            <input
+              id="state"
+              name="state"
+              type="text"
+              className="input-primary w-full"
+              value={companyFilterConfig.state}
+              onChange={(e) => {
+                setCompanyFilterConfig({
+                  ...companyFilterConfig,
+                  state: e.target.value,
+                });
+              }}
+            />
+          </div>
+          <div className="">
+            <label htmlFor="city" className="text-xs">
+              City
+            </label>
+            <input
+              id="city"
+              name="city"
+              type="text"
+              className="input-primary w-full"
+              value={companyFilterConfig.city}
+              onChange={(e) => {
+                setCompanyFilterConfig({
+                  ...companyFilterConfig,
+                  city: e.target.value,
+                });
+              }}
+            />
+          </div>
+          <div className="">
+            <label htmlFor="street-address" className="text-xs">
+              Street Address
+            </label>
+            <input
+              id="street-address"
+              name="street-address"
+              type="text"
+              className="input-primary w-full"
+              value={companyFilterConfig.streetAddress}
+              onChange={(e) => {
+                setCompanyFilterConfig({
+                  ...companyFilterConfig,
+                  streetAddress: e.target.value,
+                });
+              }}
+            />
+          </div>
         </FilterItem>
         {/* <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
