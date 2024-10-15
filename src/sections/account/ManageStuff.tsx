@@ -105,22 +105,6 @@ const ManageStuff = () => {
       <div className="card flex flex-1 flex-col gap-2 bg-white overflow-auto">
         <div className="flex justify-between items-center">
           <div />
-          {/* <form action="#" method="GET" className="relative hidden md:flex ">
-            <label htmlFor="search-field" className="sr-only">
-              Search
-            </label>
-            <MagnifyingGlassIcon
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400"
-            />
-            <input
-              id="search-field"
-              name="search"
-              type="search"
-              placeholder="Search..."
-              className="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
-            />
-          </form> */}
           <div className="flex gap-4">
             <div className="btn-secondary">
               <EllipsisVerticalIcon className="w-4 h-4" />
@@ -134,7 +118,7 @@ const ManageStuff = () => {
         </div>
 
         {/* Table */}
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto border rounded">
           <table className="w-full divide-y divide-gray-300">
             <thead className="bg-white sticky top-0 z-10">
               <tr>
