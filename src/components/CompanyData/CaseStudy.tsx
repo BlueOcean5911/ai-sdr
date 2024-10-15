@@ -31,8 +31,13 @@ const CaseStudy = () => {
     runService(
       { id },
       deleteTrainingDocument,
-      () => {
-        setCaseStudies(caseStudies?.filter((file) => file.id !== id));
+      (data) => {
+        if (data.success) {
+          setCaseStudies(caseStudies?.filter((file) => file.id !== id));
+          toast.success("Successfully deleted");
+        } else {
+          toast.success("Something goes wrong!");
+        }
       },
       (status, error) => {
         console.log(status, error);
@@ -48,22 +53,24 @@ const CaseStudy = () => {
       >
         Case Study
       </label>
-      <Upload
-        type="case-study"
-        description="Drop or select case study files to upload for training"
-        onUpload={(data: SuccessModel) => {
-          if (data.success) {
-            fetchCaseStudies();
-            toast.success("Successfully uploaded");
-          } else {
-            toast.error("Something goes wrong, please contact us!");
-          }
-        }}
-      />
+      <div className="ml-8">
+        <Upload
+          type="case-study"
+          description="Drop or select case study files to upload for training"
+          onUpload={(data: SuccessModel) => {
+            if (data.success) {
+              fetchCaseStudies();
+              toast.success("Successfully uploaded");
+            } else {
+              toast.error("Something goes wrong, please contact us!");
+            }
+          }}
+        />
+      </div>
       <div className="h-8" />
       {caseStudies && caseStudies.length > 0 && (
         <UploadedFiles
-          type="case-study"
+          title="Uploaded case studies"
           files={caseStudies}
           onDelete={(id: string) => handleDeleteFile(id)}
         />
