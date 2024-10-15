@@ -41,6 +41,13 @@ export const priorityOptions = [
   { value: "low", label: "Low" },
 ];
 
+export const stateOptions = [
+  { value: "incomplete", label: "Incompleted" },
+  { value: "skipped", label: "Skipped" },
+  { value: "archived", label: "Archived" },
+  { value: "complete", label: "Completed" },
+];
+
 export const cadenceStatusOptions = [
   { value: "Active", label: "Active" },
   { value: "Paused", label: "Paused" },
