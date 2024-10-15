@@ -1,13 +1,19 @@
 import { api } from "@/utils/api";
 import { CountModel, FetchProps, SuccessModel } from "@/types";
-import { COMPANY_SIZE, EMAIL_STATUS } from "@/types/enums";
-import { boolean } from "yup";
+import { EMAIL_STATUS } from "@/types/enums";
+import {
+  CompanyFilterConfig,
+  getDefaultCompanyFilterConfig,
+} from "@/contexts/FilterCompanyContext";
 
 interface FetchCompaniesProps extends FetchProps {
   targeted?: boolean;
-  industry?: string;
-  company?: string;
-  location?: string;
+  filter: CompanyFilterConfig;
+}
+
+interface FetchTotalCountProps {
+  targeted?: boolean;
+  filter: CompanyFilterConfig;
 }
 
 export interface CompanyModel extends BaseCompanyModel {
@@ -57,18 +63,35 @@ interface ApiCountResponse {
 }
 
 export const getCompanies = async (
-  data: FetchCompaniesProps = { offset: 0, limit: 100, targeted: false }
+  data: FetchCompaniesProps = {
+    offset: 0,
+    limit: 100,
+    targeted: false,
+    filter: getDefaultCompanyFilterConfig(),
+  }
 ): Promise<ApiCompaniesResponse> => {
-  const { offset, limit, targeted, company, location, industry } = data;
+  const { offset, limit, targeted } = data;
+  const { company, country, state, city, streetAddress, industry } =
+    data?.filter;
   let url = `/api/companies?offset=${offset}&limit=${limit}`;
+
   if (targeted) {
     url += "&targeted=true";
   }
   if (company) {
     url += `&companyName=${company}`;
   }
-  if (location) {
-    url += `&location=${location}`;
+  if (country) {
+    url += `&country=${country}`;
+  }
+  if (state) {
+    url += `&state=${state}`;
+  }
+  if (city) {
+    url += `&city=${city}`;
+  }
+  if (streetAddress) {
+    url += `&streetAddress=${streetAddress}`;
   }
   if (industry) {
     url += `&industry=${industry}`;
@@ -148,30 +171,40 @@ export const getCompanyById = async (data: {
   };
 };
 
-export const getCompanyTotalCount = async ({
-  targeted,
-  company,
-  location,
-  industry,
-}: {
-  targeted: boolean;
-  company?: string;
-  location?: string;
-  industry?: string;
-}): Promise<ApiCountResponse> => {
+export const getCompanyTotalCount = async (
+  data: FetchTotalCountProps = {
+    targeted: false,
+    filter: getDefaultCompanyFilterConfig(),
+  }
+): Promise<ApiCountResponse> => {
+  const { targeted } = data;
+  const { company, country, state, city, streetAddress, industry } =
+    data.filter;
+
   let url = "/api/companies/statistics/total-count?";
+
   if (targeted) {
     url += "&targeted=true";
   }
   if (company) {
     url += `&companyName=${company}`;
   }
-  if (location) {
-    url += `&location=${location}`;
+  if (country) {
+    url += `&country=${country}`;
+  }
+  if (state) {
+    url += `&state=${state}`;
+  }
+  if (city) {
+    url += `&city=${city}`;
+  }
+  if (streetAddress) {
+    url += `&streetAddress=${streetAddress}`;
   }
   if (industry) {
     url += `&industry=${industry}`;
   }
+
   const response = await api.get(url);
   return {
     data: {

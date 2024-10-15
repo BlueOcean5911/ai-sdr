@@ -43,7 +43,7 @@ const EmailToolbar = () => {
   }, []);
 
   return (
-    <div className="w-full flex items-center gap-2 border-b border-gray-100 text-sm overflow-auto">
+    <div className="w-full flex items-center gap-2 border-b border-gray-100 text-sm overflow-auto justify-between">
       <button
         className="btn-secondary"
         onClick={() => {
@@ -61,7 +61,7 @@ const EmailToolbar = () => {
           <span>Show Filters</span>
         )}
       </button>
-      <div className="flex flex-1 gap-2 overflow-auto">
+      <div className="flex gap-2 overflow-auto">
         <Link href={`${path}`}>
           <div
             className={classNames(

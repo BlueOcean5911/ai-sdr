@@ -35,7 +35,7 @@ const stageDict: Record<string, string> = {
 const ContactToolbar = ({ data }: { data: any }) => {
   const { contactFilterConfig, setContactFilterConfig } = useContactFilter();
   return (
-    <div className="w-full flex items-center gap-2 border-b border-gray-100 text-sm overflow-auto">
+    <div className="w-full flex items-center gap-2 border-b border-gray-100 text-sm overflow-auto justify-between">
       <button
         className="min-w-32 flex justify-center items-center gap-2 border-2 border-gray-300 py-1 px-2 rounded-md hover:bg-gray-200"
         onClick={() => {

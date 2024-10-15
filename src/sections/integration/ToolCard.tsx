@@ -17,10 +17,10 @@ export default function ToolCard({
   onClick: () => void;
 }) {
   return (
-    <div className="min-w-48 card">
+    <div className="min-w-48 card flex flex-col">
       {icon}
       <h3 className="text-lg font-semibold">{title}</h3>
-      <div className="line-clamp-2 overflow-hidden text-gray-500 my-4">
+      <div className="flex-1 line-clamp-2 overflow-hidden text-gray-500 my-4">
         {description}
       </div>
       <div className="flex justify-between items-center gap-4">

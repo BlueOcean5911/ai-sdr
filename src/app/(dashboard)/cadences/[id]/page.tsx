@@ -226,7 +226,29 @@ export default function Page({ params }: { params: { id: string } }) {
       {edit ? (
         <div className="p-2 flex flex-1 bg-gray-100 overflow-auto">
           <div className="p-4 flex flex-1 flex-col gap-2 rounded-md shadow-lg bg-white">
-            <h4 className="font-semibold">Edit template</h4>
+            <div className="flex items-center justify-between">
+              <h1 className="text-lg font-semibold">Edit template</h1>
+              <div className="flex justify-end gap-4">
+                <button
+                  className="btn-secondary"
+                  onClick={() => handleCancelTemplate()}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="btn-secondary"
+                  onClick={() => handleTestTemplate()}
+                >
+                  Send test to me
+                </button>
+                <button
+                  className="btn-primary"
+                  onClick={() => handleSaveTemplate()}
+                >
+                  Save
+                </button>
+              </div>
+            </div>
             <hr />
             <div className="flex flex-1 gap-4">
               <div className="w-full flex flex-col gap-2">
@@ -264,26 +286,6 @@ export default function Page({ params }: { params: { id: string } }) {
                   />
                 </div>
               </div>
-            </div>
-            <div className="flex justify-end gap-4">
-              <button
-                className="px-2 py-1 rounded-md text-sm bg-gray-300 hover:bg-gray-200"
-                onClick={() => handleCancelTemplate()}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-2 py-1 rounded-md text-sm bg-gray-300 hover:bg-gray-200"
-                onClick={() => handleTestTemplate()}
-              >
-                Send test to me
-              </button>
-              <button
-                className="px-2 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
-                onClick={() => handleSaveTemplate()}
-              >
-                Save
-              </button>
             </div>
           </div>
         </div>

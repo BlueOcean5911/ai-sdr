@@ -1,17 +1,11 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import {
-  ChevronRightIcon,
-  EllipsisHorizontalIcon,
-  StarIcon,
-} from "@heroicons/react/24/outline";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { ChevronRightIcon, StarIcon } from "@heroicons/react/24/outline";
 import ToggleButton from "@/components/extends/Button/ToggleButton";
 import { useRouter } from "next/navigation";
 import { ContactSelectionProvider } from "@/contexts/ContactSelectionContext";
 import { ContactFilterProvider } from "@/contexts/FilterContactContext";
-import Contacts from "@/views/contacts";
 import { handleError, runService } from "@/utils/service_utils";
 import {
   BaseCadenceModel,
@@ -20,7 +14,6 @@ import {
   updateCadence,
 } from "@/services/cadenceService";
 import Link from "next/link";
-import GeneralContacts from "@/views/generalContacts";
 import CadenceContacts from "@/views/cadenceContacts";
 import { ROUTE_LEADS } from "@/data/routes";
 
@@ -116,46 +109,14 @@ export default function Page({ params }: { params: { id: string } }) {
           </div>
           <div className="flex items-center gap-3">
             <Link href={ROUTE_LEADS}>
-              <div className="text-sm px-2 py-1 bg-blue-500 hover:bg-blue-400 text-white rounded hover:cursor-pointer">
-                Add contacts
-              </div>
+              <div className="btn-primary">Add contacts</div>
             </Link>
-            {/* <Menu>
-              <MenuButton className="">
-                <div className="p-1 border rounded-md">
-                  <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
-                </div>
-              </MenuButton>
-              <MenuItems
-                anchor="bottom end"
-                className="flex flex-col w-24 origin-top bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
-              >
-                <MenuItem>
-                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                    Clone
-                  </button>
-                </MenuItem>
-                <MenuItem>
-                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                    Archive
-                  </button>
-                </MenuItem>
-              </MenuItems>
-            </Menu> */}
-            {/* <Link href={ROUTE_LEADS}>
-              <button className="px-2 py-1 rounded-md text-white bg-blue-900">
-                Add Contracts
-              </button>
-            </Link> */}
           </div>
         </div>
         <div className="w-full h-8 px-5 flex items-center gap-2">
           <Link href={`/cadences/${cadence?.id}`}>
             <span className="flex flex-col rounded-md text-sm hover:bg-gray-100">
-              <span
-                className="p-1.5 cursor-pointer font-semibold"
-                // onClick={() => router.push(`/cadences/${cadence?.id}`)}
-              >
+              <span className="p-1.5 cursor-pointer font-semibold">
                 Overview
               </span>
               <span className="w-full border-b-2"></span>
@@ -163,10 +124,7 @@ export default function Page({ params }: { params: { id: string } }) {
           </Link>
           <Link href={`/cadences/${cadence?.id}/contacts`}>
             <span className="flex flex-col rounded-md text-sm hover:bg-gray-100">
-              <span
-                className="p-1.5 cursor-pointer font-semibold"
-                // onClick={() => router.push(`/cadences/${cadence?.id}/contacts`)}
-              >
+              <span className="p-1.5 cursor-pointer font-semibold">
                 Contacts
               </span>
               <span className="w-full border-b-2 border-black"></span>
@@ -174,26 +132,10 @@ export default function Page({ params }: { params: { id: string } }) {
           </Link>
           <Link href={`/cadences/${cadence?.id}/emails`}>
             <span className="flex flex-col rounded-md text-sm hover:bg-gray-100">
-              <span
-                className="p-1.5 cursor-pointer"
-                // onClick={() => router.push(`/cadences/${cadence?.id}/emails`)}
-              >
-                Emails
-              </span>
+              <span className="p-1.5 cursor-pointer">Emails</span>
               <span className="w-full border-b-2"></span>
             </span>
           </Link>
-          {/* <Link href={`/cadences/${cadence?.id}/settings`}>
-            <span className="flex flex-col rounded-md text-sm hover:bg-gray-100">
-              <span
-                className="p-1.5 cursor-pointer"
-                // onClick={() => router.push(`/cadences/${cadence?.id}/settings`)}
-              >
-                Settings
-              </span>
-              <span className="w-full border-b-2"></span>
-            </span>
-          </Link> */}
         </div>
         <div className="relative flex flex-1 bg-gray-100 overflow-auto">
           <div className="overflow-auto flex-1 flex flex-col">

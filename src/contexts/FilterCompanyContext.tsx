@@ -7,14 +7,31 @@ interface Option {
   isSelected?: boolean;
 }
 
-interface CompanyFilterConfig {
+export interface CompanyFilterConfig {
   createdCompanyId: string;
   isOpen: boolean;
   company: string;
-  location: string;
+  country: string;
+  state: string;
+  city: string;
+  streetAddress: string;
   employee: Option | Option[] | null;
   industry: string;
 }
+
+export const getDefaultCompanyFilterConfig = (): CompanyFilterConfig => {
+  return {
+    createdCompanyId: "",
+    isOpen: true,
+    company: "",
+    country: "",
+    state: "",
+    city: "",
+    streetAddress: "",
+    employee: [],
+    industry: "",
+  };
+};
 
 interface CompanyFilterContextType {
   companyFilterConfig: CompanyFilterConfig;
@@ -37,14 +54,13 @@ export const CompanyFilterProvider = ({
       createdCompanyId: "",
       isOpen: true,
       company: "",
-      location: "",
+      country: "",
+      state: "",
+      city: "",
+      streetAddress: "",
       employee: [],
       industry: "",
     });
-
-  const updateCompanyFilterConfig = (config: CompanyFilterConfig) => {
-    setCompanyFilterConfig(config);
-  };
 
   return (
     <CompanyFilterContext.Provider

@@ -1,11 +1,10 @@
 import CheckBox from "@/components/extends/CheckBox";
 import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
 import { useCompanySelection } from "@/contexts/CompanySelectionContext";
-import { contain } from "@/utils/string";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Pagination from "@/components/extends/Pagination/Pagination";
-import { CompanyProps, CountModel } from "@/types";
+import { CountModel } from "@/types";
 import { handleError, runService } from "@/utils/service_utils";
 import {
   CompanyModel,
@@ -18,14 +17,15 @@ import CreateCompany from "./CreateCompany";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
+import { Tooltip } from "react-tooltip";
+import Link from "next/link";
+import { FaLinkedinIn } from "react-icons/fa";
 
 const CompanyTable = () => {
   const { companyFilterConfig } = useCompanyFilter();
   const {
     totalCompanies,
     setTotalCompanies,
-    savedCompanies,
-    setSavedCompanies,
     selectedCompanies,
     setSelectedCompanies,
   } = useCompanySelection();
@@ -56,9 +56,7 @@ const CompanyTable = () => {
         offset,
         limit,
         targeted,
-        company: companyFilterConfig.company,
-        location: companyFilterConfig.location,
-        industry: companyFilterConfig.industry,
+        filter: companyFilterConfig,
       },
       getCompanies,
       (data) => {
@@ -75,9 +73,7 @@ const CompanyTable = () => {
     runService(
       {
         targeted,
-        company: companyFilterConfig.company,
-        location: companyFilterConfig.location,
-        industry: companyFilterConfig.industry,
+        filter: companyFilterConfig,
       },
       getCompanyTotalCount,
       (data: CountModel) => {
@@ -209,7 +205,7 @@ const CompanyTable = () => {
                 </th>
                 <th
                   scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 min-w-72"
                 >
                   Keywords
                 </th>
@@ -227,7 +223,7 @@ const CompanyTable = () => {
                   key={company.id}
                   className="even:bg-blue-50 hover:bg-gray-300 cursor-pointer"
                 >
-                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     <div className="flex gap-2">
                       <CheckBox
                         id={company.id}
@@ -255,11 +251,14 @@ const CompanyTable = () => {
                         }}
                       />
                       <span
-                        className="flex-1 hover:underline"
+                        className="hover:underline"
                         onClick={() => handleOverview(company)}
                       >
                         {company.name}
                       </span>
+                      <Link href={`${company?.linkedin}`}>
+                        <FaLinkedinIn className="w-6 h-6 p-1 rounded-md border bg-white fill-blue-500" />
+                      </Link>
                     </div>
                   </td>
                   <td className="whitespace-nowrap text-sm text-gray-500">
@@ -292,22 +291,59 @@ const CompanyTable = () => {
                       </MenuItems>
                     </Menu>
                   </td>
-                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {company.size}
                   </td>
-                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {company.industry}
                   </td>
-                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                    <div className="flex gap-2 max-w-56 min-w-32 flex-wrap">
-                      {company?.keywords?.split(",").map((keyword) => (
-                        <span className="p-1 border rounded-full text-xs">
-                          {keyword}
-                        </span>
-                      ))}
+                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                    <div className="flex gap-2 min-w-32 flex-wrap items-center">
+                      {company?.keywords
+                        ?.split(",")
+                        .slice(0, 3)
+                        .map((keyword) => (
+                          <span className="p-1 px-2 border border-blue-500 rounded-full text-xs capitalize min-w-16 text-center">
+                            {keyword}
+                          </span>
+                        ))}
+                      {(company?.keywords?.split(",")?.length || 0) > 3 && (
+                        <>
+                          <a
+                            className="max-w-48"
+                            data-tooltip-id={`my-tooltip-company-keywords-${company.id}`}
+                          >
+                            <span className="text-gray-500">
+                              +
+                              {(company?.keywords?.split(",")?.length || 0) - 3}{" "}
+                              more
+                            </span>
+                          </a>
+                          <Tooltip
+                            id={`my-tooltip-company-keywords-${company.id}`}
+                            place="top"
+                            style={
+                              {
+                                // backgroundColor: "rgb(255, 255, 255)",
+                                // color: "#222",
+                              }
+                            }
+                          >
+                            <div className="flex gap-2 flex-wrap max-w-72 justify-center">
+                              {company?.keywords
+                                ?.split(",")
+                                .map((keyword) => (
+                                  <span className="p-1 px-2 border border-white text-white rounded-full text-xs capitalize  min-w-16 text-center">
+                                    {keyword}
+                                  </span>
+                                )) || <></>}
+                            </div>
+                          </Tooltip>
+                        </>
+                      )}
                     </div>
                   </td>
-                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {company.city} {company.state}
                   </td>
                 </tr>
