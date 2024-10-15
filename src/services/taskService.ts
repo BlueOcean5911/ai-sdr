@@ -32,19 +32,6 @@ export interface BaseTaskModel {
   leadId: string;
 }
 
-export interface SendTaskModel {
-  leadId: string;
-  ownerId: string;
-  fromEmail: string;
-  toEmail: string;
-  subject: string;
-  bodyText?: string;
-  bodyHtml?: string;
-  scheduleAt?: string;
-  templateId?: string;
-  callStatus?: MAILING_STATE;
-}
-
 export interface TasksStatistics {
   total?: number;
   action?: number;
@@ -176,16 +163,16 @@ export const getTaskTotalCount = async (
 
 export const getTasksStatistics = async (): Promise<ApiStatisticsResponse> => {
   const response = await api.get(`api/tasks/statistics`);
-  console.log(response);
+  // console.log(response);
   return {
     data: response.data,
   };
 };
 
-export const addTask = async (task: SendTaskModel) => {
-  console.log("task data", task);
+export const addTask = async (task: TaskModel) => {
+  // console.log("task data", task);
   const response = await api.post("api/tasks", task);
-  console.log("send task", response.data);
+  // console.log("send task", response.data);
   if (response.status !== 200) {
     throw new Error("Failed to create task");
   }
@@ -199,7 +186,7 @@ export const addTask = async (task: SendTaskModel) => {
 
 export const updateTask = async (data: {
   taskId: string;
-  updateData: SendTaskModel;
+  updateData: BaseTaskModel;
 }) => {
   const { taskId, updateData } = data;
   const response = await api.put(`api/tasks/${taskId}`, updateData);
