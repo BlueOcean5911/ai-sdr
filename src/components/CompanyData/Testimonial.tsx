@@ -48,22 +48,24 @@ const Testimonial = () => {
       >
         Testimonials
       </label>
-      <Upload
-        type="testimonial"
-        description="Drop or select testimonials files to upload for training"
-        onUpload={(data) => {
-          if (data.success) {
-            fetchTestimonials();
-            toast.success("Successfully uploaded");
-          } else {
-            toast.error("Something goes wrong, please contact us!");
-          }
-        }}
-      />
+      <div className="ml-8">
+        <Upload
+          type="testimonial"
+          description="Drop or select testimonials files to upload for training"
+          onUpload={(data) => {
+            if (data.success) {
+              fetchTestimonials();
+              toast.success("Successfully uploaded");
+            } else {
+              toast.error("Something goes wrong, please contact us!");
+            }
+          }}
+        />
+      </div>
       <div className="h-8" />
       {testimonials && testimonials.length > 0 && (
         <UploadedFiles
-          type="testimonial"
+          title="Uploaded testimonials"
           files={testimonials}
           onDelete={(id: string) => handleDeleteFile(id)}
         />

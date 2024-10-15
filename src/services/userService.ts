@@ -1,4 +1,4 @@
-import { ApiSuccessResponse } from "@/types";
+import { ApiSuccessResponse, SuccessModel } from "@/types";
 import { api } from "@/utils/api";
 
 export interface UserModel extends BaseUserModel {
@@ -86,13 +86,11 @@ export const updatePassword = async ({
 }: {
   newPassword: string;
   oldPassword: string;
-}) => {
-  const response = await api.put("/api/users/me/password", {
+}): Promise<ApiSuccessResponse> => {
+  return await api.put("/api/users/me/password", {
     oldPassword,
     newPassword,
   });
-
-  return response;
 };
 
 export const sendInviteLink = async (props: { email: string }) => {
