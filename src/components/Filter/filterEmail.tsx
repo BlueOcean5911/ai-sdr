@@ -76,9 +76,9 @@ export default function FilterEmail() {
   }, [emailFilterConfig]);
 
   return (
-    <div className="card px-2 w-64 h-full flex flex-col shadow-lg min-w-[256px]">
+    <div className="card pt-6 px-2 w-64 h-full flex flex-col shadow-lg min-w-[256px]">
       <h3 className="p-2 border-b border-gray-100">Search</h3>
-      <div className="flex-1 flex flex-col gap-2 p-2 overflow-auto">
+      <div className="flex-1 flex flex-col gap-2 p-2 border rounded overflow-auto">
         <form action="#" method="GET" className="flex px-3 pt-2 items-center">
           <label htmlFor="search-field" className="sr-only">
             Search
