@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import Select from "@/components/extends/Select/default";
 import { useTaskFilter } from "@/contexts/FilterTaskContext";
 import { CADENCE_STEP_TYPE } from "@/types/enums";
+import { getLeads, LeadModel } from "@/services/leadService";
 
 const taskTypeOptions = [
   { value: CADENCE_STEP_TYPE.MANUAL_EMAIL, name: "Email" },
@@ -37,9 +38,9 @@ export default function CreateTask({
   handleSave,
   handleClose,
 }: CreateTaskProps) {
-  const [users, setUsers] = useState<UserModel[]>();
   const { setTaskFilterConfig } = useTaskFilter();
   const [userOptions, setUserOptions] = useState<any[]>([]);
+  const [leadOptions, setLeadOptions] = useState<any[]>([]);
 
   const fetchUsers = () => {
     runService(
@@ -53,7 +54,29 @@ export default function CreateTask({
           };
         });
         setUserOptions(tempUserOptions);
-        setUsers(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  const fetchLeads = () => {
+    runService(
+      undefined,
+      getLeads,
+      (data: any[]) => {
+        const tempLeadOptions = data.map((user) => {
+          return {
+            name: user.firstName + " " + user.lastName,
+            value: user.id,
+          };
+        });
+        // console.log("tempLeadOptions: ", tempLeadOptions);
+        setLeadOptions([
+          { name: "None", value: "none" },
+          ...tempLeadOptions,
+        ]);
       },
       (status, error) => {
         handleError(status, error);
@@ -63,6 +86,7 @@ export default function CreateTask({
 
   useEffect(() => {
     fetchUsers();
+    fetchLeads();
   }, []);
   return (
     <>
@@ -90,6 +114,7 @@ export default function CreateTask({
                   <Formik
                     initialValues={{
                       title: task ? task.title : "",
+                      leadId: task ? task.leadId : "none",
                       taskType: task ? task.taskType : "",
                       ownerId: task ? task.ownerId : "",
                       taskPriority: task ? task.taskPriority : "",
@@ -119,7 +144,7 @@ export default function CreateTask({
                         taskPriority: values.taskPriority,
                         endDate: values.endDate,
                         ownerId: values.ownerId,
-                        leadId: "",
+                        leadId: values.leadId,
                       };
                       task
                         ? runService(
@@ -168,20 +193,43 @@ export default function CreateTask({
                     }) => (
                       <form noValidate onSubmit={handleSubmit}>
                         <div className="px-6 py-3 flex flex-col gap-2 text-sm bg-gray-50 rounded-md">
-                          <div className="w-full flex flex-col gap-1">
-                            <label htmlFor="title">Title:</label>
-                            <input
-                              id="title"
-                              type="text"
-                              placeholder="Title"
-                              className="input-primary max-h-9"
-                              value={values.title}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {touched.title && errors.title && (
-                              <FormHelperText>{errors.title}</FormHelperText>
-                            )}
+                          <div className="flex gap-2">
+                            <div className="w-2/3 flex flex-col gap-1">
+                              <label htmlFor="title">Title:</label>
+                              <input
+                                id="title"
+                                type="text"
+                                placeholder="Title"
+                                className="input-primary max-h-9"
+                                value={values.title}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {touched.title && errors.title && (
+                                <FormHelperText>{errors.title}</FormHelperText>
+                              )}
+                            </div>
+                            <div className="w-1/3 flex flex-col gap-1">
+                              <label htmlFor="leadId">Lead:</label>
+                              <Select
+                                data={leadOptions}
+                                defaultValue={leadOptions.find(
+                                  (option) => option.value === values.leadId
+                                )}
+                                onChange={(selectedItem) => {
+                                  if (selectedItem.value !== values.leadId)
+                                    setFieldValue(
+                                      "leadId",
+                                      selectedItem.value
+                                    );
+                                }}
+                              ></Select>
+                              {touched.leadId && errors.leadId && (
+                                <FormHelperText>
+                                  {errors.leadId}
+                                </FormHelperText>
+                              )}
+                            </div>
                           </div>
 
                           <div className="flex gap-2">

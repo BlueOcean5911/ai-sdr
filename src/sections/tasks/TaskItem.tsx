@@ -77,7 +77,7 @@ export default function TaskItem({
       </div>
       <div className="flex items-center flex-1 gap-4 cursor-pointer">
         <Link href={`/leads/${task.leadId}?sendEmail=true`}>
-          <div className="w-1/2 max-w-96 lg:max-w-xl xl:max-w-2xl flex flex-col gap-1 overflow-hidden">
+          <div className="w-1/2 min-w-12 max-w-96 lg:max-w-xl xl:max-w-2xl flex flex-col gap-1 overflow-hidden">
             <span className="text-sm font-semibold text-blue-900 line-clamp-1">
               {task.title}
             </span>
