@@ -34,7 +34,7 @@ const TaskOverview = ({
         </div>
         <div className="flex flex-1 flex-row gap-2">
           <TaskView task={task} />
-          <LeadView lead={lead} />
+          {lead && <LeadView lead={lead} />}
         </div>
       </div>
     </>

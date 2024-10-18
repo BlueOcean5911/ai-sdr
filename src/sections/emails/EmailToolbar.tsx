@@ -54,7 +54,7 @@ const EmailToolbar = () => {
           }
         }}
       >
-        <AdjustmentsHorizontalIcon className="w-8 h-8" />
+        <AdjustmentsHorizontalIcon className="w-4 h-4" />
         {emailFilterConfig.isOpen ? (
           <span>Hide Filters</span>
         ) : (

@@ -11,7 +11,7 @@ const Security = () => {
   return (
     <div className="p-4 flex flex-1 bg-gray-100 overflow-auto text-sm">
       <div className="card flex flex-1 justify-center items-center bg-white">
-        <div className="card p-8 max-w-lg w-full flex flex-col gap-5 border shadow-lg">
+        <div className="card py-8 max-w-md w-full flex flex-col gap-5 border shadow-lg">
           <div className="change-password-header">
             <h1 className="text-lg">Change Password</h1>
             <hr />

@@ -10,7 +10,9 @@ const TaskView = ({ task }: { task?: TaskModel }) => {
         </span>
       </div>
       <div className="px-5 py-1">
-        <span className={`p-1 text-xs capitalize rounded-md ${task?.taskPriority}`}>
+        <span
+          className={`p-1 text-xs capitalize rounded-md ${task?.taskPriority}`}
+        >
           {task?.taskPriority}
         </span>
       </div>
@@ -39,7 +41,7 @@ const TaskView = ({ task }: { task?: TaskModel }) => {
             <div className="flex flex-row justify-between items-center">
               <span className="font-semibold">Description</span>
             </div>
-            <div className="min-h-20 text-sm">{task?.content}</div>
+            <div className="min-h-20 text-sm break-words">{task?.content}</div>
           </div>
         </div>
       </div>
