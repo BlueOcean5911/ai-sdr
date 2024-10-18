@@ -3,8 +3,6 @@
 import ComingSoon from "@/components/coming-soon";
 
 export default function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
-
   return (
     <>
       <div className="relative p-2 flex flex-1 items-center bg-gray-100 overflow-auto">

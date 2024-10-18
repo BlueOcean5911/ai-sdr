@@ -1,35 +1,23 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
-  ArrowTrendingUpIcon,
   CheckBadgeIcon,
   ChevronRightIcon,
-  EnvelopeIcon,
-  InformationCircleIcon,
   NoSymbolIcon,
   PhoneIcon,
-  PlusCircleIcon,
-  PlusIcon,
   QuestionMarkCircleIcon,
-  StarIcon,
 } from "@heroicons/react/24/outline";
-import ToggleButton from "@/components/extends/Button/ToggleButton";
 import { useRouter } from "next/navigation";
-import { handleError, runService } from "@/utils/service_utils";
-import { getTemplate } from "@/services/templatesService";
 import { FaLinkedinIn } from "react-icons/fa";
-import { LinkedinIcon, MessageCircleWarning } from "lucide-react";
-import { FaRegQuestionCircle } from "react-icons/fa";
+import { MessageCircleWarning } from "lucide-react";
 import { CompanyModel, getCompanyById } from "@/services/companyService";
 import { IoIosLink } from "react-icons/io";
 import { CiLocationOn } from "react-icons/ci";
+import { runService } from "@/utils/service_utils";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  const [starred, setStarred] = useState(false);
-  const [active, setActive] = useState(false);
   const [company, setCompany] = useState<CompanyModel>();
   const router = useRouter();
 

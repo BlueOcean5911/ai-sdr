@@ -4,12 +4,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import NavTitle from "@/components/DashboardLayout/Nav/Title";
-import { ROUTE_CAMPAIGNS, ROUTE_CATENCES, ROUTE_PERSONAS } from "@/data/routes";
-import Cadences from "@/views/cadences";
-import ComingSoon from "@/components/coming-soon";
-import ComboBox from "@/components/extends/combobox";
+import { ROUTE_CAMPAIGNS } from "@/data/routes";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { PersonasTable, defaultPersonas } from "@/views/personas";
+import { PersonasTable } from "@/views/personas";
 import ManagePersona from "@/sections/persona/manage-persona";
 import SelectPersona from "@/sections/persona/select-persona";
 import { classNames } from "@/utils";
@@ -24,13 +21,6 @@ const defaultCampaign = {
   schema: "",
 };
 
-const cadences: any = [
-  { id: 1, name: "Cadence 1" },
-  { id: 2, name: "Cadence 2" },
-  { id: 3, name: "Cadence 3" },
-  { id: 4, name: "Cadence 4" },
-  { id: 5, name: "Cadence 5" },
-];
 const totalStep = 2;
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;

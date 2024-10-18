@@ -1,6 +1,6 @@
 "use client";
 import Upload from "@/components/upload";
-import { SuccessModel, TrainingDocument } from "@/types";
+import { SuccessModel } from "@/types";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { toast } from "react-toastify";

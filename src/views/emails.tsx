@@ -22,7 +22,7 @@ export default function Emails(
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalCount, setTotalCount] = useState<number>(0);
-  const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
+  const { emailFilterConfig } = useEmailFilter();
   const [mailings, setMailings] = useState<MailingModel[]>([]);
   const currentParams = Object.fromEntries(useSearchParams());
 

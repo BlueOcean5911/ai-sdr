@@ -7,18 +7,9 @@ import {
   sendInviteLink,
   UserModel,
 } from "@/services/userService";
-import {
-  EllipsisHorizontalIcon,
-  PlusCircleIcon,
-  TrashIcon,
-} from "@heroicons/react/24/outline";
-import {
-  EllipsisVerticalIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/solid";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { PlusCircleIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import InviteUser from "./InviteUser";
-import { setIn } from "formik";
 import { toast } from "react-toastify";
 import ToggleButton from "@/components/extends/Button/ToggleButton";
 

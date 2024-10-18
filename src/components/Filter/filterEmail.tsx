@@ -1,12 +1,10 @@
 import {
   ListBulletIcon,
   MagnifyingGlassIcon,
-  StarIcon,
 } from "@heroicons/react/24/outline";
 import FilterItem from "./filter-item";
 import { useEmailFilter } from "@/contexts/FilterEmailContext";
 import Select from "react-tailwindcss-select";
-import { fromUserOptions } from "@/data/filter.data";
 import { handleError, runService } from "@/utils/service_utils";
 import { getMe, getUsers, UserModel } from "@/services/userService";
 import { useEffect, useState } from "react";

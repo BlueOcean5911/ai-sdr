@@ -6,7 +6,6 @@ import TaskToolbar from "@/sections/tasks/TaskToolbar";
 import TaskItem from "@/sections/tasks/TaskItem";
 import { handleError, runService } from "@/utils/service_utils";
 import {
-  BaseTaskModel,
   deleteTask,
   getTasks,
   getTaskTotalCount,
@@ -22,12 +21,7 @@ import TaskOverview from "@/sections/tasks/TaskOverview";
 import { getLeadById, LeadModel } from "@/services/leadService";
 import { TASK_STATE } from "@/types/enums";
 
-export default function Tasks(
-  { campaignId, cadenceId }: { campaignId?: string; cadenceId?: string } = {
-    cadenceId: "",
-    campaignId: "",
-  }
-) {
+export default function Tasks() {
   const [create, setCreate] = useState(false);
   const [overview, setOverview] = useState(false);
   const [focus, setFocus] = useState<TaskModel>();
@@ -35,7 +29,7 @@ export default function Tasks(
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalCount, setTotalCount] = useState<number>(0);
-  const { taskFilterConfig, setTaskFilterConfig } = useTaskFilter();
+  const { taskFilterConfig } = useTaskFilter();
   const [tasks, setTasks] = useState<TaskModel[]>([]);
   const currentParams = Object.fromEntries(useSearchParams());
 
@@ -145,7 +139,7 @@ export default function Tasks(
       updateTask,
       (data) => {
         console.log(data);
-        toast.success("Successfully updated")
+        toast.success("Successfully updated");
       },
       (statusCode, error) => {
         handleError(statusCode, error);

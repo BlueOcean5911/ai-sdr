@@ -1,10 +1,10 @@
 "use client";
 
 import UploadFilesService from "@/services/uploadFilesService";
-import { SuccessModel, TrainingDocument } from "@/types";
-import { XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { SuccessModel } from "@/types";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { UploadIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Dropzone from "react-dropzone";
 
 const Upload = ({

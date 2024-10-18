@@ -1,26 +1,18 @@
-import ComingSoon from "@/components/coming-soon";
 import CaseStudy from "@/components/CompanyData/CaseStudy";
 import Testimonial from "@/components/CompanyData/Testimonial";
-import UploadedFiles from "@/components/CompanyData/UploadedFiles";
-import Upload from "@/components/upload";
 import {
   getTrainingDataMetrics,
   updateTrainingDataMetrics,
 } from "@/services/trainingDataService";
 import { TrainingDataMetrics } from "@/types";
 import { handleError, runService } from "@/utils/service_utils";
-import { UploadIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import Dropzone from "react-dropzone";
 import { toast } from "react-toastify";
 
 const CompanyData = () => {
   const [trainingDataMetrics, setTrainingDataMetrics] = useState<
     TrainingDataMetrics | undefined
   >(undefined);
-  const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
-  const [currentFile, setCurrentFile] = useState(undefined);
-  const [progress, setProgress] = useState(0);
 
   const fetchTrainingDataMetrics = () => {
     runService(
@@ -52,14 +44,6 @@ const CompanyData = () => {
   useEffect(() => {
     fetchTrainingDataMetrics();
   }, []);
-
-  const upload = () => {};
-
-  const onDrop = (files: any) => {
-    if (files.length > 0) {
-      setSelectedFiles(files);
-    }
-  };
 
   return (
     <div className="container mx-auto px-4 py-8">

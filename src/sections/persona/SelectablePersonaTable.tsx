@@ -1,5 +1,4 @@
 import CheckBox from "@/components/extends/CheckBox";
-import { Popover, PopoverButton } from "@headlessui/react";
 
 export const SelectablePerson = ({ data }: { data: any }) => {
   return (

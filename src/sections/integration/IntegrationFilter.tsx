@@ -1,7 +1,5 @@
-import GridIcon from "@/components/Icons/grid.icon";
-import { DISPLAY_FLEX, DISPLAY_GRID } from "@/data/variables/constants.data";
+import { DISPLAY_FLEX } from "@/data/variables/constants.data";
 import { classNames } from "@/utils";
-import { Bars3Icon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 
 const Item = ({

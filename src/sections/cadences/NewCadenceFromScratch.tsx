@@ -1,6 +1,6 @@
 import { removeSpecialCharacters } from "@/utils/string";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import RSelect from "@/components/extends/Select/default";
@@ -148,10 +148,7 @@ const NewCadenceFromScratch = ({
                     >
                       Create
                     </button>
-                    <button
-                      className="w-full btn-secondary"
-                      onClick={close}
-                    >
+                    <button className="w-full btn-secondary" onClick={close}>
                       Close
                     </button>
                   </div>

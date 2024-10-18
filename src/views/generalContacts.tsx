@@ -1,10 +1,7 @@
 "use client";
 
 import ContactItem from "@/sections/contacts/ContactItem";
-import {
-  ContactInCadence,
-  updateCadenceState,
-} from "@/services/contactsService";
+import { ContactInCadence } from "@/services/contactsService";
 
 export default function GeneralContacts({
   contacts,

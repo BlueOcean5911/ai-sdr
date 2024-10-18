@@ -1,7 +1,6 @@
 "use client";
 
 import Pagination from "@/components/extends/Pagination/Pagination";
-import Upload from "@/components/upload";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";

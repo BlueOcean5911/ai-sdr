@@ -1,7 +1,5 @@
 import {
-  CheckCircleIcon,
   EnvelopeIcon,
-  MinusCircleIcon,
   PaperAirplaneIcon,
   PlusCircleIcon,
   PlusIcon,
@@ -18,7 +16,7 @@ import AddCadence from "../cadences/AddCadence";
 import CreateCadence from "../cadences/CreateCadence";
 import NewCadenceFromScratch from "../cadences/NewCadenceFromScratch";
 import { useRouter } from "next/navigation";
-import { handleError, runService } from "@/utils/service_utils";
+import { runService } from "@/utils/service_utils";
 import {
   LeadModelWithCompanyModel,
   updateLeadsAsTargeted,
@@ -126,18 +124,12 @@ const LeadToolbar = () => {
           )}
         </button>
         {!isSavedView && (
-          <button
-            className="btn-secondary"
-            onClick={() => handleSaveLead()}
-          >
+          <button className="btn-secondary" onClick={() => handleSaveLead()}>
             <PlusIcon className="w-4 h-4" /> Save
           </button>
         )}
 
-        <button
-          className="btn-secondary"
-          onClick={() => handleSendMail()}
-        >
+        <button className="btn-secondary" onClick={() => handleSendMail()}>
           <EnvelopeIcon className="w-4 h-4" /> Email
         </button>
         <Menu>
@@ -189,7 +181,10 @@ const LeadToolbar = () => {
         </Menu>
         {isOpenSendEmail && (
           <>
-            <EmailSendWindow close={() => setIsOpenSendEmail(false)} lead={selectedLeads[0]}/>
+            <EmailSendWindow
+              close={() => setIsOpenSendEmail(false)}
+              lead={selectedLeads[0]}
+            />
           </>
         )}
         {openAddCadence && (
