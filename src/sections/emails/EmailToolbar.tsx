@@ -8,12 +8,13 @@ import { handleError, runService } from "@/utils/service_utils";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const EmailToolbar = () => {
   const path = usePathname();
   const currentParams = Object.fromEntries(useSearchParams());
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
+  const isInitialRendering = useRef(true);
   const [statistics, setStatistics] = useState<MailingsStatistics>({
     totalCount: 0,
     scheduledCount: 0,
@@ -39,6 +40,10 @@ const EmailToolbar = () => {
   };
 
   useEffect(() => {
+    if (isInitialRendering.current) {
+      isInitialRendering.current = false;
+      return;
+    }
     fetchStatistics();
   }, []);
 

@@ -7,11 +7,12 @@ import { useEmailFilter } from "@/contexts/FilterEmailContext";
 import Select from "react-tailwindcss-select";
 import { handleError, runService } from "@/utils/service_utils";
 import { getMe, getUsers, UserModel } from "@/services/userService";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function FilterEmail() {
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
   const [fromEmailOptions, setFromEmailOptions] = useState([]);
+  const isInitialRendering = useRef(true);
 
   const fetchUsers = () => {
     runService(
@@ -23,21 +24,6 @@ export default function FilterEmail() {
           label: user.firstName + " " + user.lastName,
         }));
         setFromEmailOptions(fromEmailOptions);
-        runService(
-          undefined,
-          getMe,
-          (user) => {
-            setEmailFilterConfig({
-              ...emailFilterConfig,
-              fromUser: fromEmailOptions.filter(
-                (option: any) => option.value === user.id
-              ),
-            });
-          },
-          (statusCode, error) => {
-            handleError(statusCode, error);
-          }
-        );
       },
       (status, error) => {
         console.error(error);
@@ -65,6 +51,10 @@ export default function FilterEmail() {
   // }
 
   useEffect(() => {
+    if (isInitialRendering.current) {
+      isInitialRendering.current = false;
+      return;
+    }
     fetchUsers();
     // fetchCurrentUser();
   }, []);

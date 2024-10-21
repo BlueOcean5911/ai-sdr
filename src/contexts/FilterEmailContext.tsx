@@ -1,4 +1,13 @@
-import React, { createContext, useState, useContext, ReactNode } from "react";
+import { getMe } from "@/services/userService";
+import { handleError, runService } from "@/utils/service_utils";
+import React, {
+  createContext,
+  useState,
+  useContext,
+  ReactNode,
+  useEffect,
+  useRef,
+} from "react";
 
 interface Option {
   value: string;
@@ -34,6 +43,33 @@ export const EmailFilterProvider = ({ children }: { children: ReactNode }) => {
       search: "",
     }
   );
+  const isInitialRendering = useRef(true);
+
+  useEffect(() => {
+    if (isInitialRendering.current) {
+      isInitialRendering.current = false;
+      return;
+    }
+    runService(
+      undefined,
+      getMe,
+      (user) => {
+        console.log("here filter email context");
+        setEmailFilterConfig((prevConfig) => ({
+          ...prevConfig,
+          fromUser: [
+            {
+              value: user.id,
+              label: `${user.firstName} ${user.lastName}`,
+            },
+          ],
+        }));
+      },
+      (statusCode, error) => {
+        handleError(statusCode, error);
+      }
+    );
+  }, []);
 
   const updateEmailFilterConfig = (config: EmailFilterConfig) => {
     setEmailFilterConfig(config);
