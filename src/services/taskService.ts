@@ -14,6 +14,7 @@ interface FetchTasksProps extends FetchProps {
   cadenceId?: string;
   priority?: Option | Option[] | null;
   fromUser?: Option | Option[] | null;
+  state?: Option | Option[] | null;
   search?: string;
   params: { [key: string]: string };
 }
@@ -30,19 +31,18 @@ export interface BaseTaskModel {
   endDate: string;
   ownerId: string;
   leadId: string;
+  status: string;
 }
 
-export interface SendTaskModel {
-  leadId: string;
-  ownerId: string;
-  fromEmail: string;
-  toEmail: string;
-  subject: string;
-  bodyText?: string;
-  bodyHtml?: string;
-  scheduleAt?: string;
-  templateId?: string;
-  callStatus?: MAILING_STATE;
+export interface UpdateTaskModel {
+  title?: string;
+  content?: string;
+  taskType?: string;
+  taskPriority?: string;
+  endDate?: string;
+  ownerId?: string;
+  leadId?: string;
+  status?: string;
 }
 
 export interface TasksStatistics {
@@ -95,6 +95,7 @@ export const getTasks = async (
   for (const userId of userIds) {
     url += `&userIds=${userId}`;
   }
+  // ---------- Priority
   let priorities: string[] = [];
   if (Array.isArray(data.priority)) {
     priorities = data.priority.map((option) => option.value);
@@ -106,6 +107,22 @@ export const getTasks = async (
   for (const priority of priorities) {
     url += `&priorities=${priority}`;
   }
+  // ----------- Priority
+
+  // ------------ State
+  let states: string[] = [];
+  if (Array.isArray(data.state)) {
+    states = data.state.map((option) => option.value);
+  } else if (data.state) {
+    states = [data.state.value];
+  } else {
+    states = [];
+  }
+  for (const state of states) {
+    url += `&states=${state}`;
+  }
+  // ------------ State
+
   if (data.search) {
     url += `&search=${data.search}`;
   }
@@ -148,6 +165,7 @@ export const getTaskTotalCount = async (
   for (const userId of userIds) {
     url += `&userIds=${userId}`;
   }
+  // ----------- Priority
   let priorities: string[] = [];
   if (Array.isArray(data.priority)) {
     priorities = data.priority.map((option) => option.value);
@@ -159,6 +177,22 @@ export const getTaskTotalCount = async (
   for (const priority of priorities) {
     url += `&priorities=${priority}`;
   }
+  // ----------- Priority
+
+  // ------------ State
+  let states: string[] = [];
+  if (Array.isArray(data.state)) {
+    states = data.state.map((option) => option.value);
+  } else if (data.state) {
+    states = [data.state.value];
+  } else {
+    states = [];
+  }
+  for (const state of states) {
+    url += `&states=${state}`;
+  }
+  // ------------ State
+  
   if (data.search) {
     url += `&search=${data.search}`;
   }
@@ -176,16 +210,16 @@ export const getTaskTotalCount = async (
 
 export const getTasksStatistics = async (): Promise<ApiStatisticsResponse> => {
   const response = await api.get(`api/tasks/statistics`);
-  console.log(response);
+  // console.log(response);
   return {
     data: response.data,
   };
 };
 
-export const addTask = async (task: SendTaskModel) => {
-  console.log("task data", task);
+export const addTask = async (task: TaskModel) => {
+  // console.log("task data", task);
   const response = await api.post("api/tasks", task);
-  console.log("send task", response.data);
+  // console.log("send task", response.data);
   if (response.status !== 200) {
     throw new Error("Failed to create task");
   }
@@ -199,7 +233,7 @@ export const addTask = async (task: SendTaskModel) => {
 
 export const updateTask = async (data: {
   taskId: string;
-  updateData: SendTaskModel;
+  updateData: BaseTaskModel;
 }) => {
   const { taskId, updateData } = data;
   const response = await api.put(`api/tasks/${taskId}`, updateData);

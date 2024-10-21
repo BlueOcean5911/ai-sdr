@@ -1,12 +1,9 @@
 import { CompanyModel } from "@/services/companyService";
 import { classNames } from "@/utils";
 import {
-  ArrowTrendingUpIcon,
   CheckBadgeIcon,
-  EnvelopeIcon,
   NoSymbolIcon,
   PhoneIcon,
-  PlusIcon,
   QuestionMarkCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";

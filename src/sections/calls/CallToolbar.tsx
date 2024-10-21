@@ -1,11 +1,10 @@
 import { useCallFilter } from "@/contexts/FilterCallContext";
-import { getCallStatistics, CallStatistics } from "@/services/callService";
+import { CallStatistics } from "@/services/callService";
 import { classNames } from "@/utils";
-import { handleError, runService } from "@/utils/service_utils";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const CallToolbar = () => {
   const path = usePathname();
@@ -56,7 +55,7 @@ const CallToolbar = () => {
           {callFilterConfig.isOpen ? "Hide Filters" : "Show Filters"}
         </span>
       </button>
-      <div className="flex flex-1 gap-2 overflow-auto">
+      <div className="flex gap-2 overflow-auto">
         {Object.entries(statistics).map(([key, count]) => (
           <Link key={key} href={`${path}?${key}=true`}>
             <div

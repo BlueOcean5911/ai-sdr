@@ -1,16 +1,11 @@
 import ActionItemIcon from "@/components/Icons/actionitem.icon";
 import AutomaticEmailIcon from "@/components/Icons/automaticemail.icon";
-import LinkedinInteractIcon from "@/components/Icons/linkedininteract.icon";
-import LinkedinMessageIcon from "@/components/Icons/linkedinmessage.icon";
-import LinkedinRequestIcon from "@/components/Icons/linkedinrequest.icon";
-import LinkedinViewIcon from "@/components/Icons/linkedinview.icon";
 import ManualEmailIcon from "@/components/Icons/manualmail.icon";
 import PhoneCallIcon from "@/components/Icons/phonecall.icon";
 import {
-  BaseCadenceStepModel,
   CadenceStepModel,
 } from "@/services/cadenceStepService";
-import { CADENCE_STEP_STATUS, CADENCE_STEP_TYPE } from "@/types/enums";
+import { CADENCE_STEP_TYPE } from "@/types/enums";
 import {
   Dialog,
   DialogPanel,
@@ -19,8 +14,6 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import {
-  InformationCircleIcon,
-  LockClosedIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import React, { Fragment, useEffect, useState } from "react";

@@ -1,11 +1,10 @@
 import CheckBox from "@/components/extends/CheckBox";
 import { useLeadFilter } from "@/contexts/FilterLeadContext";
 import { useLeadSelection } from "@/contexts/LeadSelectionContext";
-import { contain } from "@/utils/string";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Pagination from "@/components/extends/Pagination/Pagination";
-import { CountModel, LeadProps } from "@/types";
+import { CountModel } from "@/types";
 import { handleError, runService } from "@/utils/service_utils";
 import {
   deleteLead,
@@ -21,17 +20,13 @@ import CreateLead from "./CreateLead";
 import { toast } from "react-toastify";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import { Tooltip } from "react-tooltip";
+import { getFormattedAddress } from "@/utils/format";
 
 const LeadTable = () => {
   const { leadFilterConfig } = useLeadFilter();
-  const {
-    totalLeads,
-    setTotalLeads,
-    savedLeads,
-    setSavedLeads,
-    selectedLeads,
-    setSelectedLeads,
-  } = useLeadSelection();
+  const { totalLeads, setTotalLeads, selectedLeads, setSelectedLeads } =
+    useLeadSelection();
 
   const [create, setCreate] = useState(false);
   const [overview, setOverview] = useState(false);
@@ -50,10 +45,7 @@ const LeadTable = () => {
         offset,
         limit,
         targeted,
-        jobTitle: leadFilterConfig.title,
-        companyName: leadFilterConfig.company,
-        location: leadFilterConfig.location,
-        industry: leadFilterConfig.industry,
+        filter: leadFilterConfig,
       },
       getLeads,
       (data) => {
@@ -70,10 +62,7 @@ const LeadTable = () => {
     runService(
       {
         targeted,
-        jobTitle: leadFilterConfig.title,
-        companyName: leadFilterConfig.company,
-        location: leadFilterConfig.location,
-        industry: leadFilterConfig.industry,
+        filter: leadFilterConfig,
       },
       getLeadTotalCount,
       (data: CountModel) => {
@@ -123,7 +112,9 @@ const LeadTable = () => {
           toast.success("Lead updated successfully");
           fetchTotalCount();
           fetchLeads();
-        } else toast.error("Something went wrong.");
+        } else {
+          toast.error("Something went wrong.");
+        }
         handleClose();
       },
       (status, error) => {
@@ -185,13 +176,19 @@ const LeadTable = () => {
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
-                  Company
+                  Job Title
                 </th>
                 <th
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
-                  Title
+                  Lead Location
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Company
                 </th>
                 <th
                   scope="col"
@@ -213,7 +210,7 @@ const LeadTable = () => {
                 </th>
                 <th
                   scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 min-w-72"
                 >
                   Keywords
                 </th>
@@ -225,7 +222,7 @@ const LeadTable = () => {
                   key={lead.id}
                   className="cursor-pointer even:bg-blue-50 hover:bg-gray-300 "
                 >
-                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     <div className="flex items-center gap-2">
                       <CheckBox
                         id={lead.id}
@@ -257,14 +254,11 @@ const LeadTable = () => {
                       >
                         {lead.firstName} {lead.lastName}
                       </span>
-                      <a href={lead?.linkedin}>
-                        <FaLinkedinIn className="w-6 h-6 p-1 rounded-md border bg-white" />
-                      </a>
+                      <Link href={`${lead?.linkedin}`}>
+                        <FaLinkedinIn className="w-6 h-6 p-1 rounded-md border bg-white fill-blue-500" />
+                      </Link>
                     </div>
                   </td>
-                  {/* <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                    {lead.name}
-                  </td> */}
                   <td className="whitespace-nowrap text-sm text-gray-500">
                     <Menu>
                       <MenuButton className="">
@@ -295,10 +289,13 @@ const LeadTable = () => {
                       </MenuItems>
                     </Menu>
                   </td>
-                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {lead.title}
                   </td>
-                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                    {getFormattedAddress(lead.city, lead.state, lead.country)}
+                  </td>
+                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     <a
                       className="hover:underline hover:text-blue-900"
                       href={`companies/${lead.company?.id}`}
@@ -306,22 +303,65 @@ const LeadTable = () => {
                       {lead.company?.name}
                     </a>
                   </td>
-                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                    {lead.company?.city}, {lead.company?.state}
+                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                    {getFormattedAddress(
+                      lead.company?.city,
+                      lead.company?.state,
+                      lead.company?.country
+                    )}
                   </td>
-                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {lead.company?.size}
                   </td>
-                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                     {lead.company?.industry}
                   </td>
-                  <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                    <div className="flex gap-2 max-w-56 min-w-32 flex-wrap">
-                      {lead.company?.keywords?.split(",").map((keyword) => (
-                        <span className="p-1 border rounded-full text-xs">
-                          {keyword}
-                        </span>
-                      ))}
+                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                    <div className="flex gap-2 min-w-32 flex-wrap">
+                      {lead.company?.keywords
+                        ?.split(",")
+                        .slice(0, 3)
+                        .map((keyword) => (
+                          <span className="p-1 px-2 border border-blue-500 rounded-full text-xs capitalize min-w-16 text-center">
+                            {keyword}
+                          </span>
+                        ))}
+                      {(lead.company?.keywords?.split(",")?.length || 0) >
+                        3 && (
+                        <>
+                          <a
+                            className="max-w-48"
+                            data-tooltip-id={`my-tooltip-company-keywords-${lead.company?.id}`}
+                          >
+                            <span className="text-gray-500">
+                              +
+                              {(lead.company?.keywords?.split(",")?.length ||
+                                0) - 3}{" "}
+                              more
+                            </span>
+                          </a>
+                          <Tooltip
+                            id={`my-tooltip-company-keywords-${lead.company?.id}`}
+                            place="top"
+                            style={
+                              {
+                                // backgroundColor: "rgb(255, 255, 255)",
+                                // color: "#222",
+                              }
+                            }
+                          >
+                            <div className="flex gap-2 flex-wrap max-w-72 justify-center">
+                              {lead.company?.keywords
+                                ?.split(",")
+                                .map((keyword) => (
+                                  <span className="p-1 px-2 border border-white text-white rounded-full text-xs capitalize  min-w-16 text-center">
+                                    {keyword}
+                                  </span>
+                                )) || <></>}
+                            </div>
+                          </Tooltip>
+                        </>
+                      )}
                     </div>
                   </td>
                 </tr>

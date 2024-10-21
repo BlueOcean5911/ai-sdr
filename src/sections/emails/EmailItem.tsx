@@ -41,7 +41,9 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
         </div>
 
         <div className="flex flex-1 flex-col gap-0.5 text-xs">
-          <span className="font-semibold line-clamp-1">{mailing.subject}</span>
+          <span className="font-semibold line-clamp-1 text-sm">
+            {mailing.subject}
+          </span>
           <span className="line-clamp-2 text-gray-500">{mailing.message}</span>
           <span className="line-clamp-1 text-blue-500">
             Step {mailing.currentCadenceStep} of {mailing.cadenceName}
@@ -53,7 +55,7 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
             {mailing.ownerName}
           </p>
           <div className="flex items-center gap-2">
-            <span className="px-1 flex flex-1 justify-center bg-orange-500 text-white capitalize">
+            <span className="px-1 flex flex-1 justify-center bg-blue-500 text-white capitalize">
               {mailing.mailingStatus}
             </span>
             <span>{formatDate(mailing.scheduledAt)}</span>
@@ -116,8 +118,8 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
                     </div>
                     <div className="flex flex-col gap-3">{mailing.message}</div>
                     <div className="flex justify-between">
-                      <span className="p-1 rounded-md text-white bg-blue-500">
-                        Delivered
+                      <span className="btn-primary capitalize">
+                        {mailing.mailingStatus}
                       </span>
                     </div>
                   </div>

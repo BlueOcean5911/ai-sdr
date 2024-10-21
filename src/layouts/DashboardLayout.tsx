@@ -14,7 +14,6 @@ import {
 
 import {
   Bars3Icon,
-  ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
   Cog6ToothIcon,
   UserCircleIcon,
@@ -30,13 +29,8 @@ import Logo2 from "@/components/extends/Logo2";
 
 import { classNames } from "@/utils";
 
-import {
-  navigationGeneral,
-  navigationSupport,
-  userNavigation,
-} from "@/data/navigation.data";
+import { userNavigation } from "@/data/navigation.data";
 import Link from "next/link";
-import ThemeToggle from "@/components/Theme/ThemeToggle";
 import HeaderAlert from "@/components/DashboardLayout/Alert/header-alert";
 import { navigations } from "@/data/navigation.data";
 import { signOut } from "@/services/authService";
@@ -82,10 +76,6 @@ export default function DashboardLayout({
       }
     })();
   }, []);
-
-  useEffect(() => {
-    // console.log(user);
-  });
 
   return (
     <>

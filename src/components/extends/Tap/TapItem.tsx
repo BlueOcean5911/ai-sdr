@@ -2,7 +2,7 @@ import { classNames } from "@/utils";
 import Link from "next/link";
 import React from "react";
 
-const CadenceNavbarItem = ({
+const TapItem = ({
   content,
   link,
   active = false,
@@ -39,4 +39,4 @@ const CadenceNavbarItem = ({
   );
 };
 
-export default CadenceNavbarItem;
+export default TapItem;

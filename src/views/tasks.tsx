@@ -10,27 +10,44 @@ import {
   getTasks,
   getTaskTotalCount,
   TaskModel,
+  updateTask,
+  UpdateTaskModel,
 } from "@/services/taskService";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import CreateTask from "@/sections/tasks/CreateTask";
-import { taskData } from "@/data/task.data";
 import { toast } from "react-toastify";
+import TaskOverview from "@/sections/tasks/TaskOverview";
+import { getLeadById, LeadModel } from "@/services/leadService";
+import { TASK_STATE } from "@/types/enums";
 
-export default function Tasks(
-  { campaignId, cadenceId }: { campaignId?: string; cadenceId?: string } = {
-    cadenceId: "",
-    campaignId: "",
-  }
-) {
-  const [open, setOpen] = useState(false);
+export default function Tasks() {
+  const [create, setCreate] = useState(false);
+  const [overview, setOverview] = useState(false);
   const [focus, setFocus] = useState<TaskModel>();
+  const [lead, setLead] = useState<LeadModel>();
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalCount, setTotalCount] = useState<number>(0);
-  const { taskFilterConfig, setTaskFilterConfig } = useTaskFilter();
+  const { taskFilterConfig } = useTaskFilter();
   const [tasks, setTasks] = useState<TaskModel[]>([]);
   const currentParams = Object.fromEntries(useSearchParams());
+
+  useEffect(() => {
+    if (focus && focus.leadId !== "none")
+      runService(
+        { id: focus.leadId },
+        getLeadById,
+        (data) => {
+          setLead(data);
+        },
+        (status, error) => {
+          handleError(status, error);
+          console.log(status, error);
+        }
+      );
+    else setLead(undefined);
+  }, [focus]);
 
   const fetchTasks = (params: { [key: string]: string }) => {
     const offset = pageSize * (currentPage - 1);
@@ -42,10 +59,12 @@ export default function Tasks(
         fromUser: taskFilterConfig.fromUser,
         priority: taskFilterConfig.priority,
         search: taskFilterConfig.search,
+        state: taskFilterConfig.state,
         params,
       },
       getTasks,
       (data) => {
+        console.log("tasks: ", data);
         setTasks(data);
       },
       (status, error) => {
@@ -61,6 +80,7 @@ export default function Tasks(
         fromUser: taskFilterConfig.fromUser,
         priority: taskFilterConfig.priority,
         search: taskFilterConfig.search,
+        state: taskFilterConfig.state,
         params,
       },
       getTaskTotalCount,
@@ -87,12 +107,12 @@ export default function Tasks(
 
   const handleCreate = () => {
     setFocus(undefined);
-    setOpen(true);
+    setCreate(true);
   };
 
   const handleEdit = (task: TaskModel) => {
     setFocus(task);
-    setOpen(true);
+    setCreate(true);
   };
 
   const handleDelete = (taskId: string) => {
@@ -113,24 +133,47 @@ export default function Tasks(
     );
   };
 
-  return (
-    <div className="flex gap-4 p-4 flex-1 overflow-auto">
-      {taskFilterConfig.isOpen && <FilterTask />}
-      {
-        <CreateTask
-          open={open}
-          task={focus}
-          handleSave={() => {}}
-          handleClose={() => setOpen(false)}
-        />
+  const handleUpdateTask = (id: string, data: UpdateTaskModel) => {
+    runService(
+      { taskId: id, updateData: data },
+      updateTask,
+      (data) => {
+        console.log(data);
+        toast.success("Successfully updated");
+      },
+      (statusCode, error) => {
+        handleError(statusCode, error);
       }
-      <div className="card p-4 pt-7 flex-1 flex flex-col overflow-auto shadow-lg">
+    );
+  };
+
+  const handleOverview = (task: TaskModel) => {
+    setFocus(task);
+    setOverview(true);
+  };
+
+  return (
+    <div className="relative flex gap-4 p-4 flex-1 bg-gray-100 rounded-lg overflow-hidden">
+      {taskFilterConfig.isOpen && <FilterTask />}
+      <CreateTask
+        open={create}
+        task={focus}
+        handleSave={() => {}}
+        handleClose={() => setCreate(false)}
+      />
+      <TaskOverview
+        show={overview}
+        task={focus}
+        lead={lead}
+        handleClose={() => setOverview(false)}
+      />
+      <div className="card p-4 pt-7 flex-1 flex flex-col gap-2 overflow-auto shadow-lg min-w-[420px]">
         <div className="overflow-auto">
           <TaskToolbar handleCreate={handleCreate} />
         </div>
 
         {/* Table */}
-        <div className="flex flex-1 flex-col w-full py-2 align-middle overflow-auto">
+        <div className="flex flex-1 flex-col w-full align-middle overflow-auto">
           <div className="h-full border rounded-md overflow-auto">
             {tasks.length > 0 ? (
               tasks.map((task: TaskModel) => (
@@ -139,6 +182,12 @@ export default function Tasks(
                   task={task}
                   handleEdit={() => handleEdit(task)}
                   handleDelete={() => handleDelete(task.id)}
+                  handleOverview={() => handleOverview(task)}
+                  handleUpdate={(id, type: TASK_STATE) =>
+                    handleUpdateTask(id, {
+                      status: type,
+                    })
+                  }
                 />
               ))
             ) : (

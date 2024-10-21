@@ -1,19 +1,18 @@
 import {
   ListBulletIcon,
   MagnifyingGlassIcon,
-  StarIcon,
 } from "@heroicons/react/24/outline";
 import FilterItem from "./filter-item";
 import { useEmailFilter } from "@/contexts/FilterEmailContext";
 import Select from "react-tailwindcss-select";
-import { fromUserOptions } from "@/data/filter.data";
 import { handleError, runService } from "@/utils/service_utils";
 import { getMe, getUsers, UserModel } from "@/services/userService";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function FilterEmail() {
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
   const [fromEmailOptions, setFromEmailOptions] = useState([]);
+  const isInitialRendering = useRef(true);
 
   const fetchUsers = () => {
     runService(
@@ -25,19 +24,6 @@ export default function FilterEmail() {
           label: user.firstName + " " + user.lastName,
         }));
         setFromEmailOptions(fromEmailOptions);
-        runService(
-          undefined,
-          getMe,
-          (user) => {
-            setEmailFilterConfig({
-              ...emailFilterConfig,
-              fromUser: fromEmailOptions.filter((option: any) => option.value === user.id ),
-            })
-          },
-          (statusCode, error) => {
-            handleError(statusCode, error);
-          }
-        )
       },
       (status, error) => {
         console.error(error);
@@ -65,18 +51,22 @@ export default function FilterEmail() {
   // }
 
   useEffect(() => {
+    if (isInitialRendering.current) {
+      isInitialRendering.current = false;
+      return;
+    }
     fetchUsers();
     // fetchCurrentUser();
   }, []);
 
   useEffect(() => {
     console.log("emailFilterConfig", emailFilterConfig);
-  }, [emailFilterConfig])
+  }, [emailFilterConfig]);
 
   return (
-    <div className="card px-2 w-64 h-full flex flex-col shadow-lg">
+    <div className="card pt-6 px-2 w-64 h-full flex flex-col shadow-lg min-w-[256px]">
       <h3 className="p-2 border-b border-gray-100">Search</h3>
-      <div className="flex-1 flex flex-col gap-2 p-2 overflow-auto">
+      <div className="flex-1 flex flex-col gap-2 p-2 border rounded overflow-auto">
         <form action="#" method="GET" className="flex px-3 pt-2 items-center">
           <label htmlFor="search-field" className="sr-only">
             Search

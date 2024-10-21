@@ -100,3 +100,26 @@ export function getInitials(fullName: string, maxLength: number = 2): string {
     .join("")
     .slice(0, maxLength);
 }
+
+export function getFormattedAddress(
+  city: string | undefined,
+  state: string | undefined,
+  country: string | undefined
+): string {
+  if (city && state && country) {
+    return `${city}, ${state}, ${country}`;
+  } else if (city && state) {
+    return `${city}, ${state}`;
+  } else if (city && country) {
+    return `${city}, ${country}`;
+  } else if (state && country) {
+    return `${state}, ${country}`;
+  } else if (city) {
+    return city;
+  } else if (state) {
+    return state;
+  } else if (country) {
+    return country;
+  }
+  return "";
+}

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { space_grotesk, roboto } from "@/utils/fonts";
-import { ToastContainer, toast } from "react-toastify";
+import { roboto } from "@/utils/fonts";
+import { ToastContainer } from "react-toastify";
 import NextTopLoader from "nextjs-toploader";
 import Head from "next/head"; // Import Head component
 

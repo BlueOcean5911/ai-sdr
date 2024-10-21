@@ -1,16 +1,14 @@
 import { ListBulletIcon } from "@heroicons/react/24/outline";
 import FilterItem from "./filter-item";
 import { useLeadFilter } from "@/contexts/FilterLeadContext";
-import Select from "react-tailwindcss-select";
-import { personaOptions, employeeOptions } from "@/data/filter.data";
 
 export default function FilterLead() {
   const { leadFilterConfig, setLeadFilterConfig } = useLeadFilter();
 
   return (
-    <div className="card px-2 w-64 h-full flex flex-col shadow-lg">
+    <div className="card pt-6 px-2 w-64 h-full flex flex-col shadow-lg min-w-[256px]">
       <h3 className="p-2 border-b border-gray-100">Search</h3>
-      <div className="flex-1 flex flex-col gap-0 p-2 overflow-auto">
+      <div className="flex-1 flex flex-col gap-0 p-2 border rounded overflow-auto">
         {/* <FilterItem
           icon={<ListBulletIcon className="w-4 h-4" />}
           title="Persona"
@@ -87,16 +85,56 @@ export default function FilterLead() {
           icon={<ListBulletIcon className="w-4 h-4" />}
           title="Location"
         >
-          <div>
-            <label className="text-sm text-gray-500">Country</label>
+          <div className="">
+            <label htmlFor="country" className="text-xs">
+              Country
+            </label>
             <input
+              id="country"
+              name="country"
               type="text"
               className="input-primary w-full"
-              value={leadFilterConfig.location}
+              value={leadFilterConfig.country}
               onChange={(e) => {
                 setLeadFilterConfig({
                   ...leadFilterConfig,
-                  location: e.target.value,
+                  country: e.target.value,
+                });
+              }}
+            />
+          </div>
+          <div className="">
+            <label htmlFor="state" className="text-xs">
+              State
+            </label>
+            <input
+              id="state"
+              name="state"
+              type="text"
+              className="input-primary w-full"
+              value={leadFilterConfig.state}
+              onChange={(e) => {
+                setLeadFilterConfig({
+                  ...leadFilterConfig,
+                  state: e.target.value,
+                });
+              }}
+            />
+          </div>
+          <div className="">
+            <label htmlFor="city" className="text-xs">
+              City
+            </label>
+            <input
+              id="city"
+              name="city"
+              type="text"
+              className="input-primary w-full"
+              value={leadFilterConfig.city}
+              onChange={(e) => {
+                setLeadFilterConfig({
+                  ...leadFilterConfig,
+                  city: e.target.value,
                 });
               }}
             />

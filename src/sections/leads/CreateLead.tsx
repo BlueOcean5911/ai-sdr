@@ -1,4 +1,4 @@
-import { employeeOptions, statusOptions } from "@/data/filter.data";
+import { statusOptions } from "@/data/filter.data";
 import { CreateLeadProps } from "@/types";
 import {
   Dialog,
@@ -10,14 +10,9 @@ import {
 import React, { Fragment, useState, useEffect, useMemo } from "react";
 import { handleError, runService } from "@/utils/service_utils";
 import { getUsers, UserModel } from "@/services/userService";
-import {
-  addLead,
-  BaseLeadModel,
-  LeadModel,
-  updateLead,
-} from "@/services/leadService";
+import { addLead, BaseLeadModel, updateLead } from "@/services/leadService";
 import Select from "react-tailwindcss-select";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import FormHelperText from "@/components/extends/FormHelperText";
 import { toast } from "react-toastify";
@@ -122,12 +117,6 @@ export default function CreateLead({
                       // emailStatus: Yup.string().required("Status is required"),
                       primaryPhone: Yup.string().required(
                         "Primary Phone is required"
-                      ),
-                      mobilePhone: Yup.string().required(
-                        "Mobile Phone is required"
-                      ),
-                      workPhone: Yup.string().required(
-                        "Work Phone is required"
                       ),
                       // phoneStatus: Yup.string().required("Status is required"),
                       title: Yup.string().required("Job Title is required"),

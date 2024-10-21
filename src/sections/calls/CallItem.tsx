@@ -1,27 +1,6 @@
-import React, { Fragment, useState } from "react";
-import {
-  Menu,
-  MenuButton,
-  MenuItems,
-  MenuItem,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  Transition,
-  TransitionChild,
-} from "@headlessui/react";
-import {
-  StarIcon,
-  EllipsisHorizontalIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import { useRouter } from "next/navigation";
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { CallModel } from "@/services/callService";
-import {
-  formatDate,
-  formatDateTimeReadable,
-  getInitials,
-} from "@/utils/format";
 import { SlCallIn } from "react-icons/sl";
 import { SlCallOut } from "react-icons/sl";
 

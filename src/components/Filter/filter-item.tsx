@@ -1,6 +1,6 @@
 "use client";
 import { classNames } from "@/utils";
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
 const FilterItem = ({
@@ -15,9 +15,9 @@ const FilterItem = ({
   const [open, setOpen] = useState(false);
   return (
     <>
-      <div className="border-0 border-gray-100 rounded-md">
+      <div className="border-0 border-blue-100  rounded-md py-0.5">
         <div
-          className="flex items-center px-2 py-2 bg-gray-100"
+          className="flex items-center px-2 py-2 bg-blue-100"
           onClick={() => setOpen(!open)}
         >
           {icon}
@@ -35,7 +35,7 @@ const FilterItem = ({
         </div>
 
         {open && (
-          <div className="px-2 py-2 bg-gray-0 border-y-2 border-gray-100 border-x-2">
+          <div className="px-2 py-2 bg-gray-0 border-y-2 border-blue-100 border-x-2">
             <div className="space-y-2 text-sm">{children}</div>
           </div>
         )}

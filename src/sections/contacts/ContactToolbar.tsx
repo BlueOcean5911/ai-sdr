@@ -1,5 +1,4 @@
 import { useContactFilter } from "@/contexts/FilterContactContext";
-import { ContactInCadenceStatistics } from "@/services/contactsService";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 
 const stageDict: Record<string, string> = {
@@ -16,26 +15,10 @@ const stageDict: Record<string, string> = {
   // openDealCount: "Open Deal",
 };
 
-// { label: "Cold", count: 6 },
-// { label: "Approaching", count: 1 },
-// { label: "Replied", count: 0 },
-// { label: "Interested", count: 0 },
-// { label: "Not Interested", count: 0 },
-// { label: "Unresponsive", count: 1 },
-// { label: "Do Not Contact", count: 0 },
-// { label: "Bad Data", count: 1 },
-// { label: "Changed Job", count: 0 },
-// { label: "Open", count: 0 },
-// { label: "Open Deal", count: 0 },
-// { label: "Unqualified", count: 0 },
-// { name: "All in Progress", count: 7 },
-// { name: "All Succeeded Stage", count: 0 },
-// { name: "All Failed Stage", count: 1 },
-
 const ContactToolbar = ({ data }: { data: any }) => {
   const { contactFilterConfig, setContactFilterConfig } = useContactFilter();
   return (
-    <div className="w-full flex items-center gap-2 border-b border-gray-100 text-sm overflow-auto">
+    <div className="w-full flex items-center gap-2 border-b border-gray-100 text-sm overflow-auto justify-between">
       <button
         className="min-w-32 flex justify-center items-center gap-2 border-2 border-gray-300 py-1 px-2 rounded-md hover:bg-gray-200"
         onClick={() => {

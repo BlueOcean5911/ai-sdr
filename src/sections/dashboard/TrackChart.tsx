@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import ReactApexChart from "react-apexcharts";
 // import ApexCharts from "apexcharts";
 import TransactionIcon from "@/components/Icons/transaction.icon";
 

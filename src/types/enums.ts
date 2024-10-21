@@ -84,3 +84,10 @@ export enum DOCUMENT_TYPE {
   CASE_STUDY = "case-study",
   TESTIMONIAL = "testimonial",
 }
+
+export enum TASK_STATE {
+  COMPLETE = "complete",
+  INCOMPLETE = "incomplete",
+  SKIPPED = "skipped",
+  ARCHIVED = "archived",
+}

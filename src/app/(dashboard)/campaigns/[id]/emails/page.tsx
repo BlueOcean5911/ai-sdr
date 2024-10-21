@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import { EmailSelectionProvider } from "@/contexts/EmailSelectionContext";
 import { EmailFilterProvider } from "@/contexts/FilterEmailContext";
 import Emails from "@/views/emails";

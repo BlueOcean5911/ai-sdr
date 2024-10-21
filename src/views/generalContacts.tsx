@@ -1,10 +1,7 @@
 "use client";
 
 import ContactItem from "@/sections/contacts/ContactItem";
-import {
-  ContactInCadence,
-  updateCadenceState,
-} from "@/services/contactsService";
+import { ContactInCadence } from "@/services/contactsService";
 
 export default function GeneralContacts({
   contacts,
@@ -18,7 +15,7 @@ export default function GeneralContacts({
   return (
     <>
       {/* Table */}
-      <div className="flex flex-1 flex-col w-full py-2 align-middle overflow-auto">
+      <div className="flex flex-1 flex-col w-full align-middle overflow-auto">
         <div className="w-full h-full border rounded-md overflow-auto">
           {contacts.length > 0 ? (
             contacts.map((contact, index) => (

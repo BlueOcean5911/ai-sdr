@@ -1,3 +1,4 @@
+import { stateOptions } from "@/data/filter.data";
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 interface Option {
@@ -12,6 +13,7 @@ interface TaskFilterConfig {
   isOpen: boolean;
   fromUser: Option | Option[] | null;
   priority: Option | Option[] | null;
+  state: Option | Option[] | null;
   search: string;
 }
 
@@ -30,6 +32,7 @@ export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {
     isOpen: true,
     fromUser: [],
     priority: [],
+    state: [stateOptions[0]],
     search: "",
   });
 

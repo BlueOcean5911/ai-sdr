@@ -6,10 +6,7 @@ import {
   EllipsisHorizontalCircleIcon,
   PlusCircleIcon,
 } from "@heroicons/react/24/outline";
-import {
-  EllipsisVerticalIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/solid";
+import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import CreateCampaign from "@/sections/campaigns/CreateCampaign";
 import Pagination from "@/components/extends/Pagination/Pagination";
@@ -93,10 +90,7 @@ export default function Campaigns() {
               <EllipsisVerticalIcon className="w-4 h-4" />
               <span className="text-sm">Bulk Action</span>
             </div>
-            <div
-              className="btn-primary"
-              onClick={() => buildCampaign()}
-            >
+            <div className="btn-primary" onClick={() => buildCampaign()}>
               <PlusCircleIcon className="w-4 h-4 stroke-white" />
               <span className="text-sm text-white">Build Campaign</span>
             </div>
@@ -162,7 +156,7 @@ export default function Campaigns() {
                 id="cadence-item"
                 className="even:bg-blue-50 hover:bg-gray-300"
               >
-                <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                   <Link
                     href={`/campaigns/${campaign.id}`}
                     className="cursor-pointer hover:underline hover:text-blue-900"
@@ -173,13 +167,13 @@ export default function Campaigns() {
                 <td className="whitespace-nowrap max-w-32 overflow-hidden text-ellipsis px-3 py-4 text-sm text-gray-500">
                   {campaign.description}
                 </td>
-                <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                   {campaign.creator.firstName} {campaign.creator.lastName}
                 </td>
-                <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                   {formatDate(campaign.createdAt)}
                 </td>
-                <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                   {campaign.owner.firstName} {campaign.owner.lastName}
                 </td>
                 <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3 rounded-r-md">
