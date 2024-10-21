@@ -1,11 +1,5 @@
-import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import {
-  EnvelopeOpenIcon,
-  FireIcon,
-  PaperAirplaneIcon,
-  XCircleIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
 const CreateCadence = ({

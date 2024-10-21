@@ -10,7 +10,7 @@ import {
   getMailingTotalCount,
   MailingModel,
 } from "@/services/mailingService";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 export default function Emails(
@@ -22,9 +22,10 @@ export default function Emails(
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalCount, setTotalCount] = useState<number>(0);
-  const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
+  const { emailFilterConfig } = useEmailFilter();
   const [mailings, setMailings] = useState<MailingModel[]>([]);
   const currentParams = Object.fromEntries(useSearchParams());
+  const isInitialRendering = useRef(true);
 
   const fetchMailings = (params: { [key: string]: string }) => {
     const offset = pageSize * (currentPage - 1);
@@ -72,11 +73,10 @@ export default function Emails(
   };
 
   useEffect(() => {
-    fetchMailingTotalCount(currentParams);
-    fetchMailings(currentParams);
-  }, []);
-
-  useEffect(() => {
+    if (isInitialRendering.current) {
+      isInitialRendering.current = false;
+      return;
+    }
     fetchMailingTotalCount(emailFilterConfig.params);
     fetchMailings(emailFilterConfig.params);
   }, [emailFilterConfig, currentPage, pageSize]);
@@ -84,13 +84,13 @@ export default function Emails(
   return (
     <div className="flex gap-4 p-4 flex-1 overflow-auto">
       {emailFilterConfig.isOpen && <FilterEmail />}
-      <div className="card p-4 pt-7 flex-1 flex flex-col overflow-auto shadow-lg">
+      <div className="card p-4 pt-7 flex-1 flex flex-col gap-2 overflow-auto shadow-lg min-w-[420px]">
         <div className="overflow-auto">
           <EmailToolbar />
         </div>
 
         {/* Table */}
-        <div className="flex flex-1 flex-col w-full py-2 align-middle overflow-auto">
+        <div className="flex flex-1 flex-col w-full align-middle overflow-auto">
           <div className="w-full h-full border rounded-md overflow-auto">
             {mailings.length > 0 ? (
               mailings.map((mailing: MailingModel) => (

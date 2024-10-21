@@ -29,6 +29,36 @@ class UploadFilesService {
       onUploadProgress,
     });
   }
+
+  uploadLeads(files: any, onUploadProgress: any) {
+    let formData = new FormData();
+
+    for (let i = 0; i < files.length; i++) {
+      formData.append("files", files[i]);
+    }
+
+    return api.post("api/leads/upload-csv", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress,
+    });
+  }
+
+  uploadCompanies(files: any, onUploadProgress: any) {
+    let formData = new FormData();
+
+    for (let i = 0; i < files.length; i++) {
+      formData.append("files", files[i]);
+    }
+
+    return api.post("api/companies/upload-csv", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress,
+    });
+  }
 }
 
 export default new UploadFilesService();

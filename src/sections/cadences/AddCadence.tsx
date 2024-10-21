@@ -1,14 +1,13 @@
 import Select from "@/components/extends/Select/default";
 import { useLeadSelection } from "@/contexts/LeadSelectionContext";
-// import { CadenceModel, getCadences } from "@/services/cadenceService001";
 import { CadenceModel, getCadences } from "@/services/cadenceService";
 import { addLeadsToExistingCadence, LeadModel } from "@/services/leadService";
 import { handleError, runService } from "@/utils/service_utils";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { XCircle } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { IoPersonAddOutline } from "react-icons/io5";
 
 const AddCadence = ({
   children,
@@ -30,7 +29,7 @@ const AddCadence = ({
         setCadences(resCadences);
       },
       (status, error) => {
-        toast.error(`Failed to fetch cadences: ${error}`);
+        handleError(status, error);
       }
     );
   };
@@ -82,16 +81,20 @@ const AddCadence = ({
                 as="h3"
                 className="px-6 py-3 flex justify-between items-center rounded-md text-lg font-semibold leading-6 bg-white text-gray-900"
               >
-                <span>Add to Cadence</span>
+                <h4 className="text-xl">Add to Cadence</h4>
                 <div
                   className="p-1 rounded-md hover:bg-gray-100"
                   onClick={close}
                 >
-                  <XMarkIcon className="w-5 h-5" />
+                  <XMarkIcon className="w-5 h-5 hover:cursor-pointer" />
                 </div>
               </DialogTitle>
-              <div className="p-6 w-full flex flex-col gap-4 rounded-md bg-gray-100">
-                <span>
+              <hr />
+              <div className="p-6 w-full flex flex-col gap-4">
+                <div className="border rounded-full w-64 h-64 flex-center m-auto shadow-lg">
+                  <IoPersonAddOutline className="w-48 h-48 p-8 m-auto stroke-blue-900" />
+                </div>
+                <span className="mb-8 text-center text-sm">
                   Choose a cadence from the list to add this lead to. This will
                   help you manage your outreach efforts effectively and ensure
                   timely follow-ups. Once selected, you can proceed by clicking

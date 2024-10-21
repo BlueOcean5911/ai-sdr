@@ -1,18 +1,10 @@
-import {
-  CheckCircleIcon,
-  EnvelopeIcon,
-  MinusCircleIcon,
-  PaperAirplaneIcon,
-  PlusCircleIcon,
-  PlusIcon,
-} from "@heroicons/react/24/outline";
+import { PlusIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useCompanySelection } from "@/contexts/CompanySelectionContext";
 
 import { useSearchParams } from "next/navigation";
 import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
-import { useRouter } from "next/navigation";
 import {
   CompanyModel,
   updateCompaniesAsTargeted,
@@ -78,10 +70,7 @@ const CompanyToolbar = () => {
           )}
         </button>
         {!isSavedView && (
-          <button
-            className="btn-secondary"
-            onClick={() => handleSaveCompany()}
-          >
+          <button className="btn-secondary" onClick={() => handleSaveCompany()}>
             <PlusIcon className="w-4 h-4" /> Save
           </button>
         )}

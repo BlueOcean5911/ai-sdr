@@ -58,7 +58,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <span className="text-sm">
                   {statistics.emailOpened} email opened
                 </span>
-                <div className="flex justify-between items-center gap-6">
+                <div className="flex flex-wrap justify-between items-center gap-2">
                   <span className="text-3xl">
                     {statistics.totalEmails
                       ? (
@@ -89,7 +89,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <span className="text-sm">
                   {statistics.emailReplied} email replied
                 </span>
-                <div className="flex justify-between items-center gap-6">
+                <div className="flex flex-wrap justify-between items-center gap-2">
                   <span className="text-3xl">
                     {statistics.totalEmails
                       ? (
@@ -120,7 +120,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <span className="text-sm">
                   {statistics.emailInterested} email interested
                 </span>
-                <div className="flex justify-between items-center gap-6">
+                <div className="flex flex-wrap justify-between items-center gap-2">
                   <span className="text-3xl">
                     {statistics.totalEmails
                       ? (
@@ -167,7 +167,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <span className="text-sm">
                   {statistics.callConnected} calls connected
                 </span>
-                <div className="flex justify-between items-center gap-6">
+                <div className="flex flex-wrap justify-between items-center gap-2">
                   <span className="text-3xl">
                     {statistics.totalCalls
                       ? (
@@ -198,7 +198,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <span className="text-sm">
                   {statistics.callPositive} positive calls
                 </span>
-                <div className="flex justify-between items-center gap-6">
+                <div className="flex flex-wrap justify-between items-center gap-2">
                   <span className="text-3xl">
                     {statistics.totalCalls
                       ? (
@@ -227,7 +227,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
               <div className="flex flex-col gap-1 grow pt-2 sm:pt-0 sm:pl-2">
                 <span className="text-sm">Average duration</span>
-                <div className="flex justify-between items-center gap-6">
+                <div className="flex flex-wrap justify-between items-center gap-2">
                   <span className="text-3xl">
                     {statistics.callAverageDuration}s
                   </span>
@@ -244,7 +244,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </div>
-        <div className="p-5 flex flex-1 flex-col gap-3 rounded-lg bg-white shadow-md overflow-auto">
+        <div className="p-5 flex flex-1 flex-col gap-3 rounded-lg bg-white shadow-md overflow-auto min-h-[768px]">
           <span className="text-lg font-semibold">Workspace</span>
           <div className="w-full flex items-center gap-2 border-b">
             <Link

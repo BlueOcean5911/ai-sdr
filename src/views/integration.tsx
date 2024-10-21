@@ -1,6 +1,5 @@
 "use client";
 
-import IntegrationFilter from "@/sections/integration/IntegrationFilter";
 import ToolCard from "@/sections/integration/ToolCard";
 import { classNames } from "@/utils";
 import { AcademicCapIcon } from "@heroicons/react/24/solid";
@@ -9,10 +8,7 @@ import SalesforceIcon from "@/components/Icons/salesforce.icon";
 import ExcelIcon from "@/components/Icons/excel.icon";
 
 import { useRouter } from "next/navigation";
-import {
-  ROUTE_INTEGRATION_EXCEL,
-  ROUTE_INTEGRATION_HUBSPOT,
-} from "@/data/routes";
+import { ROUTE_IMPORT, ROUTE_INTEGRATION_HUBSPOT } from "@/data/routes";
 import OutreachIcon from "@/components/Icons/outreach.icon";
 import SalesloftIcon from "@/components/Icons/salesloft.icon";
 import ConquorIcon from "@/components/Icons/conquor.icon";
@@ -71,7 +67,7 @@ export default function Integration() {
       description:
         "Excel learns your patterns, organizing your data to save you time.",
       integrationBtn: "Upload",
-      onClick: () => router.push(ROUTE_INTEGRATION_EXCEL),
+      onClick: () => router.push(ROUTE_IMPORT),
     },
     {
       icon: <OutreachIcon className="w-48 h-12 m-2" aria-label="Outreach" />,

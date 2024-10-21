@@ -2,25 +2,31 @@ import { api } from "@/utils/api";
 import { ApiSuccessResponse, CountModel, FetchProps } from "@/types";
 import { EMAIL_STATUS } from "@/types/enums";
 import { CompanyModel } from "./companyService";
+import {
+  getDefaultLeadFilterConfig,
+  LeadFilterConfig,
+} from "@/contexts/FilterLeadContext";
 interface FetchLeadsProps extends FetchProps {
   targeted?: boolean;
-  jobTitle?: string;
-  companyName?: string;
-  country?: string;
-  industry?: string;
+  filter: LeadFilterConfig;
+}
+
+interface FetchTotalCountProps {
+  targeted?: boolean;
+  filter: LeadFilterConfig;
 }
 
 export interface LeadModel extends BaseLeadModel {
   id: string;
 }
 
-export const getDefaultLead = ():LeadModel => {
+export const getDefaultLead = (): LeadModel => {
   return {
     firstName: "",
     lastName: "",
-    id:"",
-  }
-}
+    id: "",
+  };
+};
 
 export interface LeadModelWithCompanyModel extends LeadModel {
   company?: CompanyModel;
@@ -73,8 +79,6 @@ interface ApiLeadResponse {
 interface ApiLeadWithCompanyModelResponse {
   data: LeadModelWithCompanyModel;
 }
-
-
 
 interface ApiCountResponse {
   data: CountModel; // The structure of the data returned from the API;
@@ -142,7 +146,10 @@ export const addLead = async (lead: BaseLeadModel) => {
   };
 };
 
-export const updateLead = async (data: { id: string; updateData: LeadModel }) => {
+export const updateLead = async (data: {
+  id: string;
+  updateData: LeadModel;
+}) => {
   const { id, updateData } = data;
   const response = await api.put(`api/leads/${id}`, updateData);
   if (response.status !== 200) {
@@ -206,26 +213,37 @@ export const updateLead = async (data: { id: string; updateData: LeadModel }) =>
 };
 
 export const getLeads = async (
-  props: FetchLeadsProps = { offset: 0, limit: 100, targeted: undefined }
+  data: FetchLeadsProps = {
+    offset: 0,
+    limit: 100,
+    targeted: undefined,
+    filter: getDefaultLeadFilterConfig(),
+  }
 ): Promise<ApiLeadsResponse> => {
-  const { offset, limit, targeted, jobTitle, companyName, industry, country } =
-    props;
+  const { offset, limit, targeted } = data;
+  const { title, company, industry, country, state, city } = data.filter;
   let url = `/api/leads/?offset=${offset}&limit=${limit}`;
 
   if (targeted) {
-    url += `&targeted=true`; // Conditionally add targeted parameter
+    url += `&targeted=true`;
   }
-  if (jobTitle) {
-    url += `&jobTitle=${jobTitle}`;
+  if (title) {
+    url += `&jobTitle=${title}`;
   }
-  if (companyName) {
-    url += `&companyName=${companyName}`;
+  if (company) {
+    url += `&companyName=${company}`;
   }
   if (industry) {
     url += `&industry=${industry}`;
   }
   if (country) {
     url += `&country=${country}`;
+  }
+  if (state) {
+    url += `&state=${state}`;
+  }
+  if (city) {
+    url += `&city=${city}`;
   }
 
   const response = await api.get(url);
@@ -272,7 +290,7 @@ export const getLeads = async (
         description: item?.company?.description,
         website: item?.company?.website,
         linkedin: item?.company?.linkedin,
-        
+
         streetAddress: item?.company?.streetAddress,
         city: item?.company?.city,
         state: item?.company?.state,
@@ -299,8 +317,8 @@ export const getLeadById = async (props: {
   let url = `/api/leads/${id}`;
 
   const response = await api.get(url);
-  const item = response.data
-  console.log("Fetched lead data", item)
+  const item = response.data;
+  console.log("Fetched lead data", item);
   let lead: LeadModelWithCompanyModel = {
     id: item?.id,
     firstName: item?.firstName,
@@ -341,7 +359,7 @@ export const getLeadById = async (props: {
       description: item?.company?.description,
       website: item?.company?.website,
       linkedin: item?.company?.linkedin,
-      
+
       streetAddress: item?.company?.streetAddress,
       city: item?.company?.city,
       state: item?.company?.state,
@@ -389,28 +407,25 @@ export const updateLeadsAsTargeted = async (
   };
 };
 
-export const getLeadTotalCount = async ({
-  targeted,
-  jobTitle,
-  companyName,
-  country,
-  industry,
-}: {
-  targeted?: boolean;
-  jobTitle?: string;
-  companyName?: string;
-  country?: string;
-  industry?: string;
-}): Promise<ApiCountResponse> => {
+export const getLeadTotalCount = async (
+  data: FetchTotalCountProps = {
+    targeted: false,
+    filter: getDefaultLeadFilterConfig(),
+  }
+): Promise<ApiCountResponse> => {
+  const { targeted } = data;
+  const { title, company, industry, country, state, city } = data.filter;
+
   let url = `/api/leads/statistics/total-count?`;
+
   if (targeted) {
-    url += `&targeted=true`; // Conditionally add targeted parameter
+    url += `&targeted=true`;
   }
-  if (jobTitle) {
-    url += `&jobTitle=${jobTitle}`;
+  if (title) {
+    url += `&jobTitle=${title}`;
   }
-  if (companyName) {
-    url += `&companyName=${companyName}`;
+  if (company) {
+    url += `&companyName=${company}`;
   }
   if (industry) {
     url += `&industry=${industry}`;
@@ -418,6 +433,13 @@ export const getLeadTotalCount = async ({
   if (country) {
     url += `&country=${country}`;
   }
+  if (state) {
+    url += `&state=${state}`;
+  }
+  if (city) {
+    url += `&city=${city}`;
+  }
+
   const response = await api.get(url);
   return {
     data: {

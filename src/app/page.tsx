@@ -1,6 +1,5 @@
 import ThemeToggle from "@/components/Theme/ThemeToggle";
 import { ROUTE_LOGIN } from "@/data/routes";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {

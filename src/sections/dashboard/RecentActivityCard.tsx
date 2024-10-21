@@ -73,10 +73,10 @@ export default function RecentActivityCard() {
                       <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-900 font-bold">
                         {person.actor}
                       </td>
-                      <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                         {person["order-date"]}
                       </td>
-                      <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                         <StatusButton status={person.status} />
                       </td>
                     </tr>

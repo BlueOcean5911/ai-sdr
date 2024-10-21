@@ -18,7 +18,7 @@ export default function Companies() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { companyFilterConfig, setCompanyFilterConfig } = useCompanyFilter();
+  const { companyFilterConfig } = useCompanyFilter();
 
   // Get the current query parameters
   const currentParams = Object.fromEntries(searchParams.entries());
@@ -60,7 +60,7 @@ export default function Companies() {
         />
       )}
       {companyFilterConfig.isOpen && <FilterCompany />}
-      <div className="card p-4 pt-7 flex-1 flex flex-col overflow-auto shadow-lg">
+      <div className="card p-4 pt-7 flex-1 flex flex-col gap-2 overflow-auto shadow-lg min-w-[420px]">
         <div className="flex-1 flex flex-col gap-2 overflow-auto">
           <div className="border-b border-gray-100 flex gap-2 overflow-auto">
             <button

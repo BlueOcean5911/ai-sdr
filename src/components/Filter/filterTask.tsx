@@ -1,20 +1,18 @@
 import {
   ListBulletIcon,
   MagnifyingGlassIcon,
-  StarIcon,
 } from "@heroicons/react/24/outline";
 import FilterItem from "./filter-item";
 import { useTaskFilter } from "@/contexts/FilterTaskContext";
 import Select from "react-tailwindcss-select";
-import { fromUserOptions, priorityOptions } from "@/data/filter.data";
-import { runService } from "@/utils/service_utils";
-import { getUsers, UserModel } from "@/services/userService";
+import { priorityOptions, stateOptions } from "@/data/filter.data";
+import { handleError, runService } from "@/utils/service_utils";
+import { getMe, getUsers, UserModel } from "@/services/userService";
 import { useEffect, useState } from "react";
 
 export default function FilterTask() {
   const { taskFilterConfig, setTaskFilterConfig } = useTaskFilter();
   const [fromUserOption, setFromUserOption] = useState([]);
-  const [priorityOption, setPriorityOption] = useState(priorityOptions);
 
   const fetchUsers = () => {
     runService(
@@ -26,6 +24,21 @@ export default function FilterTask() {
           label: user.firstName + " " + user.lastName,
         }));
         setFromUserOption(usersOption);
+        runService(
+          undefined,
+          getMe,
+          (user) => {
+            setTaskFilterConfig({
+              ...taskFilterConfig,
+              fromUser: usersOption.filter(
+                (option: any) => option.value === user.id
+              ),
+            });
+          },
+          (statusCode, error) => {
+            handleError(statusCode, error);
+          }
+        );
       },
       (status, error) => {
         console.error(error);
@@ -38,9 +51,9 @@ export default function FilterTask() {
   }, []);
 
   return (
-    <div className="card px-2 w-64 h-full flex flex-col rounded-xl bg-white">
-      <h3 className="p-2 border-b border-gray-100">Filters</h3>
-      <div className="flex-1 flex flex-col gap-2 p-2 overflow-auto">
+    <div className="card pt-6 px-2 w-64 h-full flex flex-col rounded-xl bg-white">
+      <h3 className="p-2 border-b border-gray-100">Search</h3>
+      <div className="flex-1 flex flex-col gap-2 p-2 border rounded overflow-auto">
         <form action="#" method="GET" className="flex px-3 pt-2 items-center">
           <label htmlFor="search-field" className="sr-only">
             Search
@@ -119,7 +132,49 @@ export default function FilterTask() {
                   priority: value,
                 })
               }
-              options={priorityOption}
+              options={priorityOptions}
+              isMultiple={true}
+              isSearchable={true}
+              primaryColor={"indigo"}
+              classNames={{
+                menuButton: (value) => {
+                  const isDisabled = value?.isDisabled;
+                  return `flex text-xs text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
+                    isDisabled
+                      ? "bg-gray-200"
+                      : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
+                  }`;
+                },
+                menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-xs text-gray-700",
+                listItem: (value) => {
+                  const isSelected = value?.isSelected;
+                  return `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${
+                    isSelected
+                      ? `text-white bg-blue-500`
+                      : `text-gray-500 hover:bg-blue-100 hover:text-blue-500`
+                  }`;
+                },
+
+                searchBox:
+                  "text-xs w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none",
+                searchIcon:
+                  "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
+              }}
+            ></Select>
+          </FilterItem>
+          <FilterItem
+            icon={<ListBulletIcon className="w-4 h-4" />}
+            title="Task State"
+          >
+            <Select
+              value={taskFilterConfig.state}
+              onChange={(value) =>
+                setTaskFilterConfig({
+                  ...taskFilterConfig,
+                  state: value,
+                })
+              }
+              options={stateOptions}
               isMultiple={true}
               isSearchable={true}
               primaryColor={"indigo"}

@@ -1,9 +1,5 @@
 import ActionItemIcon from "@/components/Icons/actionitem.icon";
 import AutomaticEmailIcon from "@/components/Icons/automaticemail.icon";
-import LinkedinInteractIcon from "@/components/Icons/linkedininteract.icon";
-import LinkedinMessageIcon from "@/components/Icons/linkedinmessage.icon";
-import LinkedinRequestIcon from "@/components/Icons/linkedinrequest.icon";
-import LinkedinViewIcon from "@/components/Icons/linkedinview.icon";
 import ManualEmailIcon from "@/components/Icons/manualmail.icon";
 import PhoneCallIcon from "@/components/Icons/phonecall.icon";
 import { BaseCadenceStepModel } from "@/services/cadenceStepService";

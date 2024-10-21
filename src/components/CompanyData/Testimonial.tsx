@@ -5,12 +5,12 @@ import { TrainingDocument } from "@/types";
 import { handleError, runService } from "@/utils/service_utils";
 import { deleteTrainingDocument } from "@/services/trainingDataService";
 import { getTestimonials } from "@/services/trainingDocumentService";
+import { toast } from "react-toastify";
 
 const Testimonial = () => {
   const [testimonials, setTestimonials] = useState<TrainingDocument[]>();
 
-  useEffect(() => {
-    console.log("Testimonial------->");
+  const fetchTestimonials = () => {
     runService(
       {},
       getTestimonials,
@@ -21,6 +21,10 @@ const Testimonial = () => {
         handleError(statusCode, error);
       }
     );
+  };
+
+  useEffect(() => {
+    fetchTestimonials();
   }, []);
 
   const handleDeleteFile = (id: string) => {
@@ -44,16 +48,24 @@ const Testimonial = () => {
       >
         Testimonials
       </label>
-      <Upload
-        type="testimonial"
-        onUpload={(testimonials: TrainingDocument[]) =>
-          setTestimonials(testimonials)
-        }
-      />
+      <div className="ml-8">
+        <Upload
+          type="testimonial"
+          description="Drop or select testimonials files to upload for training"
+          onUpload={(data) => {
+            if (data.success) {
+              fetchTestimonials();
+              toast.success("Successfully uploaded");
+            } else {
+              toast.error("Something goes wrong, please contact us!");
+            }
+          }}
+        />
+      </div>
       <div className="h-8" />
       {testimonials && testimonials.length > 0 && (
         <UploadedFiles
-          type="testimonial"
+          title="Uploaded testimonials"
           files={testimonials}
           onDelete={(id: string) => handleDeleteFile(id)}
         />

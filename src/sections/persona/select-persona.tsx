@@ -1,6 +1,5 @@
-import Select from "@/components/extends/Select/default";
-import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { MagnifyingGlassIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import { Dialog, DialogPanel } from "@headlessui/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { defaultPersonas } from "@/views/personas";
 import CheckBox from "@/components/extends/CheckBox";
@@ -118,28 +117,28 @@ export default function SelectPersona({
                         className="even:bg-blue-100 hover:bg-gray-100 select-none"
                         // onClick={() => }
                       >
-                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                        <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                           <div className="flex items-center gap-2">
                             <CheckBox content="" id={item.id} key={item.id} />
                             {item.id}
                           </div>
                         </td>
-                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                        <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                           {item.jobTitle}
                         </td>
-                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                        <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                           {item.keywords}
                         </td>
-                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                        <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                           {item.createdDate}
                         </td>
-                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                        <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                           {item.location}
                         </td>
-                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                        <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                           {item.industrySize}
                         </td>
-                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                        <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                           {item.leadCount}
                         </td>
                       </tr>

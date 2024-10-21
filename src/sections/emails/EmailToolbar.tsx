@@ -8,12 +8,13 @@ import { handleError, runService } from "@/utils/service_utils";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const EmailToolbar = () => {
   const path = usePathname();
   const currentParams = Object.fromEntries(useSearchParams());
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
+  const isInitialRendering = useRef(true);
   const [statistics, setStatistics] = useState<MailingsStatistics>({
     totalCount: 0,
     scheduledCount: 0,
@@ -39,11 +40,15 @@ const EmailToolbar = () => {
   };
 
   useEffect(() => {
+    if (isInitialRendering.current) {
+      isInitialRendering.current = false;
+      return;
+    }
     fetchStatistics();
   }, []);
 
   return (
-    <div className="w-full flex items-center gap-2 border-b border-gray-100 text-sm overflow-auto">
+    <div className="w-full flex items-center gap-2 border-b border-gray-100 text-sm overflow-auto justify-between">
       <button
         className="btn-secondary"
         onClick={() => {
@@ -61,7 +66,7 @@ const EmailToolbar = () => {
           <span>Show Filters</span>
         )}
       </button>
-      <div className="flex flex-1 gap-2 overflow-auto">
+      <div className="flex gap-2 overflow-auto">
         <Link href={`${path}`}>
           <div
             className={classNames(

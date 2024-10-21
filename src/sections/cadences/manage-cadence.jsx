@@ -15,7 +15,6 @@ import {
   useNodesState,
   useEdgesState,
   useReactFlow,
-  MarkerType,
   Controls,
   Background,
   ReactFlowProvider,

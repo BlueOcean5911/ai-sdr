@@ -1,142 +1,139 @@
 "use client";
+import Upload from "@/components/upload";
+import { SuccessModel } from "@/types";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { toast } from "react-toastify";
 
-export default function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
-  const router = useRouter();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleButtonClick = () => {
-    fileInputRef.current?.click(); // Trigger the file input click
-  };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      console.log(files[0]); // Log the selected file
-    }
-  };
-
+export default function Page() {
   return (
-    <div className="flex flex-1 flex-col lg:flex-row justify-center items-center gap-6 bg-gray-100 overflow-auto">
-      <div className="max-w-[400px] p-5 flex flex-col gap-4 rounded-md bg-white">
-        <div className="flex justify-center items-center">
-          <Image
-            src={"/assets/images/icon/importlead.svg"}
-            alt="import lead"
-            width={90}
-            height={90}
-          />
-        </div>
-        <div className="px-4 flex flex-col gap-2">
-          <span className="text-lg font-semibold text-center">
-            Import leads
-          </span>
-          <span className="text-center">
-            You can import up to 100,000 rows at a time.
-          </span>
-        </div>
-        <div className="flex gap-2">
-          <div className="flex items-start">
-            <InformationCircleIcon className="w-6 h-6 stroke-blue-600" />
+    <div className="flex-1 flex bg-gray-100 overflow-auto">
+      <div className="flex-1 flex flex-col overflow-auto">
+        <div className="flex-1 px-6 py-6 lg:py-24 flex flex-col lg:flex-row gap-16 lg:gap-6 max-w-4xl m-auto">
+          <div className="card flex flex-col gap-4 border">
+            <div className="flex justify-center items-center">
+              <Image
+                src={"/assets/images/icon/importlead.svg"}
+                alt="import lead"
+                width={90}
+                height={90}
+              />
+            </div>
+            <div className="px-4 flex flex-col gap-2">
+              <span className="text-lg font-semibold text-center">
+                Import Leads
+              </span>
+              <span className="text-center">
+                You can import up to 100,000 rows at a time.
+              </span>
+            </div>
+            <div className="flex gap-2">
+              <div className="flex items-start">
+                <InformationCircleIcon className="w-6 h-6 stroke-blue-600" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <span className="text-sm">
+                  You can import up to 100,000 rows at once. For accurate
+                  mapping, include at least one of the following fields:{" "}
+                  <strong>
+                    Company Name, Company Website, LinkedIn URL, or Contact
+                    Email
+                  </strong>
+                  . Ensure your file is in CSV format (.csv) and double-check
+                  the data for accuracy. During the upload, you’ll map your CSV
+                  fields to our system’s fields. For detailed instructions,
+                  visit our{" "}
+                  <strong className="hover:underline hover:cursor-pointer hover:select-none">
+                    Help Center
+                  </strong>
+                  . Following these guidelines will streamline your lead import
+                  process and enhance data management.
+                </span>
+              </div>
+            </div>
+            <div className="flex-1" />
+            <div className="flex flex-col gap-4">
+              <Upload
+                type="leads"
+                description="Drop or select leads csv files to upload"
+                onUpload={(data) => {
+                  toast.success("Successfully uploaded");
+                }}
+              />
+              <hr />
+              <a
+                href="/csv/sample-csv-contact.csv"
+                download={true}
+                className="hover:underline"
+              >
+                <div className="flex justify-center hover:underline hover:select-none hover:cursor-pointer text-blue-500 hover:text-blue-400">
+                  Download sample template
+                </div>
+              </a>
+            </div>
           </div>
-          <div className="flex flex-col gap-2">
-            <span className="text-sm">
-              <strong>
-                For accurate mapping, please include at least one of these
-                fields:
-              </strong>
-              Company Name, Company Website, LinkedIn URL, and/or Contact Email.
-              For more information, please visit our help center
-            </span>
-            <span className="text-xs">
-              By clicking "Select CSV File" below, I acknowledge that business
-              contacts data submitted from my CSV file to Apollo may be used to
-              provide and improve Apollo's services as further described in our
-              Terms of Service. Learn more about data sharing.
-            </span>
-          </div>
-        </div>
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-center">
-            <input
-              type="file"
-              ref={fileInputRef}
-              accept=".csv"
-              style={{ display: "none" }} // Hide the input
-              onChange={handleFileChange}
-            />
-            <button
-              className="px-4 py-1 rounded-sm text-white bg-blue-500 hover:bg-blue-400"
-              onClick={handleButtonClick}
-            >
-              Select CSV File
-            </button>
-          </div>
-          <hr />
-          <div className="flex justify-center">Download sample template</div>
-        </div>
-      </div>
 
-      <div className="max-w-[400px] p-5 flex flex-col gap-4 rounded-md">
-        <div className="flex justify-center items-center">
-          <Image
-            src={"/assets/images/icon/importcompany.svg"}
-            alt="import company"
-            width={90}
-            height={90}
-          />
-        </div>
-        <div className="px-4 flex flex-col gap-2">
-          <span className="text-lg font-semibold text-center">
-            Import Companies
-          </span>
-          <span className="text-center">
-            You can import up to 100,000 rows at a time.
-          </span>
-        </div>
-        <div className="flex gap-2">
-          <div className="flex items-start">
-            <InformationCircleIcon className="w-6 h-6 stroke-blue-600" />
+          <div className="card flex flex-col gap-4 border">
+            <div className="flex justify-center items-center">
+              <Image
+                src={"/assets/images/icon/importcompany.svg"}
+                alt="import company"
+                width={90}
+                height={90}
+              />
+            </div>
+            <div className="px-4 flex flex-col gap-2">
+              <span className="text-lg font-semibold text-center">
+                Import Companies
+              </span>
+              <span className="text-center">
+                You can import up to 100,000 rows at a time.
+              </span>
+            </div>
+            <div className="flex gap-2">
+              <div className="flex items-start">
+                <InformationCircleIcon className="w-6 h-6 stroke-blue-600" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <span className="text-sm">
+                  You can import up to 100,000 rows at once. For accurate
+                  mapping, include at least one of the following fields:{" "}
+                  <strong>Company Name, Company Website or LinkedIn URL</strong>
+                  . Ensure your file is in CSV format (.csv) and double-check
+                  the data for accuracy. During the upload, you’ll map your CSV
+                  fields to our system’s fields. For detailed instructions,
+                  visit our{" "}
+                  <strong className="hover:underline hover:cursor-pointer hover:select-none">
+                    Help Center
+                  </strong>
+                  . Following these guidelines will streamline your company
+                  import process and enhance data management.
+                </span>
+              </div>
+            </div>
+            <div className="flex-1" />
+            <div className="flex flex-col gap-4">
+              <Upload
+                type="companies"
+                description="Drop or select companies csv files to upload"
+                onUpload={(data: SuccessModel) => {
+                  if (data.success) {
+                    toast.success("Successfully uploaded");
+                  } else {
+                    toast.info(
+                      "Please check the guideline for more information"
+                    );
+                  }
+                }}
+              />
+              <hr />
+              <a href="/csv/sample-csv-company.csv" download={true}>
+                <div className="flex justify-center hover:underline hover:select-none hover:cursor-pointer text-blue-500 hover:text-blue-400">
+                  Download sample template
+                </div>
+              </a>
+            </div>
           </div>
-          <div className="flex flex-col gap-2">
-            <span className="text-sm">
-              <strong>
-                For accurate mapping, please include at least one of these
-                fields:
-              </strong>
-              Company Name, Company Website. For more information, please visit
-              our help center
-            </span>
-            <span className="text-xs">
-              By clicking "Select CSV File" below, I acknowledge that business
-              contacts data submitted from my CSV file to Apollo may be used to
-              provide and improve Apollo's services as further described in our
-              Terms of Service. Learn more about data sharing.
-            </span>
-          </div>
-        </div>
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-center">
-            <input
-              type="file"
-              ref={fileInputRef}
-              accept=".csv"
-              style={{ display: "none" }} // Hide the input
-              onChange={handleFileChange}
-            />
-            <button
-              className="px-4 py-1 rounded-sm text-white bg-blue-500 hover:bg-blue-400"
-              onClick={handleButtonClick}
-            >
-              Select CSV File
-            </button>
-          </div>
-          <hr />
-          <div className="flex justify-center">Download sample template</div>
         </div>
       </div>
     </div>

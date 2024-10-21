@@ -1,15 +1,16 @@
 import UploadedFiles from "./UploadedFiles";
-import { TrainingDocument } from "@/types";
+import { SuccessModel, TrainingDocument } from "@/types";
 import { useEffect, useState } from "react";
 import Upload from "../upload";
 import { handleError, runService } from "@/utils/service_utils";
 import { getCaseStudies } from "@/services/trainingDocumentService";
 import { deleteTrainingDocument } from "@/services/trainingDataService";
+import { toast } from "react-toastify";
 
 const CaseStudy = () => {
   const [caseStudies, setCaseStudies] = useState<TrainingDocument[]>();
 
-  useEffect(() => {
+  const fetchCaseStudies = () => {
     runService(
       {},
       getCaseStudies,
@@ -20,14 +21,23 @@ const CaseStudy = () => {
         handleError(statusCode, error);
       }
     );
+  };
+
+  useEffect(() => {
+    fetchCaseStudies();
   }, []);
 
   const handleDeleteFile = (id: string) => {
     runService(
       { id },
       deleteTrainingDocument,
-      () => {
-        setCaseStudies(caseStudies?.filter((file) => file.id !== id));
+      (data) => {
+        if (data.success) {
+          setCaseStudies(caseStudies?.filter((file) => file.id !== id));
+          toast.success("Successfully deleted");
+        } else {
+          toast.success("Something goes wrong!");
+        }
       },
       (status, error) => {
         console.log(status, error);
@@ -43,16 +53,24 @@ const CaseStudy = () => {
       >
         Case Study
       </label>
-      <Upload
-        type="case-study"
-        onUpload={(caseStudies: TrainingDocument[]) =>
-          setCaseStudies(caseStudies)
-        }
-      />
+      <div className="ml-8">
+        <Upload
+          type="case-study"
+          description="Drop or select case study files to upload for training"
+          onUpload={(data: SuccessModel) => {
+            if (data.success) {
+              fetchCaseStudies();
+              toast.success("Successfully uploaded");
+            } else {
+              toast.error("Something goes wrong, please contact us!");
+            }
+          }}
+        />
+      </div>
       <div className="h-8" />
       {caseStudies && caseStudies.length > 0 && (
         <UploadedFiles
-          type="case-study"
+          title="Uploaded case studies"
           files={caseStudies}
           onDelete={(id: string) => handleDeleteFile(id)}
         />
