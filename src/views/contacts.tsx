@@ -1,10 +1,8 @@
 "use client";
-import Pagination from "@/components/extends/Pagination/Pagination";
+
 import { useContactFilter } from "@/contexts/FilterContactContext";
 import FilterContact from "@/components/Filter/filterContact";
 import ContactToolbar from "@/sections/contacts/ContactToolbar";
-import ContactItem from "@/sections/contacts/ContactItem";
-import { useRouter } from "next/navigation";
 import { handleError, runService } from "@/utils/service_utils";
 import {
   ContactInCadence,
@@ -13,11 +11,9 @@ import {
   getContactsInCadenceStatistics,
 } from "@/services/contactsService";
 import { useEffect, useState } from "react";
-import { SuccessModel } from "@/types";
-import { toast } from "react-toastify";
 
 export default function Contacts({ cadenceId }: { cadenceId: string }) {
-  const { contactFilterConfig, setContactFilterConfig } = useContactFilter();
+  const { contactFilterConfig } = useContactFilter();
   const [contactsInCadence, setContactsInCadence] = useState<
     ContactInCadence[]
   >([]);

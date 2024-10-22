@@ -11,22 +11,7 @@ import {
   ROUTE_SETTING_NOTIFICATION,
   ROUTE_SETTING_SECURITY,
 } from "@/data/routes";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  TransitionChild,
-} from "@headlessui/react";
-import {
-  ArrowRightIcon,
-  Bars3CenterLeftIcon,
-  CircleStackIcon,
-  Cog6ToothIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import { navigationGeneral } from "@/data/navigation.data";
-import Link from "next/link";
-import { classNames } from "@/utils";
+import { ArrowRightIcon, CircleStackIcon } from "@heroicons/react/24/outline";
 import ToggleButton from "@/components/extends/Button/ToggleButton";
 
 const settingLayoutItems = [
@@ -80,8 +65,7 @@ const settingLayoutItems = [
   },
 ];
 
-const SettingLayout = ({ children }: { children: React.ReactNode }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+const SettingLayout = () => {
   return (
     <>
       <div className="flex-1 flex gap-4 relative">

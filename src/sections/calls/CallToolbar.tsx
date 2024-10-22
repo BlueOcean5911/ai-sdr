@@ -1,11 +1,10 @@
 import { useCallFilter } from "@/contexts/FilterCallContext";
-import { getCallStatistics, CallStatistics } from "@/services/callService";
+import { CallStatistics } from "@/services/callService";
 import { classNames } from "@/utils";
-import { handleError, runService } from "@/utils/service_utils";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const CallToolbar = () => {
   const path = usePathname();

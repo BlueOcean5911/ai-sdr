@@ -1,30 +1,10 @@
-import React, { Fragment, useEffect, useState } from "react";
-import {
-  Menu,
-  MenuButton,
-  MenuItems,
-  MenuItem,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  Transition,
-  TransitionChild,
-} from "@headlessui/react";
-import {
-  StarIcon,
-  EllipsisHorizontalIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { TaskModel } from "@/services/taskService";
-import {
-  formatDate,
-  formatDateTimeReadable,
-  getInitials,
-} from "@/utils/format";
+import { formatDate, getInitials } from "@/utils/format";
 import { getUsers, UserModel } from "@/services/userService";
 import { runService, handleError } from "@/utils/service_utils";
-import Link from "next/link";
 import { TASK_STATE } from "@/types/enums";
 
 export default function TaskItem({

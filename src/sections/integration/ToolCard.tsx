@@ -1,6 +1,5 @@
-import { Button } from "@headlessui/react";
 import { CloudArrowUpIcon } from "@heroicons/react/24/outline";
-import { AcademicCapIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
+import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import React from "react";
 
 export default function ToolCard({

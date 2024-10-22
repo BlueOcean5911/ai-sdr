@@ -1,16 +1,11 @@
 import {
   ListBulletIcon,
   MagnifyingGlassIcon,
-  StarIcon,
 } from "@heroicons/react/24/outline";
 import FilterItem from "./filter-item";
 import { useTaskFilter } from "@/contexts/FilterTaskContext";
 import Select from "react-tailwindcss-select";
-import {
-  fromUserOptions,
-  priorityOptions,
-  stateOptions,
-} from "@/data/filter.data";
+import { priorityOptions, stateOptions } from "@/data/filter.data";
 import { handleError, runService } from "@/utils/service_utils";
 import { getMe, getUsers, UserModel } from "@/services/userService";
 import { useEffect, useState } from "react";
@@ -18,8 +13,6 @@ import { useEffect, useState } from "react";
 export default function FilterTask() {
   const { taskFilterConfig, setTaskFilterConfig } = useTaskFilter();
   const [fromUserOption, setFromUserOption] = useState([]);
-  const [priorityOption, setPriorityOption] = useState(priorityOptions);
-  const [stateOption, setStateOption] = useState(stateOptions);
 
   const fetchUsers = () => {
     runService(
@@ -139,7 +132,7 @@ export default function FilterTask() {
                   priority: value,
                 })
               }
-              options={priorityOption}
+              options={priorityOptions}
               isMultiple={true}
               isSearchable={true}
               primaryColor={"indigo"}
@@ -181,7 +174,7 @@ export default function FilterTask() {
                   state: value,
                 })
               }
-              options={stateOption}
+              options={stateOptions}
               isMultiple={true}
               isSearchable={true}
               primaryColor={"indigo"}

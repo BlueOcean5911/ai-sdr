@@ -1,13 +1,8 @@
 "use client";
 
-import { Suspense, useState } from "react";
-import { LeadSelectionProvider } from "@/contexts/LeadSelectionContext";
-import { LeadFilterProvider } from "@/contexts/FilterLeadContext";
-import Leads from "@/views/leads";
+import { Suspense } from "react";
 import { ContactFilterProvider } from "@/contexts/FilterContactContext";
 import { ContactSelectionProvider } from "@/contexts/ContactSelectionContext";
-import Contacts from "@/views/contacts";
-import CampaignContacts from "@/views/campaignContacts";
 import CadenceContacts from "@/views/cadenceContacts";
 
 export default function Page({ params }: { params: { id: string } }) {

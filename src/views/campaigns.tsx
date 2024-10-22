@@ -6,10 +6,7 @@ import {
   EllipsisHorizontalCircleIcon,
   PlusCircleIcon,
 } from "@heroicons/react/24/outline";
-import {
-  EllipsisVerticalIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/solid";
+import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import CreateCampaign from "@/sections/campaigns/CreateCampaign";
 import Pagination from "@/components/extends/Pagination/Pagination";

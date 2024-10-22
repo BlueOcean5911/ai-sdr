@@ -1,51 +1,24 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import {
-  ArrowTrendingUpIcon,
-  CheckBadgeIcon,
-  ChevronRightIcon,
-  EnvelopeIcon,
-  InformationCircleIcon,
-  NoSymbolIcon,
-  PhoneIcon,
-  PlusCircleIcon,
-  PlusIcon,
-  QuestionMarkCircleIcon,
-  StarIcon,
-} from "@heroicons/react/24/outline";
-import ToggleButton from "@/components/extends/Button/ToggleButton";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { useRouter, useSearchParams } from "next/navigation";
-import { handleError, runService } from "@/utils/service_utils";
+import { runService } from "@/utils/service_utils";
 import {
-  BaseLeadModel,
-  LeadModel,
   LeadModelWithCompanyModel,
   getLeadById,
   // updateLead,
 } from "@/services/leadService";
 import { CompanyModel, getCompanyById } from "@/services/companyService";
-import { getTemplate } from "@/services/templatesService";
-import { FaLinkedinIn } from "react-icons/fa";
-import { LinkedinIcon, MessageCircleWarning } from "lucide-react";
-import { FaInfo } from "react-icons/fa6";
-import { IoIosLink } from "react-icons/io";
 import EmailSendWindow from "@/sections/email/EmailSendWindow";
-import { getDefaultLead } from "@/services/leadService";
 import LeadView from "@/sections/leads/LeadView";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  const [starred, setStarred] = useState(false);
-  const [active, setActive] = useState(false);
   const [lead, setLead] = useState<LeadModelWithCompanyModel>();
-  const [company, setCompany] = useState<CompanyModel>();
   const [isOpenSendEmail, setIsOpenSendEmail] = useState(
     Object.fromEntries(useSearchParams())?.sendEmail ? true : false
   );
-  const searchParams = useSearchParams();
-  // const []
   const router = useRouter();
 
   useEffect(() => {
@@ -53,25 +26,11 @@ export default function Page({ params }: { params: { id: string } }) {
       { id: id },
       getLeadById,
       (data) => {
-        console.log("123123132", data);
         setLead(data);
       },
       (error) => console.log(error)
     );
   }, [id]);
-
-  useEffect(() => {
-    lead?.companyId &&
-      runService(
-        { id: lead?.companyId },
-        getCompanyById,
-        (data) => {
-          console.log(data);
-          setCompany(data);
-        },
-        (error) => console.log(error)
-      );
-  }, [lead]);
 
   return (
     <>

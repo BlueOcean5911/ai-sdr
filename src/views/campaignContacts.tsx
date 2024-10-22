@@ -2,14 +2,12 @@
 
 import FilterContact from "@/components/Filter/filterContact";
 import ContactToolbar from "@/sections/contacts/ContactToolbar";
-import ContactItem from "@/sections/contacts/ContactItem";
 import { useContactFilter } from "@/contexts/FilterContactContext";
 import {
   ContactInCadence,
   ContactInCadenceStatistics,
   getContactsInCampaign,
 } from "@/services/contactsService";
-import GeneralContacts from "./generalContacts";
 import Pagination from "@/components/extends/Pagination/Pagination";
 import { useEffect, useState } from "react";
 import { handleError, runService } from "@/utils/service_utils";

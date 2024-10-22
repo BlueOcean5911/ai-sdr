@@ -29,7 +29,7 @@ const AddCadence = ({
         setCadences(resCadences);
       },
       (status, error) => {
-        toast.error(`Failed to fetch cadences: ${error}`);
+        handleError(status, error);
       }
     );
   };

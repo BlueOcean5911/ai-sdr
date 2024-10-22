@@ -6,18 +6,18 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import React, { Fragment, useState, useEffect, useMemo } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { handleError, runService } from "@/utils/service_utils";
-import { getUsers, UserModel } from "@/services/userService";
+import { getUsers } from "@/services/userService";
 import { addTask, BaseTaskModel, updateTask } from "@/services/taskService";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import FormHelperText from "@/components/extends/FormHelperText";
 import { toast } from "react-toastify";
 import Select from "@/components/extends/Select/default";
 import { useTaskFilter } from "@/contexts/FilterTaskContext";
 import { CADENCE_STEP_TYPE } from "@/types/enums";
-import { getLeads, LeadModel } from "@/services/leadService";
+import { getLeads } from "@/services/leadService";
 
 const taskTypeOptions = [
   { value: CADENCE_STEP_TYPE.MANUAL_EMAIL, name: "Email" },
@@ -73,10 +73,7 @@ export default function CreateTask({
           };
         });
         // console.log("tempLeadOptions: ", tempLeadOptions);
-        setLeadOptions([
-          { name: "None", value: "none" },
-          ...tempLeadOptions,
-        ]);
+        setLeadOptions([{ name: "None", value: "none" }, ...tempLeadOptions]);
       },
       (status, error) => {
         handleError(status, error);
@@ -220,16 +217,11 @@ export default function CreateTask({
                                 )}
                                 onChange={(selectedItem) => {
                                   if (selectedItem.value !== values.leadId)
-                                    setFieldValue(
-                                      "leadId",
-                                      selectedItem.value
-                                    );
+                                    setFieldValue("leadId", selectedItem.value);
                                 }}
                               ></Select>
                               {touched.leadId && errors.leadId && (
-                                <FormHelperText>
-                                  {errors.leadId}
-                                </FormHelperText>
+                                <FormHelperText>{errors.leadId}</FormHelperText>
                               )}
                             </div>
                           </div>

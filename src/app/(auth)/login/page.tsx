@@ -73,7 +73,9 @@ export default function SignIn() {
                     values,
                     { setErrors, setStatus, setSubmitting }
                   ) => {
+                    setSubmitting(true);
                     await handleLogin(values.email, values.password);
+                    setSubmitting(false);
                   }}
                 >
                   {({
@@ -227,8 +229,8 @@ export default function SignIn() {
             <Image
               alt="Sign In Background Image"
               src={LOGIN_SUB_IMAGE_001_URL}
-              width={1200}
-              height={800}
+              width={400}
+              height={300}
               className="w-full aspect-auto max-w-[800px] px-8"
             />
           </div>

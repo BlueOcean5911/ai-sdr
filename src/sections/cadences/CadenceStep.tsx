@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { CadenceStepProps } from "@/types";
 import ToggleButton from "@/components/extends/Button/ToggleButton";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import {
@@ -8,10 +7,7 @@ import {
   Bars2Icon,
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
-import {
-  BaseCadenceStepModel,
-  CadenceStepModel,
-} from "@/services/cadenceStepService";
+import { CadenceStepModel } from "@/services/cadenceStepService";
 import { getFormettedInterval } from "@/utils/format";
 import EditStep from "./EditStep";
 import { CADENCE_STEP_TYPE } from "@/types/enums";

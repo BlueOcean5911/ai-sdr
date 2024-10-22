@@ -8,7 +8,6 @@ import Link from "next/link";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      {" "}
       <NavTitle>
         <Link href={ROUTE_INTEGRATION} className="hover:underline">
           Integration

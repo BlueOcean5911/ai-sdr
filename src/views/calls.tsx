@@ -1,12 +1,12 @@
 "use client";
+
 import Pagination from "@/components/extends/Pagination/Pagination";
 import { useCallFilter } from "@/contexts/FilterCallContext";
 import FilterCall from "@/components/Filter/filterCall";
 import CallToolbar from "@/sections/calls/CallToolbar";
 import CallItem from "@/sections/calls/CallItem";
-import { handleError, runService } from "@/utils/service_utils";
-import { getCalls, getCallTotalCount, CallModel } from "@/services/callService";
-import { useEffect, useState } from "react";
+import { CallModel } from "@/services/callService";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { callData } from "@/data/call.data";
 

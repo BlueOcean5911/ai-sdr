@@ -1,27 +1,16 @@
 "use client";
-import Link from "next/link";
-import {
-  ROUTE_ACCOUNT_COMPANY_DATA,
-  ROUTE_ACCOUNT_PROFILE,
-  ROUTE_ACCOUNT_USERS,
-} from "@/data/routes";
-import { ChevronRightIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
-import {
-  getMe,
-  updatePassword,
-  updateUser,
-  UserModel,
-} from "@/services/userService";
+import { useEffect, useRef, useState } from "react";
+import { getMe, updateUser, UserModel } from "@/services/userService";
 import { handleError, runService } from "@/utils/service_utils";
 import { toast } from "react-toastify";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import FormHelperText from "@/components/extends/FormHelperText";
-import CadenceNavbarItem from "@/components/extends/Tap/TapItem";
 
 export default function Profile() {
   const [userData, setUserData] = useState<UserModel>();
+  const isInitialRendering = useRef(true);
+
   const fetchUserData = () => {
     runService(
       undefined,
@@ -51,6 +40,10 @@ export default function Profile() {
   };
 
   useEffect(() => {
+    if (isInitialRendering.current) {
+      isInitialRendering.current = false;
+      return;
+    }
     fetchUserData();
   }, []);
 
