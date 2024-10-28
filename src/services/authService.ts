@@ -37,7 +37,20 @@ export const getToken = (): string | null => {
   return localStorage.getItem("ai-vio-token");
 };
 
+export const saveRememberMe = (token: string) => {
+  localStorage.setItem("ai-vio-remember-me", token);
+};
+
+export const getRememberMe = (): string | null => {
+  return localStorage.getItem("ai-vio-remember-me");
+};
+
+export const removeRememberMe = () => {
+  localStorage.removeItem("ai-vio-remember-me");
+};
+
 export const signOut = () => {
   localStorage.removeItem("ai-vio-token");
+  localStorage.removeItem("ai-vio-remember-me");
   window.location.replace(ROUTE_LOGIN);
 };
