@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
+
+
+// console.log(processs.env.NEXT_PUBLIC_API_URL)
 const nextConfig = {
+    output: 'export',
     async redirects() {
         return [
             {
