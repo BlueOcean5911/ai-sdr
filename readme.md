@@ -78,3 +78,5 @@ pm2 save
 sudo snap install --classic certbot
 sudo certbot --nginx -d app.aivio.io
 ```
+
+- Test
