@@ -147,7 +147,10 @@ export default function SignIn() {
                         />
 
                         <div className="text-sm leading-6">
-                          <a href="#" className="font-semibold hover:underline">
+                          <a
+                            href="#"
+                            className="font-semibold hover:underline hover:text-blue-500"
+                          >
                             Forgot password?
                           </a>
                         </div>
