@@ -66,6 +66,13 @@ export interface InviteUserProps {
   handleClose: () => void;
 }
 
+export interface ForgotPasswordProps {
+  open: boolean;
+  email?: string;
+  handleSend: (email: string) => void;
+  handleClose: () => void;
+}
+
 export interface CountModel {
   count?: number;
 }
