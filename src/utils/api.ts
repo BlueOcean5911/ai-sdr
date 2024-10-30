@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getRememberMe, getToken } from "@/services/authService";
 
 // Create an Axios instance with default headers
 const api = axios.create({
@@ -11,7 +12,7 @@ const api = axios.create({
 // Add a request interceptor
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("ai-vio-token");
+    const token = getRememberMe() || getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
