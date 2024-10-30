@@ -1,6 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import useBeforeUnload from "@/utils/useBeforeUnload";
 import {
   Dialog,
   DialogBackdrop,
@@ -47,6 +48,8 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const section =
     pathname.split("/").length > 1 ? "/" + pathname.split("/").at(1) : "/";
+  
+  useBeforeUnload();
 
   const handleMouseEnter = () => {
     setSidebarShow(true);
