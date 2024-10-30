@@ -11,11 +11,21 @@ import * as Yup from "yup";
 import { useEffect, useState } from "react";
 import FormHelperText from "@/components/extends/FormHelperText";
 import { handleError, runService } from "@/utils/service_utils";
-import { getRememberMe, login, removeRememberMe, saveRememberMe, saveToken } from "@/services/authService";
+import {
+  getRememberMe,
+  login,
+  removeRememberMe,
+  saveRememberMe,
+  saveToken,
+  sendForgotLink,
+} from "@/services/authService";
 import { useRouter } from "next/navigation";
+import ForgotPassword from "@/sections/auth/ForgotPassword";
+import { toast } from "react-toastify";
 // import { useRouter } from "next-nprogress-bar";
 
 export default function SignIn() {
+  const [forgot, setForgot] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
 
@@ -45,6 +55,25 @@ export default function SignIn() {
   };
   return (
     <>
+      <ForgotPassword
+        open={forgot}
+        handleSend={(email: string) => {
+          runService(
+            { email },
+            sendForgotLink,
+            (data) => {
+              if (data.success === true) {
+                toast.success("Successfully sent invite.");
+              } else toast.error("Something goes wrong.");
+            },
+            (status, error) => {
+              handleError(status, error);
+            }
+          );
+          setForgot(false);
+        }}
+        handleClose={() => setForgot(false)}
+      />
       <div className="flex min-h-dvh flex-1">
         <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
@@ -162,6 +191,7 @@ export default function SignIn() {
                           <a
                             href="#"
                             className="font-semibold hover:underline hover:text-blue-500"
+                            onClick={() => setForgot(true)}
                           >
                             Forgot password?
                           </a>
