@@ -55,8 +55,8 @@ export const signOut = () => {
   window.location.replace(ROUTE_LOGIN);
 };
 
-export const sendForgotLink = async (props: { email: string }) => {
+export const sendResetLink = async (props: { email: string }) => {
   const { email } = props;
   const data = { email };
-  return await api.post("/api/auth/forgot", data);
+  return await api.post("/auth/reset", data);
 };
