@@ -63,7 +63,7 @@ export default function SignIn() {
             sendResetLink,
             (data) => {
               if (data.success === true) {
-                toast.success("Successfully sent invite.");
+                toast.success("Reset link has been sent to your email.");
               } else toast.error("Something goes wrong.");
             },
             (status, error) => {
