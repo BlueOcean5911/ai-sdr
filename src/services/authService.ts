@@ -11,6 +11,16 @@ export const login = ({
   return api.post("/auth/login", { email, password });
 };
 
+export const resetPassword = ({
+  password,
+  token
+}: {
+  password: string;
+  token: string;
+}) => {
+  return api.post("/auth/reset-password", { password, token });
+};
+
 interface RegisterModel {
   firstName: string;
   lastName: string;
