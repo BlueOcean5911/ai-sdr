@@ -17,7 +17,7 @@ import {
   removeRememberMe,
   saveRememberMe,
   saveToken,
-  sendForgotLink,
+  sendResetLink,
 } from "@/services/authService";
 import { useRouter } from "next/navigation";
 import ForgotPassword from "@/sections/auth/ForgotPassword";
@@ -60,7 +60,7 @@ export default function SignIn() {
         handleSend={(email: string) => {
           runService(
             { email },
-            sendForgotLink,
+            sendResetLink,
             (data) => {
               if (data.success === true) {
                 toast.success("Successfully sent invite.");
