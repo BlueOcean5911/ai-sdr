@@ -1,10 +1,34 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { BellAlertIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { BellAlertIcon } from "@heroicons/react/24/outline";
 
-import { alertIcons, headerAlertList } from "@/data/alert.data";
+import { handleError, runService } from "@/utils/service_utils";
+import { AlertModel, getAlerts } from "@/services/alertService";
+import { alertIcons } from "@/data/alert.data";
 
 export default function HeaderAlert() {
+  const [alerts, setAlerts] = useState<AlertModel[]>([]);
+  
+  const fetchAlerts = () => {
+    runService(
+      undefined,
+      getAlerts,
+      (data) => {
+        console.log("alerts: ", data);
+        setAlerts(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+        console.log(status, error);
+      }
+    );
+  };
+
+  useEffect(() => {
+    fetchAlerts();
+  },[]);
+  
   return (
     <>
       <Menu as="div" className="relative">
@@ -20,17 +44,17 @@ export default function HeaderAlert() {
             <h3>Alert</h3>
           </div>
           <div className="flex-1 overflow-y-auto">
-            {headerAlertList.map((item, id) => (
+            {alerts.map((item, id) => (
               <MenuItem key={id}>
                 <Link
                   href={item.href}
                   className="block px-3 py-2 text-sm leading-6 border-b text-gray-900 data-[focus]:bg-blue-200"
                 >
                   <div className="flex items-center gap-4">
-                    {item.id && item.id in alertIcons && (
+                    {item.type && item.type in alertIcons && (
                       <div className="flex-center w-10 h-10">
                         <div className="w-6 h-6 flex-center">
-                          {alertIcons[item.id]}
+                          {alertIcons[item.type]}
                         </div>
                       </div>
                     )}
