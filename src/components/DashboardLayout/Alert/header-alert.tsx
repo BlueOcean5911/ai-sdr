@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { BellAlertIcon, XCircleIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
 
 import { alertIcons, headerAlertList } from "@/data/alert.data";
 
