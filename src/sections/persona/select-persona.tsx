@@ -1,7 +1,7 @@
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import { defaultPersonas } from "@/views/personas";
+import { defaultPersonas } from "@/data/persona.data";
 import CheckBox from "@/components/extends/CheckBox";
 
 export default function SelectPersona({
