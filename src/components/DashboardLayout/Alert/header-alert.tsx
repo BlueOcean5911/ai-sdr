@@ -42,7 +42,7 @@ export default function HeaderAlert() {
           className="flex flex-col absolute right-0 z-50 mt-2.5 min-w-64 max-w-96 max-h-[600px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-gray-900/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
         >
           <div className="p-3 border-b border-gray-200 flex justify-between items-center">
-            <h3>Alert</h3>
+            <h3>Alerts</h3>
           </div>
           <div className="flex-1 overflow-y-auto">
             {alerts.length > 0 ? (
