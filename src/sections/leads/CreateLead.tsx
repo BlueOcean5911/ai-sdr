@@ -10,6 +10,7 @@ import {
 import React, { Fragment, useState, useEffect, useMemo } from "react";
 import { handleError, runService } from "@/utils/service_utils";
 import { getUsers, UserModel } from "@/services/userService";
+import { CompanyModel, getCompanies } from "@/services/companyService";
 import { addLead, BaseLeadModel, updateLead } from "@/services/leadService";
 import Select from "react-tailwindcss-select";
 import { Formik } from "formik";
@@ -28,6 +29,7 @@ export default function CreateLead({
   handleClose,
 }: CreateLeadProps) {
   const [users, setUsers] = useState<UserModel[]>();
+  const [companies, setCompanies] = useState<CompanyModel[]>();
   const { setLeadFilterConfig } = useLeadFilter();
   const fetchUsers = () => {
     runService(
@@ -35,6 +37,18 @@ export default function CreateLead({
       getUsers,
       (data) => {
         setUsers(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+  const fetchCompanies = () => {
+    runService(
+      undefined,
+      getCompanies,
+      (data) => {
+        setCompanies(data);
       },
       (status, error) => {
         handleError(status, error);
@@ -54,8 +68,21 @@ export default function CreateLead({
     return options;
   }, [users]);
 
+  const companyOptions = useMemo(() => {
+    let options = companies
+      ? companies.map((company) => {
+          return {
+            name: company.name,
+            value: company.id,
+          };
+        })
+      : [];
+    return options;
+  }, [companies]);
+
   useEffect(() => {
     fetchUsers();
+    fetchCompanies();
   }, []);
   return (
     <>
@@ -173,7 +200,7 @@ export default function CreateLead({
                         // companyId: values.companyId,
                         // ownerId: values.ownerId,
                         personaId: undefined,
-                        companyId: undefined,
+                        companyId: values.companyId,
                         ownerId: values.ownerId,
                       };
                       lead
@@ -556,15 +583,17 @@ export default function CreateLead({
 
                           <div className="flex flex-col">
                             <label htmlFor="companyId">Company</label>
-                            <input
-                              id="companyId"
-                              type="text"
-                              placeholder="Company Name"
-                              className="input-primary max-h-9"
-                              value={values.companyId}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
+                            <RSelect
+                              value={companyOptions.find(
+                                (option) => option.value === values.companyId
+                              )}
+                              data={companyOptions}
+                              onChange={(item) => {
+                                if (values.companyId !== item?.value) {
+                                  setFieldValue("companyId", item?.value);
+                                }
+                              }}
+                            ></RSelect>
                             {touched.companyId && errors.companyId && (
                               <FormHelperText>
                                 {errors.companyId}
