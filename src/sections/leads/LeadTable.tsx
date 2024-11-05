@@ -321,8 +321,11 @@ const LeadTable = () => {
                       {lead.company?.keywords
                         ?.split(",")
                         .slice(0, 3)
-                        .map((keyword) => (
-                          <span className="p-1 px-2 border border-blue-500 rounded-full text-xs capitalize min-w-16 text-center">
+                        .map((keyword, idx) => (
+                          <span
+                            key={idx}
+                            className="p-1 px-2 border border-blue-500 rounded-full text-xs capitalize min-w-16 text-center"
+                          >
                             {keyword}
                           </span>
                         ))}
