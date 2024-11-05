@@ -53,7 +53,9 @@ export default function Page() {
                   <span className="text-sm">{alert.content}</span>
                 </div>
                 <div className="w-20 flex flex-col justify-center items-center gap-1">
-                  <span className="text-xs text-nowrap">{alert.createdAt}</span>
+                  <span className="text-xs text-nowrap">
+                    {alert.createdAt.split("T")[0]}
+                  </span>
                 </div>
               </div>
               <Menu>
@@ -82,9 +84,7 @@ export default function Page() {
               height={120}
             />
             <span>No new alerts</span>
-            <span className="w-1/2 text-xs">
-              You'll see new alerts hear.
-            </span>
+            <span className="w-1/2 text-xs">You'll see new alerts hear.</span>
           </div>
         )}
       </div>
