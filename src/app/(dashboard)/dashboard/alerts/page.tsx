@@ -1,15 +1,39 @@
+"use client"
 import Image from "next/image";
-import { alertIcons } from "@/data/alert.data";
-import { headerAlertList } from "@/data/alert.data";
+import { useEffect, useState } from "react";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 
+import { alertIcons } from "@/data/alert.data";
+import { handleError, runService } from "@/utils/service_utils";
+import { AlertModel, getAlerts } from "@/services/alertService";
+
 export default function Page() {
+  const [alerts, setAlerts] = useState<AlertModel[]>([]);
+
+  const fetchAlerts = () => {
+    runService(
+      undefined,
+      getAlerts,
+      (data) => {
+        console.log("alerts: ", data);
+        setAlerts(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+        console.log(status, error);
+      }
+    );
+  };
+
+  useEffect(() => {
+    fetchAlerts();
+  }, []);
   return (
     <>
       <div className="flex flex-1 flex-col rounded-md border">
-        {headerAlertList.length > 0 ? (
-          headerAlertList.map((alert, idx) => (
+        {alerts.length > 0 ? (
+          alerts.map((alert, idx) => (
             <div
               key={idx}
               className="w-full p-4 flex flex-row items-center gap-4 border-b hover:bg-gray-200"
@@ -29,7 +53,7 @@ export default function Page() {
                   <span className="text-sm">{alert.content}</span>
                 </div>
                 <div className="w-20 flex flex-col justify-center items-center gap-1">
-                  <span className="text-xs text-nowrap">{alert.date}</span>
+                  <span className="text-xs text-nowrap">{alert.createdAt}</span>
                 </div>
               </div>
               <Menu>
@@ -57,9 +81,9 @@ export default function Page() {
               width={120}
               height={120}
             />
-            <span>No new messages</span>
+            <span>No new alerts</span>
             <span className="w-1/2 text-xs">
-              You'll see new email message here whenever they come in.
+              You'll see new alerts hear.
             </span>
           </div>
         )}
