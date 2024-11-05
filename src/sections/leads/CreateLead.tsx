@@ -19,7 +19,7 @@ import { toast } from "react-toastify";
 import RSelect from "@/components/extends/Select/default";
 import { useLeadFilter } from "@/contexts/FilterLeadContext";
 
-const linkedinUrlRegex =
+const linkedinRegex =
   /^(https?:\/\/)?(www\.)?(linkedin\.com\/(in|pub|company)\/[a-zA-Z0-9-]+)/;
 
 export default function CreateLead({
@@ -124,9 +124,9 @@ export default function CreateLead({
                       // phoneStatus: Yup.string().required("Status is required"),
                       title: Yup.string().required("Job Title is required"),
                       companyId: Yup.string().required("Company is required"),
-                      linkedinUrl: Yup.string()
+                      linkedin: Yup.string()
                         .matches(
-                          linkedinUrlRegex,
+                          linkedinRegex,
                           "Please enter a valid LinkedIn URL"
                         )
                         .required("LinkedIn URL is required"),
