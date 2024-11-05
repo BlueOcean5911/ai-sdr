@@ -65,7 +65,7 @@ export default function HeaderAlert() {
                           {item.title}
                         </p>
                         <p className="w-full text-sm text-ellipsis overflow-hidden whitespace-nowrap">
-                          {item.content} on {item.createdAt}
+                          {item.content} on {item.createdAt.split("T")[0]}
                         </p>
                       </div>
                     </div>
