@@ -39,10 +39,10 @@ export default function Page() {
               className="w-full p-4 flex flex-row items-center gap-4 border-b hover:bg-gray-200"
             >
               <div className="w-16">
-                {alert.id && alert.id in alertIcons && (
+                {alert.type && alert.type in alertIcons && (
                   <div className="flex-center w-10 h-10">
-                    <div className="w-6 h-6 flex-center">
-                      {alertIcons[alert.id]}
+                    <div className="w-8 h-8 flex-center">
+                      {alertIcons[alert.type]}
                     </div>
                   </div>
                 )}
