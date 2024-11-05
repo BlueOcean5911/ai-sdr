@@ -15,7 +15,7 @@ export interface BaseAlertModel {
   title: string;
   content: string;
   href: string;
-  date: string;
+  createdAt: string;
 }
 
 export interface UpdateAlertModel {
