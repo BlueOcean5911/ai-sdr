@@ -6,6 +6,7 @@ import {
   deleteUser,
   sendInviteLink,
   UserModel,
+  getMe,
 } from "@/services/userService";
 import { PlusCircleIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
@@ -14,6 +15,7 @@ import { toast } from "react-toastify";
 import ToggleButton from "@/components/extends/Button/ToggleButton";
 
 const ManageStuff = () => {
+  const [me, setMe] = useState<UserModel>();
   const [users, setUsers] = useState<UserModel[]>();
   const [invite, setInvite] = useState(false);
 
@@ -24,6 +26,18 @@ const ManageStuff = () => {
       (data) => {
         console.log("users: ", data);
         setUsers(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+
+    runService(
+      undefined,
+      getMe,
+      (data) => {
+        console.log("users: ", data);
+        setMe(data);
       },
       (status, error) => {
         handleError(status, error);
@@ -169,42 +183,33 @@ const ManageStuff = () => {
                       {user.phone}
                     </td>
                     <td className="py-2 flex flex-1 justify-center items-center gap-4">
-                      <ToggleButton
-                        checked={user.enabled ? user.enabled : false}
-                        handleChange={() => {
-                          handleUpdate({ id: user.id, enabled: !user.enabled });
-                        }}
-                      />
-                      <div
-                        className="p-1 rounded-md cursor-pointer hover:bg-gray-100"
-                        onClick={() =>
-                          handleDelete(user.id ? user.id : "fakeUserId")
-                        }
-                      >
-                        <TrashIcon className="w-5 h-5 stroke-red-500" />
-                      </div>
-                      {/* <Menu>
-                        <MenuButton className="">
-                          <div className="p-1 border rounded-md hover:bg-white">
-                            <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
+                      {me && user.id !== me.id ? (
+                        <>
+                          <ToggleButton
+                            checked={user.enabled ? user.enabled : false}
+                            handleChange={() => {
+                              handleUpdate({
+                                id: user.id,
+                                enabled: !user.enabled,
+                              });
+                            }}
+                          />
+                          <div
+                            className="p-1 rounded-md cursor-pointer hover:bg-gray-100"
+                            onClick={() =>
+                              handleDelete(user.id ? user.id : "fakeUserId")
+                            }
+                          >
+                            <TrashIcon className="w-5 h-5 stroke-red-500" />
                           </div>
-                        </MenuButton>
-                        <MenuItems
-                          anchor="bottom end"
-                          className="flex flex-col w-20 origin-top bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
+                        </>
+                      ) : (
+                        <div
+                          className="p-1 rounded-md cursor-pointer hover:bg-gray-100"
                         >
-                          <MenuItem>
-                            <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                              Edit
-                            </button>
-                          </MenuItem>
-                          <MenuItem>
-                            <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                              Delete
-                            </button>
-                          </MenuItem>
-                        </MenuItems>
-                      </Menu> */}
+                          Current User
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))}

@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 
+import { useState } from "react";
 import { ROUTE_DASHBOARD, ROUTE_LOGIN } from "@/data/routes";
 import Logo from "@/components/extends/Logo";
 import { LOGIN_BG_URL, LOGIN_SUB_IMAGE_001_URL } from "@/data/urls/images.url";
@@ -29,6 +30,7 @@ const companySizeOptions = [
 ];
 
 export default function Page() {
+  const [isLoading, setIsLoading] = useState(false);
   const invite = Object.fromEntries(useSearchParams())?.invite;
   const router = useRouter();
   const handleRegister = (
@@ -39,6 +41,8 @@ export default function Page() {
     companyName?: string,
     companySize?: string
   ) => {
+    setIsLoading(true);
+    console.log("sending request");
     runService(
       {
         user: {
@@ -58,9 +62,11 @@ export default function Page() {
           "Successfully requested a demo! We'll contact to you soon."
         );
         router.push(ROUTE_LOGIN);
+        setIsLoading(false);
       },
       (statusCode, error) => {
         handleError(statusCode, error);
+        setIsLoading(false);
       }
     );
   };
@@ -310,7 +316,7 @@ export default function Page() {
                       <div>
                         <button
                           type="submit"
-                          disabled={isSubmitting}
+                          disabled={isSubmitting || isLoading}
                           className="btn-primary flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 !disabled:bg-gray-400"
                         >
                           Request a demo

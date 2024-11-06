@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { getMe, updateUser, UserModel } from "@/services/userService";
 import { handleError, runService } from "@/utils/service_utils";
 import { toast } from "react-toastify";
@@ -9,7 +9,6 @@ import FormHelperText from "@/components/extends/FormHelperText";
 
 export default function Profile() {
   const [userData, setUserData] = useState<UserModel>();
-  const isInitialRendering = useRef(true);
 
   const fetchUserData = () => {
     runService(
@@ -40,10 +39,6 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    if (isInitialRendering.current) {
-      isInitialRendering.current = false;
-      return;
-    }
     fetchUserData();
   }, []);
 
