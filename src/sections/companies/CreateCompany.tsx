@@ -21,6 +21,9 @@ import { runService } from "@/utils/service_utils";
 import { toast } from "react-toastify";
 import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
 
+const linkedinRegex =
+  /^(https?:\/\/)?(www\.)?(linkedin\.com\/(company)\/[a-zA-Z0-9-]+)/;
+
 export default function CreateCompany({
   open,
   company = undefined,
@@ -55,10 +58,9 @@ export default function CreateCompany({
                     initialValues={{
                       name: company ? company.name : "",
                       phone: company ? company.phone : "",
-                      // phoneStatus: statusOptions[3],
                       phoneStatus: statusOptions.find(
                         (option) => option.value === company?.phoneStatus
-                      ),
+                      ) || statusOptions[3],
                       companyType: company ? company.companyType : "",
                       description: company ? company.description : "",
                       size: company ? company.size : 0,
@@ -81,8 +83,11 @@ export default function CreateCompany({
                       companyType: Yup.string().required("Type is required"),
                       size: Yup.number().required("Size is required"),
                       linkedin: Yup.string()
-                        .required("LinkedIn is required")
-                        .url("Invalid URL"),
+                        .matches(
+                          linkedinRegex,
+                          "Please enter a valid LinkedIn URL"
+                        )
+                        .required("LinkedIn URL is required"),
                       // location: Yup.string().required("Location is required"),
                       streetAddress: Yup.string().required(
                         "Street Address is required"
@@ -107,7 +112,7 @@ export default function CreateCompany({
                       { setErrors, setStatus, setSubmitting }
                     ) => {
                       console.log("submit");
-                      // setSubmitting(true);
+                      setSubmitting(true);
                       const phoneStatus = values.phoneStatus?.value;
                       let companyData: BaseCompanyModel = {
                         name: values.name,
@@ -164,7 +169,7 @@ export default function CreateCompany({
                               toast.error(error);
                             }
                           );
-                      // setSubmitting(false);
+                      setSubmitting(false);
                     }}
                   >
                     {({
@@ -273,6 +278,24 @@ export default function CreateCompany({
                           </div>
 
                           <div className="flex flex-col">
+                            <label htmlFor="industry">Industry</label>
+                            <input
+                              id="industry"
+                              type="text"
+                              placeholder="Industry"
+                              className="input-primary"
+                              value={values.industry}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                            {touched.industry && errors.industry && (
+                              <FormHelperText>
+                                {errors.industry}
+                              </FormHelperText>
+                            )}
+                          </div>
+
+                          <div className="flex flex-col">
                             <label htmlFor="description">Description</label>
                             <textarea
                               id="description"
@@ -303,7 +326,7 @@ export default function CreateCompany({
                             <input
                               id="linkedin"
                               type="text"
-                              placeholder="http://linkedin/in/contactname"
+                              placeholder="http://linkedin/company/contactname"
                               className="input-primary"
                               value={values.linkedin}
                               onChange={handleChange}
@@ -466,7 +489,7 @@ export default function CreateCompany({
                             <input
                               id="keywords"
                               type="text"
-                              placeholder="Keywords"
+                              placeholder="Keywords (e.g. media,messaging,camera,technology,innovation)"
                               className="input-primary"
                               value={values.keywords}
                               onChange={handleChange}
