@@ -16,6 +16,32 @@ export interface CadenceModel extends BaseCadenceModel {
 }
 
 export interface BaseCadenceModel {
+  name: string;
+
+  activeCount?: number;
+  pausedCount?: number;
+  notSentCount?: number;
+  bouncedCount?: number;
+  finishedCount?: number;
+
+  scheduledCount?: number;
+  deliveredCount?: number;
+  openedCount?: number;
+  clickedCount?: number;
+  replyCount?: number;
+  interestedCount?: number;
+  optOutCount?: number;
+
+  star?: boolean;
+  isActive?: boolean;
+  stepsCount?: number;
+  shareType?: SHARE_TYPE;
+  ownerId: string;
+
+  clonedFromId?: string;
+}
+
+export interface UpdateCadenceModel {
   name?: string;
 
   activeCount?: number;
@@ -65,7 +91,7 @@ export const getCadenceById = async (
 ): Promise<ApiCadenceResponse> => {
   const url = `/api/cadences/${id}`;
   const response = await api.get(url);
-  console.log("----------------->", response);
+  // console.log("----------------->", response);
   return response;
 };
 
