@@ -1,10 +1,16 @@
 "use client";
-import Pagination from "@/components/extends/Pagination/Pagination";
-import { useTaskFilter } from "@/contexts/FilterTaskContext";
-import FilterTask from "@/components/Filter/filterTask";
-import TaskToolbar from "@/sections/tasks/TaskToolbar";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
+
 import TaskItem from "@/sections/tasks/TaskItem";
-import { handleError, runService } from "@/utils/service_utils";
+import CreateTask from "@/sections/tasks/CreateTask";
+import TaskToolbar from "@/sections/tasks/TaskToolbar";
+import FilterTask from "@/components/Filter/filterTask";
+import TaskOverview from "@/sections/tasks/TaskOverview";
+import Pagination from "@/components/extends/Pagination/Pagination";
+import Loading from "@/components/Loading";
+
 import {
   deleteTask,
   getTasks,
@@ -13,12 +19,9 @@ import {
   updateTask,
   UpdateTaskModel,
 } from "@/services/taskService";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import CreateTask from "@/sections/tasks/CreateTask";
-import { toast } from "react-toastify";
-import TaskOverview from "@/sections/tasks/TaskOverview";
+import { handleError, runService } from "@/utils/service_utils";
 import { getLeadById, LeadModel } from "@/services/leadService";
+import { useTaskFilter } from "@/contexts/FilterTaskContext";
 import { TASK_STATE } from "@/types/enums";
 
 export default function Tasks() {
@@ -31,6 +34,7 @@ export default function Tasks() {
   const [totalCount, setTotalCount] = useState<number>(0);
   const { taskFilterConfig } = useTaskFilter();
   const [tasks, setTasks] = useState<TaskModel[]>([]);
+  const [loading, setLoading] = useState(false);
   const currentParams = Object.fromEntries(useSearchParams());
 
   useEffect(() => {
@@ -50,6 +54,7 @@ export default function Tasks() {
   }, [focus]);
 
   const fetchTasks = (params: { [key: string]: string }) => {
+    setLoading(true);
     const offset = pageSize * (currentPage - 1);
     const limit = pageSize;
     runService(
@@ -66,10 +71,12 @@ export default function Tasks() {
       (data) => {
         console.log("tasks: ", data);
         setTasks(data);
+        setLoading(false);
       },
       (status, error) => {
         handleError(status, error);
         console.log(status, error);
+        setLoading(false);
       }
     );
   };
@@ -175,7 +182,9 @@ export default function Tasks() {
         {/* Table */}
         <div className="flex flex-1 flex-col w-full align-middle overflow-auto">
           <div className="h-full border rounded-md overflow-auto">
-            {tasks.length > 0 ? (
+            {loading ? (
+              <Loading />
+            ) : tasks.length > 0 ? (
               tasks.map((task: TaskModel) => (
                 <TaskItem
                   key={task.id}

@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { handleError, runService } from "@/utils/service_utils";
+import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
+import { PlusCircleIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { toast } from "react-toastify";
+
+import InviteUser from "./InviteUser";
+import ToggleButton from "@/components/extends/Button/ToggleButton";
+import Loading from "@/components/Loading";
+
 import {
   getUsers,
   updateOther,
@@ -8,27 +15,27 @@ import {
   UserModel,
   getMe,
 } from "@/services/userService";
-import { PlusCircleIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
-import InviteUser from "./InviteUser";
-import { toast } from "react-toastify";
-import ToggleButton from "@/components/extends/Button/ToggleButton";
+import { handleError, runService } from "@/utils/service_utils";
 
 const ManageStuff = () => {
   const [me, setMe] = useState<UserModel>();
   const [users, setUsers] = useState<UserModel[]>();
   const [invite, setInvite] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const fetchUsers = () => {
+    setLoading(true);
     runService(
       undefined,
       getUsers,
       (data) => {
         console.log("users: ", data);
         setUsers(data);
+        setLoading(false);
       },
       (status, error) => {
         handleError(status, error);
+        setLoading(false);
       }
     );
 
@@ -124,7 +131,7 @@ const ManageStuff = () => {
 
         {/* Table */}
         <div className="flex-1 overflow-auto border rounded">
-          <table className="w-full divide-y divide-gray-300">
+          {loading?(<Loading />):(<table className="w-full divide-y divide-gray-300">
             <thead className="bg-white sticky top-0 z-10">
               <tr>
                 <th
@@ -214,7 +221,7 @@ const ManageStuff = () => {
                   </tr>
                 ))}
             </tbody>
-          </table>
+          </table>)}
         </div>
       </div>
     </>

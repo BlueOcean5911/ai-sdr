@@ -1,17 +1,20 @@
 "use client";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+
 import Pagination from "@/components/extends/Pagination/Pagination";
-import { useEmailFilter } from "@/contexts/FilterEmailContext";
 import FilterEmail from "@/components/Filter/filterEmail";
 import EmailToolbar from "@/sections/emails/EmailToolbar";
 import EmailItem from "@/sections/emails/EmailItem";
-import { handleError, runService } from "@/utils/service_utils";
+import Loading from "@/components/Loading";
+
 import {
   getMailings,
   getMailingTotalCount,
   MailingModel,
 } from "@/services/mailingService";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEmailFilter } from "@/contexts/FilterEmailContext";
+import { handleError, runService } from "@/utils/service_utils";
 
 export default function Emails(
   { campaignId, cadenceId }: { campaignId?: string; cadenceId?: string } = {
@@ -25,8 +28,10 @@ export default function Emails(
   const { emailFilterConfig } = useEmailFilter();
   const [mailings, setMailings] = useState<MailingModel[]>([]);
   const currentParams = Object.fromEntries(useSearchParams());
+  const [loading, setLoading] = useState(false);
 
   const fetchMailings = (params: { [key: string]: string }) => {
+    setLoading(true);
     const offset = pageSize * (currentPage - 1);
     const limit = pageSize;
     runService(
@@ -42,10 +47,12 @@ export default function Emails(
       getMailings,
       (data) => {
         setMailings(data);
+        setLoading(false);
       },
       (status, error) => {
         handleError(status, error);
         console.log(status, error);
+        setLoading(false);
       }
     );
   };
@@ -87,7 +94,9 @@ export default function Emails(
         {/* Table */}
         <div className="flex flex-1 flex-col w-full align-middle overflow-auto">
           <div className="w-full h-full border rounded-md overflow-auto">
-            {mailings.length > 0 ? (
+            {loading ? (
+              <Loading />
+            ) : mailings.length > 0 ? (
               mailings.map((mailing: MailingModel) => (
                 <EmailItem key={mailing.id} mailing={mailing} />
               ))

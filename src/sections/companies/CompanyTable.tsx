@@ -1,25 +1,28 @@
-import CheckBox from "@/components/extends/CheckBox";
-import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
-import { useCompanySelection } from "@/contexts/CompanySelectionContext";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import { FaLinkedinIn } from "react-icons/fa";
+import { Tooltip } from "react-tooltip";
+import { toast } from "react-toastify";
+
+import CreateCompany from "./CreateCompany";
+import CompanyOverview from "./CompanyOverview";
+import CheckBox from "@/components/extends/CheckBox";
 import Pagination from "@/components/extends/Pagination/Pagination";
-import { CountModel } from "@/types";
-import { handleError, runService } from "@/utils/service_utils";
+import Loading from "@/components/Loading";
+
 import {
   CompanyModel,
   getCompanies,
   getCompanyTotalCount,
   deleteCompany,
 } from "@/services/companyService";
-import CompanyOverview from "./CompanyOverview";
-import CreateCompany from "./CreateCompany";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
-import { toast } from "react-toastify";
-import { Tooltip } from "react-tooltip";
-import Link from "next/link";
-import { FaLinkedinIn } from "react-icons/fa";
+import { handleError, runService } from "@/utils/service_utils";
+import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
+import { useCompanySelection } from "@/contexts/CompanySelectionContext";
+import { CountModel } from "@/types";
 
 const CompanyTable = () => {
   const { companyFilterConfig } = useCompanyFilter();
@@ -37,18 +40,11 @@ const CompanyTable = () => {
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [allSelected, setAllSelected] = useState(false);
+  const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
 
-  // useEffect(() => {
-  // console.log("here", totalCompanies);
-  // setCompanies([...totalCompanies]);
-  // }, [totalCompanies]);
-
-  // useEffect(() => {
-  // console.log("companies", companies);
-  // }, [companies]);
-
   const fetchCompanies = (targeted: boolean = false) => {
+    setLoading(true);
     const offset = pageSize * (currentPage - 1);
     const limit = pageSize;
     runService(
@@ -62,9 +58,11 @@ const CompanyTable = () => {
       (data) => {
         console.log("company data", data);
         setTotalCompanies(data);
+        setLoading(false);
       },
       (status, error) => {
         handleError(status, error);
+        setLoading(false);
       }
     );
   };
@@ -165,7 +163,7 @@ const CompanyTable = () => {
         />
         {/* Table */}
         <div className="flex-1 overflow-auto">
-          <table className="min-w-full divide-y divide-gray-300 overflow-auto">
+{loading  ? (<Loading />):(          <table className="min-w-full divide-y divide-gray-300 overflow-auto">
             <thead className="bg-white sticky top-0 z-10">
               <tr>
                 <th
@@ -349,7 +347,7 @@ const CompanyTable = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table>)}
         </div>
 
         {/* Pagination */}
