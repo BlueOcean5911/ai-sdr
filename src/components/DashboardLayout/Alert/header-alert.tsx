@@ -66,7 +66,10 @@ export default function HeaderAlert() {
                           {item.title}
                         </p>
                         <p className="w-full text-sm text-ellipsis overflow-hidden whitespace-nowrap">
-                          {item.content} {getRelativeTime(item.createdAt)}
+                          {item.dmler.firstName} {item.dmler.lastName} {""}
+                          {item.content} {item.receptient.firstName}{" "}
+                          {item.receptient.lastName}{" "}
+                          {getRelativeTime(item.createdAt)}
                         </p>
                       </div>
                     </div>
