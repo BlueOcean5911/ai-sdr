@@ -135,49 +135,71 @@ export default function CreateTask({
                       values,
                       { setErrors, setStatus, setSubmitting }
                     ) => {
-                      let taskData: BaseTaskModel = {
-                        title: values.title,
-                        content: values.content,
-                        taskType: values.taskType,
-                        taskPriority: values.taskPriority,
-                        endDate: values.endDate,
-                        ownerId: values.ownerId,
-                        leadId: values.leadId,
-                        status: values.status,
-                      };
-                      task
-                        ? runService(
-                            { taskId: task.id, updateData: taskData },
-                            updateTask,
-                            (data) => {
-                              setTaskFilterConfig((prev) => ({
-                                ...prev,
-                                createdTaskId: data.id,
-                              }));
-                              toast.success("Task updated successfully");
-                              handleClose();
-                            },
-                            (status, error) => {
-                              console.log(status, error);
-                              toast.error(error);
-                            }
-                          )
-                        : runService(
-                            taskData,
-                            addTask,
-                            (data) => {
-                              setTaskFilterConfig((prev) => ({
-                                ...prev,
-                                createdTaskId: data.id,
-                              }));
-                              toast.success("Task created successfully");
-                              handleClose();
-                            },
-                            (status, error) => {
-                              console.log(status, error);
-                              toast.error(error);
-                            }
-                          );
+                      let taskData: Partial<BaseTaskModel> = {};
+
+                      if (task) {
+                        if (values.title !== task.title)
+                          taskData.title = values.title;
+                        if (values.content !== task.content)
+                          taskData.content = values.content;
+                        if (values.taskType !== task.taskType)
+                          taskData.taskType = values.taskType;
+                        if (values.taskPriority !== task.taskPriority)
+                          taskData.taskPriority = values.taskPriority;
+                        if (values.endDate !== task.endDate.split("T")[0])
+                          taskData.endDate = values.endDate;
+                        if (values.ownerId !== task.ownerId)
+                          taskData.ownerId = values.ownerId;
+                        if (values.leadId !== task.leadId)
+                          taskData.leadId = values.leadId;
+                        if (values.status !== task.status)
+                          taskData.status = values.status;
+
+                        runService(
+                          { taskId: task.id, updateData: taskData },
+                          updateTask,
+                          (data) => {
+                            setTaskFilterConfig((prev) => ({
+                              ...prev,
+                              createdTaskId: data.id,
+                            }));
+                            toast.success("Task updated successfully");
+                            handleClose();
+                          },
+                          (status, error) => {
+                            console.log(status, error);
+                            toast.error(error);
+                          }
+                        );
+                      } else {
+                        let taskData: BaseTaskModel = {
+                          title: values.title,
+                          content: values.content,
+                          taskType: values.taskType,
+                          taskPriority: values.taskPriority,
+                          endDate: values.endDate,
+                          ownerId: values.ownerId,
+                          leadId: values.leadId,
+                          status: values.status,
+                        };
+                        
+                        runService(
+                          taskData,
+                          addTask,
+                          (data) => {
+                            setTaskFilterConfig((prev) => ({
+                              ...prev,
+                              createdTaskId: data.id,
+                            }));
+                            toast.success("Task created successfully");
+                            handleClose();
+                          },
+                          (status, error) => {
+                            console.log(status, error);
+                            toast.error(error);
+                          }
+                        );
+                      }
                     }}
                   >
                     {({
@@ -216,7 +238,10 @@ export default function CreateTask({
                                   (option) => option.value === values.leadId
                                 )}
                                 onChange={(selectedItem) => {
-                                  if (selectedItem.value !== values.leadId)
+                                  if (
+                                    selectedItem &&
+                                    selectedItem.value !== values.leadId
+                                  )
                                     setFieldValue("leadId", selectedItem.value);
                                 }}
                               ></Select>
