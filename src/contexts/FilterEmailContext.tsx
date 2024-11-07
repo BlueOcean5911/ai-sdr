@@ -43,13 +43,8 @@ export const EmailFilterProvider = ({ children }: { children: ReactNode }) => {
       search: "",
     }
   );
-  const isInitialRendering = useRef(true);
 
   useEffect(() => {
-    if (isInitialRendering.current) {
-      isInitialRendering.current = false;
-      return;
-    }
     runService(
       undefined,
       getMe,
@@ -70,10 +65,6 @@ export const EmailFilterProvider = ({ children }: { children: ReactNode }) => {
       }
     );
   }, []);
-
-  const updateEmailFilterConfig = (config: EmailFilterConfig) => {
-    setEmailFilterConfig(config);
-  };
 
   return (
     <EmailFilterContext.Provider

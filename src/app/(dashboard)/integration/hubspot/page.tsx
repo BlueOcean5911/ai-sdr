@@ -23,13 +23,7 @@ const Page = () => {
     );
   };
 
-  const isInitialRender = React.useRef(true);
-
   React.useEffect(() => {
-    if (isInitialRender.current) {
-      isInitialRender.current = false;
-      return;
-    }
     if (code !== undefined && code !== null) {
       handleOAuthHubspot(code);
     }

@@ -14,7 +14,6 @@ const EmailToolbar = () => {
   const path = usePathname();
   const currentParams = Object.fromEntries(useSearchParams());
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
-  const isInitialRendering = useRef(true);
   const [statistics, setStatistics] = useState<MailingsStatistics>({
     totalCount: 0,
     scheduledCount: 0,
@@ -40,10 +39,6 @@ const EmailToolbar = () => {
   };
 
   useEffect(() => {
-    if (isInitialRendering.current) {
-      isInitialRendering.current = false;
-      return;
-    }
     fetchStatistics();
   }, []);
 
