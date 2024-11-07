@@ -1,11 +1,17 @@
-import CheckBox from "@/components/extends/CheckBox";
-import { useLeadFilter } from "@/contexts/FilterLeadContext";
-import { useLeadSelection } from "@/contexts/LeadSelectionContext";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { FaLinkedinIn } from "react-icons/fa";
+import { Tooltip } from "react-tooltip";
+import { toast } from "react-toastify";
+
+import CreateLead from "./CreateLead";
+import LeadOverview from "./LeadOverview";
+import CheckBox from "@/components/extends/CheckBox";
 import Pagination from "@/components/extends/Pagination/Pagination";
-import { CountModel } from "@/types";
-import { handleError, runService } from "@/utils/service_utils";
+
 import {
   deleteLead,
   getLeads,
@@ -13,15 +19,12 @@ import {
   LeadModel,
   LeadModelWithCompanyModel,
 } from "@/services/leadService";
-import Link from "next/link";
-import LeadOverview from "./LeadOverview";
-import { FaLinkedinIn } from "react-icons/fa";
-import CreateLead from "./CreateLead";
-import { toast } from "react-toastify";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
-import { Tooltip } from "react-tooltip";
+import { useLeadFilter } from "@/contexts/FilterLeadContext";
+import { useLeadSelection } from "@/contexts/LeadSelectionContext";
+
+import { handleError, runService } from "@/utils/service_utils";
 import { getFormattedAddress } from "@/utils/format";
+import { CountModel } from "@/types";
 
 const LeadTable = () => {
   const { leadFilterConfig } = useLeadFilter();
@@ -142,7 +145,7 @@ const LeadTable = () => {
         <div className="flex-1 overflow-auto">
           <table className="min-w-full divide-y divide-gray-300 overflow-auto">
             <thead className="bg-white sticky top-0 z-10">
-              <tr>
+              <tr className="text-nowrap">
                 <th
                   scope="col"
                   className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
@@ -160,12 +163,6 @@ const LeadTable = () => {
                     Name
                   </div>
                 </th>
-                {/* <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Name
-                </th> */}
                 <th
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
@@ -346,12 +343,6 @@ const LeadTable = () => {
                           <Tooltip
                             id={`my-tooltip-company-keywords-${lead.company?.id}`}
                             place="top"
-                            style={
-                              {
-                                // backgroundColor: "rgb(255, 255, 255)",
-                                // color: "#222",
-                              }
-                            }
                           >
                             <div className="flex gap-2 flex-wrap max-w-72 justify-center">
                               {lead.company?.keywords

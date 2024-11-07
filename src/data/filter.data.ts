@@ -71,6 +71,13 @@ export const statusOptions = [
   { value: EMAIL_STATUS.NO_STATUS, label: "No Status" },
 ];
 
+export const statusOptions_2 = [
+  { value: EMAIL_STATUS.VALID, name: "Verified" },
+  { value: EMAIL_STATUS.QUESTIONABLE, name: "Questionable" },
+  { value: EMAIL_STATUS.INVALID, name: "Invalid" },
+  { value: EMAIL_STATUS.NO_STATUS, name: "No Status" },
+];
+
 export const leadStageOptions = [
   { value: "Cold", label: "Cold" },
   { value: "Approaching", label: "Approaching" },
