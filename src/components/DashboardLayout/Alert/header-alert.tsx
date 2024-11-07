@@ -7,6 +7,7 @@ import { BellAlertIcon } from "@heroicons/react/24/outline";
 import { handleError, runService } from "@/utils/service_utils";
 import { AlertModel, getAlerts } from "@/services/alertService";
 import { alertIcons } from "@/data/alert.data";
+import { getRelativeTime } from "@/utils/format";
 
 export default function HeaderAlert() {
   const [alerts, setAlerts] = useState<AlertModel[]>([]);
@@ -65,7 +66,7 @@ export default function HeaderAlert() {
                           {item.title}
                         </p>
                         <p className="w-full text-sm text-ellipsis overflow-hidden whitespace-nowrap">
-                          {item.content} on {item.createdAt.split("T")[0]}
+                          {item.content} {getRelativeTime(item.createdAt)}
                         </p>
                       </div>
                     </div>
