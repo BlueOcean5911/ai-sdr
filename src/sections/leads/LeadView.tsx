@@ -38,7 +38,7 @@ const LeadView = ({ lead }: { lead?: LeadModelWithCompanyModel }) => {
                 </div>
                 <span className="text-sm">{lead?.email}</span>
               </div>
-              {lead?.emailStatus === "VALID" && (
+              {lead?.emailStatus === "verified" && (
                 <CheckBadgeIcon className="w-5 h-5 stroke-green-500" />
               )}
               {lead?.emailStatus === "questionable" && (
