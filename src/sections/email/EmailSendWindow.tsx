@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import EmailGeneratorWindow from "./EmailGeneratorWindow";
-import { LeadModel, LeadModelWithCompanyModel } from "@/services/leadService";
+import { LeadModelWithCompanyModel } from "@/services/leadService";
 
 interface UserForSelect {
   name: string;
@@ -165,9 +165,9 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
     toast.success("Email sent successfully");
   };
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors])
+  // useEffect(() => {
+  //   console.log(errors);
+  // }, [errors])
 
   return (
     <>
@@ -197,20 +197,6 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
               value={values.to}
               onChange={(e) => setValues({ ...values, to: e.target.value })}
             />
-            {/* <Select
-              data={[
-                {
-                  id: 10,
-                  name: "russell.johnson.navy@gmail.com",
-                  value: "russell.johnson.navy@gmail.com",
-                },
-                {
-                  id: 20,
-                  name: "niklausanton23@gmail.com",
-                  value: "niklausanton23@gmail.com",
-                },
-              ]}
-            /> */}
           </div>
 
           <div className="flex flex-col justify-between">
