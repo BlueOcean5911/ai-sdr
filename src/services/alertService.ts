@@ -1,4 +1,5 @@
 import { api } from "@/utils/api";
+import { UserModel } from "./userService";
 import { ApiCountResponse, FetchProps } from "@/types";
 
 interface FetchAlertsProps extends FetchProps {
@@ -8,6 +9,8 @@ interface FetchAlertsProps extends FetchProps {
 
 export interface AlertModel extends BaseAlertModel {
   id: string;
+  dmler: UserModel;
+  receptient: UserModel;
 }
 
 export interface BaseAlertModel {
@@ -63,7 +66,7 @@ export const getAlerts = async (
     url += searchParams;
   }
   const response = await api.get(url);
-
+  console.log(response);
   return {
     data: response.data,
   };
