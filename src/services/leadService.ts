@@ -120,6 +120,7 @@ export const addLead = async (lead: BaseLeadModel) => {
       replyCount: response?.data?.replyCount,
       targeted: response?.data?.targeted,
       personalNote1: response?.data?.personalNote1,
+      ownerId: response?.data?.ownerId,
       company: {
         id: response?.data?.company?.id,
         name: response?.data?.company?.name,
@@ -186,6 +187,7 @@ export const updateLead = async (data: {
       replyCount: response?.data?.replyCount,
       targeted: response?.data?.targeted,
       personalNote1: response?.data?.personalNote1,
+      ownerId: response?.data?.ownerId,
       company: {
         id: response?.data?.company?.id,
         name: response?.data?.company?.name,
@@ -279,6 +281,7 @@ export const getLeads = async (
       replyCount: item?.replyCount,
       targeted: item?.targeted,
       personalNote1: item?.personalNote1,
+      ownerId: item?.ownerId,
       company: {
         id: item?.company?.id,
         name: item?.company?.name,
@@ -348,6 +351,7 @@ export const getLeadById = async (props: {
     replyCount: item?.replyCount,
     targeted: item?.targeted,
     personalNote1: item?.personalNote1,
+    ownerId: item?.ownerId,
     company: {
       id: item?.company?.id,
       name: item?.company?.name,
