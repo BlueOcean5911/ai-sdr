@@ -228,6 +228,7 @@ export default function CreateCompany({
                                   )}
                                   onChange={(selectedItem) => {
                                     if (
+                                      selectedItem &&
                                       selectedItem.value !== values.phoneStatus
                                     )
                                       setFieldValue(
