@@ -1,5 +1,7 @@
-import { statusOptions } from "@/data/filter.data";
-import { CreateLeadProps } from "@/types";
+import React, { Fragment, useState, useEffect, useMemo } from "react";
+import * as Yup from "yup";
+import { Formik } from "formik";
+import { toast } from "react-toastify";
 import {
   Dialog,
   DialogPanel,
@@ -7,18 +9,19 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import React, { Fragment, useState, useEffect, useMemo } from "react";
+
+import FormHelperText from "@/components/extends/FormHelperText";
+import Select from "@/components/extends/Select/default";
+import RSelect from "@/components/extends/Select/default";
+
 import { handleError, runService } from "@/utils/service_utils";
 import { getUsers, UserModel } from "@/services/userService";
 import { CompanyModel, getCompanies } from "@/services/companyService";
 import { addLead, BaseLeadModel, updateLead } from "@/services/leadService";
-import Select from "react-tailwindcss-select";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import FormHelperText from "@/components/extends/FormHelperText";
-import { toast } from "react-toastify";
-import RSelect from "@/components/extends/Select/default";
 import { useLeadFilter } from "@/contexts/FilterLeadContext";
+
+import { CreateLeadProps } from "@/types";
+import { statusOptions_2 } from "@/data/filter.data";
 
 const linkedinRegex =
   /^(https?:\/\/)?(www\.)?(linkedin\.com\/(in|pub|company)\/[a-zA-Z0-9-]+)/;
@@ -112,15 +115,15 @@ export default function CreateLead({
                       firstName: lead ? lead.firstName : "",
                       lastName: lead ? lead.lastName : "",
                       email: lead ? lead.email : "",
-                      emailStatus: statusOptions[3],
+                      emailStatus: lead ? lead.emailStatus : "",
                       workEmail: lead ? lead.workEmail : "",
-                      workEmailStatus: statusOptions[3],
+                      workEmailStatus: lead ? lead.workEmailStatus : "",
                       primaryPhone: lead ? lead.primaryPhone : "",
-                      primaryPhoneStatus: statusOptions[3],
+                      primaryPhoneStatus: lead ? lead.primaryPhoneStatus : "",
                       mobilePhone: lead ? lead.mobilePhone : "",
-                      mobilePhoneStatus: statusOptions[3],
+                      mobilePhoneStatus: lead ? lead.mobilePhoneStatus : "",
                       workPhone: lead ? lead.workPhone : "",
-                      workPhoneStatus: statusOptions[3],
+                      workPhoneStatus: lead ? lead.workPhoneStatus : "",
                       title: lead ? lead.title : "",
                       companyId: lead ? lead.companyId : "",
                       linkedin: lead ? lead.linkedin : "",
@@ -171,18 +174,20 @@ export default function CreateLead({
                       values,
                       { setErrors, setStatus, setSubmitting }
                     ) => {
-                      const primaryPhoneStatus =
-                        values.primaryPhoneStatus.value;
-                      const emailStatus = values.emailStatus.value;
-
                       let leadData: BaseLeadModel = {
                         firstName: values.firstName,
                         lastName: values.lastName,
                         title: values.title,
                         email: values.email,
-                        emailStatus: emailStatus,
+                        emailStatus: values.emailStatus,
+                        workEmail: values.workEmail,
+                        workEmailStatus: values.workEmailStatus,
                         primaryPhone: values.primaryPhone,
-                        primaryPhoneStatus: primaryPhoneStatus,
+                        primaryPhoneStatus: values.primaryPhoneStatus,
+                        mobilePhone: values.mobilePhone,
+                        mobilePhoneStatus: values.mobilePhoneStatus,
+                        workPhone: values.workPhone,
+                        workPhoneStatus: values.workPhoneStatus,
                         linkedin: values.linkedin,
                         city: values.city,
                         state: values.state,
@@ -196,9 +201,6 @@ export default function CreateLead({
                         replyCount: 0,
 
                         targeted: false,
-                        // personaId: undefined,
-                        // companyId: values.companyId,
-                        // ownerId: values.ownerId,
                         personaId: undefined,
                         companyId: values.companyId,
                         ownerId: values.ownerId,
@@ -308,37 +310,21 @@ export default function CreateLead({
                               </div>
                               <div className="w-full flex flex-col">
                                 <Select
-                                  value={values.emailStatus}
-                                  onChange={(item: any) => {
-                                    console.log("item", item);
-                                    setFieldValue("emailStatus", item);
+                                  data={statusOptions_2}
+                                  defaultValue={statusOptions_2.find(
+                                    (option) =>
+                                      option.value === values.emailStatus
+                                  )}
+                                  onChange={(selectedItem) => {
+                                    if (
+                                      selectedItem.value !== values.emailStatus
+                                    )
+                                      setFieldValue(
+                                        "emailStatus",
+                                        selectedItem.value
+                                      );
                                   }}
-                                  options={statusOptions}
-                                  primaryColor={"indigo"}
-                                  classNames={{
-                                    menuButton: (value) => {
-                                      const isDisabled = value?.isDisabled;
-                                      return `flex text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
-                                        isDisabled
-                                          ? "bg-gray-200"
-                                          : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
-                                      }`;
-                                    },
-                                    menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-gray-700",
-                                    listItem: (value) => {
-                                      const isSelected = value?.isSelected;
-                                      return `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${
-                                        isSelected
-                                          ? `text-white bg-blue-500`
-                                          : `text-gray-500 hover:bg-blue-100 hover:text-blue-500`
-                                      }`;
-                                    },
-                                    searchBox:
-                                      "w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none",
-                                    searchIcon:
-                                      "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
-                                  }}
-                                ></Select>
+                                />
                               </div>
                             </div>
                           </div>
@@ -364,37 +350,22 @@ export default function CreateLead({
                               </div>
                               <div className="w-full flex flex-col">
                                 <Select
-                                  value={values.workEmailStatus}
-                                  onChange={(item: any) => {
-                                    console.log("item", item);
-                                    setFieldValue("workEmailStatus", item);
+                                  data={statusOptions_2}
+                                  defaultValue={statusOptions_2.find(
+                                    (option) =>
+                                      option.value === values.workEmailStatus
+                                  )}
+                                  onChange={(selectedItem) => {
+                                    if (
+                                      selectedItem.value !==
+                                      values.workEmailStatus
+                                    )
+                                      setFieldValue(
+                                        "workEmailStatus",
+                                        selectedItem.value
+                                      );
                                   }}
-                                  options={statusOptions}
-                                  primaryColor={"indigo"}
-                                  classNames={{
-                                    menuButton: (value) => {
-                                      const isDisabled = value?.isDisabled;
-                                      return `flex text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
-                                        isDisabled
-                                          ? "bg-gray-200"
-                                          : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
-                                      }`;
-                                    },
-                                    menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-gray-700",
-                                    listItem: (value) => {
-                                      const isSelected = value?.isSelected;
-                                      return `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${
-                                        isSelected
-                                          ? `text-white bg-blue-500`
-                                          : `text-gray-500 hover:bg-blue-100 hover:text-blue-500`
-                                      }`;
-                                    },
-                                    searchBox:
-                                      "w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none",
-                                    searchIcon:
-                                      "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
-                                  }}
-                                ></Select>
+                                />
                               </div>
                             </div>
                           </div>
@@ -421,36 +392,22 @@ export default function CreateLead({
                               </div>
                               <div className="w-full flex flex-col">
                                 <Select
-                                  value={values.primaryPhoneStatus}
-                                  onChange={(item: any) => {
-                                    setFieldValue("primaryPhoneStatus", item);
+                                  data={statusOptions_2}
+                                  defaultValue={statusOptions_2.find(
+                                    (option) =>
+                                      option.value === values.primaryPhoneStatus
+                                  )}
+                                  onChange={(selectedItem) => {
+                                    if (
+                                      selectedItem.value !==
+                                      values.primaryPhoneStatus
+                                    )
+                                      setFieldValue(
+                                        "primaryPhoneStatus",
+                                        selectedItem.value
+                                      );
                                   }}
-                                  options={statusOptions}
-                                  primaryColor={"indigo"}
-                                  classNames={{
-                                    menuButton: (value) => {
-                                      const isDisabled = value?.isDisabled;
-                                      return `flex text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
-                                        isDisabled
-                                          ? "bg-gray-200"
-                                          : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
-                                      }`;
-                                    },
-                                    menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-gray-700",
-                                    listItem: (value) => {
-                                      const isSelected = value?.isSelected;
-                                      return `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${
-                                        isSelected
-                                          ? `text-white bg-blue-500`
-                                          : `text-gray-500 hover:bg-blue-100 hover:text-blue-500`
-                                      }`;
-                                    },
-                                    searchBox:
-                                      "w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none",
-                                    searchIcon:
-                                      "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
-                                  }}
-                                ></Select>
+                                />
                               </div>
                             </div>
                           </div>
@@ -476,36 +433,22 @@ export default function CreateLead({
                               </div>
                               <div className="w-full flex flex-col">
                                 <Select
-                                  value={values.workPhoneStatus}
-                                  onChange={(item: any) => {
-                                    setFieldValue("workPhoneStatus", item);
+                                  data={statusOptions_2}
+                                  defaultValue={statusOptions_2.find(
+                                    (option) =>
+                                      option.value === values.mobilePhoneStatus
+                                  )}
+                                  onChange={(selectedItem) => {
+                                    if (
+                                      selectedItem.value !==
+                                      values.mobilePhoneStatus
+                                    )
+                                      setFieldValue(
+                                        "mobilePhoneStatus",
+                                        selectedItem.value
+                                      );
                                   }}
-                                  options={statusOptions}
-                                  primaryColor={"indigo"}
-                                  classNames={{
-                                    menuButton: (value) => {
-                                      const isDisabled = value?.isDisabled;
-                                      return `flex text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
-                                        isDisabled
-                                          ? "bg-gray-200"
-                                          : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
-                                      }`;
-                                    },
-                                    menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-gray-700",
-                                    listItem: (value) => {
-                                      const isSelected = value?.isSelected;
-                                      return `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${
-                                        isSelected
-                                          ? `text-white bg-blue-500`
-                                          : `text-gray-500 hover:bg-blue-100 hover:text-blue-500`
-                                      }`;
-                                    },
-                                    searchBox:
-                                      "w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none",
-                                    searchIcon:
-                                      "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
-                                  }}
-                                ></Select>
+                                />
                               </div>
                             </div>
                           </div>
@@ -531,36 +474,22 @@ export default function CreateLead({
                               </div>
                               <div className="w-full flex flex-col">
                                 <Select
-                                  value={values.mobilePhoneStatus}
-                                  onChange={(item: any) => {
-                                    setFieldValue("mobilePhoneStatus", item);
+                                  data={statusOptions_2}
+                                  defaultValue={statusOptions_2.find(
+                                    (option) =>
+                                      option.value === values.workPhoneStatus
+                                  )}
+                                  onChange={(selectedItem) => {
+                                    if (
+                                      selectedItem.value !==
+                                      values.workPhoneStatus
+                                    )
+                                      setFieldValue(
+                                        "workPhoneStatus",
+                                        selectedItem.value
+                                      );
                                   }}
-                                  options={statusOptions}
-                                  primaryColor={"indigo"}
-                                  classNames={{
-                                    menuButton: (value) => {
-                                      const isDisabled = value?.isDisabled;
-                                      return `flex text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
-                                        isDisabled
-                                          ? "bg-gray-200"
-                                          : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
-                                      }`;
-                                    },
-                                    menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-gray-700",
-                                    listItem: (value) => {
-                                      const isSelected = value?.isSelected;
-                                      return `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${
-                                        isSelected
-                                          ? `text-white bg-blue-500`
-                                          : `text-gray-500 hover:bg-blue-100 hover:text-blue-500`
-                                      }`;
-                                    },
-                                    searchBox:
-                                      "w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none",
-                                    searchIcon:
-                                      "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
-                                  }}
-                                ></Select>
+                                />
                               </div>
                             </div>
                           </div>
@@ -718,17 +647,16 @@ export default function CreateLead({
 
                           <div className="flex flex-col">
                             <label htmlFor="ownerId">Lead Owner</label>
-                            <RSelect
-                              value={userOptions.find(
+                            <Select
+                              data={userOptions}
+                              defaultValue={userOptions.find(
                                 (option) => option.value === values.ownerId
                               )}
-                              data={userOptions}
-                              onChange={(item) => {
-                                if (values.ownerId !== item?.value) {
-                                  setFieldValue("ownerId", item?.value);
-                                }
+                              onChange={(selectedItem) => {
+                                if (selectedItem.value !== values.ownerId)
+                                  setFieldValue("ownerId", selectedItem.value);
                               }}
-                            ></RSelect>
+                            ></Select>
                             {touched.ownerId && errors.ownerId && (
                               <FormHelperText>{errors.ownerId}</FormHelperText>
                             )}
