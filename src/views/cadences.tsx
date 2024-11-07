@@ -7,6 +7,8 @@ import { useCadenceFilter } from "@/contexts/FilterCadenceContext";
 import FilterCadence from "@/components/Filter/filterCadence";
 import CadenceToolbar from "@/sections/cadences/CadenceToolbar";
 import CadenceItem from "@/sections/cadences/CadenceItem";
+import Loading from "@/components/Loading";
+
 import { handleError, runService } from "@/utils/service_utils";
 import {
   FetchCadenceModel,
@@ -23,8 +25,10 @@ export default function Cadences(
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalCount, setTotalCount] = useState<number>(0);
+  const [loading, setLoading] = useState(false);
 
   const fetchCadences = () => {
+    setLoading(true);
     const offset = pageSize * (currentPage - 1);
     const limit = pageSize;
     runService(
@@ -40,9 +44,11 @@ export default function Cadences(
       getCadences,
       (data) => {
         setCadences(data);
+        setLoading(false);
       },
       (status, error) => {
         handleError(status, error);
+        setLoading(false);
       }
     );
   };
@@ -76,9 +82,13 @@ export default function Cadences(
         {/* Table */}
         <div className="flex flex-1 flex-col w-full align-middle overflow-auto">
           <div className="w-full h-full border rounded-md overflow-auto">
-            {cadences.map((cadence: FetchCadenceModel, index) => (
-              <CadenceItem key={index} cadence={cadence} />
-            ))}
+            {loading ? (
+              <Loading />
+            ) : (
+              cadences.map((cadence: FetchCadenceModel, index) => (
+                <CadenceItem key={index} cadence={cadence} />
+              ))
+            )}
           </div>
         </div>
         {/* Pagination */}

@@ -9,21 +9,26 @@ import { alertIcons } from "@/data/alert.data";
 import { handleError, runService } from "@/utils/service_utils";
 import { AlertModel, deleteAlert, getAlerts } from "@/services/alertService";
 import { getRelativeTime } from "@/utils/format";
+import Loading from "@/components/Loading";
 
 export default function Page() {
   const [alerts, setAlerts] = useState<AlertModel[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchAlerts = () => {
+    setLoading(true);
     runService(
       undefined,
       getAlerts,
       (data) => {
         console.log("alerts: ", data);
         setAlerts(data);
+        setLoading(false);
       },
       (status, error) => {
         handleError(status, error);
         console.log(status, error);
+        setLoading(false);
       }
     );
   };
@@ -53,7 +58,9 @@ export default function Page() {
   return (
     <>
       <div className="flex flex-1 flex-col rounded-md border">
-        {alerts.length > 0 ? (
+        {loading ? (
+          <Loading />
+        ) : alerts.length > 0 ? (
           alerts.map((alert, idx) => (
             <div
               key={idx}

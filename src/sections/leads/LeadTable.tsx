@@ -11,6 +11,7 @@ import CreateLead from "./CreateLead";
 import LeadOverview from "./LeadOverview";
 import CheckBox from "@/components/extends/CheckBox";
 import Pagination from "@/components/extends/Pagination/Pagination";
+import Loading from "@/components/Loading";
 
 import {
   deleteLead,
@@ -38,9 +39,11 @@ const LeadTable = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [allSelected, setAllSelected] = useState(false);
+  const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
 
   const fetchLeads = (targeted: boolean = false) => {
+    setLoading(true);
     const offset = pageSize * (currentPage - 1);
     const limit = pageSize;
     runService(
@@ -54,9 +57,11 @@ const LeadTable = () => {
       (data) => {
         console.log("leads data", data);
         setTotalLeads([...data]); // if total changed, leads will update
+        setLoading(false);
       },
       (status, error) => {
         handleError(status, error);
+        setLoading(false);
       }
     );
   };
@@ -143,7 +148,10 @@ const LeadTable = () => {
         />
         {/* Table */}
         <div className="flex-1 overflow-auto">
-          <table className="min-w-full divide-y divide-gray-300 overflow-auto">
+          { loading ? (
+            <Loading />
+          ) :
+          (<table className="min-w-full divide-y divide-gray-300 overflow-auto">
             <thead className="bg-white sticky top-0 z-10">
               <tr className="text-nowrap">
                 <th
@@ -361,7 +369,7 @@ const LeadTable = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table>)}
         </div>
 
         {/* Pagination */}
