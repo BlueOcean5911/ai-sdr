@@ -8,21 +8,33 @@ import { LOGIN_BG_URL, LOGIN_SUB_IMAGE_001_URL } from "@/data/urls/images.url";
 import Image from "next/image";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormHelperText from "@/components/extends/FormHelperText";
 import { handleError, runService } from "@/utils/service_utils";
-import { login, saveToken } from "@/services/authService";
+import { getRememberMe, login, removeRememberMe, saveRememberMe, saveToken } from "@/services/authService";
 import { useRouter } from "next/navigation";
 // import { useRouter } from "next-nprogress-bar";
 
 export default function SignIn() {
   const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const token = getRememberMe();
+    if (token) {
+      saveToken(token);
+      router.push(ROUTE_DASHBOARD);
+    }
+  }, []);
+
   const handleLogin = async (email: string, password: string) => {
     await runService(
       { email, password },
       login,
       (data) => {
+        if (rememberMe) saveRememberMe(data.token);
+        else removeRememberMe();
+
         saveToken(data.token);
         router.push(ROUTE_DASHBOARD);
       },
@@ -147,7 +159,10 @@ export default function SignIn() {
                         />
 
                         <div className="text-sm leading-6">
-                          <a href="#" className="font-semibold">
+                          <a
+                            href="#"
+                            className="font-semibold hover:underline hover:text-blue-500"
+                          >
                             Forgot password?
                           </a>
                         </div>
