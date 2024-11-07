@@ -12,7 +12,6 @@ import { useEffect, useRef, useState } from "react";
 export default function FilterEmail() {
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
   const [fromEmailOptions, setFromEmailOptions] = useState([]);
-  const isInitialRendering = useRef(true);
 
   const fetchUsers = () => {
     runService(
@@ -31,30 +30,7 @@ export default function FilterEmail() {
     );
   };
 
-  // const fetchCurrentUser = () => {
-  //   runService(
-  //     undefined,
-  //     getMe,
-  //     (user) => {
-  //       console.log("Current User", user);
-  //       console.log("from email options", fromEmailOptions);
-  //       console.log("Result of fromEmailOptions filter", fromEmailOptions.filter(option => option.value === user.id));
-  //       setEmailFilterConfig({
-  //         ...emailFilterConfig,
-  //         fromUser: fromEmailOptions.filter(option => option.value === user.id ),
-  //       })
-  //     },
-  //     (statusCode, error) => {
-  //       handleError(statusCode, error);
-  //     }
-  //   )
-  // }
-
   useEffect(() => {
-    if (isInitialRendering.current) {
-      isInitialRendering.current = false;
-      return;
-    }
     fetchUsers();
     // fetchCurrentUser();
   }, []);
