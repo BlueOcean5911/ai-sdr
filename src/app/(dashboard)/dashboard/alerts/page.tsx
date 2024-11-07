@@ -1,12 +1,13 @@
-"use client"
+"use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import { toast } from "react-toastify";
 
 import { alertIcons } from "@/data/alert.data";
 import { handleError, runService } from "@/utils/service_utils";
-import { AlertModel, getAlerts } from "@/services/alertService";
+import { AlertModel, deleteAlert, getAlerts } from "@/services/alertService";
 import { getRelativeTime } from "@/utils/format";
 
 export default function Page() {
@@ -30,6 +31,25 @@ export default function Page() {
   useEffect(() => {
     fetchAlerts();
   }, []);
+
+  const handleDelete = (id: string) => {
+    runService(
+      id,
+      deleteAlert,
+      (data) => {
+        if (data.success) {
+          toast.success("Delete alert successfully!");
+          setAlerts(alerts.filter((item) => item.id !== id));
+        }
+        toast.error("Something went wrong!");
+      },
+      (status, error) => {
+        handleError(status, error);
+        console.log(status, error);
+        toast.error("Something went wrong!");
+      }
+    );
+  };
   return (
     <>
       <div className="flex flex-1 flex-col rounded-md border">
@@ -51,7 +71,11 @@ export default function Page() {
               <div className="flex flex-1 flex-row justify-between gap-2 items-center">
                 <div className="flex flex-col gap-1">
                   <span className="font-semibold">{alert.title}</span>
-                  <span className="text-sm">{alert.content}</span>
+                  <span className="text-sm">
+                    {alert.dmler.firstName} {alert.dmler.lastName}{" "}
+                    {alert.content} {alert.receptient.firstName}{" "}
+                    {alert.receptient.lastName}
+                  </span>
                 </div>
                 <div className="w-20 flex flex-col justify-center items-center gap-1">
                   <span className="text-xs text-nowrap">
@@ -68,7 +92,10 @@ export default function Page() {
                   className="flex flex-col w-16 origin-top-right bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
                 >
                   <MenuItem>
-                    <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                    <button
+                      className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                      onClick={() => handleDelete(alert.id)}
+                    >
                       Delete
                     </button>
                   </MenuItem>
