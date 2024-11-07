@@ -40,7 +40,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Link href={ROUTE_DASHBOARD}>Dashboard</Link>
       </NavTitle>
       <div className="p-4 flex flex-1 flex-col gap-4 bg-gray-100 overflow-auto">
-        <div className="w-full flex flex-col xl:flex-row gap-4">
+        {/* <div className="w-full flex flex-col xl:flex-row gap-4">
           <div className="w-full p-5 flex flex-col justify-between rounded-lg bg-white shadow-md">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-3">
@@ -243,7 +243,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="p-5 flex flex-1 flex-col gap-3 rounded-lg bg-white shadow-md overflow-auto min-h-[768px]">
           <span className="text-lg font-semibold">Workspace</span>
           <div className="w-full flex items-center gap-2 border-b">
