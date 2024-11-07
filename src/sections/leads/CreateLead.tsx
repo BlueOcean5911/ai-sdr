@@ -653,7 +653,10 @@ export default function CreateLead({
                                 (option) => option.value === values.ownerId
                               )}
                               onChange={(selectedItem) => {
-                                if (selectedItem.value !== values.ownerId)
+                                if (
+                                  selectedItem &&
+                                  selectedItem.value !== values.ownerId
+                                )
                                   setFieldValue("ownerId", selectedItem.value);
                               }}
                             ></Select>

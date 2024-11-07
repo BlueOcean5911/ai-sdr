@@ -26,7 +26,7 @@ export interface BaseCompanyModel {
   linkedin?: string;
   companyType?: string;
   phone?: string;
-  phoneStatus?: EMAIL_STATUS;
+  phoneStatus: EMAIL_STATUS | string;
   description?: string;
   industry?: string;
 
