@@ -14,7 +14,10 @@ import FormHelperText from "@/components/extends/FormHelperText";
 
 export default function Page() {
   const { cadence, setCadence } = useCadence();
-  const [userOptions, setUserOptions] = useState<any[]>([]);
+  const [userOptions, setUserOptions] = useState<
+    Array<{ name: string; value: string }>
+  >([]);
+  const [isReady, setIsReady] = useState(false);
 
   const handleUpdateCadence = (updatedCadence: BaseCadenceModel) => {
     console.log("handleUpdateCadence: ", updatedCadence);
@@ -23,7 +26,7 @@ export default function Page() {
       updateCadence,
       (data) => {
         setCadence(data);
-        console.log("cadence: ", data);
+        // console.log("cadence: ", data);
       },
       (status, error) => {
         console.log(status, error);
@@ -37,21 +40,18 @@ export default function Page() {
       undefined,
       getUsers,
       (data: any[]) => {
-        const tempUserOptions = data.map((user) => {
-          return {
-            name: user.firstName + " " + user.lastName,
-            value: user.id,
-          };
-        });
+        const tempUserOptions = data.map((user) => ({
+          name: `${user.firstName} ${user.lastName}`,
+          value: user.id,
+        }));
         setUserOptions(tempUserOptions);
+        setIsReady(true);
       },
       (status, error) => {
         handleError(status, error);
       }
     );
   };
-  console.log("cadence: ", cadence);
-  console.log("userOptions: ", userOptions);
 
   useEffect(() => {
     fetchUsers();
@@ -68,93 +68,102 @@ export default function Page() {
                 <hr />
               </div>
               <div className="flex-1 p-4 mt-4 flex flex-col gap-2 border rounded">
-                <Formik
-                  initialValues={{
-                    name: cadence ? cadence.name : "",
-                    ownerId: cadence ? cadence.ownerId : "",
-                  }}
-                  validationSchema={Yup.object().shape({
-                    name: Yup.string().required("Cadence name is required"),
-                    ownerId: Yup.string().required("Assignee is required"),
-                  })}
-                  onSubmit={async (values, { setSubmitting }) => {
-                    setSubmitting(true);
-                    handleUpdateCadence({
-                      name: values.name,
-                      ownerId: values.ownerId,
-                    });
-                    setSubmitting(false);
-                  }}
-                  enableReinitialize={true}
-                >
-                  {({
-                    errors,
-                    handleBlur,
-                    handleChange,
-                    handleSubmit,
-                    setFieldValue,
-                    isSubmitting,
-                    touched,
-                    values,
-                  }) => {
-                    return (
-                      <form
-                        noValidate
-                        onSubmit={handleSubmit}
-                        className="flex-1 flex flex-col gap-2"
-                      >
-                        <div className="flex flex-col gap-1">
-                          <label htmlFor="name" className="text-xs">
-                            Name:
-                          </label>
-                          <input
-                            id="name"
-                            type="text"
-                            placeholder="Name"
-                            className="input-primary max-h-9"
-                            value={values.name}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                          />
-                          {touched.name && errors.name && (
-                            <FormHelperText>{errors.name}</FormHelperText>
-                          )}
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <label htmlFor="ownerId" className="text-xs">
-                            Owner:
-                          </label>
-                          <Select
-                            data={userOptions}
-                            // defaultValue={userOptions.find(
-                            //   (option) => option.value === values.ownerId
-                            // )}
-                            onChange={(selectedItem) => {
-                              if (
-                                selectedItem &&
-                                selectedItem.value !== values.ownerId
-                              )
-                                setFieldValue("ownerId", selectedItem.value);
-                            }}
-                          ></Select>
-                          {touched.ownerId && errors.ownerId && (
-                            <FormHelperText>{errors.ownerId}</FormHelperText>
-                          )}
-                        </div>
-                        <div className="flex-1" />
-                        <div className="pt-2 flex justify-end gap-4">
-                          <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="w-full btn-primary"
-                          >
-                            Save
-                          </button>
-                        </div>
-                      </form>
-                    );
-                  }}
-                </Formik>
+                {isReady ? (
+                  <Formik
+                    initialValues={{
+                      name: cadence ? cadence.name : "",
+                      ownerId: cadence ? cadence.ownerId : "",
+                    }}
+                    validationSchema={Yup.object().shape({
+                      name: Yup.string().required("Cadence name is required"),
+                      ownerId: Yup.string().required("Assignee is required"),
+                    })}
+                    onSubmit={async (values, { setSubmitting }) => {
+                      setSubmitting(true);
+                      handleUpdateCadence({
+                        name: values.name,
+                        ownerId: values.ownerId,
+                      });
+                      setSubmitting(false);
+                    }}
+                    enableReinitialize={true}
+                  >
+                    {({
+                      errors,
+                      handleBlur,
+                      handleChange,
+                      handleSubmit,
+                      setFieldValue,
+                      isSubmitting,
+                      touched,
+                      values,
+                    }) => {
+                      return (
+                        <form
+                          noValidate
+                          onSubmit={handleSubmit}
+                          className="flex-1 flex flex-col gap-2"
+                        >
+                          <div className="flex flex-col gap-1">
+                            <label htmlFor="name" className="text-xs">
+                              Name:
+                            </label>
+                            <input
+                              id="name"
+                              type="text"
+                              placeholder="Name"
+                              className="input-primary max-h-9"
+                              value={values.name}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                            {touched.name && errors.name && (
+                              <FormHelperText>{errors.name}</FormHelperText>
+                            )}
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <label htmlFor="ownerId" className="text-xs">
+                              Owner:
+                            </label>
+                            <Select
+                              data={userOptions}
+                              defaultValue={userOptions.find(
+                                (option) => option.value === values.ownerId
+                              )}
+                              onChange={(selectedItem) => {
+                                if (
+                                  selectedItem &&
+                                  selectedItem.value !== values.ownerId
+                                )
+                                  setFieldValue("ownerId", selectedItem.value);
+                              }}
+                            ></Select>
+                            {touched.ownerId && errors.ownerId && (
+                              <FormHelperText>{errors.ownerId}</FormHelperText>
+                            )}
+                          </div>
+                          <div className="flex-1" />
+                          <div className="pt-2 flex justify-end gap-4">
+                            <button
+                              type="submit"
+                              disabled={isSubmitting}
+                              className="w-full btn-primary"
+                            >
+                              Save
+                            </button>
+                          </div>
+                        </form>
+                      );
+                    }}
+                  </Formik>
+                ) : (
+                  <div className="flex-1 p-4 mt-4 flex flex-col gap-2 border rounded items-center justify-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                    <span className="text-gray-500 mt-2">
+                      Loading settings...
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

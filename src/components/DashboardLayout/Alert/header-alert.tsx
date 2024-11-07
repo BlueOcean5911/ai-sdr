@@ -16,7 +16,7 @@ export default function HeaderAlert() {
       undefined,
       getAlerts,
       (data) => {
-        console.log("alerts: ", data);
+        // console.log("alerts: ", data);
         setAlerts(data);
       },
       (status, error) => {
