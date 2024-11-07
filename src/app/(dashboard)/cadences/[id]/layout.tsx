@@ -13,9 +13,9 @@ import TapItem from "@/components/extends/Tap/TapItem";
 
 import { handleError, runService } from "@/utils/service_utils";
 import {
-  BaseCadenceModel,
   getCadenceById,
   updateCadence,
+  UpdateCadenceModel,
 } from "@/services/cadenceService";
 
 const CadenceLayout = ({ id }: { id: string }) => {
@@ -49,7 +49,7 @@ const CadenceLayout = ({ id }: { id: string }) => {
     setActive(cadence?.isActive ? true : false);
   }, [cadence]);
 
-  const handleUpdateCadence = (updatedCadence: BaseCadenceModel) => {
+  const handleUpdateCadence = (updatedCadence: UpdateCadenceModel) => {
     runService(
       { cadenceId: cadence?.id, updatedCadence },
       updateCadence,
@@ -77,9 +77,9 @@ const CadenceLayout = ({ id }: { id: string }) => {
     handleUpdateCadence({ star: updatedStarred });
   };
 
-  useEffect(() => {
-    console.log(cadence);
-  }, [cadence]);
+  // useEffect(() => {
+  //   console.log(cadence);
+  // }, [cadence]);
 
   return (
     <>
