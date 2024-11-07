@@ -7,6 +7,7 @@ import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { alertIcons } from "@/data/alert.data";
 import { handleError, runService } from "@/utils/service_utils";
 import { AlertModel, getAlerts } from "@/services/alertService";
+import { getRelativeTime } from "@/utils/format";
 
 export default function Page() {
   const [alerts, setAlerts] = useState<AlertModel[]>([]);
@@ -54,7 +55,7 @@ export default function Page() {
                 </div>
                 <div className="w-20 flex flex-col justify-center items-center gap-1">
                   <span className="text-xs text-nowrap">
-                    {alert.createdAt.split("T")[0]}
+                    {getRelativeTime(alert.createdAt)}
                   </span>
                 </div>
               </div>
