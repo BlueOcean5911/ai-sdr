@@ -4,7 +4,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { StarIcon, EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import {
-  BaseCadenceModel,
+  UpdateCadenceModel,
   FetchCadenceModel,
   updateCadence,
 } from "@/services/cadenceService";
@@ -20,7 +20,7 @@ export default function CadenceItem({
   const [active, setActive] = useState(cadence.isActive);
   const router = useRouter();
 
-  const handleUpdateCadence = (updatedCadence: BaseCadenceModel) => {
+  const handleUpdateCadence = (updatedCadence: UpdateCadenceModel) => {
     runService(
       { cadenceId: cadence.id, updatedCadence },
       updateCadence,
