@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
@@ -74,7 +75,10 @@ export default function Page() {
                   </div>
                 )}
               </div>
-              <div className="flex flex-1 flex-row justify-between gap-2 items-center">
+              <Link
+                href={alert.href}
+                className="flex flex-1 flex-row justify-between gap-2 items-center cursor-pointer"
+              >
                 <div className="flex flex-col gap-1">
                   <span className="font-semibold">{alert.title}</span>
                   <span className="text-sm">
@@ -88,7 +92,7 @@ export default function Page() {
                     {getRelativeTime(alert.createdAt)}
                   </span>
                 </div>
-              </div>
+              </Link>
               <Menu>
                 <MenuButton className="p-1 border rounded-md bg-white hover:border-blue-500">
                   <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
