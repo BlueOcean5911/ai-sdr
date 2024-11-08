@@ -1,9 +1,12 @@
-import { LeadModelWithCompanyModel } from "@/services/leadService";
-import { classNames } from "@/utils";
+import Link from "next/link";
+import { MoveDiagonal } from "lucide-react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+
 import LeadView from "@/sections/leads/LeadView";
+import { LeadModelWithCompanyModel } from "@/services/leadService";
 import { TaskModel } from "@/services/taskService";
 import TaskView from "./TaskView";
+import { classNames } from "@/utils";
 
 const TaskOverview = ({
   show,
@@ -31,6 +34,12 @@ const TaskOverview = ({
           >
             <XMarkIcon className="w-5 h-5" />
           </div>
+          <Link
+            href={`/tasks/${task?.id}`}
+            className="p-1 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-200"
+          >
+            <MoveDiagonal className="w-5 h-5" />
+          </Link>
         </div>
         <div className="flex flex-1 flex-row gap-2">
           <TaskView task={task} />

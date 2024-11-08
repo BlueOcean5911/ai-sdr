@@ -66,6 +66,20 @@ interface ApiStatisticsResponse {
   data: TasksStatistics;
 }
 
+export const getTaskById = async ({
+  id,
+}: {
+  id: string;
+}): Promise<ApiTaskResponse> => {
+  let url = `/api/tasks/${id}`;
+
+  const response = await api.get(url);
+
+  return {
+    data: response.data,
+  };
+};
+
 export const getTasks = async (
   data: FetchTasksProps = { offset: 0, limit: 100, params: {} }
 ): Promise<ApiTasksResponse> => {
