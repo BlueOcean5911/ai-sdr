@@ -163,191 +163,196 @@ const CompanyTable = () => {
         />
         {/* Table */}
         <div className="flex-1 overflow-auto">
-{loading  ? (<Loading />):(          <table className="min-w-full divide-y divide-gray-300 overflow-auto">
-            <thead className="bg-white sticky top-0 z-10">
-              <tr>
-                <th
-                  scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
-                >
-                  <div className="flex gap-2">
-                    <CheckBox
-                      id="All Selection"
-                      content=""
-                      checked={allSelected}
-                      onChange={(id, checked) => {
-                        handleAllSelected(id, checked);
-                        setAllSelected(!allSelected);
-                      }}
-                    />{" "}
-                    Company Name
-                  </div>
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Action
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Employees
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Industry
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 min-w-72"
-                >
-                  Keywords
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Locaiton
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white">
-              {totalCompanies.map((company: CompanyModel) => (
-                <tr
-                  key={company.id}
-                  className="even:bg-blue-50 hover:bg-gray-300 cursor-pointer"
-                >
-                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+          {loading ? (
+            <Loading />
+          ) : (
+            <table className="min-w-full divide-y divide-gray-300 overflow-auto">
+              <thead className="bg-white sticky top-0 z-10">
+                <tr>
+                  <th
+                    scope="col"
+                    className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
+                  >
                     <div className="flex gap-2">
                       <CheckBox
-                        id={company.id}
-                        key={company.id}
+                        id="All Selection"
                         content=""
-                        value={company}
-                        checked={selectedCompanies.find(
-                          (itemCompany: any) => itemCompany.id === company.id
-                        )}
-                        onChange={(changedCompany, checked) => {
-                          if (!checked) {
-                            setSelectedCompanies(
-                              selectedCompanies.filter(
-                                (company: any) =>
-                                  changedCompany.id !== company.id
-                              )
-                            );
-                          } else {
-                            console.log(checked);
-                            setSelectedCompanies([
-                              ...selectedCompanies,
-                              changedCompany,
-                            ]);
-                          }
+                        checked={allSelected}
+                        onChange={(id, checked) => {
+                          handleAllSelected(id, checked);
+                          setAllSelected(!allSelected);
                         }}
-                      />
-                      <span
-                        className="hover:underline"
-                        onClick={() => handleOverview(company)}
-                      >
-                        {company.name}
-                      </span>
-                      <Link href={`${company?.linkedin}`}>
-                        <FaLinkedinIn className="w-6 h-6 p-1 rounded-md border bg-white fill-blue-500" />
-                      </Link>
+                      />{" "}
+                      Company Name
                     </div>
-                  </td>
-                  <td className="whitespace-nowrap text-sm text-gray-500">
-                    <Menu>
-                      <MenuButton className="">
-                        <div className="p-1 border rounded-md bg-white">
-                          <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
-                        </div>
-                      </MenuButton>
-                      <MenuItems
-                        anchor="bottom end"
-                        className="flex flex-col w-16 origin-top-right bg-white rounded-md shadow-md border-2 border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
-                      >
-                        <MenuItem>
-                          <button
-                            className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
-                            onClick={() => handleEdit(company)}
-                          >
-                            Edit
-                          </button>
-                        </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
-                            onClick={() => handleDelete(company.id)}
-                          >
-                            Delete
-                          </button>
-                        </MenuItem>
-                      </MenuItems>
-                    </Menu>
-                  </td>
-                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                    {company.size}
-                  </td>
-                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                    {company.industry}
-                  </td>
-                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                    <div className="flex gap-2 min-w-32 flex-wrap items-center">
-                      {company?.keywords
-                        ?.split(",")
-                        .slice(0, 3)
-                        .map((keyword) => (
-                          <span className="p-1 px-2 border border-blue-500 rounded-full text-xs capitalize min-w-16 text-center">
-                            {keyword}
-                          </span>
-                        ))}
-                      {(company?.keywords?.split(",")?.length || 0) > 3 && (
-                        <>
-                          <a
-                            className="max-w-48"
-                            data-tooltip-id={`my-tooltip-company-keywords-${company.id}`}
-                          >
-                            <span className="text-gray-500">
-                              +
-                              {(company?.keywords?.split(",")?.length || 0) - 3}{" "}
-                              more
-                            </span>
-                          </a>
-                          <Tooltip
-                            id={`my-tooltip-company-keywords-${company.id}`}
-                            place="top"
-                            style={
-                              {
-                                // backgroundColor: "rgb(255, 255, 255)",
-                                // color: "#222",
-                              }
-                            }
-                          >
-                            <div className="flex gap-2 flex-wrap max-w-72 justify-center">
-                              {company?.keywords
-                                ?.split(",")
-                                .map((keyword) => (
-                                  <span className="p-1 px-2 border border-white text-white rounded-full text-xs capitalize  min-w-16 text-center">
-                                    {keyword}
-                                  </span>
-                                )) || <></>}
-                            </div>
-                          </Tooltip>
-                        </>
-                      )}
-                    </div>
-                  </td>
-                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                    {company.city} {company.state}
-                  </td>
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
+                    Action
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
+                    Employees
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
+                    Industry
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 min-w-72"
+                  >
+                    Keywords
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
+                    Locaiton
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>)}
+              </thead>
+              <tbody className="bg-white">
+                {totalCompanies.map((company: CompanyModel) => (
+                  <tr
+                    key={company.id}
+                    className="even:bg-blue-50 hover:bg-gray-300 cursor-pointer"
+                  >
+                    <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      <div className="flex gap-2">
+                        <CheckBox
+                          id={company.id}
+                          key={company.id}
+                          content=""
+                          value={company}
+                          checked={selectedCompanies.find(
+                            (itemCompany: any) => itemCompany.id === company.id
+                          )}
+                          onChange={(changedCompany, checked) => {
+                            if (!checked) {
+                              setSelectedCompanies(
+                                selectedCompanies.filter(
+                                  (company: any) =>
+                                    changedCompany.id !== company.id
+                                )
+                              );
+                            } else {
+                              console.log(checked);
+                              setSelectedCompanies([
+                                ...selectedCompanies,
+                                changedCompany,
+                              ]);
+                            }
+                          }}
+                        />
+                        <span
+                          className="hover:underline"
+                          onClick={() => handleOverview(company)}
+                        >
+                          {company.name}
+                        </span>
+                        <Link href={`${company?.linkedin}`}>
+                          <FaLinkedinIn className="w-6 h-6 p-1 rounded-md border bg-white fill-blue-500" />
+                        </Link>
+                      </div>
+                    </td>
+                    <td className="whitespace-nowrap text-sm text-gray-500">
+                      <Menu>
+                        <MenuButton className="">
+                          <div className="p-1 border rounded-md bg-white">
+                            <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
+                          </div>
+                        </MenuButton>
+                        <MenuItems
+                          anchor="bottom end"
+                          className="flex flex-col w-16 origin-top-right bg-white rounded-md shadow-md border-2 border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
+                        >
+                          <MenuItem>
+                            <button
+                              className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                              onClick={() => handleEdit(company)}
+                            >
+                              Edit
+                            </button>
+                          </MenuItem>
+                          <MenuItem>
+                            <button
+                              className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                              onClick={() => handleDelete(company.id)}
+                            >
+                              Delete
+                            </button>
+                          </MenuItem>
+                        </MenuItems>
+                      </Menu>
+                    </td>
+                    <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      {company.size}
+                    </td>
+                    <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      {company.industry}
+                    </td>
+                    <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      <div className="flex gap-2 min-w-32 flex-wrap items-center">
+                        {company?.keywords
+                          ?.split(",")
+                          .slice(0, 3)
+                          .map((keyword) => (
+                            <span className="p-1 px-2 border border-blue-500 rounded-full text-xs capitalize min-w-16 text-center">
+                              {keyword}
+                            </span>
+                          ))}
+                        {(company?.keywords?.split(",")?.length || 0) > 3 && (
+                          <>
+                            <a
+                              className="max-w-48"
+                              data-tooltip-id={`my-tooltip-company-keywords-${company.id}`}
+                            >
+                              <span className="text-gray-500">
+                                +
+                                {(company?.keywords?.split(",")?.length || 0) -
+                                  3}{" "}
+                                more
+                              </span>
+                            </a>
+                            <Tooltip
+                              id={`my-tooltip-company-keywords-${company.id}`}
+                              place="top"
+                              style={
+                                {
+                                  // backgroundColor: "rgb(255, 255, 255)",
+                                  // color: "#222",
+                                }
+                              }
+                            >
+                              <div className="flex gap-2 flex-wrap max-w-72 justify-center">
+                                {company?.keywords
+                                  ?.split(",")
+                                  .map((keyword) => (
+                                    <span className="p-1 px-2 border border-white text-white rounded-full text-xs capitalize  min-w-16 text-center">
+                                      {keyword}
+                                    </span>
+                                  )) || <></>}
+                              </div>
+                            </Tooltip>
+                          </>
+                        )}
+                      </div>
+                    </td>
+                    <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      {company.city} {company.state}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
 
         {/* Pagination */}

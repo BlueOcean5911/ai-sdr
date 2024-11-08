@@ -27,7 +27,7 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
   const router = useRouter();
 
   return (
-    <div className="w-full h-28 py-2 flex items-center border-b hover:bg-gray-100">
+    <div className="w-full h-28 py-2 flex items-center border-b even:bg-blue-50 hover:bg-gray-100">
       <div className="px-4">
         <input className="shadow-none ring-0 focus:ring-0" type="checkbox" />
       </div>

@@ -11,6 +11,7 @@ import { handleError, runService } from "@/utils/service_utils";
 import Select from "@/components/extends/Select/default";
 import { useCadence } from "@/contexts/CadenceContext";
 import FormHelperText from "@/components/extends/FormHelperText";
+import { toast } from "react-toastify";
 
 export default function Page() {
   const { cadence, setCadence } = useCadence();
@@ -26,11 +27,12 @@ export default function Page() {
       updateCadence,
       (data) => {
         setCadence(data);
-        // console.log("cadence: ", data);
+        toast.success("Cadence updated successfully!");
       },
       (status, error) => {
         console.log(status, error);
         handleError(status, error);
+        toast.error("Failed to update cadence!");
       }
     );
   };

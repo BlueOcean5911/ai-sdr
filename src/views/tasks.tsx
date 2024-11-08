@@ -145,11 +145,13 @@ export default function Tasks() {
       { taskId: id, updateData: data },
       updateTask,
       (data) => {
-        console.log(data);
+        // console.log("Updated task", data);
+        setTasks(tasks.map((task) => (task.id === id ? data : task)));
         toast.success("Successfully updated");
       },
       (statusCode, error) => {
         handleError(statusCode, error);
+        toast.error("Something went wrong");
       }
     );
   };

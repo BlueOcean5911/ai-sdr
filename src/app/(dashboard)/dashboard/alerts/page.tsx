@@ -46,7 +46,6 @@ export default function Page() {
           toast.success("Delete alert successfully!");
           setAlerts(alerts.filter((item) => item.id !== id));
         }
-        toast.error("Something went wrong!");
       },
       (status, error) => {
         handleError(status, error);
@@ -64,7 +63,7 @@ export default function Page() {
           alerts.map((alert, idx) => (
             <div
               key={idx}
-              className="w-full p-4 flex flex-row items-center gap-4 border-b hover:bg-gray-200"
+              className="w-full p-4 flex flex-row items-center gap-4 border-b even:bg-blue-50 hover:bg-gray-200"
             >
               <div className="w-16">
                 {alert.type && alert.type in alertIcons && (
