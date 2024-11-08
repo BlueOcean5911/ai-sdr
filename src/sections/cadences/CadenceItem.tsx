@@ -49,7 +49,7 @@ export default function CadenceItem({
   };
 
   return (
-    <div className="w-full h-20 py-2 flex items-center border-b hover:bg-gray-300">
+    <div className="w-full h-20 py-2 flex items-center border-b even:bg-blue-50 hover:bg-gray-300">
       <div className="px-4">
         <input className="shadow-none ring-0 focus:ring-0" type="checkbox" />
       </div>

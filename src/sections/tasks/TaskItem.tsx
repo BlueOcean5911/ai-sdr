@@ -47,7 +47,7 @@ export default function TaskItem({
   }
 
   return (
-    <div className="w-full h-20 px-4 py-2 flex items-center gap-2 border-b hover:bg-gray-100">
+    <div className="w-full h-20 px-4 py-2 flex items-center gap-2 border-b even:bg-blue-50 hover:bg-gray-100">
       <input className="mr-1 shadow-none ring-0 focus:ring-0" type="checkbox" />
       <div className="flex justify-between items-center flex-1 gap-4">
         <div
@@ -107,30 +107,18 @@ export default function TaskItem({
               </button>
             </MenuItem>
             <hr />
-            <MenuItem>
-              <button
-                className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
-                onClick={() => handleUpdate(task.id, TASK_STATE.COMPLETE)}
-              >
-                Complete Task
-              </button>
-            </MenuItem>
-            <MenuItem>
-              <button
-                className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
-                onClick={() => handleUpdate(task.id, TASK_STATE.ARCHIVED)}
-              >
-                Archive Task
-              </button>
-            </MenuItem>
-            <MenuItem>
-              <button
-                className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
-                onClick={() => handleUpdate(task.id, TASK_STATE.SKIPPED)}
-              >
-                Skip Task
-              </button>
-            </MenuItem>
+            {Object.values(TASK_STATE)
+              .filter((state) => state !== task.status)
+              .map((state) => (
+                <MenuItem key={state}>
+                  <button
+                    className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                    onClick={() => handleUpdate(task.id, state)}
+                  >
+                    {`${state.charAt(0).toUpperCase() + state.slice(1)} Task`}
+                  </button>
+                </MenuItem>
+              ))}
           </MenuItems>
         </Menu>
       </div>
