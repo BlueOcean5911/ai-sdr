@@ -257,9 +257,7 @@ export const updateTask = async (data: {
   }
 
   return {
-    data: {
-      id: response.data.surrogateId,
-    },
+    data: response.data,
   };
 };
 
@@ -271,8 +269,6 @@ export const deleteTask = async (taskId: string) => {
   }
 
   return {
-    data: {
-      success: response.data.success,
-    },
+    data: response.data,
   };
 };
