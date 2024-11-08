@@ -2,17 +2,24 @@ import { ApiSuccessResponse, FetchProps } from "@/types";
 import { CADENCE_STEP_STATUS, LEAD_STATUS } from "@/types/enums";
 import { api } from "@/utils/api";
 
+interface Option {
+  value: string;
+  label: string;
+  disabled?: boolean;
+  isSelected?: boolean;
+}
+
 interface FetchContactProps extends FetchProps {
-  cadenceStatus?: string[];
-  cadenceStep?: string[];
-  emailFrom?: string;
-  campaignId?: string;
   cadenceId?: string;
+  cadenceSteps?: Option | Option[] | null;
+  owners?: Option | Option[] | null;
+  search?: string;
 }
 
 export interface ContactInCadence {
   firstName?: string;
   lastName?: string;
+  leadId?: string;
   jobTitle?: string;
   companyId: string;
   companyName?: string;
@@ -23,6 +30,7 @@ export interface ContactInCadence {
   cadenceCurrentStep?: number;
   leadStatus?: LEAD_STATUS | string;
   cadenceStepId: string;
+  createdAt: string;
 }
 
 export interface ContactInCampaign {
@@ -69,13 +77,41 @@ interface ApiContactInCadenceStatisticsResponse {
   data: ContactInCadenceStatistics;
 }
 
-export const getContactsInCadenceStatistics = async ({
-  cadenceId,
-}: {
-  cadenceId: string;
-}): Promise<ApiContactInCadenceStatisticsResponse> => {
-  const url = `api/contacts/statistics?cadenceId=${cadenceId}`;
+export const getContactsInCadenceStatistics = async (
+  data: FetchContactProps = { offset: 0, limit: 10 }
+): Promise<ApiContactInCadenceStatisticsResponse> => {
+  let url = `api/contacts/statistics?`;
+  if (data.cadenceId) {
+    url += `&cadenceId=${data.cadenceId}`;
+  }
+  let userIds: string[] = [];
+  if (Array.isArray(data.owners)) {
+    userIds = data.owners.map((option) => option.value);
+  } else if (data.owners) {
+    userIds = [data.owners.value];
+  } else {
+    userIds = [];
+  }
+  for (const userId of userIds) {
+    url += `&ownerIds=${userId}`;
+  }
+  let steps: string[] = [];
+  if (Array.isArray(data.cadenceSteps)) {
+    steps = data.cadenceSteps.map((option) => option.value);
+  } else if (data.cadenceSteps) {
+    steps = [data.cadenceSteps.value];
+  } else {
+    steps = [];
+  }
+  for (const state of steps) {
+    url += `&cadenceSteps=${state}`;
+  }
+
+  if (data.search) {
+    url += `&search=${data.search}`;
+  }
   const response = await api.get(url);
+
   return {
     data: {
       totalCount: response.data?.totalCount,
@@ -101,49 +137,36 @@ export const getContactsInCadence = async (
   if (data.cadenceId) {
     url += `&cadenceId=${data.cadenceId}`;
   }
+  let userIds: string[] = [];
+  if (Array.isArray(data.owners)) {
+    userIds = data.owners.map((option) => option.value);
+  } else if (data.owners) {
+    userIds = [data.owners.value];
+  } else {
+    userIds = [];
+  }
+  for (const userId of userIds) {
+    url += `&ownerIds=${userId}`;
+  }
+  let steps: string[] = [];
+  if (Array.isArray(data.cadenceSteps)) {
+    steps = data.cadenceSteps.map((option) => option.value);
+  } else if (data.cadenceSteps) {
+    steps = [data.cadenceSteps.value];
+  } else {
+    steps = [];
+  }
+  for (const state of steps) {
+    url += `&cadenceSteps=${state}`;
+  }
+
+  if (data.search) {
+    url += `&search=${data.search}`;
+  }
 
   const response = await api.get(url);
-  console.log(response);
-  return {
-    data: response.data.map((item: any) => ({
-      firstName: item?.firstName,
-      lastName: item?.lastName,
-      jobTitle: item?.jobTitle,
-      companyId: item?.companyId,
-      companyName: item?.companyName,
-      ownerId: item?.ownerId,
-      ownerFirstName: item?.ownerFirstName,
-      ownerLastName: item?.ownerLastName,
-      currentStepStatus: item?.currentStepStatus,
-      cadenceCurrentStep: item?.cadenceCurrentStep,
-      leadStatus: item?.leadStatus,
-      cadenceStepId: item?.cadenceStepId,
-    })),
-  };
-};
 
-export const getContactsInCampaign = async ({
-  campaignId,
-}: {
-  campaignId: string;
-}): Promise<ApiContactsInCadenceResponse> => {
-  const url = `api/campaigns/${campaignId}/contacts`;
-  const response = await api.get(url);
-  return {
-    data: response.data.map((item: any) => ({
-      firstName: item?.firstName,
-      lastName: item?.lastName,
-      jobTitle: item?.jobTitle,
-      companyId: item?.companyId,
-      companyName: item?.companyName,
-      ownerId: item?.ownerId,
-      ownerFirstName: item?.ownerFirstName,
-      ownerLastName: item?.ownerLastName,
-      currentStepStatus: item?.currentStepStatus,
-      cadenceCurrentStep: item?.cadenceCurrentStep,
-      leadStatus: item?.leadStatus,
-    })),
-  };
+  return response;
 };
 
 export const updateCadenceState = async ({

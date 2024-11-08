@@ -57,11 +57,11 @@ export const cadenceStatusOptions = [
 ];
 
 export const cadenceStepOptions = [
-  { value: "Step: 1", label: "Step: 1" },
-  { value: "Step: 2", label: "Step: 2" },
-  { value: "Step: 3", label: "Step: 3" },
-  { value: "Step: 4", label: "Step: 4" },
-  { value: "Step: 5", label: "Step: 5" },
+  { value: "1", label: "Step: 1" },
+  { value: "2", label: "Step: 2" },
+  { value: "3", label: "Step: 3" },
+  { value: "4", label: "Step: 4" },
+  { value: "5", label: "Step: 5" },
 ];
 
 export const statusOptions = [

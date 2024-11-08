@@ -3,6 +3,9 @@ import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { ContactInCadence } from "@/services/contactsService";
 import { classNames } from "@/utils";
+import Link from "next/link";
+import { getInitials, getRelativeTime } from "@/utils/format";
+import { Tooltip } from "react-tooltip";
 
 export default function ContactItem({
   contact,
@@ -21,9 +24,11 @@ export default function ContactItem({
       <div className="flex items-center flex-1 gap-2 cursor-pointer">
         <div className="min-w-35 flex items-center">
           <span className="text-xs">To:</span>
-          <span className="text-sm text-blue-900">
-            {contact.firstName} {contact.lastName}
-          </span>
+          <Link href={`/leads/${contact.leadId}`}>
+            <span className="text-sm text-blue-900 hover:underline">
+              {contact.firstName} {contact.lastName}
+            </span>
+          </Link>
         </div>
 
         <div className="flex flex-1 items-center gap-2 text-xs text-nowrap">
@@ -51,19 +56,32 @@ export default function ContactItem({
             {contact.jobTitle}
           </span>
           <span className="">@</span>
-          <span className="text-sm text-blue-600 font-semibold">
-            {contact.companyName}
-          </span>
+          <Link href={`/companies/${contact.companyId}`}>
+            <span className="text-sm text-blue-600 font-semibold hover:underline">
+              {contact.companyName}
+            </span>
+          </Link>
         </div>
 
         <div className="flex items-center gap-2 text-xs">
           {/* <span className="px-1 flex flex-1 justify-end bg-orange-500 text-white">
             Not sent
           </span> */}
-          <span className="p-1 rounded-full bg-gray-100">
-            {contact.ownerFirstName} {contact.ownerLastName}
+          <span>
+            Created At: <br />
+            {getRelativeTime(contact.createdAt)}
           </span>
-          {/* <span>Aug 26</span> */}
+          <a
+            data-tooltip-id="contact-ownername"
+            data-tooltip-content={`${contact.ownerFirstName} ${contact.ownerLastName}`}
+          >
+            <p className="p-2 w-8 text-xs text-center rounded-full text-white bg-gray-700 aspect-square">
+              {getInitials(
+                `${contact.ownerFirstName} ${contact.ownerLastName}`
+              )}
+            </p>
+          </a>
+          <Tooltip id="contact-ownername" />
         </div>
       </div>
 

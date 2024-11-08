@@ -9,11 +9,9 @@ interface Option {
 
 interface ContactFilterConfig {
   isOpen: boolean;
-  cadenceStatus: Option | Option[] | null;
-  cadenceStep: Option | Option[] | null;
-  sendEmailsFrom?: string;
-  cadenceId?: string;
-  campaignId?: string;
+  cadenceSteps: Option | Option[] | null;
+  owners: Option | Option[] | null;
+  search: string;
 }
 
 interface ContactFilterContextType {
@@ -35,16 +33,10 @@ export const ContactFilterProvider = ({
   const [contactFilterConfig, setContactFilterConfig] =
     useState<ContactFilterConfig>({
       isOpen: true,
-      cadenceStatus: [],
-      cadenceStep: [],
-      sendEmailsFrom: "",
-      cadenceId: "",
-      campaignId: "",
+      cadenceSteps: [],
+      owners: [],
+      search: "",
     });
-
-  const updateContactFilterConfig = (config: ContactFilterConfig) => {
-    setContactFilterConfig(config);
-  };
 
   return (
     <ContactFilterContext.Provider

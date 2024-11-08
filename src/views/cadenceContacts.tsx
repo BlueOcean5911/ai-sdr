@@ -42,10 +42,9 @@ export default function CadenceContacts(
         offset,
         limit,
         cadenceId,
-        campaignId,
-        cadenceStatus: contactFilterConfig.cadenceStatus,
-        cadenceStep: contactFilterConfig.cadenceStep,
-        emailFrom: contactFilterConfig.sendEmailsFrom,
+        cadenceSteps: contactFilterConfig.cadenceSteps,
+        search: contactFilterConfig.search,
+        owners: contactFilterConfig.owners,
       },
       getContactsInCadence,
       (data) => {
@@ -91,7 +90,6 @@ export default function CadenceContacts(
             contacts.filter((contact) => contact.cadenceStepId !== id)
           );
           fetchContactsStatistics();
-          fetchTotalCount();
           toast.success("Cadence step deleted successfully.");
         }
       },
@@ -103,7 +101,12 @@ export default function CadenceContacts(
 
   const fetchContactsStatistics = () => {
     runService(
-      { cadenceId },
+      {
+        cadenceId,
+        cadenceSteps: contactFilterConfig.cadenceSteps,
+        search: contactFilterConfig.search,
+        owners: contactFilterConfig.owners,
+      },
       getContactsInCadenceStatistics,
       (data) => {
         setStatisticData(data);
@@ -115,12 +118,7 @@ export default function CadenceContacts(
     );
   };
 
-  const fetchTotalCount = () => {
-    // TODO: Get total count for cadence with cadence ID
-  };
-
   useEffect(() => {
-    fetchTotalCount();
     fetchContactsStatistics();
     fetchContactsInCadence();
   }, [pageSize, totalCount, contactFilterConfig]);
