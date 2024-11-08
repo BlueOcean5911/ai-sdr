@@ -9,7 +9,7 @@ const TaskView = ({ task }: { task?: TaskModel }) => {
           {task?.title}
         </span>
       </div>
-      <div className="px-5 py-1">
+      <div className="px-5 py-1.5">
         <span
           className={`p-1 text-xs capitalize rounded-md ${task?.taskPriority}`}
         >
