@@ -3,10 +3,17 @@ import { CadenceStatistics, CountModel, FetchProps } from "@/types";
 import { SHARE_TYPE } from "@/types/enums";
 import { UserModel } from "./userService";
 
+interface Option {
+  value: string;
+  label: string;
+  disabled?: boolean;
+  isSelected?: boolean;
+}
+
 interface FetchCompaniesProps extends FetchProps {
   isActive?: boolean;
   starred?: boolean;
-  ownedBy?: string;
+  ownedBy?: Option | Option[] | null;
   campaignId?: string;
   search?: string;
 }
@@ -105,9 +112,17 @@ export const getCadences = async (
   if (data.starred) {
     url += "&starred=true";
   }
-  // if (data.ownedBy) {
-  //   url += `&ownedBy=${data.ownedBy}`;
-  // }
+  let userIds: string[] = [];
+  if (Array.isArray(data.ownedBy)) {
+   userIds = data.ownedBy.map((option) => option.value);
+  } else if (data.ownedBy) {
+   userIds = [data.ownedBy.value];
+  } else {
+   userIds = [];
+  }
+  for (const userId of userIds) {
+    url += `&userIds=${userId}`;
+  }
   console.log("here", data.campaignId);
   if (data.campaignId) {
     url += `&campaignId=${data.campaignId}`;
