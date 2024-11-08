@@ -101,19 +101,9 @@ export const getContactsInCadence = async (
   if (data.cadenceId) {
     url += `&cadenceId=${data.cadenceId}`;
   }
-  if (data.campaignId) {
-    url += `&campaignId=${data.campaignId}`;
-  }
-  // if (data.cadenceStatus?.length && data.cadenceStatus?.length > 0) {
-  //   url += `&cadenceStatus=${data.cadenceStatus}`;
-  // }
-  // if (data.cadenceStep?.length && data.cadenceStep?.length > 0) {
-  //   url += `&cadenceStep=${data.cadenceStep}`;
-  // }
-  if (data.emailFrom) {
-    url += `&emailFrom=${data.emailFrom}`;
-  }
+
   const response = await api.get(url);
+  console.log(response);
   return {
     data: response.data.map((item: any) => ({
       firstName: item?.firstName,
