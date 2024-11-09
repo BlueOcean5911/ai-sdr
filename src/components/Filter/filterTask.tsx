@@ -1,14 +1,16 @@
+import { useEffect, useState } from "react";
 import {
   ListBulletIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
-import FilterItem from "./filter-item";
-import { useTaskFilter } from "@/contexts/FilterTaskContext";
 import Select from "react-tailwindcss-select";
-import { priorityOptions, stateOptions } from "@/data/filter.data";
-import { handleError, runService } from "@/utils/service_utils";
+import DatePicker from "react-datepicker";
+import FilterItem from "./filter-item";
+
 import { getMe, getUsers, UserModel } from "@/services/userService";
-import { useEffect, useState } from "react";
+import { useTaskFilter } from "@/contexts/FilterTaskContext";
+import { handleError, runService } from "@/utils/service_utils";
+import { priorityOptions, stateOptions } from "@/data/filter.data";
 
 export default function FilterTask() {
   const { taskFilterConfig, setTaskFilterConfig } = useTaskFilter();
@@ -203,6 +205,48 @@ export default function FilterTask() {
                   "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
               }}
             ></Select>
+          </FilterItem>
+          <FilterItem
+            icon={<ListBulletIcon className="w-4 h-4" />}
+            title="Due Date"
+          >
+            <div className="flex justify-between items-center gap-1">
+              <DatePicker
+                selected={taskFilterConfig.fromDate}
+                placeholderText="From"
+                onChange={(date) => {
+                  setTaskFilterConfig({
+                    ...taskFilterConfig,
+                    fromDate: date || undefined,
+                  });
+                }}
+                isClearable
+                selectsStart
+                startDate={taskFilterConfig.fromDate}
+                endDate={taskFilterConfig.toDate}
+                maxDate={taskFilterConfig.toDate}
+                className="w-[92px] p-1 text-xs rounded-md transition-all duration-300 focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500/20"
+                popperClassName="z-50"
+              />
+              -
+              <DatePicker
+                selected={taskFilterConfig.toDate}
+                placeholderText="To"
+                onChange={(date) => {
+                  setTaskFilterConfig({
+                    ...taskFilterConfig,
+                    toDate: date || undefined,
+                  });
+                }}
+                isClearable
+                selectsEnd
+                startDate={taskFilterConfig.fromDate}
+                endDate={taskFilterConfig.toDate}
+                minDate={taskFilterConfig.fromDate}
+                className="w-[92px] p-1 text-xs rounded-md transition-all duration-300 focus:outline-none focus:border-blue-500 focus:ring-0 focus:ring-blue-500/20"
+                popperClassName="z-50"
+              />
+            </div>
           </FilterItem>
         </div>
       </div>
