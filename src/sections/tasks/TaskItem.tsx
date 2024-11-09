@@ -47,7 +47,7 @@ export default function TaskItem({
       { id: task.leadId },
       getLeadById,
       (data) => {
-        console.log("lead", data);
+        // console.log("lead", data);
         setLead(data);
       },
       (status, error) => {

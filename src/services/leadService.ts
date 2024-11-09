@@ -321,7 +321,7 @@ export const getLeadById = async (props: {
 
   const response = await api.get(url);
   const item = response.data;
-  console.log("Fetched lead data", item);
+  // console.log("Fetched lead data", item);
   let lead: LeadModelWithCompanyModel = {
     id: item?.id,
     firstName: item?.firstName,
