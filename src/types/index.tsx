@@ -3,6 +3,15 @@ import { DOCUMENT_TYPE } from "./enums";
 import { CompanyModel } from "@/services/companyService";
 import { LeadModel } from "@/services/leadService";
 
+import AutomaticEmailIcon from "@/components/Icons/automaticemail.icon";
+import ManualEmailIcon from "@/components/Icons/manualmail.icon";
+import PhoneCallIcon from "@/components/Icons/phonecall.icon";
+import LinkedinViewIcon from "@/components/Icons/linkedinview.icon";
+import LinkedinMessageIcon from "@/components/Icons/linkedinmessage.icon";
+import LinkedinInteractIcon from "@/components/Icons/linkedininteract.icon";
+import LinkedinRequestIcon from "@/components/Icons/linkedinrequest.icon";
+import ActionItemIcon from "@/components/Icons/actionitem.icon";
+
 export type SelectDefaultType = Array<{
   id: number;
   name: string | number | null;
@@ -184,3 +193,24 @@ export interface CadenceStatistics {
   finished: number;
   succeeded: number;
 }
+
+export const taskTypeIcons = {
+    autoEmail: <AutomaticEmailIcon />,
+    phoneCall: <PhoneCallIcon />,
+    manualEmail: <ManualEmailIcon />,
+    linkedinConnect: <LinkedinRequestIcon />,
+    linkedinSendMessage: <LinkedinMessageIcon />,
+    linkedinViewProfile: <LinkedinViewIcon />,
+    linkedinInteractWithPost: <LinkedinInteractIcon />,
+    actionItem: <ActionItemIcon />,
+};
+
+export type TaskType =
+  | "autoEmail"
+  | "phoneCall"
+  | "manualEmail"
+  | "linkedinConnect"
+  | "linkedinSendMessage"
+  | "linkedinViewProfile"
+  | "linkedinInteractWithPost"
+  | "actionItem";
