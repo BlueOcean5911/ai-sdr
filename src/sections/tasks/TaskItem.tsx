@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import { Tooltip } from "react-tooltip";
+
 import { TaskModel } from "@/services/taskService";
 import { formatDate, getInitials } from "@/utils/format";
 import { getUsers, UserModel } from "@/services/userService";
 import { runService, handleError } from "@/utils/service_utils";
 import { TASK_STATE } from "@/types/enums";
-import { Tooltip } from "react-tooltip";
+import { taskTypeIcons } from "@/types";
+import { TaskType } from "@/types";
+import { getLeadById, LeadModelWithCompanyModel } from "@/services/leadService";
 
 export default function TaskItem({
   task,
@@ -22,6 +26,7 @@ export default function TaskItem({
   handleUpdate: (id: string, type: TASK_STATE) => void;
 }) {
   const [users, setUsers] = useState<UserModel[]>();
+  const [lead, setLead] = useState<LeadModelWithCompanyModel>();
 
   const fetchUsers = () => {
     runService(
@@ -35,9 +40,26 @@ export default function TaskItem({
       }
     );
   };
+
+  const fetchLead = () => {
+    if (!task.leadId) return;
+    runService(
+      { id: task.leadId },
+      getLeadById,
+      (data) => {
+        console.log("lead", data);
+        setLead(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
   useEffect(() => {
     fetchUsers();
-  }, []);
+    fetchLead();
+  }, [task]);
 
   const owner = users?.find((user) => user.id === task.ownerId);
   let ownerName = "";
@@ -50,6 +72,7 @@ export default function TaskItem({
   return (
     <div className="w-full h-20 px-4 py-2 flex items-center gap-2 border-b even:bg-blue-50 hover:bg-gray-100 hover:cursor-pointer">
       <input className="mr-1 shadow-none ring-0 focus:ring-0" type="checkbox" />
+      <div className="size-10">{taskTypeIcons[task.taskType as TaskType]}</div>
       <div className="flex justify-between items-center flex-1 gap-4">
         <div
           className="w-1/2 min-w-12 max-w-96 lg:max-w-xl xl:max-w-2xl flex flex-1 flex-col gap-1 overflow-hidden cursor-pointer"
@@ -61,14 +84,25 @@ export default function TaskItem({
           <span className="text-xs line-clamp-1">{task.content}</span>
         </div>
 
-        <div className="min-w-64 flex flex-row justify-between items-center gap-2">
-          <span className="px-2 py-0.5 min-w-20 text-xs font-bold text-center text-nowrap rounded-sm bg-gray-100 capitalize">
-            {task.taskType}
-          </span>
+        <p className="p-2 w-8 h-8 text-xs text-center rounded-full text-white bg-blue-700 aspect-square">
+          {getInitials((lead?.firstName ?? "") + " " + (lead?.lastName ?? ""))}
+        </p>
 
+        {lead && (
+          <div className="w-1/2 min-w-12 max-w-96 lg:max-w-xl xl:max-w-2xl flex flex-1 flex-col gap-1 overflow-hidden cursor-pointer">
+            <span className="text-sm font-semibold text-blue-900 line-clamp-1">
+              {lead?.firstName} {lead?.lastName}
+            </span>
+            <span className="text-xs line-clamp-1">
+              {lead?.title} at {lead?.company?.name}
+            </span>
+          </div>
+        )}
+
+        <div className="min-w-44 flex flex-row justify-between items-center gap-2">
           <div className="flex items-center gap-4 text-xs">
             <span
-              className={`px-2 py-0.5 min-w-16 flex flex-1 justify-center capitalize rounded-sm ${task.taskPriority} text-white`}
+              className={`px-2 py-0.5 min-w-16 flex flex-1 justify-center capitalize rounded-full ${task.taskPriority} text-white`}
             >
               {task.taskPriority}
             </span>
