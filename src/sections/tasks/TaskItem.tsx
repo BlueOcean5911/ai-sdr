@@ -6,6 +6,7 @@ import { formatDate, getInitials } from "@/utils/format";
 import { getUsers, UserModel } from "@/services/userService";
 import { runService, handleError } from "@/utils/service_utils";
 import { TASK_STATE } from "@/types/enums";
+import { Tooltip } from "react-tooltip";
 
 export default function TaskItem({
   task,
@@ -47,7 +48,7 @@ export default function TaskItem({
   }
 
   return (
-    <div className="w-full h-20 px-4 py-2 flex items-center gap-2 border-b even:bg-blue-50 hover:bg-gray-100">
+    <div className="w-full h-20 px-4 py-2 flex items-center gap-2 border-b even:bg-blue-50 hover:bg-gray-100 hover:cursor-pointer">
       <input className="mr-1 shadow-none ring-0 focus:ring-0" type="checkbox" />
       <div className="flex justify-between items-center flex-1 gap-4">
         <div
@@ -72,9 +73,16 @@ export default function TaskItem({
               {task.taskPriority}
             </span>
             <span>{formatDate(task.endDate)}</span>
-            <p className="p-2 w-8 text-xs text-center rounded-full text-white bg-gray-700 aspect-square">
-              {getInitials(ownerName)}
-            </p>
+
+            <a
+              data-tooltip-id="task-ownername"
+              data-tooltip-content={`${ownerName}`}
+            >
+              <p className="p-2 w-8 text-xs text-center rounded-full text-white bg-gray-700 aspect-square">
+                {getInitials(ownerName)}
+              </p>
+            </a>
+            <Tooltip id="task-ownername" />
           </div>
         </div>
       </div>

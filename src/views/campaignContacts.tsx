@@ -6,7 +6,6 @@ import { useContactFilter } from "@/contexts/FilterContactContext";
 import {
   ContactInCadence,
   ContactInCadenceStatistics,
-  getContactsInCampaign,
 } from "@/services/contactsService";
 import Pagination from "@/components/extends/Pagination/Pagination";
 import { useEffect, useState } from "react";
@@ -27,17 +26,17 @@ export default function CampaignContacts({
   const [totalCount, setTotalCount] = useState<number>(0);
 
   const fetchContactsInCadence = () => {
-    runService(
-      { campaignId },
-      getContactsInCampaign,
-      (data) => {
-        console.log("contacts in campaign", data);
-        setContacts(data);
-      },
-      (status, error) => {
-        handleError(status, error);
-      }
-    );
+    // runService(
+    //   { campaignId },
+    //   getContactsInCampaign,
+    //   (data) => {
+    //     console.log("contacts in campaign", data);
+    //     setContacts(data);
+    //   },
+    //   (status, error) => {
+    //     handleError(status, error);
+    //   }
+    // );
   };
 
   const fetchContactsStatistics = () => {

@@ -6,10 +6,48 @@ import FilterItem from "./filter-item";
 import { useContactFilter } from "@/contexts/FilterContactContext";
 import Select from "react-tailwindcss-select";
 import { cadenceStatusOptions, cadenceStepOptions } from "@/data/filter.data";
+import { useEffect, useState } from "react";
+import { handleError, runService } from "@/utils/service_utils";
+import { getMe, getUsers, UserModel } from "@/services/userService";
 
 export default function FilterContact() {
   const { contactFilterConfig, setContactFilterConfig } = useContactFilter();
+  const [fromUserOption, setFromUserOption] = useState([]);
+  const fetchUsers = () => {
+    runService(
+      undefined,
+      getUsers,
+      (users) => {
+        const usersOption = users.map((user: UserModel) => ({
+          value: user.id,
+          label: user.firstName + " " + user.lastName,
+        }));
+        setFromUserOption(usersOption);
+        runService(
+          undefined,
+          getMe,
+          (user) => {
+            setContactFilterConfig({
+              ...contactFilterConfig,
+              owners: usersOption.filter(
+                (option: any) => option.value === user.id
+              ),
+            });
+          },
+          (statusCode, error) => {
+            handleError(statusCode, error);
+          }
+        );
+      },
+      (status, error) => {
+        console.error(error);
+      }
+    );
+  };
 
+  useEffect(() => {
+    fetchUsers();
+  }, []);
   return (
     <div className="card pt-6 px-2 w-64 h-full flex flex-col shadow-lg min-w-[256px]">
       <h3 className="p-2 border-b border-gray-100">Search</h3>
@@ -27,23 +65,30 @@ export default function FilterContact() {
             name="search"
             type="search"
             placeholder="Search Contacts..."
+            value={contactFilterConfig.search}
+            onChange={(e) => {
+              setContactFilterConfig((prev) => ({
+                ...prev,
+                search: e.target.value,
+              }));
+            }}
             className="flex w-full border-0 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
           />
         </form>
         <div>
           <FilterItem
             icon={<ListBulletIcon className="w-4 h-4" />}
-            title="Cadence Status"
+            title="Assignee"
           >
             <Select
-              value={contactFilterConfig.cadenceStatus}
+              value={contactFilterConfig.owners}
               onChange={(value) =>
                 setContactFilterConfig({
                   ...contactFilterConfig,
-                  cadenceStatus: value,
+                  owners: value,
                 })
               }
-              options={cadenceStatusOptions}
+              options={fromUserOption}
               isMultiple={true}
               isSearchable={true}
               primaryColor={"indigo"}
@@ -65,6 +110,7 @@ export default function FilterContact() {
                       : `text-gray-500 hover:bg-blue-100 hover:text-blue-500`
                   }`;
                 },
+
                 searchBox:
                   "text-xs w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none",
                 searchIcon:
@@ -77,11 +123,11 @@ export default function FilterContact() {
             title="Cadence Step"
           >
             <Select
-              value={contactFilterConfig.cadenceStep}
+              value={contactFilterConfig.cadenceSteps}
               onChange={(value) =>
                 setContactFilterConfig({
                   ...contactFilterConfig,
-                  cadenceStep: value,
+                  cadenceSteps: value,
                 })
               }
               options={cadenceStepOptions}
@@ -112,22 +158,6 @@ export default function FilterContact() {
                   "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
               }}
             ></Select>
-          </FilterItem>
-          <FilterItem
-            icon={<ListBulletIcon className="w-4 h-4" />}
-            title="Send Emails From"
-          >
-            <input
-              type="text"
-              className="input-primary w-full"
-              value={contactFilterConfig.sendEmailsFrom}
-              onChange={(e) => {
-                setContactFilterConfig({
-                  ...contactFilterConfig,
-                  sendEmailsFrom: e.target.value,
-                });
-              }}
-            />
           </FilterItem>
         </div>
       </div>
