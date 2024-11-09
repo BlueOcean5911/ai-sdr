@@ -15,6 +15,8 @@ interface FetchTasksProps extends FetchProps {
   priority?: Option | Option[] | null;
   fromUser?: Option | Option[] | null;
   state?: Option | Option[] | null;
+  fromDate?: string;
+  toDate?: string;
   search?: string;
   params: { [key: string]: string };
 }
@@ -137,12 +139,21 @@ export const getTasks = async (
   }
   // ------------ State
 
+  // ---------- From Date
+  if (data.fromDate) {
+    url += `&fromDate=${data.fromDate}`;
+  }
+  if (data.toDate) {
+    url += `&toDate=${data.toDate}`;
+  }
+  // ---------- From Date
   if (data.search) {
     url += `&search=${data.search}`;
   }
   if (searchParams) {
     url += searchParams;
   }
+  console.log("url", url);
   const response = await api.get(url);
 
   return {
@@ -206,7 +217,7 @@ export const getTaskTotalCount = async (
     url += `&states=${state}`;
   }
   // ------------ State
-  
+
   if (data.search) {
     url += `&search=${data.search}`;
   }

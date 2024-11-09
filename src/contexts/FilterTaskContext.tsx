@@ -14,6 +14,8 @@ interface TaskFilterConfig {
   fromUser: Option | Option[] | null;
   priority: Option | Option[] | null;
   state: Option | Option[] | null;
+  fromDate: Date | undefined;
+  toDate: Date | undefined;
   search: string;
 }
 
@@ -33,6 +35,8 @@ export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {
     fromUser: [],
     priority: [],
     state: [stateOptions[0]],
+    fromDate: undefined,
+    toDate: undefined,
     search: "",
   });
 

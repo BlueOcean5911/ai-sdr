@@ -5,6 +5,7 @@ import NextTopLoader from "nextjs-toploader";
 import Head from "next/head"; // Import Head component
 
 import "react-toastify/dist/ReactToastify.css";
+import "react-datepicker/dist/react-datepicker.css";
 import "./globals.css";
 
 import { ThemeProvider } from "next-themes";

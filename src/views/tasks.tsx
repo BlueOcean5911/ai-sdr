@@ -63,6 +63,8 @@ export default function Tasks() {
         limit: limit,
         fromUser: taskFilterConfig.fromUser,
         priority: taskFilterConfig.priority,
+        fromDate: taskFilterConfig.fromDate?.toISOString().slice(0, -5),
+        toDate: taskFilterConfig.toDate?.toISOString().slice(0, -5),
         search: taskFilterConfig.search,
         state: taskFilterConfig.state,
         params,
