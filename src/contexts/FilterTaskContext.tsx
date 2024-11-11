@@ -16,6 +16,8 @@ interface TaskFilterConfig {
   state: Option | Option[] | null;
   fromDate: Date | undefined;
   toDate: Date | undefined;
+  orderBy: string;
+  isAscending: boolean | undefined;
   search: string;
 }
 
@@ -31,18 +33,16 @@ export const TaskFilterContext = createContext<
 export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {
   const [taskFilterConfig, setTaskFilterConfig] = useState<TaskFilterConfig>({
     params: {},
-    isOpen: true,
-    fromUser: [],
-    priority: [],
+    isOpen: false,
+    fromUser: null,
+    priority: null,
     state: [stateOptions[0]],
     fromDate: undefined,
     toDate: undefined,
+    orderBy: "",
+    isAscending: undefined,
     search: "",
   });
-
-  const updateTaskFilterConfig = (config: TaskFilterConfig) => {
-    setTaskFilterConfig(config);
-  };
 
   return (
     <TaskFilterContext.Provider
@@ -56,7 +56,7 @@ export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {
 export const useTaskFilter = (): TaskFilterContextType => {
   const context = useContext(TaskFilterContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error("useTaskFilter must be used within an TaskFilterProvider");
   }
   return context;
 };

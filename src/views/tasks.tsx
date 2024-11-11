@@ -9,6 +9,7 @@ import TaskToolbar from "@/sections/tasks/TaskToolbar";
 import FilterTask from "@/components/Filter/filterTask";
 import TaskOverview from "@/sections/tasks/TaskOverview";
 import Pagination from "@/components/extends/Pagination/Pagination";
+import SortableHeader from "@/components/ui/SortableHeader";
 import Loading from "@/components/Loading";
 
 import {
@@ -32,7 +33,7 @@ export default function Tasks() {
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalCount, setTotalCount] = useState<number>(0);
-  const { taskFilterConfig } = useTaskFilter();
+  const { taskFilterConfig, setTaskFilterConfig } = useTaskFilter();
   const [tasks, setTasks] = useState<TaskModel[]>([]);
   const [loading, setLoading] = useState(false);
   const currentParams = Object.fromEntries(useSearchParams());
@@ -65,6 +66,8 @@ export default function Tasks() {
         priority: taskFilterConfig.priority,
         fromDate: taskFilterConfig.fromDate?.toISOString().slice(0, -5),
         toDate: taskFilterConfig.toDate?.toISOString().slice(0, -5),
+        orderBy: taskFilterConfig.orderBy,
+        isAscending: taskFilterConfig.isAscending,
         search: taskFilterConfig.search,
         state: taskFilterConfig.state,
         params,
@@ -122,6 +125,24 @@ export default function Tasks() {
   const handleEdit = (task: TaskModel) => {
     setFocus(task);
     setCreate(true);
+  };
+
+  const handleChangeSort = (label: string) => {
+    if (taskFilterConfig.orderBy === label)
+      setTaskFilterConfig((config) => {
+        return {
+          ...config,
+          isAscending: !config.isAscending,
+        };
+      });
+    else
+      setTaskFilterConfig((config) => {
+        return {
+          ...config,
+          orderBy: label,
+          isAscending: true,
+        };
+      });
   };
 
   const handleDelete = (taskId: string) => {
@@ -184,32 +205,94 @@ export default function Tasks() {
         </div>
 
         {/* Table */}
-        <div className="flex flex-1 flex-col w-full align-middle overflow-auto">
-          <div className="h-full border rounded-md overflow-auto">
-            {loading ? (
-              <Loading />
-            ) : tasks.length > 0 ? (
-              tasks.map((task: TaskModel) => (
-                <TaskItem
-                  key={task.id}
-                  task={task}
-                  handleEdit={() => handleEdit(task)}
-                  handleDelete={() => handleDelete(task.id)}
-                  handleOverview={() => handleOverview(task)}
-                  handleUpdate={(id, type: TASK_STATE) =>
-                    handleUpdateTask(id, {
-                      status: type,
-                    })
-                  }
-                />
-              ))
-            ) : (
-              <div className="h-full flex flex-1 justify-center items-center">
-                <p>No tasks</p>
-              </div>
-            )}
-          </div>
+        <div className="flex flex-1 flex-col w-full align-middle border rounded-md overflow-auto">
+          {loading ? (
+            <Loading />
+          ) : (
+            <table className="flex-1 w-full">
+              <thead className="sticky top-0 z-10 bg-gray-50 shadow-md">
+                <tr>
+                  <th></th>
+                  <th>
+                    <SortableHeader
+                      label="type"
+                      value="taskType"
+                      orderBy={taskFilterConfig.orderBy}
+                      isAscending={taskFilterConfig.isAscending}
+                      handleChangeSort={handleChangeSort}
+                    />
+                  </th>
+                  <th>
+                    <SortableHeader
+                      label="title"
+                      value="title"
+                      orderBy={taskFilterConfig.orderBy}
+                      isAscending={taskFilterConfig.isAscending}
+                      handleChangeSort={handleChangeSort}
+                    />
+                  </th>
+                  <th>
+                    <SortableHeader
+                      label="associated at"
+                      value="leadId"
+                      orderBy={taskFilterConfig.orderBy}
+                      isAscending={taskFilterConfig.isAscending}
+                      handleChangeSort={handleChangeSort}
+                    />
+                  </th>
+                  <th>
+                    <SortableHeader
+                      label="priority"
+                      value="taskPriority"
+                      orderBy={taskFilterConfig.orderBy}
+                      isAscending={taskFilterConfig.isAscending}
+                      handleChangeSort={handleChangeSort}
+                    />
+                  </th>
+                  <th>
+                    <SortableHeader
+                      label="Due Date"
+                      value="endDate"
+                      orderBy={taskFilterConfig.orderBy}
+                      isAscending={taskFilterConfig.isAscending}
+                      handleChangeSort={handleChangeSort}
+                    />
+                  </th>
+                  <th>
+                    <SortableHeader
+                      label="owner"
+                      value="ownerId"
+                      orderBy={taskFilterConfig.orderBy}
+                      isAscending={taskFilterConfig.isAscending}
+                      handleChangeSort={handleChangeSort}
+                    />
+                  </th>
+                  <th className="py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {tasks.map((task: TaskModel) => (
+                  <TaskItem
+                    key={task.id}
+                    task={task}
+                    handleEdit={() => handleEdit(task)}
+                    handleDelete={() => handleDelete(task.id)}
+                    handleOverview={() => handleOverview(task)}
+                    handleUpdate={(id, type: TASK_STATE) =>
+                      handleUpdateTask(id, {
+                        status: type,
+                      })
+                    }
+                  />
+                ))}
+                <tr></tr>
+              </tbody>
+            </table>
+          )}
         </div>
+
         {/* Pagination */}
         <div className="flex justify-end">
           <Pagination

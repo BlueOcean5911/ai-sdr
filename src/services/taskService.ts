@@ -17,6 +17,8 @@ interface FetchTasksProps extends FetchProps {
   state?: Option | Option[] | null;
   fromDate?: string;
   toDate?: string;
+  orderBy?: string;
+  isAscending?: boolean | undefined;
   search?: string;
   params: { [key: string]: string };
 }
@@ -147,6 +149,12 @@ export const getTasks = async (
     url += `&toDate=${data.toDate}`;
   }
   // ---------- From Date
+  if (data.orderBy) {
+    url += `&orderBy=${data.orderBy}`;
+  }
+  if (data.isAscending !== undefined) {
+    url += `&isAscending=${data.isAscending}`;
+  }
   if (data.search) {
     url += `&search=${data.search}`;
   }

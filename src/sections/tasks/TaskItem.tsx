@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
@@ -70,61 +71,70 @@ export default function TaskItem({
   }
 
   return (
-    <div className="w-full h-20 px-4 py-2 flex items-center gap-2 border-b even:bg-blue-50 hover:bg-gray-100 hover:cursor-pointer">
-      <input className="mr-1 shadow-none ring-0 focus:ring-0" type="checkbox" />
-      <div className="size-10">{taskTypeIcons[task.taskType as TaskType]}</div>
-      <div className="flex justify-between items-center flex-1 gap-4">
-        <div
-          className="w-1/2 min-w-12 max-w-96 lg:max-w-xl xl:max-w-2xl flex flex-1 flex-col gap-1 overflow-hidden cursor-pointer"
-          onClick={handleOverview}
-        >
+    <tr className="group h-20 even:bg-blue-50 hover:bg-gray-100 hover:cursor-pointer border-b">
+      <td className="px-4 py-2 w-10">
+        <input
+          className="mr-1 shadow-none ring-0 focus:ring-0"
+          type="checkbox"
+        />
+      </td>
+      <td className="pr-4 py-2 w-14">
+        <div className="size-10">
+          {taskTypeIcons[task.taskType as TaskType]}
+        </div>
+      </td>
+      <td className="w-1/3 pr-4 py-2" onClick={handleOverview}>
+        <div className="flex flex-col gap-1">
           <span className="text-sm font-semibold text-blue-900 line-clamp-1">
             {task.title}
           </span>
           <span className="text-xs line-clamp-1">{task.content}</span>
         </div>
-
+      </td>
+      <td className="w-1/3 pr-4 py-2">
         {lead && (
-          <>
+          <div className="flex flex-row gap-2 items-center">
             <p className="p-2 w-8 h-8 text-xs text-center rounded-full text-white bg-blue-700 aspect-square">
               {getInitials(
                 (lead?.firstName ?? "") + " " + (lead?.lastName ?? "")
               )}
             </p>
-            <div className="w-1/2 min-w-12 max-w-96 lg:max-w-xl xl:max-w-2xl flex flex-1 flex-col gap-1 overflow-hidden cursor-pointer">
-              <span className="text-sm font-semibold text-blue-900 line-clamp-1">
+            <div className="flex flex-col gap-1">
+              <Link
+                href={`/leads/${lead.id}`}
+                className="text-sm font-semibold text-blue-900 line-clamp-1 hover:underline"
+              >
                 {lead?.firstName} {lead?.lastName}
-              </span>
+              </Link>
               <span className="text-xs line-clamp-1">
                 {lead?.title} at {lead?.company?.name}
               </span>
             </div>
-          </>
-        )}
-
-        <div className="min-w-44 flex flex-row justify-between items-center gap-2">
-          <div className="flex items-center gap-4 text-xs">
-            <span
-              className={`px-2 py-0.5 min-w-16 flex flex-1 justify-center capitalize rounded-full ${task.taskPriority} text-white`}
-            >
-              {task.taskPriority}
-            </span>
-            <span>{formatDate(task.endDate)}</span>
-
-            <a
-              data-tooltip-id="task-ownername"
-              data-tooltip-content={`${ownerName}`}
-            >
-              <p className="p-2 w-8 text-xs text-center rounded-full text-white bg-gray-700 aspect-square">
-                {getInitials(ownerName)}
-              </p>
-            </a>
-            <Tooltip id="task-ownername" />
           </div>
-        </div>
-      </div>
-
-      <div className="flex items-center">
+        )}
+      </td>
+      <td className="pr-4 py-2">
+        <span
+          className={`max-w-16 flex flex-1 justify-center text-sm capitalize rounded-full ${task.taskPriority} text-white`}
+        >
+          {task.taskPriority}
+        </span>
+      </td>
+      <td>
+        <span className="text-sm">{formatDate(task.endDate)}</span>
+      </td>
+      <td>
+        <a
+          data-tooltip-id="task-ownername"
+          data-tooltip-content={`${ownerName}`}
+        >
+          <p className="p-2 w-8 text-xs text-center rounded-full text-white bg-gray-700 aspect-square">
+            {getInitials(ownerName)}
+          </p>
+        </a>
+        <Tooltip id="task-ownername" className="z-20" />
+      </td>
+      <td className="px-4 py-2 w-12">
         <Menu>
           <MenuButton className="">
             <div className="p-1 border rounded-md">
@@ -166,7 +176,7 @@ export default function TaskItem({
               ))}
           </MenuItems>
         </Menu>
-      </div>
-    </div>
+      </td>
+    </tr>
   );
 }
