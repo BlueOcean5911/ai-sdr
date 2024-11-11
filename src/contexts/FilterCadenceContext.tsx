@@ -13,6 +13,8 @@ interface CadenceFilterConfig {
   starred: boolean;
   ownedBy: Option | Option[] | null;
   campaignId: string;
+  orderBy: string;
+  isAscending: boolean | undefined;
   search: string;
 }
 
@@ -39,6 +41,8 @@ export const CadenceFilterProvider = ({
       starred: false,
       ownedBy: [],
       campaignId: "",
+      orderBy: "",
+      isAscending: undefined,
       search: "",
     });
 
@@ -58,7 +62,9 @@ export const CadenceFilterProvider = ({
 export const useCadenceFilter = (): CadenceFilterContextType => {
   const context = useContext(CadenceFilterContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an ");
+    throw new Error(
+      "useCadenceFilter must be used within an CadenceFilterProvider"
+    );
   }
   return context;
 };
