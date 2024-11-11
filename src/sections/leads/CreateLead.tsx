@@ -147,11 +147,9 @@ export default function CreateLead({
                       workEmail: Yup.string()
                         .required("Work Email is required")
                         .email("Invalid Email"),
-                      // emailStatus: Yup.string().required("Status is required"),
                       primaryPhone: Yup.string().required(
                         "Primary Phone is required"
                       ),
-                      // phoneStatus: Yup.string().required("Status is required"),
                       title: Yup.string().required("Job Title is required"),
                       companyId: Yup.string().required("Company is required"),
                       linkedin: Yup.string()
@@ -166,9 +164,7 @@ export default function CreateLead({
                       annualRevenue: Yup.string().required(
                         "Annual Revenue is required"
                       ),
-                      // ownerId: Yup.string().required(
-                      //   "Lead Owner is required"
-                      // ),
+                      ownerId: Yup.string().required("Lead Owner is required"),
                     })}
                     onSubmit={async (
                       values,
@@ -512,17 +508,19 @@ export default function CreateLead({
 
                           <div className="flex flex-col">
                             <label htmlFor="companyId">Company</label>
-                            <RSelect
-                              value={companyOptions.find(
+                            <Select
+                              data={companyOptions}
+                              defaultValue={companyOptions.find(
                                 (option) => option.value === values.companyId
                               )}
-                              data={companyOptions}
-                              onChange={(item) => {
-                                if (values.companyId !== item?.value) {
-                                  setFieldValue("companyId", item?.value);
-                                }
+                              onChange={(selectedItem) => {
+                                if (
+                                  selectedItem &&
+                                  selectedItem.value !== values.companyId
+                                )
+                                  setFieldValue("companyId", selectedItem.value);
                               }}
-                            ></RSelect>
+                            ></Select>
                             {touched.companyId && errors.companyId && (
                               <FormHelperText>
                                 {errors.companyId}
