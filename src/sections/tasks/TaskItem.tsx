@@ -42,7 +42,7 @@ export default function TaskItem({
   };
 
   const fetchLead = () => {
-    if (!task.leadId) return;
+    if (!task.leadId || task.leadId === "none") return;
     runService(
       { id: task.leadId },
       getLeadById,
@@ -84,19 +84,22 @@ export default function TaskItem({
           <span className="text-xs line-clamp-1">{task.content}</span>
         </div>
 
-        <p className="p-2 w-8 h-8 text-xs text-center rounded-full text-white bg-blue-700 aspect-square">
-          {getInitials((lead?.firstName ?? "") + " " + (lead?.lastName ?? ""))}
-        </p>
-
         {lead && (
-          <div className="w-1/2 min-w-12 max-w-96 lg:max-w-xl xl:max-w-2xl flex flex-1 flex-col gap-1 overflow-hidden cursor-pointer">
-            <span className="text-sm font-semibold text-blue-900 line-clamp-1">
-              {lead?.firstName} {lead?.lastName}
-            </span>
-            <span className="text-xs line-clamp-1">
-              {lead?.title} at {lead?.company?.name}
-            </span>
-          </div>
+          <>
+            <p className="p-2 w-8 h-8 text-xs text-center rounded-full text-white bg-blue-700 aspect-square">
+              {getInitials(
+                (lead?.firstName ?? "") + " " + (lead?.lastName ?? "")
+              )}
+            </p>
+            <div className="w-1/2 min-w-12 max-w-96 lg:max-w-xl xl:max-w-2xl flex flex-1 flex-col gap-1 overflow-hidden cursor-pointer">
+              <span className="text-sm font-semibold text-blue-900 line-clamp-1">
+                {lead?.firstName} {lead?.lastName}
+              </span>
+              <span className="text-xs line-clamp-1">
+                {lead?.title} at {lead?.company?.name}
+              </span>
+            </div>
+          </>
         )}
 
         <div className="min-w-44 flex flex-row justify-between items-center gap-2">

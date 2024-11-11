@@ -49,19 +49,12 @@ export default function CadenceItem({
   };
 
   return (
-    <div className="w-full h-20 py-2 flex items-center border-b even:bg-blue-50 hover:bg-gray-300">
-      <div className="px-4">
+    <tr className="h-20 even:bg-blue-50 hover:bg-gray-300">
+      <td className="pl-4">
         <input className="shadow-none ring-0 focus:ring-0" type="checkbox" />
-      </div>
-      {/* <Link
-        className="flex items-center flex-1 gap-2 cursor-pointer"
-        href={`/cadences/${cadence.id}`}
-      > */}
-      <div
-        className="flex items-center flex-1 gap-2 cursor-pointer"
-        onClick={() => router.push(`/cadences/${cadence.id}`)}
-      >
-        <div className="min-w-64 flex flex-1 flex-col gap-1.5">
+      </td>
+      <td className="min-w-64">
+        <div className="flex flex-col gap-1.5">
           <Link href={`/cadences/${cadence.id}`}>
             <div className="text-base font-semibold hover:underline">
               {cadence.name}
@@ -73,90 +66,89 @@ export default function CadenceItem({
             </span>
             <span className="text-gray-300">*</span>
             <span>{cadence.stepsCount} steps</span>
-            {/* <span className="text-gray-300">*</span>
-            <span>-</span> */}
           </div>
         </div>
-        <div className="flex flex-col gap-0.5">
-          <div className="flex text-xs px-2 border-x-2 border-dashed">
-            <div className="w-min-15 px-2">
-              <div>{cadence.activeCount}</div>
-              <div className="text-nowrap">Active</div>
-            </div>
-            <div className="w-min-15 px-2">
-              <div>{cadence.pausedCount}</div>
-              <div className="text-nowrap">Paused</div>
-            </div>
-            <div className="w-min-15 px-2">
-              <div>{cadence.bouncedCount}</div>
-              <div className="text-nowrap">Bounced</div>
-            </div>
-            <div className="w-min-15 px-2">
-              <div>{cadence.finishedCount}</div>
-              <div className="text-nowrap">Finished</div>
-            </div>
-            <div className="w-min-15 px-2">
-              <div>{0}</div>
-              <div className="text-nowrap">Succeeded</div>
-            </div>
+      </td>
+      <td>
+        <div className="flex text-xs px-2 border-x-2 border-dashed">
+          <div className="w-min-15 px-2">
+            <div>{cadence.activeCount}</div>
+            <div className="text-nowrap">Active</div>
+          </div>
+          <div className="w-min-15 px-2">
+            <div>{cadence.pausedCount}</div>
+            <div className="text-nowrap">Paused</div>
+          </div>
+          <div className="w-min-15 px-2">
+            <div>{cadence.bouncedCount}</div>
+            <div className="text-nowrap">Bounced</div>
+          </div>
+          <div className="w-min-15 px-2">
+            <div>{cadence.finishedCount}</div>
+            <div className="text-nowrap">Finished</div>
+          </div>
+          <div className="w-min-15 px-2">
+            <div>{0}</div>
+            <div className="text-nowrap">Succeeded</div>
           </div>
         </div>
-      </div>
-      {/* </Link> */}
-      <div className="w-36 px-4 flex justify-between items-center gap-2">
-        <div className="w-8 h-5">
-          <ToggleButton
-            checked={active ? active : false}
-            handleChange={() => handleUpdateActive()}
-          />
+      </td>
+      <td className="w-36 px-4">
+        <div className="flex justify-between items-center gap-2">
+          <div className="w-8 h-5">
+            <ToggleButton
+              checked={active ? active : false}
+              handleChange={() => handleUpdateActive()}
+            />
+          </div>
+          <div>
+            <StarIcon
+              className={`w-5 h-5 cursor-pointer ${
+                starred ? "fill-blue-900 stroke-blue-900" : "stroke-gray-500"
+              }`}
+              onClick={() => handleUpdateStarred()}
+            />
+          </div>
+          <Menu>
+            <MenuButton>
+              <div className="p-1 border rounded-md hover:bg-white">
+                <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
+              </div>
+            </MenuButton>
+            <MenuItems
+              anchor="bottom end"
+              className="flex flex-col w-20 origin-top bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
+            >
+              <MenuItem>
+                <button
+                  className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                  onClick={() => setStarred(!starred)}
+                >
+                  {starred ? "Unstar" : "Star"}
+                </button>
+              </MenuItem>
+              <MenuItem>
+                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                  Achieve
+                </button>
+              </MenuItem>
+              <MenuItem>
+                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                  Clone
+                </button>
+              </MenuItem>
+              <MenuItem>
+                <Link
+                  href={`/cadences/${cadence.id}`}
+                  className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                >
+                  Manage
+                </Link>
+              </MenuItem>
+            </MenuItems>
+          </Menu>
         </div>
-        <div className="">
-          <StarIcon
-            className={`w-5 h-5 cursor-pointer ${
-              starred ? "fill-blue-900 stroke-blue-900" : "stroke-gray-500"
-            }`}
-            onClick={() => handleUpdateStarred()}
-          />
-        </div>
-        <Menu>
-          <MenuButton className="">
-            <div className="p-1 border rounded-md hover:bg-white">
-              <EllipsisHorizontalIcon className="w-5 h-5 stroke-gray-500" />
-            </div>
-          </MenuButton>
-          <MenuItems
-            anchor="bottom end"
-            className="flex flex-col w-20 origin-top bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
-          >
-            <MenuItem>
-              <button
-                className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
-                onClick={() => setStarred(!starred)}
-              >
-                {starred ? "Unstar" : "Star"}
-              </button>
-            </MenuItem>
-            <MenuItem>
-              <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                Achieve
-              </button>
-            </MenuItem>
-            <MenuItem>
-              <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                Clone
-              </button>
-            </MenuItem>
-            <MenuItem>
-              <button
-                className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
-                onClick={() => router.push(`/cadences/${cadence.id}`)}
-              >
-                Manage
-              </button>
-            </MenuItem>
-          </MenuItems>
-        </Menu>
-      </div>
-    </div>
+      </td>
+    </tr>
   );
 }
