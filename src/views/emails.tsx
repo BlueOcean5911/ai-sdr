@@ -6,6 +6,7 @@ import Pagination from "@/components/extends/Pagination/Pagination";
 import FilterEmail from "@/components/Filter/filterEmail";
 import EmailToolbar from "@/sections/emails/EmailToolbar";
 import EmailItem from "@/sections/emails/EmailItem";
+import SortableHeader from "@/components/ui/SortableHeader";
 import Loading from "@/components/Loading";
 
 import {
@@ -15,6 +16,7 @@ import {
 } from "@/services/mailingService";
 import { useEmailFilter } from "@/contexts/FilterEmailContext";
 import { handleError, runService } from "@/utils/service_utils";
+import CheckBox from "@/components/extends/CheckBox";
 
 export default function Emails(
   { campaignId, cadenceId }: { campaignId?: string; cadenceId?: string } = {
@@ -25,9 +27,8 @@ export default function Emails(
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalCount, setTotalCount] = useState<number>(0);
-  const { emailFilterConfig } = useEmailFilter();
+  const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
   const [mailings, setMailings] = useState<MailingModel[]>([]);
-  const currentParams = Object.fromEntries(useSearchParams());
   const [loading, setLoading] = useState(false);
 
   const fetchMailings = (params: { [key: string]: string }) => {
@@ -83,6 +84,24 @@ export default function Emails(
     fetchMailings(emailFilterConfig.params);
   }, [emailFilterConfig, currentPage, pageSize]);
 
+  const handleChangeSort = (label: string) => {
+    console.log(label);
+    if (emailFilterConfig.orderBy === label)
+      setEmailFilterConfig((config) => {
+        return {
+          ...config,
+          isAscending: !config.isAscending,
+        };
+      });
+    else
+      setEmailFilterConfig((config) => {
+        return {
+          ...config,
+          orderBy: label,
+          isAscending: true,
+        };
+      });
+  };
   return (
     <div className="flex gap-4 p-4 flex-1 overflow-auto">
       {emailFilterConfig.isOpen && <FilterEmail />}
@@ -92,20 +111,70 @@ export default function Emails(
         </div>
 
         {/* Table */}
-        <div className="flex flex-1 flex-col w-full align-middle overflow-auto">
-          <div className="w-full h-full border rounded-md overflow-auto">
-            {loading ? (
-              <Loading />
-            ) : mailings.length > 0 ? (
-              mailings.map((mailing: MailingModel) => (
-                <EmailItem key={mailing.id} mailing={mailing} />
-              ))
-            ) : (
-              <div className="h-full flex flex-1 justify-center items-center">
-                <p className="text-gray-900 text-sm">No mailings</p>
-              </div>
-            )}
-          </div>
+        <div className="flex flex-1 flex-col w-full align-middle border rounded-md overflow-auto">
+          {loading ? (
+            <Loading />
+          ) : mailings.length > 0 ? (
+            <table className="flex-1 w-full">
+              <thead className="sticky top-0 z-10 bg-gray-50 shadow-md">
+                <tr className="text-nowrap">
+                  <th></th>
+                  <th>
+                    <SortableHeader
+                      label="to"
+                      value="to"
+                      orderBy={emailFilterConfig.orderBy}
+                      isAscending={emailFilterConfig.isAscending}
+                      handleChangeSort={handleChangeSort}
+                    />
+                  </th>
+                  <th>
+                    <SortableHeader
+                      label="title"
+                      value="title"
+                      orderBy={emailFilterConfig.orderBy}
+                      isAscending={emailFilterConfig.isAscending}
+                      handleChangeSort={handleChangeSort}
+                    />
+                  </th>
+                  <th className="py-3 text-left text-xs uppercase text-gray-500">
+                    From
+                  </th>
+                  <th>
+                    <SortableHeader
+                      label="state"
+                      value="state"
+                      orderBy={emailFilterConfig.orderBy}
+                      isAscending={emailFilterConfig.isAscending}
+                      handleChangeSort={handleChangeSort}
+                    />
+                  </th>
+                  <th>
+                    <SortableHeader
+                      label="received at"
+                      value="cretedAt"
+                      orderBy={emailFilterConfig.orderBy}
+                      isAscending={emailFilterConfig.isAscending}
+                      handleChangeSort={handleChangeSort}
+                    />
+                  </th>
+                  <th className="py-3 text-left text-xs uppercase text-gray-500">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white">
+                {mailings.map((mailing: MailingModel) => (
+                  <EmailItem key={mailing.id} mailing={mailing} />
+                ))}
+                <tr></tr>
+              </tbody>
+            </table>
+          ) : (
+            <div className="h-full flex flex-1 justify-center items-center">
+              <p className="text-gray-900 text-sm">No mailings</p>
+            </div>
+          )}
         </div>
         {/* Pagination */}
         <div className="flex justify-end">
