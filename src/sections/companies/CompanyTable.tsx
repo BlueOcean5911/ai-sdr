@@ -23,9 +23,10 @@ import { handleError, runService } from "@/utils/service_utils";
 import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
 import { useCompanySelection } from "@/contexts/CompanySelectionContext";
 import { CountModel } from "@/types";
+import SortableHeader from "@/components/ui/SortableHeader";
 
 const CompanyTable = () => {
-  const { companyFilterConfig } = useCompanyFilter();
+  const { companyFilterConfig, setCompanyFilterConfig } = useCompanyFilter();
   const {
     totalCompanies,
     setTotalCompanies,
@@ -147,6 +148,25 @@ const CompanyTable = () => {
     setSelected(undefined);
   };
 
+  const handleChangeSort = (label: string) => {
+    console.log(label);
+    if (companyFilterConfig.orderBy === label)
+      setCompanyFilterConfig((config) => {
+        return {
+          ...config,
+          isAscending: !config.isAscending,
+        };
+      });
+    else
+      setCompanyFilterConfig((config) => {
+        return {
+          ...config,
+          orderBy: label,
+          isAscending: true,
+        };
+      });
+  };
+
   return (
     <>
       <div className="flex-1 flex flex-col overflow-auto">
@@ -162,59 +182,72 @@ const CompanyTable = () => {
           handleClose={() => setOverview(false)}
         />
         {/* Table */}
-        <div className="flex-1 overflow-auto">
+        <div className="flex flex-1 flex-col w-full align-middle border rounded-md overflow-auto">
           {loading ? (
             <Loading />
           ) : (
-            <table className="min-w-full divide-y divide-gray-300 overflow-auto">
-              <thead className="bg-white sticky top-0 z-10">
-                <tr>
+            <table className="flex-1 w-full">
+              <thead className="sticky top-0 z-10 bg-gray-50 shadow-md">
+                <tr className="text-nowrap">
                   <th
                     scope="col"
-                    className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
+                    className="flex gap-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-500 sm:pl-3"
                   >
-                    <div className="flex gap-2">
-                      <CheckBox
-                        id="All Selection"
-                        content=""
-                        checked={allSelected}
-                        onChange={(id, checked) => {
-                          handleAllSelected(id, checked);
-                          setAllSelected(!allSelected);
-                        }}
-                      />{" "}
-                      Company Name
-                    </div>
+                    <CheckBox
+                      id="All Selection"
+                      content=""
+                      checked={allSelected}
+                      onChange={(id, checked) => {
+                        handleAllSelected(id, checked);
+                        setAllSelected(!allSelected);
+                      }}
+                    />
+                    <SortableHeader
+                      label="company name"
+                      value="name"
+                      orderBy={companyFilterConfig.orderBy}
+                      isAscending={companyFilterConfig.isAscending}
+                      handleChangeSort={handleChangeSort}
+                    />
                   </th>
                   <th
                     scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-500"
                   >
                     Action
                   </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Employees
+                  <th>
+                    <SortableHeader
+                      label="employees"
+                      value="size"
+                      orderBy={companyFilterConfig.orderBy}
+                      isAscending={companyFilterConfig.isAscending}
+                      handleChangeSort={handleChangeSort}
+                    />
+                  </th>
+                  <th>
+                    <SortableHeader
+                      label="industry"
+                      value="industry"
+                      orderBy={companyFilterConfig.orderBy}
+                      isAscending={companyFilterConfig.isAscending}
+                      handleChangeSort={handleChangeSort}
+                    />
                   </th>
                   <th
                     scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Industry
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 min-w-72"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-500 min-w-72"
                   >
                     Keywords
                   </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Locaiton
+                  <th>
+                    <SortableHeader
+                      label="location"
+                      value="country"
+                      orderBy={companyFilterConfig.orderBy}
+                      isAscending={companyFilterConfig.isAscending}
+                      handleChangeSort={handleChangeSort}
+                    />
                   </th>
                 </tr>
               </thead>
@@ -222,7 +255,7 @@ const CompanyTable = () => {
                 {totalCompanies.map((company: CompanyModel) => (
                   <tr
                     key={company.id}
-                    className="even:bg-blue-50 hover:bg-gray-300 cursor-pointer"
+                    className="h-20 even:bg-blue-50 hover:bg-gray-300 cursor-pointer"
                   >
                     <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       <div className="flex gap-2">
@@ -323,13 +356,7 @@ const CompanyTable = () => {
                             </a>
                             <Tooltip
                               id={`my-tooltip-company-keywords-${company.id}`}
-                              place="top"
-                              style={
-                                {
-                                  // backgroundColor: "rgb(255, 255, 255)",
-                                  // color: "#222",
-                                }
-                              }
+                              className="z-20"
                             >
                               <div className="flex gap-2 flex-wrap max-w-72 justify-center">
                                 {company?.keywords
@@ -350,6 +377,7 @@ const CompanyTable = () => {
                     </td>
                   </tr>
                 ))}
+                <tr></tr>
               </tbody>
             </table>
           )}

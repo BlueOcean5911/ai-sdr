@@ -18,21 +18,25 @@ export interface LeadFilterConfig {
   city: string;
   employee: Option | Option[] | null;
   industry: string;
+  orderBy: string;
+  isAscending: boolean | undefined;
+  search: string;
 }
 
-export const getDefaultLeadFilterConfig = () => {
-  return {
-    createdLeadId: "",
-    isOpen: true,
-    persona: [],
-    title: "",
-    company: "",
-    country: "",
-    state: "",
-    city: "",
-    employee: [],
-    industry: "",
-  };
+export const defaultLeadFilterConfig: LeadFilterConfig = {
+  createdLeadId: "",
+  isOpen: true,
+  persona: null,
+  title: "",
+  company: "",
+  country: "",
+  state: "",
+  city: "",
+  employee: null,
+  industry: "",
+  orderBy: "",
+  isAscending: undefined,
+  search: "",
 };
 
 interface LeadFilterContextType {
@@ -45,18 +49,9 @@ export const LeadFilterContext = createContext<
 >(undefined);
 
 export const LeadFilterProvider = ({ children }: { children: ReactNode }) => {
-  const [leadFilterConfig, setLeadFilterConfig] = useState<LeadFilterConfig>({
-    createdLeadId: "",
-    isOpen: true,
-    persona: [],
-    title: "",
-    company: "",
-    country: "",
-    state: "",
-    city: "",
-    employee: [],
-    industry: "",
-  });
+  const [leadFilterConfig, setLeadFilterConfig] = useState<LeadFilterConfig>(
+    defaultLeadFilterConfig
+  );
 
   return (
     <LeadFilterContext.Provider
@@ -70,7 +65,7 @@ export const LeadFilterProvider = ({ children }: { children: ReactNode }) => {
 export const useLeadFilter = (): LeadFilterContextType => {
   const context = useContext(LeadFilterContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error("useLeadFilter must be used within an LeadFilterProvider");
   }
   return context;
 };

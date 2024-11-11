@@ -3,7 +3,7 @@ import { ApiSuccessResponse, CountModel, FetchProps } from "@/types";
 import { EMAIL_STATUS } from "@/types/enums";
 import { CompanyModel } from "./companyService";
 import {
-  getDefaultLeadFilterConfig,
+  defaultLeadFilterConfig,
   LeadFilterConfig,
 } from "@/contexts/FilterLeadContext";
 interface FetchLeadsProps extends FetchProps {
@@ -91,59 +91,7 @@ export const addLead = async (lead: BaseLeadModel) => {
   }
   console.log("response", response);
   return {
-    data: {
-      id: response?.data?.id,
-      firstName: response?.data?.firstName,
-      lastName: response?.data?.lastName,
-      title: response?.data?.title,
-      email: response?.data?.email,
-      emailStatus: response?.data?.emailStatus,
-      workEmail: response?.data?.workEmail,
-      workEmailStatus: response?.data?.workEmailStatus,
-      primaryPhone: response?.data?.primaryPhone,
-      primaryPhoneStatus: response?.data?.primaryPhoneStatus,
-      mobilePhone: response?.data?.mobilePhone,
-      mobilePhoneStatus: response?.data?.mobilePhoneStatus,
-      workPhone: response?.data?.workPhone,
-      workPhoneStatus: response?.data?.workPhoneStatus,
-      streetAddress: response?.data?.streetAddress,
-      city: response?.data?.city,
-      state: response?.data?.state,
-      country: response?.data?.country,
-      timeZone: response?.data?.timeZone,
-      annualRevenue: response?.data?.annualRevenue,
-      source: response?.data?.source,
-      stage: response?.data?.stage,
-      linkedin: response?.data?.linkedin,
-      companyId: response?.data?.companyId,
-      clickCount: response?.data?.clickCount,
-      replyCount: response?.data?.replyCount,
-      targeted: response?.data?.targeted,
-      personalNote1: response?.data?.personalNote1,
-      ownerId: response?.data?.ownerId,
-      company: {
-        id: response?.data?.company?.id,
-        name: response?.data?.company?.name,
-        companyType: response?.data?.company?.companyType,
-        phone: response?.data?.company?.phone,
-        phoneStatus: response?.data?.company?.phoneStatus,
-        size: response?.data?.company?.size,
-        industry: response?.data?.company?.industry,
-        description: response?.data?.company?.description,
-        website: response?.data?.company?.website,
-        linkedin: response?.data?.company?.linkedin,
-        streetAddress: response?.data?.company?.streetAddress,
-        city: response?.data?.company?.city,
-        state: response?.data?.company?.state,
-        country: response?.data?.company?.country,
-        postalCode: response?.data?.company?.postalCode,
-        yearFounded: response?.data?.company?.yearFounded,
-        domain: response?.data?.company?.domain,
-        annualRevenue: response?.data?.company?.annualRevenue,
-        stage: response?.data?.company?.stage,
-        keywords: response?.data?.company?.keywords,
-      },
-    },
+    data: response?.data,
   };
 };
 
@@ -158,59 +106,7 @@ export const updateLead = async (data: {
   }
   console.log("response", response);
   return {
-    data: {
-      id: response?.data?.id,
-      firstName: response?.data?.firstName,
-      lastName: response?.data?.lastName,
-      title: response?.data?.title,
-      email: response?.data?.email,
-      emailStatus: response?.data?.emailStatus,
-      workEmail: response?.data?.workEmail,
-      workEmailStatus: response?.data?.workEmailStatus,
-      primaryPhone: response?.data?.primaryPhone,
-      primaryPhoneStatus: response?.data?.primaryPhoneStatus,
-      mobilePhone: response?.data?.mobilePhone,
-      mobilePhoneStatus: response?.data?.mobilePhoneStatus,
-      workPhone: response?.data?.workPhone,
-      workPhoneStatus: response?.data?.workPhoneStatus,
-      streetAddress: response?.data?.streetAddress,
-      city: response?.data?.city,
-      state: response?.data?.state,
-      country: response?.data?.country,
-      timeZone: response?.data?.timeZone,
-      annualRevenue: response?.data?.annualRevenue,
-      source: response?.data?.source,
-      stage: response?.data?.stage,
-      linkedin: response?.data?.linkedin,
-      companyId: response?.data?.companyId,
-      clickCount: response?.data?.clickCount,
-      replyCount: response?.data?.replyCount,
-      targeted: response?.data?.targeted,
-      personalNote1: response?.data?.personalNote1,
-      ownerId: response?.data?.ownerId,
-      company: {
-        id: response?.data?.company?.id,
-        name: response?.data?.company?.name,
-        companyType: response?.data?.company?.companyType,
-        phone: response?.data?.company?.phone,
-        phoneStatus: response?.data?.company?.phoneStatus,
-        size: response?.data?.company?.size,
-        industry: response?.data?.company?.industry,
-        description: response?.data?.company?.description,
-        website: response?.data?.company?.website,
-        linkedin: response?.data?.company?.linkedin,
-        streetAddress: response?.data?.company?.streetAddress,
-        city: response?.data?.company?.city,
-        state: response?.data?.company?.state,
-        country: response?.data?.company?.country,
-        postalCode: response?.data?.company?.postalCode,
-        yearFounded: response?.data?.company?.yearFounded,
-        domain: response?.data?.company?.domain,
-        annualRevenue: response?.data?.company?.annualRevenue,
-        stage: response?.data?.company?.stage,
-        keywords: response?.data?.company?.keywords,
-      },
-    },
+    data: response?.data,
   };
 };
 
@@ -219,97 +115,38 @@ export const getLeads = async (
     offset: 0,
     limit: 100,
     targeted: undefined,
-    filter: getDefaultLeadFilterConfig(),
+    filter: defaultLeadFilterConfig,
   }
 ): Promise<ApiLeadsResponse> => {
   const { offset, limit, targeted } = data;
-  const { title, company, industry, country, state, city } = data.filter;
+  const {
+    title,
+    company,
+    industry,
+    country,
+    state,
+    city,
+    orderBy,
+    isAscending,
+  } = data.filter;
   let url = `/api/leads/?offset=${offset}&limit=${limit}`;
 
-  if (targeted) {
-    url += `&targeted=true`;
-  }
-  if (title) {
-    url += `&jobTitle=${title}`;
-  }
-  if (company) {
-    url += `&companyName=${company}`;
-  }
-  if (industry) {
-    url += `&industry=${industry}`;
-  }
-  if (country) {
-    url += `&country=${country}`;
-  }
-  if (state) {
-    url += `&state=${state}`;
-  }
-  if (city) {
-    url += `&city=${city}`;
-  }
+  if (targeted) url += `&targeted=true`;
+  if (title) url += `&jobTitle=${title}`;
+  if (company) url += `&companyName=${company}`;
+  if (country) url += `&country=${country}`;
+  if (state) url += `&state=${state}`;
+  if (city) url += `&city=${city}`;
+  if (industry) url += `&industry=${industry}`;
+  if (orderBy) url += `&orderBy=${orderBy}`;
+  if (isAscending !== undefined) url += `&isAscending=${isAscending}`;
+  console.log("url", url);
 
   const response = await api.get(url);
   console.log("response leads", response);
-  let leads: Array<LeadModelWithCompanyModel> = [];
-  response.data.forEach((item: any) => {
-    leads.push({
-      id: item?.id,
-      firstName: item?.firstName,
-      lastName: item?.lastName,
-      title: item?.title,
-      email: item?.email,
-      emailStatus: item?.emailStatus,
-      workEmail: item?.workEmail,
-      workEmailStatus: item?.workEmailStatus,
-      primaryPhone: item?.primaryPhone,
-      primaryPhoneStatus: item?.primaryPhoneStatus,
-      mobilePhone: item?.mobilePhone,
-      mobilePhoneStatus: item?.mobilePhoneStatus,
-      workPhone: item?.workPhone,
-      workPhoneStatus: item?.workPhoneStatus,
-      streetAddress: item?.streetAddress,
-      city: item?.city,
-      state: item?.state,
-      country: item?.country,
-      timeZone: item?.timeZone,
-      annualRevenue: item?.annualRevenue,
-      source: item?.source,
-      stage: item?.stage,
-      linkedin: item?.linkedin,
-      companyId: item?.companyId,
-      clickCount: item?.clickCount,
-      replyCount: item?.replyCount,
-      targeted: item?.targeted,
-      personalNote1: item?.personalNote1,
-      ownerId: item?.ownerId,
-      company: {
-        id: item?.company?.id,
-        name: item?.company?.name,
-        companyType: item?.company?.companyType,
-        phone: item?.company?.phone,
-        phoneStatus: item?.company?.phoneStatus,
-        size: item?.company?.size,
-        industry: item?.company?.industry,
-        description: item?.company?.description,
-        website: item?.company?.website,
-        linkedin: item?.company?.linkedin,
 
-        streetAddress: item?.company?.streetAddress,
-        city: item?.company?.city,
-        state: item?.company?.state,
-        country: item?.company?.country,
-        postalCode: item?.company?.postalCode,
-
-        yearFounded: item?.company?.yearFounded,
-        domain: item?.company?.domain,
-        annualRevenue: item?.company?.annualRevenue,
-        stage: item?.company?.stage,
-        keywords: item?.company?.keywords,
-      },
-    });
-  });
   return {
-    data: leads,
+    data: response.data,
   };
 };
 
@@ -320,66 +157,9 @@ export const getLeadById = async (props: {
   let url = `/api/leads/${id}`;
 
   const response = await api.get(url);
-  const item = response.data;
-  // console.log("Fetched lead data", item);
-  let lead: LeadModelWithCompanyModel = {
-    id: item?.id,
-    firstName: item?.firstName,
-    lastName: item?.lastName,
-    title: item?.title,
-    email: item?.email,
-    emailStatus: item?.emailStatus,
-    workEmail: item?.workEmail,
-    workEmailStatus: item?.workEmailStatus,
-    primaryPhone: item?.primaryPhone,
-    primaryPhoneStatus: item?.primaryPhoneStatus,
-    mobilePhone: item?.mobilePhone,
-    mobilePhoneStatus: item?.mobilePhoneStatus,
-    workPhone: item?.workPhone,
-    workPhoneStatus: item?.workPhoneStatus,
-    streetAddress: item?.streetAddress,
-    city: item?.city,
-    state: item?.state,
-    country: item?.country,
-    timeZone: item?.timeZone,
-    annualRevenue: item?.annualRevenue,
-    source: item?.source,
-    stage: item?.stage,
-    linkedin: item?.linkedin,
-    companyId: item?.companyId,
-    clickCount: item?.clickCount,
-    replyCount: item?.replyCount,
-    targeted: item?.targeted,
-    personalNote1: item?.personalNote1,
-    ownerId: item?.ownerId,
-    company: {
-      id: item?.company?.id,
-      name: item?.company?.name,
-      companyType: item?.company?.companyType,
-      phone: item?.company?.phone,
-      phoneStatus: item?.company?.phoneStatus,
-      size: item?.company?.size,
-      industry: item?.company?.industry,
-      description: item?.company?.description,
-      website: item?.company?.website,
-      linkedin: item?.company?.linkedin,
-
-      streetAddress: item?.company?.streetAddress,
-      city: item?.company?.city,
-      state: item?.company?.state,
-      country: item?.company?.country,
-      postalCode: item?.company?.postalCode,
-
-      yearFounded: item?.company?.yearFounded,
-      domain: item?.company?.domain,
-      annualRevenue: item?.company?.annualRevenue,
-      stage: item?.company?.stage,
-      keywords: item?.company?.keywords,
-    },
-  };
 
   return {
-    data: lead,
+    data: response.data,
   };
 };
 
@@ -414,35 +194,32 @@ export const updateLeadsAsTargeted = async (
 export const getLeadTotalCount = async (
   data: FetchTotalCountProps = {
     targeted: false,
-    filter: getDefaultLeadFilterConfig(),
+    filter: defaultLeadFilterConfig,
   }
 ): Promise<ApiCountResponse> => {
   const { targeted } = data;
-  const { title, company, industry, country, state, city } = data.filter;
+  const {
+    title,
+    company,
+    industry,
+    country,
+    state,
+    city,
+    orderBy,
+    isAscending,
+  } = data.filter;
 
-  let url = `/api/leads/statistics/total-count?`;
+  let url = `/api/leads/statistics/total-count?offset=0`;
 
-  if (targeted) {
-    url += `&targeted=true`;
-  }
-  if (title) {
-    url += `&jobTitle=${title}`;
-  }
-  if (company) {
-    url += `&companyName=${company}`;
-  }
-  if (industry) {
-    url += `&industry=${industry}`;
-  }
-  if (country) {
-    url += `&country=${country}`;
-  }
-  if (state) {
-    url += `&state=${state}`;
-  }
-  if (city) {
-    url += `&city=${city}`;
-  }
+  if (targeted) url += `&targeted=true`;
+  if (title) url += `&jobTitle=${title}`;
+  if (company) url += `&companyName=${company}`;
+  if (country) url += `&country=${country}`;
+  if (state) url += `&state=${state}`;
+  if (city) url += `&city=${city}`;
+  if (industry) url += `&industry=${industry}`;
+  if (orderBy) url += `&orderBy=${orderBy}`;
+  if (isAscending !== undefined) url += `&isAscending=${isAscending}`;
 
   const response = await api.get(url);
   return {

@@ -17,20 +17,22 @@ export interface CompanyFilterConfig {
   streetAddress: string;
   employee: Option | Option[] | null;
   industry: string;
+  orderBy: string;
+  isAscending: boolean | undefined;
 }
 
-export const getDefaultCompanyFilterConfig = (): CompanyFilterConfig => {
-  return {
-    createdCompanyId: "",
-    isOpen: true,
-    company: "",
-    country: "",
-    state: "",
-    city: "",
-    streetAddress: "",
-    employee: [],
-    industry: "",
-  };
+export const defaultCompanyFilterConfig: CompanyFilterConfig = {
+  createdCompanyId: "",
+  isOpen: true,
+  company: "",
+  country: "",
+  state: "",
+  city: "",
+  streetAddress: "",
+  employee: [],
+  industry: "",
+  orderBy: "",
+  isAscending: undefined,
 };
 
 interface CompanyFilterContextType {
@@ -50,17 +52,7 @@ export const CompanyFilterProvider = ({
   children: ReactNode;
 }) => {
   const [companyFilterConfig, setCompanyFilterConfig] =
-    useState<CompanyFilterConfig>({
-      createdCompanyId: "",
-      isOpen: true,
-      company: "",
-      country: "",
-      state: "",
-      city: "",
-      streetAddress: "",
-      employee: [],
-      industry: "",
-    });
+    useState<CompanyFilterConfig>(defaultCompanyFilterConfig);
 
   return (
     <CompanyFilterContext.Provider
@@ -74,7 +66,9 @@ export const CompanyFilterProvider = ({
 export const useCompanyFilter = (): CompanyFilterContextType => {
   const context = useContext(CompanyFilterContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error(
+      "useCompanyFilter must be used within an CompanyFilterProvider"
+    );
   }
   return context;
 };
