@@ -19,6 +19,8 @@ interface FetchMailingsProps extends FetchProps {
   cadenceId?: string;
   fromEmail?: Option | Option[] | null;
   fromUser?: Option | Option[] | null;
+  orderBy?: string;
+  isAscending?: boolean | undefined;
   search?: string;
   params: { [key: string]: string };
 }
@@ -108,6 +110,12 @@ export const getMailings = async (
   }
   for (const userId of userIds) {
     url += `&fromUser=${userId}`;
+  }
+  if (data.orderBy) {
+    url += `&orderBy=${data.orderBy}`;
+  }
+  if (data.isAscending !== undefined) {
+    url += `&isAscending=${data.isAscending}`;
   }
   if (data.search) {
     url += `&search=${data.search}`;
