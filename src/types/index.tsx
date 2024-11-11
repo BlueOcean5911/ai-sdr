@@ -11,6 +11,7 @@ import LinkedinMessageIcon from "@/components/Icons/linkedinmessage.icon";
 import LinkedinInteractIcon from "@/components/Icons/linkedininteract.icon";
 import LinkedinRequestIcon from "@/components/Icons/linkedinrequest.icon";
 import ActionItemIcon from "@/components/Icons/actionitem.icon";
+import { UserModel } from "@/services/userService";
 
 export type SelectDefaultType = Array<{
   id: number;
@@ -72,6 +73,13 @@ export interface CreateCompanyProps {
 export interface InviteUserProps {
   open: boolean;
   handleInvite: (email: string) => void;
+  handleClose: () => void;
+}
+
+export interface DeleteUserProps {
+  open: boolean;
+  user?: UserModel;
+  handleDelete: (userId: string) => void;
   handleClose: () => void;
 }
 
