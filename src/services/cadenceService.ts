@@ -15,6 +15,8 @@ interface FetchCompaniesProps extends FetchProps {
   starred?: boolean;
   ownedBy?: Option | Option[] | null;
   campaignId?: string;
+  orderBy?: string;
+  isAscending?: boolean;
   search?: string;
 }
 
@@ -114,14 +116,20 @@ export const getCadences = async (
   }
   let userIds: string[] = [];
   if (Array.isArray(data.ownedBy)) {
-   userIds = data.ownedBy.map((option) => option.value);
+    userIds = data.ownedBy.map((option) => option.value);
   } else if (data.ownedBy) {
-   userIds = [data.ownedBy.value];
+    userIds = [data.ownedBy.value];
   } else {
-   userIds = [];
+    userIds = [];
   }
   for (const userId of userIds) {
     url += `&userIds=${userId}`;
+  }
+  if (data.orderBy) {
+    url += `&orderBy=${data.orderBy}`;
+  }
+  if (data.isAscending !== undefined) {
+    url += `&isAscending=${data.isAscending}`;
   }
   console.log("here", data.campaignId);
   if (data.campaignId) {
