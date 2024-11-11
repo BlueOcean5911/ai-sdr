@@ -6,7 +6,6 @@ import React, {
   useContext,
   ReactNode,
   useEffect,
-  useRef,
 } from "react";
 
 interface Option {
@@ -21,6 +20,8 @@ interface EmailFilterConfig {
   isOpen: boolean;
   fromUser: Option | Option[] | null;
   fromEmail: Option | Option[] | null;
+  orderBy: string;
+  isAscending: boolean | undefined;
   search: string;
 }
 
@@ -40,6 +41,8 @@ export const EmailFilterProvider = ({ children }: { children: ReactNode }) => {
       isOpen: true,
       fromUser: [],
       fromEmail: [],
+      orderBy: "",
+      isAscending: undefined,
       search: "",
     }
   );
@@ -78,7 +81,9 @@ export const EmailFilterProvider = ({ children }: { children: ReactNode }) => {
 export const useEmailFilter = (): EmailFilterContextType => {
   const context = useContext(EmailFilterContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an ");
+    throw new Error(
+      "useEmailFilter must be used within an EmailFilterProvider"
+    );
   }
   return context;
 };
