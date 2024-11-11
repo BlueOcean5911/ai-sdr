@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { TiArrowSortedUp } from "react-icons/ti";
+import { TiArrowSortedDown } from "react-icons/ti";
 
 import Pagination from "@/components/extends/Pagination/Pagination";
 import { useCadenceFilter } from "@/contexts/FilterCadenceContext";
@@ -81,16 +83,41 @@ export default function Cadences(
 
         {/* Table */}
         <div className="flex flex-1 flex-col w-full align-middle overflow-auto">
-          <div className="w-full h-full border rounded-md overflow-auto">
-            {loading ? (
-              <Loading />
-            ) : (
-              cadences.map((cadence: FetchCadenceModel, index) => (
-                <CadenceItem key={index} cadence={cadence} />
-              ))
-            )}
-          </div>
+          <table className="w-full border rounded-md">
+            <thead className="bg-gray-50">
+              <tr>
+                <th></th>
+                <th className="py-3 flex flex-row items-center gap-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Owner
+                  <div className="flex flex-col -space-y-1.5">
+                    <TiArrowSortedUp className="fill-gray-500" />
+                    <TiArrowSortedDown className="fill-blue-600" />
+                  </div>
+                </th>
+                <th className="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {loading ? (
+                <tr>
+                  <td colSpan={4}>
+                    <Loading />
+                  </td>
+                </tr>
+              ) : (
+                cadences.map((cadence: FetchCadenceModel, index) => (
+                  <CadenceItem key={index} cadence={cadence} />
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
+
         {/* Pagination */}
         <div className="flex justify-end">
           <Pagination
