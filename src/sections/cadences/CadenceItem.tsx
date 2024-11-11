@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import ToggleButton from "@/components/extends/Button/ToggleButton";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { StarIcon, EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
-import { useRouter } from "next/navigation";
 import {
   UpdateCadenceModel,
   FetchCadenceModel,
@@ -18,7 +17,6 @@ export default function CadenceItem({
 }) {
   const [starred, setStarred] = useState(cadence.star);
   const [active, setActive] = useState(cadence.isActive);
-  const router = useRouter();
 
   const handleUpdateCadence = (updatedCadence: UpdateCadenceModel) => {
     runService(
@@ -61,6 +59,7 @@ export default function CadenceItem({
             </div>
           </Link>
           <div className="flex items-center gap-1.5 text-sm">
+            Owner:
             <span className="text-blue-900">
               {cadence?.owner?.firstName} {cadence?.owner?.lastName}
             </span>
