@@ -1,9 +1,10 @@
 "use client";
+import Image from "next/image";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import { toast } from "react-toastify";
+
 import Upload from "@/components/upload";
 import { SuccessModel } from "@/types";
-import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
-import { toast } from "react-toastify";
 
 export default function Page() {
   return (

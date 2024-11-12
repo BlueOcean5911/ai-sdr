@@ -28,8 +28,10 @@ export const handleError = (status: number | undefined, error: any) => {
 
   switch (status) {
     case 403:
+    case 410:
       toast.error(error ? error : "Please login to continue!");
-      window.location.replace(ROUTE_LOGIN);
+      if (window.location.pathname !== ROUTE_LOGIN)
+        window.location.replace(ROUTE_LOGIN);
       break;
     case 404:
       message = error ? error : "Provided data was not found";
