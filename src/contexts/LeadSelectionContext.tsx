@@ -322,7 +322,9 @@ export const LeadSelectionProvider = ({
 export const useLeadSelection = (): any => {
   const context = useContext(LeadSelectionContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error(
+      "useLeadSelection must be used within an LeadSelectionProvider"
+    );
   }
   return context;
 };

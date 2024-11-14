@@ -50,7 +50,9 @@ export const ContactFilterProvider = ({
 export const useContactFilter = (): ContactFilterContextType => {
   const context = useContext(ContactFilterContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an ");
+    throw new Error(
+      "useContactFilter must be used within an ContactFilterProvider"
+    );
   }
   return context;
 };
