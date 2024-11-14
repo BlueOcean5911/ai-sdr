@@ -49,7 +49,7 @@ export const CallFilterProvider = ({ children }: { children: ReactNode }) => {
 export const useCallFilter = (): CallFilterContextType => {
   const context = useContext(CallFilterContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error("useCallFilter must be used within an CallFilterProvider");
   }
   return context;
 };

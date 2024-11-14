@@ -319,7 +319,9 @@ export const ContactSelectionProvider = ({
 export const useContactSelection = (): any => {
   const context = useContext(ContactSelectionContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error(
+      "useContactSelection must be used within an ContactSelectionProvider"
+    );
   }
   return context;
 };

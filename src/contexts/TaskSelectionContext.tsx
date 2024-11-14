@@ -319,7 +319,9 @@ export const TaskSelectionProvider = ({
 export const useTaskSelection = (): any => {
   const context = useContext(TaskSelectionContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error(
+      "useTaskSelection must be used within an TaskSelectionProvider"
+    );
   }
   return context;
 };

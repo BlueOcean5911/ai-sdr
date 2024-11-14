@@ -272,7 +272,9 @@ export const CompanySelectionProvider = ({
 export const useCompanySelection = (): any => {
   const context = useContext(CompanySelectionContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error(
+      "useCompanySelection must be used within an CompanySelectionProvider"
+    );
   }
   return context;
 };
