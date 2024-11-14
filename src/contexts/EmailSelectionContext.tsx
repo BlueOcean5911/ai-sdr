@@ -319,7 +319,9 @@ export const EmailSelectionProvider = ({
 export const useEmailSelection = (): any => {
   const context = useContext(EmailSelectionContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error(
+      "useEmailSelection must be used within an EmailSelectionProvider"
+    );
   }
   return context;
 };

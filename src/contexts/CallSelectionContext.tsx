@@ -319,7 +319,9 @@ export const CallSelectionProvider = ({
 export const useCallSelection = (): any => {
   const context = useContext(CallSelectionContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error(
+      "useCallSelection must be used within an CallSelectionProvider"
+    );
   }
   return context;
 };
