@@ -13,7 +13,7 @@ export const login = ({
 
 export const resetPassword = ({
   password,
-  token
+  token,
 }: {
   password: string;
   token: string;
