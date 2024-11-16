@@ -1,29 +1,24 @@
-import { removeSpecialCharacters } from "@/utils/string";
+import { useEffect, useMemo, useState } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useEffect, useMemo, useState } from "react";
+import { Formik } from "formik";
+import * as Yup from "yup";
 import { toast } from "react-toastify";
-import RSelect from "@/components/extends/Select/default";
-import { getUsers, UserModel } from "@/services/userService";
-import { handleError, runService } from "@/utils/service_utils";
+
+import Select from "@/components/extends/Select/default";
 import FormHelperText from "@/components/extends/FormHelperText";
 
+import { getUsers, UserModel } from "@/services/userService";
+import { handleError, runService } from "@/utils/service_utils";
+
 const NewCadenceFromScratch = ({
-  close,
-  click,
+  handleClose,
+  handleCreate,
 }: {
-  close: () => void;
-  click: (name: string, ownerId: string) => void;
+  handleClose: () => void;
+  handleCreate: (name: string, ownerId: string) => void;
 }) => {
   const [users, setUsers] = useState<UserModel[]>();
-  const [errors, setErrors] = useState({
-    name: "",
-    ownerId: "",
-  });
-  const [values, setValues] = useState({
-    name: "",
-    ownerId: "",
-  });
 
   const fetchUsers = () => {
     runService(
@@ -53,33 +48,13 @@ const NewCadenceFromScratch = ({
     return options;
   }, [users]);
 
-  const checkErrors = () => {
-    let isValid = true;
-    let newErrors = {};
-
-    if (removeSpecialCharacters(values.name).length === 0) {
-      newErrors = { ...newErrors, name: "Cadence name is required" };
-      isValid = false;
-    }
-
-    setErrors({ ...errors, ...newErrors });
-    return isValid;
-  };
-
-  const handleCreate = () => {
-    if (checkErrors()) {
-      click(values.name, values.ownerId);
-      toast.success("Cadence created successfully");
-    }
-  };
-
   return (
     <>
       <Dialog
         open={true}
         as="div"
         className="relative z-50 focus:outline-none"
-        onClose={close}
+        onClose={handleClose}
       >
         <div className="fixed inset-0 bg-black/65 z-40" />
         <div className="fixed inset-0 py-10 overflow-y-auto z-40">
@@ -95,65 +70,103 @@ const NewCadenceFromScratch = ({
                 <span>New Cadence</span>
                 <div
                   className="p-1 rounded-md hover:bg-gray-100"
-                  onClick={close}
+                  onClick={handleClose}
                 >
                   <XMarkIcon className="w-5 h-5" />
                 </div>
               </DialogTitle>
-              <div className="px-6 py-4 rounded-md bg-gray-100">
-                <div className="flex flex-col gap-4">
-                  <div className="flex flex-col gap-2 text-sm">
-                    <div className="flex flex-col">
-                      <label>Name*</label>
-                      <input
-                        className="input-primary"
-                        value={values.name}
-                        onChange={(e) => {
-                          if (removeSpecialCharacters(values.name).length > 0) {
-                            setErrors({ ...errors, name: "" });
-                          } else {
-                            setErrors({
-                              ...errors,
-                              name: "Cadence name is required",
-                            });
-                          }
-                          setValues({ ...values, name: e.target.value });
-                        }}
-                      />
-                      {errors.name.length > 0 && (
-                        <p className="text-red-500">{errors.name}</p>
-                      )}
-                    </div>
-                    <div className="flex flex-col">
-                      <div className="flex flex-col">
-                        <label htmlFor="Cadence Owner">Cadence Owner*</label>
-                        <RSelect
-                          data={userOptions}
-                          onChange={(item) => {
-                            if (values.ownerId !== item?.value) {
-                              setValues({ ...values, ownerId: item?.value });
-                            }
-                          }}
-                        ></RSelect>
-                        {errors.ownerId && (
-                          <FormHelperText>{errors.ownerId}</FormHelperText>
-                        )}
+              <Formik
+                initialValues={{
+                  name: "",
+                  ownerId: "",
+                }}
+                validationSchema={Yup.object().shape({
+                  name: Yup.string().required("Cadence name is required"),
+                  ownerId: Yup.string().required("Assignee is required"),
+                })}
+                onSubmit={async (values, { setSubmitting }) => {
+                  setSubmitting(false);
+                  handleCreate(values.name, values.ownerId);
+                  toast.success("Cadence created successfully");
+                  setSubmitting(true);
+                }}
+              >
+                {({
+                  errors,
+                  handleBlur,
+                  handleChange,
+                  handleSubmit,
+                  setFieldValue,
+                  isSubmitting,
+                  touched,
+                  values,
+                }) => (
+                  <form noValidate onSubmit={handleSubmit}>
+                    <div className="px-6 py-4 rounded-md bg-gray-100">
+                      <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-2 text-sm">
+                          <div className="flex flex-col">
+                            <label>Name*</label>
+                            <input
+                              id="name"
+                              type="text"
+                              placeholder="Name"
+                              className="input-primary max-h-9"
+                              value={values.name}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                            {touched.name && errors.name && (
+                              <FormHelperText>{errors.name}</FormHelperText>
+                            )}
+                          </div>
+                          <div className="flex flex-col">
+                            <div className="flex flex-col">
+                              <label htmlFor="Cadence Owner">
+                                Cadence Owner*
+                              </label>
+                              <Select
+                                data={userOptions}
+                                defaultValue={userOptions[0]}
+                                onChange={(selectedItem) => {
+                                  if (
+                                    selectedItem &&
+                                    selectedItem.value !== values.ownerId
+                                  )
+                                    setFieldValue(
+                                      "ownerId",
+                                      selectedItem.value
+                                    );
+                                }}
+                              ></Select>
+                              {touched.ownerId && errors.ownerId && (
+                                <FormHelperText>
+                                  {errors.ownerId}
+                                </FormHelperText>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-6">
+                          <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="w-full btn-primary"
+                          >
+                            Create
+                          </button>
+                          <button
+                            className="w-full btn-secondary"
+                            onClick={handleClose}
+                          >
+                            Close
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-6">
-                    <button
-                      className="w-full btn-primary"
-                      onClick={() => handleCreate()}
-                    >
-                      Create
-                    </button>
-                    <button className="w-full btn-secondary" onClick={close}>
-                      Close
-                    </button>
-                  </div>
-                </div>
-              </div>
+                  </form>
+                )}
+              </Formik>
             </DialogPanel>
           </div>
         </div>
