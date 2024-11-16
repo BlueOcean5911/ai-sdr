@@ -201,8 +201,8 @@ const LeadToolbar = () => {
         )}
         {openNewCadenceFromScratch && (
           <NewCadenceFromScratch
-            close={() => setOpenNewCadenceFromScratch(false)}
-            click={(name: string) => handleNewCadenceFromScratch(name)}
+            handleClose={() => setOpenNewCadenceFromScratch(false)}
+            handleCreate={(name: string) => handleNewCadenceFromScratch(name)}
           />
         )}
       </div>

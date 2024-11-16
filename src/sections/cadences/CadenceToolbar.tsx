@@ -83,8 +83,8 @@ const CadenceToolbar = () => {
       )}
       {openNewCadenceFromScratch && (
         <NewCadenceFromScratch
-          close={() => setOpenNewCadenceFromScratch(false)}
-          click={(name: string, ownerId: string) =>
+          handleClose={() => setOpenNewCadenceFromScratch(false)}
+          handleCreate={(name: string, ownerId: string) =>
             handleNewCadenceFromScratch(name, ownerId)
           }
         />
