@@ -5,6 +5,7 @@ import {
   ROUTE_ACCOUNT_PROFILE,
   ROUTE_ACCOUNT_SECURITY,
   ROUTE_ACCOUNT_USERS,
+  ROUTE_ACCOUNT_INBOX,
 } from "@/data/routes";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -74,6 +75,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           content="Company Data"
           link={ROUTE_ACCOUNT_COMPANY_DATA}
           active={path === ROUTE_ACCOUNT_COMPANY_DATA}
+        />
+        <TapItem
+          key="inbox"
+          content="Inbox"
+          link={ROUTE_ACCOUNT_INBOX}
+          active={path.startsWith(ROUTE_ACCOUNT_INBOX)}
         />
       </div>
       {children}

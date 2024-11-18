@@ -199,7 +199,7 @@ export const addMailing = async (mailing: SendMailingModel) => {
 };
 
 export const sendMailing = async (id: string) => {
-  const response = await api.post(`api/mailings/send/${id}`);
+  const response = await api.post(`api/v2/mailings/send/${id}`);
 
   if (response.status !== 200) {
     throw new Error("Failed to send email");
