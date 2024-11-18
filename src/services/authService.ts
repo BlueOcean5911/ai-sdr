@@ -40,29 +40,43 @@ export const requestDemo = (data: { user: RegisterModel; invite?: string }) => {
 };
 
 export const saveToken = (token: string) => {
-  localStorage.setItem("ai-vio-token", token);
+  if (typeof window !== "undefined") {
+    localStorage.setItem("ai-vio-token", token);
+  }
 };
 
 export const getToken = (): string | null => {
-  return localStorage.getItem("ai-vio-token");
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("ai-vio-token");
+  }
+  return null;
 };
 
 export const saveRememberMe = (token: string) => {
-  localStorage.setItem("ai-vio-remember-me", token);
+  if (typeof window !== "undefined") {
+    localStorage.setItem("ai-vio-remember-me", token);
+  }
 };
 
 export const getRememberMe = (): string | null => {
-  return localStorage.getItem("ai-vio-remember-me");
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("ai-vio-remember-me");
+  }
+  return null;
 };
 
 export const removeRememberMe = () => {
-  localStorage.removeItem("ai-vio-remember-me");
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("ai-vio-remember-me");
+  }
 };
 
 export const signOut = () => {
-  localStorage.removeItem("ai-vio-token");
-  localStorage.removeItem("ai-vio-remember-me");
-  window.location.replace(ROUTE_LOGIN);
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("ai-vio-token");
+    localStorage.removeItem("ai-vio-remember-me");
+    window.location.replace(ROUTE_LOGIN);
+  }
 };
 
 export const sendResetLink = async (props: { email: string }) => {

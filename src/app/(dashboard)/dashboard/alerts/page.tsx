@@ -1,60 +1,18 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
-import { toast } from "react-toastify";
 
-import { alertIcons } from "@/data/alert.data";
-import { handleError, runService } from "@/utils/service_utils";
-import { AlertModel, deleteAlert, getAlerts } from "@/services/alertService";
-import { getRelativeTime } from "@/utils/format";
 import Loading from "@/components/Loading";
 
+import { useAlert } from "@/contexts/AlertContext";
+import { alertIcons } from "@/data/alert.data";
+import { getRelativeTime } from "@/utils/format";
+
 export default function Page() {
-  const [alerts, setAlerts] = useState<AlertModel[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  const fetchAlerts = () => {
-    setLoading(true);
-    runService(
-      undefined,
-      getAlerts,
-      (data) => {
-        console.log("alerts: ", data);
-        setAlerts(data);
-        setLoading(false);
-      },
-      (status, error) => {
-        handleError(status, error);
-        console.log(status, error);
-        setLoading(false);
-      }
-    );
-  };
-
-  useEffect(() => {
-    fetchAlerts();
-  }, []);
-
-  const handleDelete = (id: string) => {
-    runService(
-      id,
-      deleteAlert,
-      (data) => {
-        if (data.success) {
-          toast.success("Delete alert successfully!");
-          setAlerts(alerts.filter((item) => item.id !== id));
-        }
-      },
-      (status, error) => {
-        handleError(status, error);
-        console.log(status, error);
-        toast.error("Something went wrong!");
-      }
-    );
-  };
+  const { loading, alerts, handleDeleteAlert } = useAlert();
+  
   return (
     <>
       <div className="flex flex-1 flex-col rounded-md border">
@@ -82,9 +40,9 @@ export default function Page() {
                 <div className="flex flex-col gap-1">
                   <span className="font-semibold">{alert.title}</span>
                   <span className="text-sm">
-                    {alert.dmler.firstName} {alert.dmler.lastName}{" "}
-                    {alert.content} {alert.receptient.firstName}{" "}
-                    {alert.receptient.lastName}
+                    {alert.dmler?.firstName} {alert.dmler?.lastName}{" "}
+                    {alert.content} {alert.receptient?.firstName}{" "}
+                    {alert.receptient?.lastName}
                   </span>
                 </div>
                 <div className="w-20 flex flex-col justify-center items-center gap-1">
@@ -104,7 +62,7 @@ export default function Page() {
                   <MenuItem>
                     <button
                       className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
-                      onClick={() => handleDelete(alert.id)}
+                      onClick={() => handleDeleteAlert(alert.id)}
                     >
                       Delete
                     </button>

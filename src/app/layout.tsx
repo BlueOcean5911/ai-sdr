@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { roboto } from "@/utils/fonts";
 import { ToastContainer } from "react-toastify";
 import NextTopLoader from "nextjs-toploader";
-import { ThemeProvider } from "next-themes";
+
+import MainProvider from "@/contexts";
 
 import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -30,7 +31,7 @@ export default function RootLayout({
       <body className={roboto}>
         <NextTopLoader color="#4571B6" />
         <main className="font-roboto h-dvh flex">
-          <ThemeProvider attribute="class">{children}</ThemeProvider>
+          <MainProvider>{children}</MainProvider>
         </main>
         <ToastContainer autoClose={2000} />
       </body>

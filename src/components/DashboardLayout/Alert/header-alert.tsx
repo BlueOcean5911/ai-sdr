@@ -1,35 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { BellAlertIcon } from "@heroicons/react/24/outline";
 
-import { handleError, runService } from "@/utils/service_utils";
-import { AlertModel, getAlerts } from "@/services/alertService";
+import  { useAlert } from "@/contexts/AlertContext";
 import { alertIcons } from "@/data/alert.data";
 import { getRelativeTime } from "@/utils/format";
 
 export default function HeaderAlert() {
-  const [alerts, setAlerts] = useState<AlertModel[]>([]);
-
-  const fetchAlerts = () => {
-    runService(
-      undefined,
-      getAlerts,
-      (data) => {
-        // console.log("alerts: ", data);
-        setAlerts(data);
-      },
-      (status, error) => {
-        handleError(status, error);
-        console.log(status, error);
-      }
-    );
-  };
-
-  useEffect(() => {
-    fetchAlerts();
-  }, []);
+  const { alerts } = useAlert();
 
   return (
     <>
@@ -66,9 +45,9 @@ export default function HeaderAlert() {
                           {item.title}
                         </p>
                         <p className="w-full text-sm text-ellipsis overflow-hidden whitespace-nowrap">
-                          {item.dmler.firstName} {item.dmler.lastName} {""}
-                          {item.content} {item.receptient.firstName}{" "}
-                          {item.receptient.lastName}{" "}
+                          {item.dmler?.firstName} {item.dmler?.lastName} {""}
+                          {item.content} {item.receptient?.firstName}{" "}
+                          {item.receptient?.lastName}{" "}
                           {getRelativeTime(item.createdAt)}
                         </p>
                       </div>

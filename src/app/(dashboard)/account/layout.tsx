@@ -1,6 +1,7 @@
 "use client";
 import TapItem from "@/components/extends/Tap/TapItem";
 import {
+  ROUTE_ACCOUNT_UPGRADE_PLAN,
   ROUTE_ACCOUNT_COMPANY_DATA,
   ROUTE_ACCOUNT_PROFILE,
   ROUTE_ACCOUNT_SECURITY,
@@ -75,6 +76,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           content="Company Data"
           link={ROUTE_ACCOUNT_COMPANY_DATA}
           active={path === ROUTE_ACCOUNT_COMPANY_DATA}
+        />
+        <TapItem
+          key="upgrade-plan"
+          content="Upgrade Plan"
+          link={ROUTE_ACCOUNT_UPGRADE_PLAN}
+          active={path === ROUTE_ACCOUNT_UPGRADE_PLAN}
         />
         <TapItem
           key="inbox"
