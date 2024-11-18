@@ -36,5 +36,6 @@ export const ROUTE_ACCOUNT_PROFILE = "/account/profile";
 export const ROUTE_ACCOUNT_SECURITY = "/account/security";
 export const ROUTE_ACCOUNT_USERS = "/account/users";
 export const ROUTE_ACCOUNT_COMPANY_DATA = "/account/company-data";
+export const ROUTE_ACCOUNT_UPGRADE_PLAN = "/account/upgrade-plan";
 
 export const ROUTE_IMPORT = "/contacts/import";
