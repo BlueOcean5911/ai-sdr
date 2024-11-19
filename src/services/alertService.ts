@@ -66,7 +66,7 @@ export const getAlerts = async (
     url += searchParams;
   }
   const response = await api.get(url);
-  console.log(response);
+  // console.log(response);
   return {
     data: response.data,
   };
