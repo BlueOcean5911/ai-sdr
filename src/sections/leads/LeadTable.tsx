@@ -8,6 +8,7 @@ import { Tooltip } from "react-tooltip";
 import { toast } from "react-toastify";
 
 import CreateLead from "./CreateLead";
+import SelectPhone from "./SelectPhone";
 import LeadOverview from "./LeadOverview";
 import CheckBox from "@/components/extends/CheckBox";
 import Pagination from "@/components/extends/Pagination/Pagination";
@@ -36,6 +37,8 @@ const LeadTable = () => {
   const [create, setCreate] = useState(false);
   const [overview, setOverview] = useState(false);
   const [selected, setSelected] = useState<LeadModelWithCompanyModel>();
+  const [selectPhone, setSelectPhone] = useState<boolean>(false);
+
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -157,10 +160,16 @@ const LeadTable = () => {
       });
   };
 
+  const handleCall = (lead: LeadModel) => {
+    setSelected(lead);
+    setSelectPhone(true);
+  } 
+
   return (
     <>
       <div className="flex-1 flex flex-col overflow-auto">
         <CreateLead open={create} lead={selected} handleClose={handleClose} />
+        <SelectPhone open={selectPhone} lead={selected} handleClose={() => setSelectPhone(false)} />
         <LeadOverview
           show={overview}
           lead={selected}
@@ -302,6 +311,14 @@ const LeadTable = () => {
                           anchor="bottom end"
                           className="flex flex-col w-16 origin-top-right bg-white rounded-md shadow-md border-2 border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
                         >
+                          <MenuItem>
+                            <button
+                              className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                              onClick={() => handleCall(lead)}
+                            >
+                              Call
+                            </button>
+                          </MenuItem>
                           <MenuItem>
                             <button
                               className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
