@@ -44,6 +44,7 @@
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "timeago.js": "^4.0.2",
+    "twilio-client": "^1.15.1",
     "yup": "^1.4.0"
   },
   "devDependencies": {
