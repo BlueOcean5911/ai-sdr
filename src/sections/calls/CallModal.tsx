@@ -47,7 +47,7 @@ const CallModal = () => {
                     Call Modal
                   </DialogTitle>
                   <div className="p-6 flex flex-col gap-2">
-                    <p>{callStatus}</p>
+                    <p className="capitalize">Call Status: {callStatus}</p>
                     {callStatus === "connected" ? (
                       <>Duration: {callDuration}</>
                     ) : (
