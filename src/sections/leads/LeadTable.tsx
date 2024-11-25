@@ -169,7 +169,11 @@ const LeadTable = () => {
     <>
       <div className="flex-1 flex flex-col overflow-auto">
         <CreateLead open={create} lead={selected} handleClose={handleClose} />
-        <SelectPhone open={selectPhone} lead={selected} handleClose={() => setSelectPhone(false)} />
+        <SelectPhone
+          open={selectPhone}
+          lead={selected}
+          handleClose={() => setSelectPhone(false)}
+        />
         <LeadOverview
           show={overview}
           lead={selected}
