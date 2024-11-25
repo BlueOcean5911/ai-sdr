@@ -27,6 +27,7 @@ import {
 
 import Logo from "@/components/extends/Logo";
 import Logo2 from "@/components/extends/Logo2";
+import CallModal from "@/sections/calls/CallModal";
 
 import { classNames } from "@/utils";
 
@@ -376,6 +377,8 @@ export default function DashboardLayout({
               </div>
             </div>
           </div>
+
+          <CallModal />
 
           {children}
         </div>
