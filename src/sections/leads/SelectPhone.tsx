@@ -44,7 +44,7 @@ export default function SelectPhone({
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-95"
                 >
-                  <DialogPanel className="max-w-2xl w-full flex flex-col rounded-md bg-white text-left align-middle shadow-xl transition-all">
+                  <DialogPanel className="max-w-sm w-full flex flex-col rounded-md bg-white text-left align-middle shadow-xl transition-all">
                     <DialogTitle
                       as="h3"
                       className="px-6 py-3 text-lg font-semibold leading-6 bg-white text-gray-900 rounded-md"
