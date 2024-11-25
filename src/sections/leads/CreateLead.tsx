@@ -12,7 +12,6 @@ import {
 
 import FormHelperText from "@/components/extends/FormHelperText";
 import Select from "@/components/extends/Select/default";
-import RSelect from "@/components/extends/Select/default";
 
 import { handleError, runService } from "@/utils/service_utils";
 import { getUsers, UserModel } from "@/services/userService";
@@ -409,48 +408,7 @@ export default function CreateLead({
                           </div>
 
                           <div className="flex flex-col">
-                            <label htmlFor="workPhone">Mobile Phone</label>
-                            <div className="flex gap-4">
-                              <div className="w-full flex flex-col">
-                                <input
-                                  id="workPhone"
-                                  type="text"
-                                  placeholder="Mobile Phone Number"
-                                  className="input-primary max-h-9"
-                                  value={values.workPhone}
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                />
-                                {touched.workPhone && errors.workPhone && (
-                                  <FormHelperText>
-                                    {errors.workPhone}
-                                  </FormHelperText>
-                                )}
-                              </div>
-                              <div className="w-full flex flex-col">
-                                <Select
-                                  data={statusOptions_2}
-                                  defaultValue={statusOptions_2.find(
-                                    (option) =>
-                                      option.value === values.mobilePhoneStatus
-                                  )}
-                                  onChange={(selectedItem) => {
-                                    if (
-                                      selectedItem.value !==
-                                      values.mobilePhoneStatus
-                                    )
-                                      setFieldValue(
-                                        "mobilePhoneStatus",
-                                        selectedItem.value
-                                      );
-                                  }}
-                                />
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="flex flex-col">
-                            <label htmlFor="mobilePhone">Work Phone</label>
+                            <label htmlFor="mobilePhone">Mobile Phone</label>
                             <div className="flex gap-4">
                               <div className="w-full flex flex-col">
                                 <input
@@ -491,6 +449,47 @@ export default function CreateLead({
                           </div>
 
                           <div className="flex flex-col">
+                            <label htmlFor="workPhone">Work Phone</label>
+                            <div className="flex gap-4">
+                              <div className="w-full flex flex-col">
+                                <input
+                                  id="workPhone"
+                                  type="text"
+                                  placeholder="Mobile Phone Number"
+                                  className="input-primary max-h-9"
+                                  value={values.workPhone}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                />
+                                {touched.workPhone && errors.workPhone && (
+                                  <FormHelperText>
+                                    {errors.workPhone}
+                                  </FormHelperText>
+                                )}
+                              </div>
+                              <div className="w-full flex flex-col">
+                                <Select
+                                  data={statusOptions_2}
+                                  defaultValue={statusOptions_2.find(
+                                    (option) =>
+                                      option.value === values.mobilePhoneStatus
+                                  )}
+                                  onChange={(selectedItem) => {
+                                    if (
+                                      selectedItem.value !==
+                                      values.mobilePhoneStatus
+                                    )
+                                      setFieldValue(
+                                        "mobilePhoneStatus",
+                                        selectedItem.value
+                                      );
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col">
                             <label htmlFor="linkedin">LinkedIn URL</label>
                             <input
                               id="linkedin"
@@ -518,7 +517,10 @@ export default function CreateLead({
                                   selectedItem &&
                                   selectedItem.value !== values.companyId
                                 )
-                                  setFieldValue("companyId", selectedItem.value);
+                                  setFieldValue(
+                                    "companyId",
+                                    selectedItem.value
+                                  );
                               }}
                             ></Select>
                             {touched.companyId && errors.companyId && (
