@@ -63,11 +63,11 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
       addTwilioLog("Ringing...");
     });
 
-    newConn.on("connect", () => {
-      setCallStatus("connected");
-      addTwilioLog("Connected!");
-      startRecording();
-    });
+    // newConn.on("connect", () => {
+    //   setCallStatus("connected");
+    //   addTwilioLog("Connected!");
+    //   startRecording();
+    // });
 
     newConn.on("reject", () => {
       setCallStatus("ready");
@@ -78,7 +78,7 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
     newConn.on("disconnect", () => {
       setCallStatus("ready");
       addTwilioLog("Disconnected.");
-      setOutgoingConnection(null);
+      outgoingConnection?.disconnect();
       stopRecording();
     });
 
@@ -118,13 +118,13 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
 
     try {
       const recording = await connection.record({
-        timeLimit: 3600,
+        // timeLimit: 3600,
         // trim: "trim-silence",
       });
 
-      recording.on("transcription", (transcription: any) => {
-        setCaptionText(transcription);
-      });
+      // recording.on("transcription", (transcription: any) => {
+      //   setCaptionText(transcription);
+      // });
 
       recorder.current = recording;
       setIsRecording(true);
@@ -243,11 +243,11 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
           addTwilioLog("Twilio.Device Error: " + error.message);
         });
 
-        // newDevice.on("connect", () => {
-        //   setCallStatus("connected");
-        //   addTwilioLog("Successfully established call!");
-        //   startRecording();
-        // });
+        newDevice.on("connect", () => {
+          setCallStatus("connected");
+          addTwilioLog("Successfully established call!");
+          startRecording();
+        });
 
         newDevice.on("incoming", (conn) => {
           console.log("Incoming connection: ", conn);
@@ -264,6 +264,7 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
           conn.on("disconnect", () => {
             setCallStatus("ready");
             addTwilioLog("Call ended.");
+            setIncomingConnection(null);
           });
         });
 
@@ -275,6 +276,7 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
         newDevice.on("disconnect", () => {
           setCallStatus("ready");
           addTwilioLog("Call ended.");
+          setIncomingConnection(null);
         });
 
         setDevice(newDevice);
