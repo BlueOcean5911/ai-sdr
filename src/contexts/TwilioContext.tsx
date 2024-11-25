@@ -80,11 +80,9 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
   };
 
   const handleHangUp = () => {
-    if (outgoingConnection) {
-      outgoingConnection.disconnect();
-    } else {
-      incomingConnection?.disconnect();
-    }
+    incomingConnection?.disconnect();
+    outgoingConnection?.disconnect();
+
     setCallStatus("ready");
     stopRecording();
   };
@@ -99,11 +97,8 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
   };
 
   const handleRejectCall = () => {
-    if (outgoingConnection) {
-      outgoingConnection.disconnect();
-    } else {
-      incomingConnection?.disconnect();
-    }
+    incomingConnection?.reject();
+
     addTwilioLog("Rejected call...");
     setCallStatus("ready");
     stopRecording();
@@ -276,7 +271,7 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
         device.destroy();
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [twilioNumber]);
 
   return (
