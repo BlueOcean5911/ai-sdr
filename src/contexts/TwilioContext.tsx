@@ -37,7 +37,7 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
   const [callStatus, setCallStatus] = useState("init");
   const [incomingConnection, setIncomingConnection] = useState<any>(null);
   const [outgoingConnection, setOutgoingConnection] = useState<any>(null);
-  const [twilioNumber, setTwilioNumber] = useState<string>("17372653760");
+  const [twilioNumber, setTwilioNumber] = useState<string>("");
   const [twilioLogs, setTwilioLogs] = useState<string[]>([]);
   const [captionText, setCaptionText] = useState("");
   const [isRecording, setIsRecording] = useState(false);
@@ -182,6 +182,7 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
     if (typeof window === "undefined" || twilioNumber === "") return;
 
     const initializeDevice = async () => {
+      device?.destroy();
       addTwilioLog("Checking audio devices...");
 
       try {
@@ -264,6 +265,11 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
             setCallStatus("ready");
             addTwilioLog("Call ended.");
           });
+        });
+
+        newDevice.on("cancel", () => {
+          setCallStatus("ready");
+          addTwilioLog("Call cancelled.");
         });
 
         newDevice.on("disconnect", () => {
