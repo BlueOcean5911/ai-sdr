@@ -47,7 +47,8 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
   const recorder = useRef<any>(null);
 
   const addTwilioLog = (log: string) => {
-    setTwilioLogs((prevLogs) => [...prevLogs, log]);
+    // setTwilioLogs((prevLogs) => [...prevLogs, log]);
+    console.log(log);
   };
 
   const handleCallOut = (number: string) => {
@@ -66,6 +67,12 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
       setCallStatus("connected");
       addTwilioLog("Connected!");
       startRecording();
+    });
+
+    newConn.on("reject", () => {
+      setCallStatus("ready");
+      addTwilioLog("Rejected!");
+      stopRecording();
     });
 
     newConn.on("disconnect", () => {
@@ -112,7 +119,7 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
     try {
       const recording = await connection.record({
         timeLimit: 3600,
-        trim: "trim-silence",
+        // trim: "trim-silence",
       });
 
       recording.on("transcription", (transcription: any) => {
@@ -235,17 +242,28 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
           addTwilioLog("Twilio.Device Error: " + error.message);
         });
 
-        newDevice.on("connect", () => {
-          setCallStatus("connected");
-          addTwilioLog("Successfully established call!");
-          startRecording();
-        });
+        // newDevice.on("connect", () => {
+        //   setCallStatus("connected");
+        //   addTwilioLog("Successfully established call!");
+        //   startRecording();
+        // });
 
         newDevice.on("incoming", (conn) => {
           console.log("Incoming connection: ", conn);
           setCallStatus("incoming");
           setIncomingConnection(conn);
           addTwilioLog("Incoming connection from " + conn.parameters.From);
+
+          conn.on("accept", () => {
+            setCallStatus("connected");
+            addTwilioLog("Call Accepted!");
+            startRecording();
+          });
+
+          conn.on("disconnect", () => {
+            setCallStatus("ready");
+            addTwilioLog("Call ended.");
+          });
         });
 
         newDevice.on("disconnect", () => {
