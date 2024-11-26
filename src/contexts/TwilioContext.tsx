@@ -203,8 +203,10 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
             },
             credentials: "include",
+            // mode: 'no-cors',
           }
         );
 
