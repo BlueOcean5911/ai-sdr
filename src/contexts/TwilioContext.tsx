@@ -155,15 +155,12 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
         }
       );
 
-      console.log("here-------->");
       console.log(response);
-      console.log("here-------->");
+
       if (!response.ok) {
         throw new Error("Failed to fetch access token");
       }
-      console.log("here-------->");
       const data = await response.json();
-      console.log("here-------->");
 
       addTwilioLog("Got a token.");
       console.log("data", data);
