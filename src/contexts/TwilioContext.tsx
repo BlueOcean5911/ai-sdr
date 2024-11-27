@@ -144,7 +144,7 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
 
       addTwilioLog("Requesting Access Token...");
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_TWILIO_URL}/token`,
+        `${process.env.NEXT_PUBLIC_TWILIO_URL}/token?identity=${user?.phone}`,
         {
           method: "GET",
           headers: {
