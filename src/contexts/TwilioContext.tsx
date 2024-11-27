@@ -10,16 +10,17 @@ import {
   useRef,
 } from "react";
 
+import { getMe, UserModel } from "@/services/userService";
+import { handleError, runService } from "@/utils/service_utils";
+
 interface TwilioContextType {
   device: any;
   incomingConnection: any;
   outgoingConnection: any;
-  twilioNumber: string;
   twilioLogs: string[];
   callStatus: string;
   callDuration: number;
 
-  setTwilioNumber: (number: string) => void;
   addTwilioLog: (log: string) => void;
   setTwilioLogs: (logs: string[]) => void;
   handleCallOut: (number: string) => void;
@@ -31,11 +32,11 @@ interface TwilioContextType {
 const TwilioContext = createContext<TwilioContextType | undefined>(undefined);
 
 export function TwilioProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<UserModel>();
   const [device, setDevice] = useState<any>(null);
   const [callStatus, setCallStatus] = useState("init");
   const [incomingConnection, setIncomingConnection] = useState<any>(null);
   const [outgoingConnection, setOutgoingConnection] = useState<any>(null);
-  const [twilioNumber, setTwilioNumber] = useState<string>("");
   const [twilioLogs, setTwilioLogs] = useState<string[]>([]);
   const [callDuration, setCallDuration] = useState(0);
   const callStartTime = useRef<number | null>(null);
@@ -47,11 +48,16 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
   };
 
   const handleCallOut = (number: string) => {
-    if (!device || callStatus !== "ready") return;
+    if (!device || !user?.phone || callStatus !== "ready") return;
 
     addTwilioLog(`Calling ${number}...`);
 
-    const newConn = device.connect({ To: number });
+    const params = {
+      To: number,
+      From: user?.phone,
+    };
+
+    const newConn = device.connect(params);
 
     newConn.on("ringing", () => {
       setCallStatus("outgoing");
@@ -120,126 +126,142 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
     };
   }, [callStatus]);
 
-  useEffect(() => {
-    if (typeof window === "undefined" || twilioNumber === "") return;
+  const initializeTwilio = async () => {
+    if (typeof window === "undefined") return;
 
-    const initializeDevice = async () => {
-      device?.destroy();
-      addTwilioLog("Checking audio devices...");
+    device?.destroy();
+    addTwilioLog("Checking audio devices...");
 
-      try {
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const hasAudioInput = devices.some(
-          (device) => device.kind === "audioinput"
-        );
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const hasAudioInput = devices.some(
+        (device) => device.kind === "audioinput"
+      );
 
-        if (!hasAudioInput) {
-          throw new Error("No audio input devices found");
-        }
+      if (!hasAudioInput) {
+        throw new Error("No audio input devices found");
+      }
 
-        addTwilioLog("Requesting Access Token...");
-        const response = await fetch(
-          `https://central-lioness-hopefully.ngrok-free.app/token?identity=${twilioNumber}`,
-          {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*"
-            },
-            credentials: "include",
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch access token");
-        }
-
-        const data = await response.json();
-        addTwilioLog("Got a token.");
-        console.log("Token: " + data.token);
-
-        await navigator.mediaDevices.getUserMedia({
-          audio: {
-            echoCancellation: true,
-            noiseSuppression: true,
-            autoGainControl: true,
+      addTwilioLog("Requesting Access Token...");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_TWILIO_URL}/token`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
           },
-        });
+        }
+      );
 
-        const { Device, Connection } = await import("twilio-client");
-        const newDevice = new Device(data.token, {
-          codecPreferences: [Connection.Codec.PCMU, Connection.Codec.Opus],
-          fakeLocalDTMF: true,
-          enableRingingState: true,
-          debug: true,
-          allowIncomingWhileBusy: true,
-          edge: ["ashburn", "dublin", "singapore"],
-        });
+      console.log("here-------->");
+      console.log(response);
+      console.log("here-------->");
+      if (!response.ok) {
+        throw new Error("Failed to fetch access token");
+      }
+      console.log("here-------->");
+      const data = await response.json();
+      console.log("here-------->");
 
-        newDevice.on("ready", () => {
-          setCallStatus("ready");
-          addTwilioLog("Twilio.Device Ready!");
-        });
+      addTwilioLog("Got a token.");
+      console.log("data", data);
+      console.log("Token: " + data.token);
+      await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
 
-        newDevice.on("error", (error) => {
-          addTwilioLog("Twilio.Device Error: " + error.message);
-        });
+      const { Device, Connection } = await import("twilio-client");
+      const newDevice = new Device(data.token, {
+        codecPreferences: [Connection.Codec.PCMU, Connection.Codec.Opus],
+        fakeLocalDTMF: true,
+        enableRingingState: true,
+        debug: true,
+        allowIncomingWhileBusy: true,
+        edge: ["ashburn", "dublin", "singapore"],
+      });
 
-        newDevice.on("connect", () => {
+      newDevice.on("ready", () => {
+        setCallStatus("ready");
+        addTwilioLog("Twilio.Device Ready!");
+      });
+
+      newDevice.on("error", (error) => {
+        addTwilioLog("Twilio.Device Error: " + error.message);
+      });
+
+      newDevice.on("connect", () => {
+        setCallStatus("connected");
+        addTwilioLog("Successfully established call!");
+      });
+
+      newDevice.on("incoming", (conn) => {
+        console.log("Incoming connection: ", conn);
+        setCallStatus("incoming");
+        setIncomingConnection(conn);
+        addTwilioLog("Incoming connection from " + conn.parameters.From);
+
+        conn.on("accept", () => {
           setCallStatus("connected");
-          addTwilioLog("Successfully established call!");
+          addTwilioLog("Call Accepted!");
         });
 
-        newDevice.on("incoming", (conn) => {
-          console.log("Incoming connection: ", conn);
-          setCallStatus("incoming");
-          setIncomingConnection(conn);
-          addTwilioLog("Incoming connection from " + conn.parameters.From);
-
-          conn.on("accept", () => {
-            setCallStatus("connected");
-            addTwilioLog("Call Accepted!");
-          });
-
-          conn.on("disconnect", () => {
-            setCallStatus("ready");
-            addTwilioLog("Call ended.");
-            setIncomingConnection(null);
-          });
-        });
-
-        newDevice.on("cancel", () => {
-          setCallStatus("ready");
-          addTwilioLog("Call cancelled.");
-        });
-
-        newDevice.on("disconnect", () => {
+        conn.on("disconnect", () => {
           setCallStatus("ready");
           addTwilioLog("Call ended.");
           setIncomingConnection(null);
         });
+      });
 
-        setDevice(newDevice);
-      } catch (error) {
-        console.warn(error);
-        addTwilioLog(
-          error instanceof Error
-            ? error.message
-            : "Failed to initialize audio device"
-        );
+      newDevice.on("cancel", () => {
+        setCallStatus("ready");
+        addTwilioLog("Call cancelled.");
+      });
+
+      newDevice.on("disconnect", () => {
+        setCallStatus("ready");
+        addTwilioLog("Call ended.");
+        setIncomingConnection(null);
+      });
+
+      setDevice(newDevice);
+    } catch (error) {
+      console.warn(error);
+      addTwilioLog(
+        error instanceof Error
+          ? error.message
+          : "Failed to initialize audio device"
+      );
+    }
+  };
+
+  const fetchUserData = () => {
+    runService(
+      undefined,
+      getMe,
+      (data) => {
+        setUser(data);
+      },
+      (status, error) => {
+        handleError(status, error);
       }
-    };
+    );
+  };
 
-    initializeDevice();
+  useEffect(() => {
+    if (user?.phone) {
+      initializeTwilio();
+    }
+  }, [user]);
 
-    return () => {
-      if (device) {
-        device.destroy();
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [twilioNumber]);
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   return (
     <TwilioContext.Provider
@@ -247,11 +269,9 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
         device,
         incomingConnection,
         outgoingConnection,
-        twilioNumber,
         twilioLogs,
         callStatus,
         callDuration,
-        setTwilioNumber,
         addTwilioLog,
         setTwilioLogs,
         handleCallOut,
