@@ -11,14 +11,27 @@ import {
 } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Quill from "quill";
 import EmailGeneratorWindow from "./EmailGeneratorWindow";
 import { LeadModelWithCompanyModel } from "@/services/leadService";
+
+import "quill/dist/quill.snow.css";
 
 interface UserForSelect {
   name: string;
   email: string;
   id: string;
 }
+
+// const Font = Quill.import("formats/font");
+// Font.whitelist = ["sans", "serif", "monospace"];
+// Quill.register(Font, true);
+
+// Register color formats
+// const Color = Quill.import("formats/color");
+// const Background = Quill.import("formats/background");
+// Quill.register(Color, true);
+// Quill.register(Background, true);
 
 const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelWithCompanyModel }) => {
   const [owner, setOwner] = useState<UserForSelect>({
@@ -165,9 +178,49 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
     toast.success("Email sent successfully");
   };
 
-  // useEffect(() => {
-  //   console.log(errors);
-  // }, [errors])
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const quill = new Quill("#editor", {
+      theme: "snow",
+      modules: {
+        toolbar: [
+          [{ size: ["small", false, "large", "huge"] }],
+          // [{ font: Font.whitelist }],
+          ["bold", "italic", "underline", "strike"],
+          [{ align: [] }],
+          [{ list: "ordered" }, { list: "bullet" }],
+          // [{ color: [] }, { background: [] }],
+          ["link", "image", "video"],
+          ["clean"],
+        ],
+      },
+    });
+
+    // const toolbar = quill.getModule("toolbar");
+    // toolbar.addHandler("image", () => {
+    //   const input = document.createElement("input");
+    //   input.setAttribute("type", "file");
+    //   input.setAttribute("accept", "image/*");
+    //   input.click();
+
+    //   input.onchange = () => {
+    //     if (!input.files) return;
+    //     const file = input.files[0];
+    //     const reader = new FileReader();
+    //     reader.onload = () => {
+    //       const range = quill.getSelection();
+    //       quill.insertEmbed(range ? range.index : 0, "image", reader.result);
+    //     };
+    //     reader.readAsDataURL(file);
+    //   };
+    // });
+
+    quill.on("text-change", () => {
+      const content = quill.root.innerHTML;
+      setValues({ ...values, message: content });
+    });
+  }, []);
 
   return (
     <>
@@ -179,10 +232,16 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
             onClick={close}
           />
         </div>
-        <div className="px-4 py-2 flex flex-1 flex-col gap-2">
+        <div className="px-4 py-2 flex flex-1 flex-col gap-2 overflow-auto">
           <div className="flex flex-col justify-between">
             <label className="min-w-20 text-xs">From</label>
-            <Select data={users} onChange={(item) => {setOwner(item); if (senderId) setErrors({ ...errors, sender: "" });}} />
+            <Select
+              data={users}
+              onChange={(item) => {
+                setOwner(item);
+                if (senderId) setErrors({ ...errors, sender: "" });
+              }}
+            />
             {errors.sender.length > 0 && (
               <p className="text-red-500 text-xs">{errors.sender}</p>
             )}
@@ -220,7 +279,7 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
               className="flex items-center px-4 py-1 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400"
               onClick={() => {
                 checkSenderSelected();
-                setIsOpenEmailGeneratorWindow(true)
+                setIsOpenEmailGeneratorWindow(true);
               }}
             >
               <PencilSquareIcon className="w-5 h-5 mr-2 stroke-white" />
@@ -235,9 +294,9 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
               Analyze
             </button>
           </div>
-          <div className="flex flex-1 flex-col gap-2">
+          <div className="flex flex-1 flex-col overflow-auto">
             <label className="">Message*</label>
-            <textarea
+            {/* <textarea
               className="input-primary"
               value={values.message}
               onChange={(event) => {
@@ -246,7 +305,10 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
                   setErrors({ ...errors, message: "" });
                 }
               }}
-            />
+            /> */}
+            <div className="flex flex-1 flex-col overflow-auto">
+              <div id="editor"></div>
+            </div>
             {errors.message.length > 0 && (
               <p className="text-red-500 text-xs">{errors.message}</p>
             )}
@@ -277,16 +339,10 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
             )}
           </div>
           <div className="flex items-center gap-4">
-            <button
-              className="w-full btn-secondary"
-              onClick={close}
-            >
+            <button className="w-full btn-secondary" onClick={close}>
               Close
             </button>
-            <button
-              className="w-full btn-primary"
-              onClick={handleSend}
-            >
+            <button className="w-full btn-primary" onClick={handleSend}>
               Send
             </button>
           </div>
