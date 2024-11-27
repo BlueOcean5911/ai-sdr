@@ -11,15 +11,13 @@ import {
 } from "react";
 
 interface TwilioContextType {
-  device: any; // Replace with a specific type if available
+  device: any;
   incomingConnection: any;
   outgoingConnection: any;
   twilioNumber: string;
   twilioLogs: string[];
   callStatus: string;
-  isRecording: boolean;
   callDuration: number;
-  captionText: string;
 
   setTwilioNumber: (number: string) => void;
   addTwilioLog: (log: string) => void;
@@ -39,12 +37,9 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
   const [outgoingConnection, setOutgoingConnection] = useState<any>(null);
   const [twilioNumber, setTwilioNumber] = useState<string>("");
   const [twilioLogs, setTwilioLogs] = useState<string[]>([]);
-  const [captionText, setCaptionText] = useState("");
-  const [isRecording, setIsRecording] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
   const callStartTime = useRef<number | null>(null);
   const callDurationInterval = useRef<NodeJS.Timeout | null>(null);
-  const recorder = useRef<any>(null);
 
   const addTwilioLog = (log: string) => {
     // setTwilioLogs((prevLogs) => [...prevLogs, log]);
@@ -63,23 +58,15 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
       addTwilioLog("Ringing...");
     });
 
-    // newConn.on("connect", () => {
-    //   setCallStatus("connected");
-    //   addTwilioLog("Connected!");
-    //   startRecording();
-    // });
-
     newConn.on("reject", () => {
       setCallStatus("ready");
       addTwilioLog("Rejected!");
-      stopRecording();
     });
 
     newConn.on("disconnect", () => {
       setCallStatus("ready");
       addTwilioLog("Disconnected.");
       outgoingConnection?.disconnect();
-      stopRecording();
     });
 
     setOutgoingConnection(newConn);
@@ -91,7 +78,6 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
     outgoingConnection?.disconnect();
 
     setCallStatus("ready");
-    stopRecording();
   };
 
   const handleAcceptCall = () => {
@@ -99,7 +85,6 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
       incomingConnection.accept();
       setCallStatus("connected");
       addTwilioLog("Call Accepted!");
-      startRecording();
     }
   };
 
@@ -108,49 +93,6 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
 
     addTwilioLog("Rejected call...");
     setCallStatus("ready");
-    stopRecording();
-  };
-
-  const startRecording = async () => {
-    const connection = outgoingConnection || incomingConnection;
-
-    if (!connection) return;
-
-    try {
-      const recording = await connection.record({
-        // timeLimit: 3600,
-        // trim: "trim-silence",
-      });
-
-      // recording.on("transcription", (transcription: any) => {
-      //   setCaptionText(transcription);
-      // });
-
-      recorder.current = recording;
-      setIsRecording(true);
-      addTwilioLog("Recording started...");
-    } catch (error) {
-      console.error("Recording error:", error);
-      addTwilioLog(
-        `Recording error: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`
-      );
-    }
-  };
-
-  const stopRecording = () => {
-    if (recorder.current) {
-      recorder.current.stop();
-      setIsRecording(false);
-      addTwilioLog("Recording stopped.");
-
-      const recordingUrl = recorder.current.url;
-      const recordingDuration = recorder.current.duration;
-      addTwilioLog(`Recording URL: ${recordingUrl}`);
-      addTwilioLog(`Recording Duration: ${recordingDuration}`);
-      console.log("Caption Text:", captionText);
-    }
   };
 
   useEffect(() => {
@@ -206,7 +148,6 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
               "Access-Control-Allow-Origin": "*"
             },
             credentials: "include",
-            // mode: 'no-cors',
           }
         );
 
@@ -248,7 +189,6 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
         newDevice.on("connect", () => {
           setCallStatus("connected");
           addTwilioLog("Successfully established call!");
-          startRecording();
         });
 
         newDevice.on("incoming", (conn) => {
@@ -260,7 +200,6 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
           conn.on("accept", () => {
             setCallStatus("connected");
             addTwilioLog("Call Accepted!");
-            startRecording();
           });
 
           conn.on("disconnect", () => {
@@ -311,9 +250,7 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
         twilioNumber,
         twilioLogs,
         callStatus,
-        isRecording,
         callDuration,
-        captionText,
         setTwilioNumber,
         addTwilioLog,
         setTwilioLogs,

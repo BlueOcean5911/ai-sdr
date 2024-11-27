@@ -19,7 +19,7 @@ export default function SelectPhone({
   lead: LeadModelWithCompanyModel | undefined;
   handleClose: () => void;
 }) {
-  const { twilioNumber, setTwilioNumber, handleCallOut } = useTwilioContext();
+  const { handleCallOut } = useTwilioContext();
 
   const handleCall = (number: string) => {
     console.log("selected phone number: ", number);
@@ -52,12 +52,6 @@ export default function SelectPhone({
                       Call with {lead.firstName} {lead.lastName}
                     </DialogTitle>
                     <div className="flex flex-col gap-2 p-6">
-                      <div className="flex flex-col gap-2">
-                        <label className="text-sm font-medium">
-                          Your Phone
-                        </label>
-                        <input type="text" value={twilioNumber} onChange={(e) => setTwilioNumber(e.target.value)} />
-                      </div>
                       <div className="flex flex-col gap-2">
                         <label className="text-sm font-medium">
                           Primary Phone
