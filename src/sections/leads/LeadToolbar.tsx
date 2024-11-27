@@ -1,3 +1,5 @@
+"use client";
+import dynamic from "next/dynamic";
 import {
   EnvelopeIcon,
   PaperAirplaneIcon,
@@ -10,7 +12,6 @@ import { toast } from "react-toastify";
 import { useLeadSelection } from "@/contexts/LeadSelectionContext";
 
 import { useSearchParams } from "next/navigation";
-import EmailSendWindow from "../email/EmailSendWindow";
 import { useLeadFilter } from "@/contexts/FilterLeadContext";
 import AddCadence from "../cadences/AddCadence";
 import CreateCadence from "../cadences/CreateCadence";
@@ -23,6 +24,12 @@ import {
 } from "@/services/leadService";
 import { addCadence } from "@/services/cadenceService";
 
+const EmailSendWindow = dynamic(
+  () => import("@/sections/email/EmailSendWindow"),
+  {
+    ssr: false,
+  }
+);
 const LeadToolbar = () => {
   const searchParams = useSearchParams();
 
