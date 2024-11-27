@@ -18,7 +18,7 @@ export class WebSocketService {
   connect() {
     const token = getRememberMe() || getToken();
     this.ws = new WebSocket(
-      `ws://api.russell-dev.aivio.io/ws/connect?token=Bearer ${token}`
+      `wss://api.russell-dev.aivio.io/ws/connect?token=Bearer ${token}`
     );
 
     this.ws.onopen = () => {
