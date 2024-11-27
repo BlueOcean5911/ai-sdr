@@ -1,5 +1,5 @@
 "use client";
-
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -9,9 +9,11 @@ import {
   getLeadById,
   // updateLead,
 } from "@/services/leadService";
-import { CompanyModel, getCompanyById } from "@/services/companyService";
-import EmailSendWindow from "@/sections/email/EmailSendWindow";
 import LeadView from "@/sections/leads/LeadView";
+
+const EmailSendWindow = dynamic(() => import("@/sections/email/EmailSendWindow"), {
+  ssr: false,
+});
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
