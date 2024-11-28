@@ -200,16 +200,12 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
         }
       );
 
-      console.log(response);
-
       if (!response.ok) {
         throw new Error("Failed to fetch access token");
       }
       const data = await response.json();
 
       addTwilioLog("Got a token.");
-      console.log("data", data);
-      console.log("Token: " + data.token);
       await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: true,
