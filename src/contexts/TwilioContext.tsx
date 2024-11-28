@@ -116,6 +116,8 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
         // trim: "trim-silence",
       });
 
+      console.log("Recording started:", recording);
+
       recording.on("transcription", (transcription: any) => {
         setCaptionText(transcription);
       });
