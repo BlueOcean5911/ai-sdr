@@ -77,6 +77,7 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
       outgoingConnection?.disconnect();
     });
 
+    console.log("newConn", newConn);
     setOutgoingConnection(newConn);
     setCallStatus("outgoing");
   };
