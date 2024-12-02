@@ -87,6 +87,7 @@ const config = {
   },
   plugins: [
     require("@tailwindcss/forms"),
+    require("@tailwindcss/typography"),
     require("tailwindcss-animate"),
     require("tailwindcss-3d"),
   ],

@@ -131,3 +131,8 @@ export const getRelativeTime = (dateString: string): string => {
   register("en_US", en.default);
   return format(new Date(dateString + "Z"), "en_US");
 };
+
+export const stripHtmlTags = (html: string) => {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  return doc.body.textContent || "";
+};
