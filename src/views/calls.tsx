@@ -1,13 +1,16 @@
 "use client";
-
-import Pagination from "@/components/extends/Pagination/Pagination";
-import { useCallFilter } from "@/contexts/FilterCallContext";
-import FilterCall from "@/components/Filter/filterCall";
-import CallToolbar from "@/sections/calls/CallToolbar";
-import CallItem from "@/sections/calls/CallItem";
-import { CallModel } from "@/services/callService";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+
+import CallItem from "@/sections/calls/CallItem";
+import CallToolbar from "@/sections/calls/CallToolbar";
+import FilterCall from "@/components/Filter/filterCall";
+import Pagination from "@/components/extends/Pagination/Pagination";
+
+import { handleError, runService } from "@/utils/service_utils";
+import { useCallFilter } from "@/contexts/FilterCallContext";
+import { CallModel, getCalls } from "@/services/callService";
+
 import { callData } from "@/data/call.data";
 
 export default function Calls(
@@ -25,27 +28,28 @@ export default function Calls(
   const [calls, setCalls] = useState<CallModel[]>(callData);
   const currentParams = Object.fromEntries(useSearchParams());
 
-  // const fetchCalls = (params: { [key: string]: string }) => {
-  //   runService(
-  //     {
-  //       offset: 0,
-  //       limit: 100,
-  //       campaignId: campaignId,
-  //       cadenceId: cadenceId,
-  //       fromUser: callFilterConfig.fromUser,
-  //       search: callFilterConfig.search,
-  //       params,
-  //     },
-  //     getCalls,
-  //     (data) => {
-  //       setCalls(data);
-  //     },
-  //     (status, error) => {
-  //       handleError(status, error);
-  //       console.log(status, error);
-  //     }
-  //   );
-  // };
+  const fetchCalls = (params: { [key: string]: string }) => {
+    runService(
+      {
+        offset: 0,
+        limit: 100,
+        campaignId: campaignId,
+        cadenceId: cadenceId,
+        fromUser: callFilterConfig.fromUser,
+        search: callFilterConfig.search,
+        params,
+      },
+      getCalls,
+      (data) => {
+        console.log("calls: ", data);
+        // setCalls(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+        console.log(status, error);
+      }
+    );
+  };
 
   // const fetchCallTotalCount = (params: { [key: string]: string }) => {
   //   runService(
@@ -68,10 +72,10 @@ export default function Calls(
   //   );
   // };
 
-  // useEffect(() => {
-  //   fetchCallTotalCount(currentParams);
-  //   fetchCalls(currentParams);
-  // }, []);
+  useEffect(() => {
+    // fetchCallTotalCount(currentParams);
+    fetchCalls(currentParams);
+  }, []);
 
   // useEffect(() => {
   //   fetchCallTotalCount(currentParams);

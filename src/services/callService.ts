@@ -76,38 +76,39 @@ interface ApiStatisticsResponse {
 export const getCalls = async (
   data: FetchCallsProps = { offset: 0, limit: 100, params: {} }
 ): Promise<ApiCallsResponse> => {
-  let url = `/api/calls?offset=${data.offset}&limit=${data.limit}`;
-  //  get search params from current params
-  const keys = Object.keys(data.params);
-  let searchParams = "";
+  let url = `/api/calls`;
+  // let url = `/api/calls?offset=${data.offset}&limit=${data.limit}`;
+  // //  get search params from current params
+  // const keys = Object.keys(data.params);
+  // let searchParams = "";
 
-  if (keys.length > 0) {
-    searchParams =
-      "&" + keys.map((key) => `${key}=${data.params[key]}`).join("&");
-  }
-  if (data.campaignId) {
-    url += `&campaignId=${data.campaignId}`;
-  }
-  if (data.cadenceId) {
-    url += `&cadenceId=${data.cadenceId}`;
-  }
-  let userIds: string[] = [];
-  if (Array.isArray(data.fromUser)) {
-    userIds = data.fromUser.map((option) => option.value);
-  } else if (data.fromUser) {
-    userIds = [data.fromUser.value];
-  } else {
-    userIds = [];
-  }
-  for (const userId of userIds) {
-    url += `&fromUser=${userId}`;
-  }
-  if (data.search) {
-    url += `&search=${data.search}`;
-  }
-  if (searchParams) {
-    url += searchParams;
-  }
+  // if (keys.length > 0) {
+  //   searchParams =
+  //     "&" + keys.map((key) => `${key}=${data.params[key]}`).join("&");
+  // }
+  // if (data.campaignId) {
+  //   url += `&campaignId=${data.campaignId}`;
+  // }
+  // if (data.cadenceId) {
+  //   url += `&cadenceId=${data.cadenceId}`;
+  // }
+  // let userIds: string[] = [];
+  // if (Array.isArray(data.fromUser)) {
+  //   userIds = data.fromUser.map((option) => option.value);
+  // } else if (data.fromUser) {
+  //   userIds = [data.fromUser.value];
+  // } else {
+  //   userIds = [];
+  // }
+  // for (const userId of userIds) {
+  //   url += `&fromUser=${userId}`;
+  // }
+  // if (data.search) {
+  //   url += `&search=${data.search}`;
+  // }
+  // if (searchParams) {
+  //   url += searchParams;
+  // }
   const response = await api.get(url);
 
   return {
