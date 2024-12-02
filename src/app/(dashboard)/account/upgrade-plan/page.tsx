@@ -1,111 +1,122 @@
 "use client";
-import { useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
+import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
-import { api } from "@/utils/api";
+import { PlanCard } from "@/components/account/PlanCard";
+import { UserCountSelector } from "@/components/account/UserCountSelector";
+
+import {
+  BillingPeriod,
+  BillingPeriodSelector,
+} from "@/components/account/BillingPeriod";
+import { PLANS } from "@/data/plan.data";
+
+import {
+  createCheckOutSession,
+  verifyStripeSession,
+} from "@/services/stripeService";
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
+  const [processingPlan, setProcessingPlan] = useState<string>("");
+  const [userCount, setUserCount] = useState(1);
+  const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>("monthly");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get("sessionId");
 
-  const [item, setItem] = useState({
-    name: "Upgrade Plan",
-    description: "Upgrade plan for more features",
-    image:
-      "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80",
-    quantity: 12,
-    price: 119,
-  });
-
-  const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!;
-  const stripePromise = loadStripe(publishableKey);
-
-  const createCheckOutSession = async () => {
-    setLoading(true);
-    const stripe = await stripePromise;
-    const checkoutSession = await api.post(
-      "/api/payments/create-stripe-session",
-      item
-    );
-    const result = await stripe?.redirectToCheckout({
-      sessionId: checkoutSession.data.id,
-    });
-    if (result?.error) {
-      alert(result.error.message);
-    }
-    setLoading(false);
+  const getPeriodMultiplier = (
+    period: BillingPeriod,
+    monthly: boolean = false
+  ) => {
+    const discounts = {
+      monthly: { months: 1, discount: 0 },
+      quarterly: { months: 3, discount: 0.1 },
+      annually: { months: 12, discount: 0.2 },
+    };
+    const { months, discount } = discounts[period];
+    if (monthly) return 1 - discount;
+    return months * (1 - discount);
   };
 
+  const calculatePrice = (basePrice: number) => {
+    const periodMultiplier = getPeriodMultiplier(billingPeriod, true);
+    return Math.round(basePrice * periodMultiplier);
+  };
+
+  const calculateTotalPrice = (basePrice: number) => {
+    const periodMultiplier = getPeriodMultiplier(billingPeriod);
+    return Math.round(basePrice * userCount * periodMultiplier);
+  };
+
+  const handleUpgrade = async (plan: typeof PLANS.BASIC) => {
+    try {
+      setLoading(true);
+      setProcessingPlan(plan.name);
+
+      const { sessionId, sessionUrl } = await createCheckOutSession({
+        ...plan,
+        price: calculateTotalPrice(plan.price),
+        metadata: {
+          userCount,
+          billingPeriod,
+          planType: plan.name,
+        },
+      });
+
+      localStorage.setItem("stripeSessionId", sessionId);
+      window.location.href = sessionUrl;
+    } catch (error) {
+      console.error("Checkout error:", error);
+      setProcessingPlan("");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyStripeSession = async (sessionId: string) => {
+    setLoading(true);
+    const result = await verifyStripeSession(sessionId);
+    setLoading(false);
+    if (result) toast.success("Your plan upgraded successfully");
+    else toast.error("Session id is not correct!");
+    localStorage.removeItem("stripeSessionId");
+    router.push("/account/upgrade-plan");
+  };
+
+  useEffect(() => {
+    if (sessionId && sessionId === localStorage.getItem("stripeSessionId")) {
+      handleVerifyStripeSession(sessionId);
+    }
+  }, [sessionId]);
+
   return (
-    <>
-      <div className="p-4 flex flex-1 bg-gray-100 overflow-auto text-sm">
-        <div className="flex flex-1 justify-center items-center gap-6 bg-gray-100">
-          <div className="h-96 p-6 max-w-xs w-full flex flex-col gap-5 border rounded-md shadow-lg bg-white">
-            <div className="p-10 flex flex-col gap-2 justify-center items-center">
-              <p className="text-2xl">Free</p>
-              <p className="text-4xl font-semibold">0$</p>
-            </div>
-            <div className="flex flex-col gap-3 justify-center items-center">
-              <p>10 Export Credits/Month</p>
-              <p>5 Mobile Number Credits/Year</p>
-            </div>
-            <button className="bg-gray-200 text-white p-2 rounded-md" disabled>
-              Selected
-            </button>
-          </div>
-          <div className="h-96 p-6 max-w-xs w-full flex flex-col gap-5 border rounded-md shadow-lg bg-white">
-            <div className="p-10 flex flex-col gap-2 justify-center items-center">
-              <p className="text-2xl">Basic</p>
-              <p className="text-4xl font-semibold">49$</p>
-            </div>
-            <div className="flex flex-col gap-3 justify-center items-center">
-              <p>1,000 Export Credits/Month</p>
-              <p>75 Mobile Number Credits/Month</p>
-            </div>
-            <button
-              className="bg-blue-500 text-white p-2 rounded-md"
-              disabled={loading}
-              onClick={createCheckOutSession}
-            >
-              Upgrade Plan
-            </button>
-          </div>
-          <div className="h-96 p-6 max-w-xs w-full flex flex-col gap-5 border rounded-md shadow-lg bg-white">
-            <div className="p-10 flex flex-col gap-2 justify-center items-center">
-              <p className="text-2xl">Professional</p>
-              <p className="text-4xl font-semibold">79$</p>
-            </div>
-            <div className="flex flex-col gap-3 justify-center items-center">
-              <p>2000 Export Credits/Year</p>
-              <p>100 Mobile Number Credits/Year</p>
-            </div>
-            <button
-              className="bg-blue-500 text-white p-2 rounded-md"
-              disabled={loading}
-              onClick={createCheckOutSession}
-            >
-              Upgrade Plan
-            </button>
-          </div>
-          <div className="h-96 p-6 max-w-xs w-full flex flex-col gap-5 border rounded-md shadow-lg bg-white">
-            <div className="p-10 flex flex-col gap-2 justify-center items-center">
-              <p className="text-2xl">Organization</p>
-              <p className="text-4xl font-semibold">119$</p>
-            </div>
-            <div className="flex flex-col gap-3 justify-center items-center">
-              <p>4000 Export Credits/Year</p>
-              <p>200 Mobile Number Credits/Year</p>
-            </div>
-            <button
-              className="bg-blue-500 text-white p-2 rounded-md"
-              disabled={loading}
-              onClick={createCheckOutSession}
-            >
-              Upgrade Plan
-            </button>
-          </div>
+    <div className="p-4 flex flex-1 flex-col bg-gray-100 overflow-auto">
+      <div className="max-w-7xl mx-auto w-full space-y-6">
+        <UserCountSelector userCount={userCount} onChange={setUserCount} />
+        <BillingPeriodSelector
+          selected={billingPeriod}
+          onChange={setBillingPeriod}
+        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
+          {Object.values(PLANS).map((plan) => (
+            <PlanCard
+              key={plan.name}
+              plan={{
+                ...plan,
+                price: calculatePrice(plan.price),
+              }}
+              billingPeriod={billingPeriod}
+              isSelected={plan.name === "Free"}
+              loading={loading}
+              processingPlan={processingPlan}
+              onUpgrade={handleUpgrade}
+            />
+          ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

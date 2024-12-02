@@ -126,12 +126,12 @@ export const navigations = [
         icon: MailIcon,
         current: false,
       },
-      // {
-      //   name: "Calls",
-      //   href: "/calls",
-      //   icon: PhoneIcon,
-      //   current: false,
-      // },
+      {
+        name: "Calls",
+        href: "/calls",
+        icon: PhoneIcon,
+        current: false,
+      },
       {
         name: "Tasks",
         href: "/tasks",

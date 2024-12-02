@@ -12,7 +12,7 @@ import {
 } from "@headlessui/react";
 import { EllipsisHorizontalIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { MailingModel } from "@/services/mailingService";
-import { formatDate, formatDateTimeReadable } from "@/utils/format";
+import { formatDate, formatDateTimeReadable, stripHtmlTags } from "@/utils/format";
 
 export default function EmailItem({ mailing }: { mailing: MailingModel }) {
   const [sent, setSent] = useState(false);
@@ -33,7 +33,9 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
           <span className="font-semibold line-clamp-1 text-sm">
             {mailing.subject}
           </span>
-          <span className="line-clamp-2 text-gray-500">{mailing.message}</span>
+          <span className="line-clamp-2 text-gray-500">
+            <div>{stripHtmlTags(mailing.message)}</div>
+          </span>
           <span className="line-clamp-1 text-blue-500">
             Step {mailing.currentCadenceStep} of {mailing.cadenceName}
           </span>
