@@ -19,7 +19,7 @@ export class WebSocketService {
     const token = getRememberMe() || getToken();
     const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace("http", "ws");
     this.ws = new WebSocket(
-      `${baseUrl}/ws/connect?token=Bearer ${token}`
+      `${baseUrl}ws/connect?token=Bearer ${token}`
     );
 
     this.ws.onopen = () => {
