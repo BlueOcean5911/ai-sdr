@@ -12,6 +12,7 @@ import {
 
 import { getMe, UserModel } from "@/services/userService";
 import { handleError, runService } from "@/utils/service_utils";
+import { twilioApi } from "@/utils/api";
 
 interface TwilioContextType {
   device: any;
@@ -188,23 +189,14 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
       }
 
       addTwilioLog("Requesting Access Token...");
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_TWILIO_URL}/token?identity=${user?.phone}`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          credentials: "include",
-        }
+      const response = await twilioApi.get(
+        `${process.env.NEXT_PUBLIC_TWILIO_URL}/token?identity=${user?.phone}`
       );
 
-      if (!response.ok) {
+      if (!response?.data) {
         throw new Error("Failed to fetch access token");
       }
-      const data = await response.json();
+      const data = await response.data;
 
       addTwilioLog("Got a token.");
       await navigator.mediaDevices.getUserMedia({
