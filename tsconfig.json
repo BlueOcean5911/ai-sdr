@@ -29,7 +29,8 @@
     "src/sections/cadences/manage-cadence.jsx",
     "src/components/Cadence/node.jsx",
     "src/components/Cadence/PhoneNode.js",
-    "src/contexts/FilterLeadContext.tsx"
+    "src/contexts/FilterLeadContext.tsx",
+    "src/types/*.d.ts",
   ],
   "exclude": ["node_modules"]
 }
