@@ -163,7 +163,7 @@ const LeadTable = () => {
   const handleCall = (lead: LeadModel) => {
     setSelected(lead);
     setSelectPhone(true);
-  } 
+  };
 
   return (
     <>
@@ -403,8 +403,11 @@ const LeadTable = () => {
                               <div className="flex gap-2 flex-wrap max-w-72 justify-center">
                                 {lead.company?.keywords
                                   ?.split(",")
-                                  .map((keyword) => (
-                                    <span className="p-1 px-2 border border-white text-white rounded-full text-xs capitalize  min-w-16 text-center">
+                                  .map((keyword, idx) => (
+                                    <span
+                                      key={idx}
+                                      className="p-1 px-2 border border-white text-white rounded-full text-xs capitalize  min-w-16 text-center"
+                                    >
                                       {keyword}
                                     </span>
                                   )) || <></>}
