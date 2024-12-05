@@ -48,17 +48,19 @@ export interface BaseCallModel {
   queue_time?: string; // Optional
   trunk_sid?: string; // Optional
   uri?: string; // Optional
-  subresource_uris: {
-    notifications: string;
-    user_defined_messages: string;
-    transcriptions: string;
-    recordings: string;
-    streams: string;
-    payments: string;
-    user_defined_message_subscriptions: string;
-    siprec: string;
-    events: string;
-  };
+  // subresource_uris: {
+  //   notifications: string;
+  //   user_defined_messages: string;
+  //   transcriptions: string;
+  //   recordings: string;
+  //   streams: string;
+  //   payments: string;
+  //   user_defined_message_subscriptions: string;
+  //   siprec: string;
+  //   events: string;
+  // };
+  recording_url?: string; // Optional
+  transcription_text?: string | null; // Optional
   solution?: string | null; // Optional
   context?: string | null; // Optional
   orgId?: string | null; // Optional
