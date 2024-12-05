@@ -27,9 +27,9 @@ export default function CallDetail({
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    if (call) {
+    if (call?.recording_url) {
       fetch(
-        `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Recordings/REf28f29d7d5de6b0eadea43c33d269dae.mp3`,
+        `${call.recording_url}.mp3`,
         {
           headers: {
             Authorization: `Basic ${Buffer.from(
@@ -84,22 +84,24 @@ export default function CallDetail({
                   </DialogTitle>
                   {call && (
                     <div className="flex flex-col gap-4 p-6">
-                      <div className="flex flex-row justify-between items-center gap-4">
-                        <div className="rounded-full overflow-hidden">
-                          <AudioPlayer
-                            src={audioUrl || ""}
-                            minimal={true}
-                            width={480}
-                            trackHeight={35}
-                          />
+                      {audioUrl && (
+                        <div className="flex flex-row justify-between items-center gap-4">
+                          <div className="rounded-full overflow-hidden">
+                            <AudioPlayer
+                              src={audioUrl || ""}
+                              minimal={true}
+                              width={480}
+                              trackHeight={35}
+                            />
+                          </div>
+                          <div
+                            className="p-1 rounded-md cursor-pointer hover:bg-white"
+                            onClick={() => {}}
+                          >
+                            <TrashIcon className="w-5 h-5 stroke-red-500" />
+                          </div>
                         </div>
-                        <div
-                          className="p-1 rounded-md cursor-pointer hover:bg-white"
-                          onClick={() => {}}
-                        >
-                          <TrashIcon className="w-5 h-5 stroke-red-500" />
-                        </div>
-                      </div>
+                      )}
                       <div className="flex flex-row justify-between items-center gap-4">
                         <label htmlFor="from">From:</label>
                         <input
