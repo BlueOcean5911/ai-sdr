@@ -12,6 +12,8 @@ interface CallFilterConfig {
   isOpen: boolean;
   fromUser: Option | Option[] | null;
   priority: Option | Option[] | null;
+  orderBy: string;
+  isAscending: boolean | undefined;
   search: string;
 }
 
@@ -30,6 +32,8 @@ export const CallFilterProvider = ({ children }: { children: ReactNode }) => {
     isOpen: true,
     fromUser: [],
     priority: [],
+    orderBy: "",
+    isAscending: undefined,
     search: "",
   });
 
