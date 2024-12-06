@@ -46,8 +46,8 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
   const callDurationInterval = useRef<NodeJS.Timeout | null>(null);
 
   const addTwilioLog = (log: string) => {
-    // setTwilioLogs((prevLogs) => [...prevLogs, log]);
-    console.log(log);
+    setTwilioLogs((prevLogs) => [...prevLogs, log]);
+    // console.log(log);
   };
 
   const handleCallOut = (number: string) => {
