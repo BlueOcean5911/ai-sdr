@@ -1,19 +1,24 @@
-import Select from "@/components/extends/Select/default";
-import { addMailing, sendMailing } from "@/services/mailingService";
-import { getUsers, UserModel } from "@/services/userService";
-import { MAILING_STATE } from "@/types/enums";
-import { handleError, runService } from "@/utils/service_utils";
+"use client";
+import { useEffect, useState, useRef } from "react";
 import {
   ArrowPathIcon,
   MagnifyingGlassIcon,
   PencilSquareIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { Delta } from "quill/core";
 import Quill from "quill";
-import EmailGeneratorWindow from "./EmailGeneratorWindow";
+
+import { MAILING_STATE } from "@/types/enums";
+import { getUsers, UserModel } from "@/services/userService";
+import { addMailing, sendMailing } from "@/services/mailingService";
+import { handleError, runService } from "@/utils/service_utils";
 import { LeadModelWithCompanyModel } from "@/services/leadService";
+
+import Select from "@/components/extends/Select/default";
+import EmailGeneratorWindow from "./EmailGeneratorWindow";
+import QuillEditor from "@/components/extends/Editor/QuillEditor";
 
 import "quill/dist/quill.snow.css";
 
@@ -23,17 +28,13 @@ interface UserForSelect {
   id: string;
 }
 
-// const Font = Quill.import("formats/font");
-// Font.whitelist = ["sans", "serif", "monospace"];
-// Quill.register(Font, true);
-
-// Register color formats
-// const Color = Quill.import("formats/color");
-// const Background = Quill.import("formats/background");
-// Quill.register(Color, true);
-// Quill.register(Background, true);
-
-const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelWithCompanyModel }) => {
+const EmailSendWindow = ({
+  close,
+  lead,
+}: {
+  close?: () => void;
+  lead: LeadModelWithCompanyModel;
+}) => {
   const [owner, setOwner] = useState<UserForSelect>({
     name: "",
     email: "",
@@ -45,6 +46,8 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
   const [users, setUsers] = useState<UserForSelect[]>([]);
   const [isOpenEmailGeneratorWindow, setIsOpenEmailGeneratorWindow] =
     useState<boolean>(false);
+
+  const quillRef = useRef<Quill | null>(null);
 
   useEffect(() => {
     console.log(date);
@@ -65,7 +68,7 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
 
   useEffect(() => {
     setSenderId(owner ? owner.id : "");
-  }, [owner])
+  }, [owner]);
 
   const fetchUsers = () => {
     runService(
@@ -110,7 +113,7 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
     }
     if (senderId === "") {
       newErrors = { ...newErrors, sender: "Sender is required" };
-      isValid = false;  
+      isValid = false;
     }
 
     setErrors({ ...errors, ...newErrors });
@@ -122,11 +125,11 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
     let newErrors = {};
     if (senderId === "") {
       newErrors = { ...newErrors, sender: "Sender is required" };
-      isValid = false;  
+      isValid = false;
     }
     setErrors({ ...errors, ...newErrors });
     return isValid;
-  }
+  };
 
   const handleSend = () => {
     if (checkErrors()) {
@@ -178,49 +181,11 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
     toast.success("Email sent successfully");
   };
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const quill = new Quill("#editor", {
-      theme: "snow",
-      modules: {
-        toolbar: [
-          [{ size: ["small", false, "large", "huge"] }],
-          // [{ font: Font.whitelist }],
-          ["bold", "italic", "underline", "strike"],
-          [{ align: [] }],
-          [{ list: "ordered" }, { list: "bullet" }],
-          // [{ color: [] }, { background: [] }],
-          ["link", "image", "video"],
-          ["clean"],
-        ],
-      },
-    });
-
-    // const toolbar = quill.getModule("toolbar");
-    // toolbar.addHandler("image", () => {
-    //   const input = document.createElement("input");
-    //   input.setAttribute("type", "file");
-    //   input.setAttribute("accept", "image/*");
-    //   input.click();
-
-    //   input.onchange = () => {
-    //     if (!input.files) return;
-    //     const file = input.files[0];
-    //     const reader = new FileReader();
-    //     reader.onload = () => {
-    //       const range = quill.getSelection();
-    //       quill.insertEmbed(range ? range.index : 0, "image", reader.result);
-    //     };
-    //     reader.readAsDataURL(file);
-    //   };
-    // });
-
-    quill.on("text-change", () => {
-      const content = quill.root.innerHTML;
-      setValues({ ...values, message: content });
-    });
-  }, []);
+  const handleBodyChange = (
+    text: string,
+  ) => {
+    quillRef.current?.setContents(new Delta().insert(text));
+  };
 
   return (
     <>
@@ -239,7 +204,8 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
               data={users}
               onChange={(item) => {
                 setOwner(item);
-                if (senderId) setErrors({ ...errors, sender: "" });
+                if (senderId && errors.sender !== "")
+                  setErrors({ ...errors, sender: "" });
               }}
             />
             {errors.sender.length > 0 && (
@@ -296,18 +262,20 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
           </div>
           <div className="flex flex-1 flex-col overflow-auto">
             <label className="">Message*</label>
-            {/* <textarea
-              className="input-primary"
-              value={values.message}
-              onChange={(event) => {
-                setValues({ ...values, message: event.target.value });
-                if (errors.message.length > 0) {
-                  setErrors({ ...errors, message: "" });
-                }
-              }}
-            /> */}
             <div className="flex flex-1 flex-col overflow-auto">
-              <div id="editor"></div>
+              <QuillEditor
+                ref={quillRef}
+                // defaultValue={new Delta().insert("Your message here\n")}
+                onTextChange={(delta) => {
+                  const message = quillRef.current
+                    ? quillRef.current.getSemanticHTML()
+                    : "<p></p>";
+                  setValues({ ...values, message: message });
+                  if (message.length > 0) {
+                    setErrors({ ...errors, message: "" });
+                  }
+                }}
+              />
             </div>
             {errors.message.length > 0 && (
               <p className="text-red-500 text-xs">{errors.message}</p>
@@ -352,12 +320,13 @@ const EmailSendWindow = ({ close, lead }: { close?: () => void, lead: LeadModelW
         <EmailGeneratorWindow
           senderId={senderId}
           lead={lead}
-          onChange={(text: string, type: string) =>
+          handleSubjectChange={(text: string) =>
             setValues({
               ...values,
-              [type]: text,
+              subject: text,
             })
           }
+          handleBodyChange={handleBodyChange}
           close={() => setIsOpenEmailGeneratorWindow(false)}
         />
       )}
