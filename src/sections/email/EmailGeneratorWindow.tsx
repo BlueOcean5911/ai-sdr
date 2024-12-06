@@ -17,12 +17,14 @@ enum PERSONALIZED_VIEW {
 const EmailGeneratorWindow = ({
   senderId,
   lead,
-  onChange,
+  handleSubjectChange,
+  handleBodyChange,
   close,
 }: {
   senderId: string;
   lead: LeadModelWithCompanyModel;
-  onChange: (text: string, type: string) => void;
+  handleSubjectChange: (text: string) => void;
+  handleBodyChange: (text: string) => void;
   close: () => void;
 }) => {
   const [activeView, setActiveView] = useState<string>(
@@ -101,7 +103,8 @@ const EmailGeneratorWindow = ({
               generatedEmails={
                 generatedEmails ? generatedEmails : { subjects: [], bodies: [] }
               }
-              onChange={onChange}
+              handleSubjectChange={handleSubjectChange}
+              handleBodyChange={handleBodyChange}
             />
           )}
           {activeView === PERSONALIZED_VIEW.SETTING_VIEW && (
