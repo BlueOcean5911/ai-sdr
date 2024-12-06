@@ -64,11 +64,13 @@ Aivio
 const PersonalizedEmail = ({
   isGenerating = true,
   generatedEmails,
-  onChange,
+  handleSubjectChange,
+  handleBodyChange,
 }: {
   isGenerating: boolean;
   generatedEmails: GeneratedEmailsModel;
-  onChange: (text: string, type: string) => void;
+  handleSubjectChange: (text: string) => void;
+  handleBodyChange: (text: string) => void;
 }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedBody, setSelectedBody] = useState("");
@@ -98,7 +100,7 @@ const PersonalizedEmail = ({
                         checked={selectedSubject === subject.id}
                         onChange={() => {
                           setSelectedSubject(subject.id);
-                          onChange(subject.text, "subject");
+                          handleSubjectChange(subject.text);
                         }}
                         className="mr-2"
                       />
@@ -134,7 +136,7 @@ const PersonalizedEmail = ({
                       checked={selectedBody === body.id}
                       onChange={() => {
                         setSelectedBody(body.id);
-                        onChange(body.text, "message");
+                        handleBodyChange(body.text);
                       }}
                       className="mr-2 mt-1"
                     />
