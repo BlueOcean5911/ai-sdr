@@ -184,9 +184,9 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
         (device) => device.kind === "audioinput"
       );
 
-      if (!hasAudioInput) {
-        throw new Error("No audio input devices found");
-      }
+      // if (!hasAudioInput) {
+      //   throw new Error("No audio input devices found");
+      // }
 
       addTwilioLog("Requesting Access Token...");
       const response = await twilioApi.get(
@@ -199,13 +199,13 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
       const data = await response.data;
 
       addTwilioLog("Got a token.");
-      await navigator.mediaDevices.getUserMedia({
-        audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true,
-        },
-      });
+      // await navigator.mediaDevices.getUserMedia({
+      //   audio: {
+      //     echoCancellation: true,
+      //     noiseSuppression: true,
+      //     autoGainControl: true,
+      //   },
+      // });
 
       const { Device, Connection } = await import("twilio-client");
       const newDevice = new Device(data.token, {
