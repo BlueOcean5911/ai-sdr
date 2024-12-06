@@ -431,6 +431,9 @@ label {
 .ql-container {
   font-size: 1rem !important;
   font-family: inherit !important;
+  height: 90% !important;
+  display: flex;
+  flex: 1 1 0%;
 }
 
 .ql-editor {
@@ -443,6 +446,7 @@ label {
   padding: 4px !important;
   border-top-left-radius: 0.375rem;
   border-top-right-radius: 0.375rem;
+  position: sticky;
 }
 
 .ql-container.ql-snow {
@@ -545,5 +549,5 @@ label {
 }
 
 .ql-toolbar.ql-snow .ql-formats {
-    margin-right: 8px !important;
+    margin-right: 4px !important;
 }
