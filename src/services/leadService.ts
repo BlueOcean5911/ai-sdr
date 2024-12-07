@@ -238,7 +238,7 @@ export const addLeadsToExistingCadence = async ({
   cadenceId: string;
 }) => {
   // console.log("add lead to existing cadence", leadIds, cadenceId);
-  const response = await api.post(`/api/cadences/${cadenceId}/leads`, {
+  const response = await api.post(`/api/v2/cadences/${cadenceId}/leads`, {
     leadIds,
   });
 
