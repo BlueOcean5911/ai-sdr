@@ -1,6 +1,6 @@
 import { LeadModelWithCompanyModel } from "@/services/leadService";
 import { PersonalizedSettingModel } from "@/types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const PersonalizedSetting = ({
   lead,
@@ -12,49 +12,39 @@ const PersonalizedSetting = ({
   onChange: (data: PersonalizedSettingModel) => void;
 }) => {
   const [activeTab, setActiveTab] = useState("recipient");
-  console.log(lead);
+
+  // Consolidate console.log into useEffect
+  useEffect(() => {
+    console.log(lead);
+  }, [lead]);
+
   const handlePersonalInfo = (
     e: React.ChangeEvent<HTMLInputElement>,
     type: string
   ) => {
-    if (e.target.checked) {
-      let value: string | undefined = "";
-      switch (type) {
-        case "companyDescription": {
-          value = lead.company?.description;
-          break;
-        }
-        case "companyIndustry": {
-          value = lead.company?.industry;
-          break;
-        }
-        case "contactName": {
-          value = lead.firstName + " " + lead.lastName;
-          break;
-        }
-        case "contactTitle": {
-          value = lead?.title;
-          break;
-        }
-        default: {
-        }
-      }
+    const value = e.target.checked ? getValueByType(type) : "";
 
-      onChange({
-        ...setting,
-        recipientInfo: {
-          ...setting.recipientInfo,
-          [type]: value,
-        },
-      });
-    } else {
-      onChange({
-        ...setting,
-        recipientInfo: {
-          ...setting.recipientInfo,
-          [type]: "",
-        },
-      });
+    onChange({
+      ...setting,
+      recipientInfo: {
+        ...setting.recipientInfo,
+        [type]: value,
+      },
+    });
+  };
+
+  const getValueByType = (type: string): string | undefined => {
+    switch (type) {
+      case "companyDescription":
+        return lead.company?.description;
+      case "companyIndustry":
+        return lead.company?.industry;
+      case "contactName":
+        return `${lead.firstName} ${lead.lastName}`;
+      case "contactTitle":
+        return lead?.title;
+      default:
+        return undefined;
     }
   };
 
@@ -103,6 +93,7 @@ const PersonalizedSetting = ({
               Select up to 3 lead insight types to personalize your message.
             </p>
             <div className="space-y-4 border-2 rounded-md p-4 flex-1">
+              {/* Company Section */}
               <div>
                 <div className="font-medium mb-2 text-sm">Company</div>
                 <div className="space-y-2">
@@ -136,6 +127,7 @@ const PersonalizedSetting = ({
                   </p>
                 </div>
               </div>
+              {/* Contact Section */}
               <div>
                 <div className="font-medium mb-2 text-sm">Contact</div>
                 <div className="space-y-2">
@@ -171,6 +163,7 @@ const PersonalizedSetting = ({
               in generated emails.
             </p>
             <form className="space-y-4">
+              {/* Product Info Form */}
               <div>
                 <label
                   htmlFor="companyName"

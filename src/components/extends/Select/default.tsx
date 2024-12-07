@@ -11,17 +11,21 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 
 const Select = ({
-  data,
-  defaultValue = data[0],
+  data = [],
+  defaultValue,
   onChange: handleChange,
   ...others
 }: {
-  data: any;
+  data: any[];
   defaultValue?: any;
   onChange?: (item: any) => void;
   [key: string]: any;
 }) => {
-  const [selected, setSelected] = useState(defaultValue);
+  const [selected, setSelected] = useState(() => {
+    if (defaultValue !== undefined) return defaultValue;
+    if (data.length > 0) return data[0];
+    return null;
+  });
 
   useEffect(() => {
     if (handleChange) {
@@ -38,7 +42,7 @@ const Select = ({
             "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25 text-sm"
           )}
         >
-          {selected?.name}
+          {selected?.name || "Select..."} {/* Add fallback text */}
           <ChevronDownIcon
             className="group pointer-events-none absolute top-2.5 right-2.5 size-4 fill-gray-900 stroke-gray-900"
             aria-hidden="true"
