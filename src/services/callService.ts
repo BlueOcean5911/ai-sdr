@@ -23,18 +23,47 @@ export interface CallModel extends BaseCallModel {
 }
 
 export interface BaseCallModel {
-  direction: boolean;
-  user: string;
-  userPhone: string;
-  contact: string;
-  contactPhone: string;
-  time: string;
-  date: string;
-  state: string;
-  duration: string;
-  purpose: string;
-  disposition: string;
-  note: string;
+  sid: string;
+  date_created: string; // ISO 8601 format
+  date_updated: string; // ISO 8601 format
+  parent_call_sid?: string | null; // Optional
+  account_sid: string;
+  to?: string; // Optional
+  to_formatted?: string; // Optional
+  from_: string; // 'from_' is a valid identifier in TypeScript
+  from_formatted: string;
+  phone_number_sid?: string | null; // Optional
+  status: string;
+  start_time: string; // ISO 8601 format
+  end_time: string; // ISO 8601 format
+  duration: string; // duration in seconds as a string
+  price: number; // price in the specified unit
+  price_unit: string; // e.g., "USD"
+  direction: string;
+  answered_by?: string | null; // Optional
+  api_version?: string; // Optional
+  forwarded_from?: string | null; // Optional
+  group_sid?: string | null; // Optional
+  caller_name?: string | null; // Optional
+  queue_time?: string; // Optional
+  trunk_sid?: string; // Optional
+  uri?: string; // Optional
+  // subresource_uris: {
+  //   notifications: string;
+  //   user_defined_messages: string;
+  //   transcriptions: string;
+  //   recordings: string;
+  //   streams: string;
+  //   payments: string;
+  //   user_defined_message_subscriptions: string;
+  //   siprec: string;
+  //   events: string;
+  // };
+  recording_url?: string; // Optional
+  transcription_text?: string | null; // Optional
+  solution?: string | null; // Optional
+  context?: string | null; // Optional
+  orgId?: string | null; // Optional
 }
 
 export interface SendCallModel {
@@ -76,38 +105,39 @@ interface ApiStatisticsResponse {
 export const getCalls = async (
   data: FetchCallsProps = { offset: 0, limit: 100, params: {} }
 ): Promise<ApiCallsResponse> => {
-  let url = `/api/calls?offset=${data.offset}&limit=${data.limit}`;
-  //  get search params from current params
-  const keys = Object.keys(data.params);
-  let searchParams = "";
+  let url = `/api/calls`;
+  // let url = `/api/calls?offset=${data.offset}&limit=${data.limit}`;
+  // //  get search params from current params
+  // const keys = Object.keys(data.params);
+  // let searchParams = "";
 
-  if (keys.length > 0) {
-    searchParams =
-      "&" + keys.map((key) => `${key}=${data.params[key]}`).join("&");
-  }
-  if (data.campaignId) {
-    url += `&campaignId=${data.campaignId}`;
-  }
-  if (data.cadenceId) {
-    url += `&cadenceId=${data.cadenceId}`;
-  }
-  let userIds: string[] = [];
-  if (Array.isArray(data.fromUser)) {
-    userIds = data.fromUser.map((option) => option.value);
-  } else if (data.fromUser) {
-    userIds = [data.fromUser.value];
-  } else {
-    userIds = [];
-  }
-  for (const userId of userIds) {
-    url += `&fromUser=${userId}`;
-  }
-  if (data.search) {
-    url += `&search=${data.search}`;
-  }
-  if (searchParams) {
-    url += searchParams;
-  }
+  // if (keys.length > 0) {
+  //   searchParams =
+  //     "&" + keys.map((key) => `${key}=${data.params[key]}`).join("&");
+  // }
+  // if (data.campaignId) {
+  //   url += `&campaignId=${data.campaignId}`;
+  // }
+  // if (data.cadenceId) {
+  //   url += `&cadenceId=${data.cadenceId}`;
+  // }
+  // let userIds: string[] = [];
+  // if (Array.isArray(data.fromUser)) {
+  //   userIds = data.fromUser.map((option) => option.value);
+  // } else if (data.fromUser) {
+  //   userIds = [data.fromUser.value];
+  // } else {
+  //   userIds = [];
+  // }
+  // for (const userId of userIds) {
+  //   url += `&fromUser=${userId}`;
+  // }
+  // if (data.search) {
+  //   url += `&search=${data.search}`;
+  // }
+  // if (searchParams) {
+  //   url += searchParams;
+  // }
   const response = await api.get(url);
 
   return {

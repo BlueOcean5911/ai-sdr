@@ -136,3 +136,15 @@ export const stripHtmlTags = (html: string) => {
   const doc = new DOMParser().parseFromString(html, "text/html");
   return doc.body.textContent || "";
 };
+
+export const formatTimestamp = (timestamp: number | string): string => {
+  const value = typeof timestamp === "string" ? parseInt(timestamp) : timestamp;
+
+  const minutes = Math.floor(value / 60);
+  const seconds = value % 60;
+
+  const formattedMinutes = String(minutes).padStart(2, "0");
+  const formattedSeconds = String(seconds).padStart(2, "0");
+
+  return `${formattedMinutes}:${formattedSeconds}`;
+}

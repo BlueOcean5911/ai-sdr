@@ -14,12 +14,13 @@ export class WebSocketService {
   getStatus() {
     return this.status;
   }
-  
+
   connect() {
     const token = getRememberMe() || getToken();
-    this.ws = new WebSocket(
-      `wss://api.russell-dev.aivio.io/ws/connect?token=Bearer ${token}`
-    );
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace("http", "ws");
+    const url = baseUrl + "/ws/connect?token=Bearer " + token;
+    
+    this.ws = new WebSocket(url);
 
     this.ws.onopen = () => {
       this.status = "connected";
