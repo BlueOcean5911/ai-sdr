@@ -138,25 +138,6 @@ const EmailToolbar = () => {
             <span className="text-inherit">Delivered</span>
           </div>
         </Link>
-        <Link href={`${path}?not_opened=true`}>
-          <div
-            className={classNames(
-              "w-20 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
-              currentParams["not_opened"]
-                ? "border-b-blue-500  bg-gray-100"
-                : "hover:bg-gray-100 hover:border-b-blue-500"
-            )}
-            onClick={() =>
-              setEmailFilterConfig((prev) => ({
-                ...prev,
-                params: { not_opened: "true" },
-              }))
-            }
-          >
-            <span className="text-inherit">{statistics.notOpenedCount}</span>
-            <span className="text-inherit">Not Opened</span>
-          </div>
-        </Link>
         <Link href={`${path}?bounced=true`}>
           <div
             className={classNames(
@@ -174,25 +155,6 @@ const EmailToolbar = () => {
           >
             <span className="text-inherit">{statistics.bouncedCount}</span>
             <span className="text-inherit">Bounced</span>
-          </div>
-        </Link>
-        <Link href={`${path}?not_sent=true`}>
-          <div
-            className={classNames(
-              "w-20 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
-              currentParams["not_sent"]
-                ? "border-b-blue-500  bg-gray-100"
-                : "hover:bg-gray-100 hover:border-b-blue-500"
-            )}
-            onClick={() =>
-              setEmailFilterConfig((prev) => ({
-                ...prev,
-                params: { not_sent: "true" },
-              }))
-            }
-          >
-            <span className="text-inherit">{statistics.notSentCount}</span>
-            <span className="text-inherit">Not Sent</span>
           </div>
         </Link>
         <Link href={`${path}?opened=true`}>

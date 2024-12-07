@@ -64,9 +64,6 @@ export default function ContactItem({
         </div>
 
         <div className="flex items-center gap-2 text-xs">
-          {/* <span className="px-1 flex flex-1 justify-end bg-orange-500 text-white">
-            Not sent
-          </span> */}
           <span>
             Created At: <br />
             {getRelativeTime(contact.createdAt)}
