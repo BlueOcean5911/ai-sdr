@@ -35,7 +35,6 @@ import { userNavigation } from "@/data/navigation.data";
 import Link from "next/link";
 import HeaderAlert from "@/components/DashboardLayout/Alert/header-alert";
 import { navigations } from "@/data/navigation.data";
-import { signOut } from "@/services/authService";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function DashboardLayout({
@@ -45,7 +44,7 @@ export default function DashboardLayout({
   const [sidebarShow, setSidebarShow] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
 
-  const { me } = useAuth();
+  const { me, handleSignOut } = useAuth();
 
   const pathname = usePathname();
   const section =
@@ -347,7 +346,7 @@ export default function DashboardLayout({
                     <MenuItem key="logout">
                       <div
                         className="cursor-pointer block px-3 py-1 text-sm leading-5 text-gray-900 data-[focus]:bg-blue-200"
-                        onClick={signOut}
+                        onClick={handleSignOut}
                       >
                         Sign out
                       </div>
