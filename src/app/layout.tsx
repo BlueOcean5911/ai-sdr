@@ -33,7 +33,7 @@ export default function RootLayout({
         <main className="font-roboto h-dvh flex">
           <MainProvider>{children}</MainProvider>
         </main>
-        <ToastContainer autoClose={2000} />
+        <ToastContainer autoClose={2000} pauseOnFocusLoss={false} />
       </body>
     </html>
   );
