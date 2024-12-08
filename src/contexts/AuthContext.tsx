@@ -12,7 +12,7 @@ export const Context = createContext<any>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<JwtPayload | null>(null);
+  const [me, setMe] = useState<JwtPayload | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
@@ -25,8 +25,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (token && !isTokenExpired(token)) {
       setIsAuthenticated(true);
       const decoded = jwt.decode(token) as JwtPayload;
-      setUser(decoded);
-      console.log("user: ", decoded);
+      setMe(decoded);
+      console.log("me: ", decoded);
     } else {
       setIsAuthenticated(false);
       console.log("token expired");
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [isAuthenticated, path]);
 
   return (
-    <Context.Provider value={{ isAuthenticated, user }}>
+    <Context.Provider value={{ isAuthenticated, me }}>
       {children}
     </Context.Provider>
   );
