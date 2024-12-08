@@ -190,7 +190,9 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
 
       addTwilioLog("Requesting Access Token...");
       const response = await twilioApi.get(
-        `${process.env.NEXT_PUBLIC_TWILIO_URL}/token?identity=${me?.phone}`
+        `${
+          process.env.NEXT_PUBLIC_TWILIO_URL
+        }/token?identity=${me?.phonephone.replace(/\D/g, "")}`
       );
 
       if (!response?.data) {
