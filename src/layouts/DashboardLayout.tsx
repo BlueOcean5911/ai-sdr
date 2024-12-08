@@ -36,8 +36,7 @@ import Link from "next/link";
 import HeaderAlert from "@/components/DashboardLayout/Alert/header-alert";
 import { navigations } from "@/data/navigation.data";
 import { signOut } from "@/services/authService";
-import { getMe } from "@/services/userService";
-import { handleError, runService } from "@/utils/service_utils";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function DashboardLayout({
   children,
@@ -45,6 +44,8 @@ export default function DashboardLayout({
   const [sidebarPined, setSidebarPined] = useState(true);
   const [sidebarShow, setSidebarShow] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
+
+  const { me } = useAuth();
 
   const pathname = usePathname();
   const section =
@@ -59,27 +60,6 @@ export default function DashboardLayout({
   const handleMouseLeave = () => {
     setSidebarShow(false);
   };
-
-  const [user, setUser] = useState<any>();
-
-  useEffect(() => {
-    (async () => {
-      try {
-        await runService(
-          undefined,
-          getMe,
-          (data: any) => {
-            setUser(data);
-          },
-          (status: number | undefined, error: any) => {
-            handleError(status, error);
-          }
-        );
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
-    })();
-  }, []);
 
   return (
     <>
@@ -342,7 +322,7 @@ export default function DashboardLayout({
                         aria-hidden="true"
                         className="ml-4 text-sm font-semibold leading-5 text-gray-900"
                       >
-                        {user?.firstName} {user?.lastName}
+                        {me?.fullName}
                       </span>
                       <ChevronDownIcon
                         aria-hidden="true"
