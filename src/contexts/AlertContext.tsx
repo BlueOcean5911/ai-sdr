@@ -68,10 +68,10 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated || !token) return;
 
     fetchAlerts();
-    wsService.connect();
+    wsService.connect(token);
 
     const createHandler = (message: MessageType) => {
       setAlerts((alerts) => [...(alerts || []), message.data]);
