@@ -75,7 +75,6 @@ export const signOut = () => {
   if (typeof window !== "undefined") {
     localStorage.removeItem("ai-vio-token");
     localStorage.removeItem("ai-vio-remember-me");
-    window.location.replace(ROUTE_LOGIN);
   }
 };
 

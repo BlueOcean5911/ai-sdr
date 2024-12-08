@@ -1,41 +1,32 @@
 "use client";
-import Link from "next/link";
-
-import { ROUTE_DASHBOARD, ROUTE_REQUEST_DEMO } from "@/data/routes";
-import Logo from "@/components/extends/Logo";
-import CheckBox from "@/components/extends/CheckBox";
-import { LOGIN_BG_URL, LOGIN_SUB_IMAGE_001_URL } from "@/data/urls/images.url";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { toast } from "react-toastify";
+
+import Logo from "@/components/extends/Logo";
+import CheckBox from "@/components/extends/CheckBox";
 import FormHelperText from "@/components/extends/FormHelperText";
-import { handleError, runService } from "@/utils/service_utils";
+import ForgotPassword from "@/sections/auth/ForgotPassword";
+
+import { LOGIN_BG_URL, LOGIN_SUB_IMAGE_001_URL } from "@/data/urls/images.url";
+import { ROUTE_DASHBOARD, ROUTE_REQUEST_DEMO } from "@/data/routes";
 import {
-  getRememberMe,
   login,
   removeRememberMe,
   saveRememberMe,
-  saveToken,
   sendResetLink,
 } from "@/services/authService";
-import { useRouter } from "next/navigation";
-import ForgotPassword from "@/sections/auth/ForgotPassword";
-import { toast } from "react-toastify";
-// import { useRouter } from "next-nprogress-bar";
+import { useAuth } from "@/contexts/AuthContext";
+import { handleError, runService } from "@/utils/service_utils";
 
 export default function SignIn() {
   const [forgot, setForgot] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const router = useRouter();
 
-  useEffect(() => {
-    const token = getRememberMe();
-    if (token) {
-      saveToken(token);
-      router.push(ROUTE_DASHBOARD);
-    }
-  }, []);
+  const {setToken} = useAuth();
 
   const handleLogin = async (email: string, password: string) => {
     await runService(
@@ -45,8 +36,7 @@ export default function SignIn() {
         if (rememberMe) saveRememberMe(data.token);
         else removeRememberMe();
 
-        saveToken(data.token);
-        router.push(ROUTE_DASHBOARD);
+        setToken(data.token);
       },
       (statusCode, error) => {
         handleError(statusCode, error);
