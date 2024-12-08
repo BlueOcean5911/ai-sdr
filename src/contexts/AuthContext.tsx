@@ -11,6 +11,7 @@ import { privatePaths } from "@/data/paths";
 export const Context = createContext<any>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [me, setMe] = useState<JwtPayload | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -21,6 +22,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
+    setIsLoading(true);
     const token = getRememberMe() || getToken();
     if (token && !isTokenExpired(token)) {
       setIsAuthenticated(true);
@@ -31,9 +33,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setIsAuthenticated(false);
       console.log("token expired");
     }
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
+    if (isLoading) return;
     if (isAuthenticated && path === "/login") {
       router.push("/dashboard");
       toast.info("You are already logged in");
@@ -42,10 +46,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       router.push("/login");
       toast.info("Please login to continue");
     }
-  }, [isAuthenticated, path]);
+  }, [isLoading, isAuthenticated, path]);
 
   return (
-    <Context.Provider value={{ isAuthenticated, me }}>
+    <Context.Provider value={{ isLoading, isAuthenticated, me }}>
       {children}
     </Context.Provider>
   );
