@@ -6,11 +6,10 @@ import {
   ReactNode,
   useEffect,
 } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 import { wsService } from "@/services/websocketService";
-import { getRememberMe, getToken } from "@/services/authService";
+import { useAuth } from "@/contexts/AuthContext";
 import { AlertModel, deleteAlert, getAlerts } from "@/services/alertService";
 import { handleError, runService } from "@/utils/service_utils";
 
@@ -33,9 +32,8 @@ export const AlertContext = createContext<AlertContextType | undefined>(
 export const AlertProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [alerts, setAlerts] = useState<AlertModel[]>([]);
-  const router = useRouter();
 
-  const token = getRememberMe() || getToken();
+  const { isAuthenticated, token } = useAuth();
 
   const fetchAlerts = () => {
     setLoading(true);
@@ -70,13 +68,10 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    if (!token) {
-      router.push("/login");
-      return;
-    }
+    if (!isAuthenticated || !token) return;
 
     fetchAlerts();
-    wsService.connect();
+    wsService.connect(token);
 
     const createHandler = (message: MessageType) => {
       setAlerts((alerts) => [...(alerts || []), message.data]);
@@ -105,7 +100,7 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
       wsService.unsubscribe("UPDATE_ALERT", updateHandler);
       wsService.unsubscribe("DELETE_ALERT", deleteHandler);
     };
-  }, [token, router]);
+  }, [isAuthenticated, token]);
 
   return (
     <AlertContext.Provider

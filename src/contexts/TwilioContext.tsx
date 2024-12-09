@@ -10,8 +10,7 @@ import {
   useRef,
 } from "react";
 
-import { getMe, UserModel } from "@/services/userService";
-import { handleError, runService } from "@/utils/service_utils";
+import { useAuth } from "@/contexts/AuthContext";
 import { twilioApi } from "@/utils/api";
 
 interface TwilioContextType {
@@ -33,7 +32,6 @@ interface TwilioContextType {
 const TwilioContext = createContext<TwilioContextType | undefined>(undefined);
 
 export function TwilioProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<UserModel>();
   const [device, setDevice] = useState<any>(null);
   const [callStatus, setCallStatus] = useState("init");
   const [incomingConnection, setIncomingConnection] = useState<any>(null);
@@ -45,19 +43,21 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
   const callStartTime = useRef<number | null>(null);
   const callDurationInterval = useRef<NodeJS.Timeout | null>(null);
 
+  const { me } = useAuth();
+
   const addTwilioLog = (log: string) => {
     setTwilioLogs((prevLogs) => [...prevLogs, log]);
     // console.log(log);
   };
 
   const handleCallOut = (number: string) => {
-    if (!device || !user?.phone || callStatus !== "ready") return;
+    if (!device || !me?.phone || callStatus !== "ready") return;
 
     addTwilioLog(`Calling ${number}...`);
 
     const params = {
       To: number,
-      From: user?.phone,
+      From: me?.phone,
     };
 
     const newConn = device.connect(params);
@@ -190,7 +190,9 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
 
       addTwilioLog("Requesting Access Token...");
       const response = await twilioApi.get(
-        `${process.env.NEXT_PUBLIC_TWILIO_URL}/token?identity=${user?.phone}`
+        `${
+          process.env.NEXT_PUBLIC_TWILIO_URL
+        }/token?identity=${me?.phone?.replace(/\D/g, "")}`
       );
 
       if (!response?.data) {
@@ -268,28 +270,11 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const fetchUserData = () => {
-    runService(
-      undefined,
-      getMe,
-      (data) => {
-        setUser(data);
-      },
-      (status, error) => {
-        handleError(status, error);
-      }
-    );
-  };
-
   useEffect(() => {
-    if (user?.phone) {
+    if (me?.phone) {
       initializeTwilio();
     }
-  }, [user]);
-
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+  }, [me]);
 
   return (
     <TwilioContext.Provider

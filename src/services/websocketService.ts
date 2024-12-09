@@ -1,4 +1,3 @@
-import { getRememberMe, getToken } from "@/services/authService";
 import { toast } from "react-toastify";
 import { showOSNotification } from "@/utils/notification";
 
@@ -15,8 +14,8 @@ export class WebSocketService {
     return this.status;
   }
 
-  connect() {
-    const token = getRememberMe() || getToken();
+  connect(token: string) {
+    if (!token) return;
     const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace("http", "ws");
     const url = baseUrl + "/ws/connect?token=Bearer " + token;
     
@@ -30,8 +29,7 @@ export class WebSocketService {
     this.ws.onclose = () => {
       this.status = "disconnected";
       this.notifyConnectionStatus("disconnected");
-      // Attempt to reconnect after 1 min
-      setTimeout(() => this.connect(), 60 * 1000);
+      setTimeout(() => this.connect(token), 60 * 1000);
     };
 
     this.ws.onmessage = (event) => {
