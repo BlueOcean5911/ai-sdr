@@ -192,7 +192,7 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
       const response = await twilioApi.get(
         `${
           process.env.NEXT_PUBLIC_TWILIO_URL
-        }/token?identity=${me?.phonephone.replace(/\D/g, "")}`
+        }/token?identity=${me?.phone?.replace(/\D/g, "")}`
       );
 
       if (!response?.data) {
