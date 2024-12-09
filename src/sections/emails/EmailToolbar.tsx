@@ -40,7 +40,7 @@ const EmailToolbar = () => {
 
   useEffect(() => {
     fetchStatistics();
-  }, []);
+  }, [emailFilterConfig]);
 
   return (
     <div className="w-full flex items-center gap-2 border-b border-gray-100 text-sm overflow-auto justify-between">
