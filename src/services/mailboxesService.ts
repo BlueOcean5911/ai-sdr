@@ -28,12 +28,6 @@ export const connectWithGmail = async (): Promise<OAuthRedirectResponse> => {
   return response;
 };
 
-export const watchGmailInbox = async (): Promise<OAuthRedirectResponse> => {
-  const response = await api.get("/api/mailboxes/gmail/watch");
-
-  return response;
-};
-
 export const disconnectWithGmail = async (): Promise<ApiSuccessResponse> => {
   const response = await api.delete("/api/mailboxes/gmail/disconnect");
   return response;

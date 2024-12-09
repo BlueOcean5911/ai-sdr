@@ -4,7 +4,6 @@ import {
   checkIfGmailConnected,
   connectWithGmail,
   disconnectWithGmail,
-  watchGmailInbox,
 } from "@/services/mailboxesService";
 import { runService } from "@/utils/service_utils";
 import { useEffect, useState } from "react";
@@ -46,19 +45,6 @@ const Page = () => {
     );
   };
 
-  const handleWarchGmailInbox = () => {
-    runService(
-      undefined,
-      watchGmailInbox,
-      (data) => {
-        console.log("response-----> watch gmail inbox", data);
-      },
-      (status, error) => {
-        console.error(error);
-      }
-    );
-  };
-
   const handleDisconnectWithGoogle = () => {
     setLoading(true);
     runService(
@@ -83,9 +69,6 @@ const Page = () => {
         <>
           <button onClick={handleDisconnectWithGoogle} className="btn-primary">
             Disconnect with Gmail
-          </button>
-          <button onClick={handleWarchGmailInbox} className="btn-primary">
-            Watch Gmail Invbox
           </button>
         </>
       ) : (
