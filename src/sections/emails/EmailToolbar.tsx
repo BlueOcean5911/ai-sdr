@@ -176,7 +176,7 @@ const EmailToolbar = () => {
             <span className="text-inherit">Opened</span>
           </div>
         </Link>
-        <Link href={`${path}?clicked=true`}>
+        {/* <Link href={`${path}?clicked=true`}>
           <div
             className={classNames(
               "w-20 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
@@ -194,7 +194,7 @@ const EmailToolbar = () => {
             <span className="text-inherit">{statistics.clickedCount}</span>
             <span className="text-inherit">Clicked</span>
           </div>
-        </Link>
+        </Link> */}
         <Link href={`${path}?replied=true`}>
           <div
             className={classNames(
