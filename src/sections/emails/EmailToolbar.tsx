@@ -30,6 +30,7 @@ const EmailToolbar = ({ cadenceId }: { cadenceId?: string }) => {
         cadenceId: cadenceId,
         fromUser: emailFilterConfig.fromUser,
         search: emailFilterConfig.search,
+        params: {},
       },
       getMailingsStatistics,
       (data) => {
