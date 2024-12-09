@@ -8,7 +8,6 @@ import {
 import { runService } from "@/utils/service_utils";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ROUTE_ACCOUNT_INBOX_GMAIL } from "@/data/routes";
 import Loading from "@/components/Loading";
 
 const Page = () => {
