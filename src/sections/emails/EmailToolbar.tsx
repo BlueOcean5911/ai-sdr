@@ -10,23 +10,27 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-const EmailToolbar = () => {
+const EmailToolbar = ({ cadenceId }: { cadenceId?: string }) => {
   const path = usePathname();
   const currentParams = Object.fromEntries(useSearchParams());
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
   const [statistics, setStatistics] = useState<MailingsStatistics>({
     totalCount: 0,
+    draftedCount: 0,
     scheduledCount: 0,
     deliveredCount: 0,
     bouncedCount: 0,
-    draftedCount: 0,
-    notOpenedCount: 0,
-    notSentCount: 0,
+    openedCount: 0,
+    repliedCount: 0,
   });
 
   const fetchStatistics = () => {
     runService(
-      undefined,
+      {
+        cadenceId: cadenceId,
+        fromUser: emailFilterConfig.fromUser,
+        search: emailFilterConfig.search,
+      },
       getMailingsStatistics,
       (data) => {
         setStatistics(data);
