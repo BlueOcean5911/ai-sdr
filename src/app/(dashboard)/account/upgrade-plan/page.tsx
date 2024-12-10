@@ -1,54 +1,24 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 
-import { PlanCard } from "@/components/account/PlanCard";
-import { UserCountSelector } from "@/components/account/UserCountSelector";
+import PlanCard from "@/components/account/PlanCard";
+import UserCountSelector from "@/components/account/UserCountSelector";
 
-import {
-  BillingPeriod,
-  BillingPeriodSelector,
-} from "@/components/account/BillingPeriod";
+import { BillingPeriodSelector } from "@/components/account/BillingPeriod";
 import { PLANS } from "@/data/plan.data";
 
-import {
-  createCheckOutSession,
-  verifyStripeSession,
-} from "@/services/stripeService";
+import { createCheckOutSession } from "@/services/stripeService";
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
   const [processingPlan, setProcessingPlan] = useState<string>("");
   const [userCount, setUserCount] = useState(1);
-  const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>("monthly");
-  const router = useRouter();
+  const [billingPeriod, setBillingPeriod] = useState<string>("monthly");
+
   const searchParams = useSearchParams();
-  const sessionId = searchParams.get("sessionId");
-
-  const getPeriodMultiplier = (
-    period: BillingPeriod,
-    monthly: boolean = false
-  ) => {
-    const discounts = {
-      monthly: { months: 1, discount: 0 },
-      quarterly: { months: 3, discount: 0.1 },
-      annually: { months: 12, discount: 0.2 },
-    };
-    const { months, discount } = discounts[period];
-    if (monthly) return 1 - discount;
-    return months * (1 - discount);
-  };
-
-  const calculatePrice = (basePrice: number) => {
-    const periodMultiplier = getPeriodMultiplier(billingPeriod, true);
-    return Math.round(basePrice * periodMultiplier);
-  };
-
-  const calculateTotalPrice = (basePrice: number) => {
-    const periodMultiplier = getPeriodMultiplier(billingPeriod);
-    return Math.round(basePrice * userCount * periodMultiplier);
-  };
+  const status = searchParams.get("status");
 
   const handleUpgrade = async (plan: typeof PLANS.BASIC) => {
     try {
@@ -56,13 +26,11 @@ const Page = () => {
       setProcessingPlan(plan.name);
 
       const { sessionId, sessionUrl } = await createCheckOutSession({
-        ...plan,
-        price: calculateTotalPrice(plan.price),
-        metadata: {
-          userCount,
-          billingPeriod,
-          planType: plan.name,
-        },
+        price:
+          billingPeriod === "monthly"
+            ? plan.monthly.priceId
+            : plan.annually.priceId,
+        quantity: userCount,
       });
 
       localStorage.setItem("stripeSessionId", sessionId);
@@ -75,38 +43,31 @@ const Page = () => {
     }
   };
 
-  const handleVerifyStripeSession = async (sessionId: string) => {
-    setLoading(true);
-    const result = await verifyStripeSession(sessionId);
-    setLoading(false);
-    if (result) toast.success("Your plan upgraded successfully");
-    else toast.error("Session id is not correct!");
-    localStorage.removeItem("stripeSessionId");
-    router.push("/account/upgrade-plan");
-  };
-
   useEffect(() => {
-    if (sessionId && sessionId === localStorage.getItem("stripeSessionId")) {
-      handleVerifyStripeSession(sessionId);
+    if (status === "success") {
+      toast.success("Payment successful!");
+    } else if (status === "canceled") {
+      toast.error("Payment canceled.");
     }
-  }, [sessionId]);
+  }, [status]);
 
   return (
-    <div className="p-4 flex flex-1 flex-col bg-gray-100 overflow-auto">
-      <div className="max-w-7xl mx-auto w-full space-y-6">
-        <UserCountSelector userCount={userCount} onChange={setUserCount} />
+    <div className="flex justify-center overflow-auto">
+      <div className="max-w-6xl px-4 py-12 w-full flex flex-col justify-center text-center gap-2">
+        <h1 className="text-4xl font-semibold">Upgrade Your Plan</h1>
+        <h3 className="text-2xl font-semibold">
+          Pricing for one-person startups to Fortune 500 enterprises.
+        </h3>
         <BillingPeriodSelector
-          selected={billingPeriod}
+          period={billingPeriod}
           onChange={setBillingPeriod}
         />
+        <UserCountSelector userCount={userCount} onChange={setUserCount} />
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
           {Object.values(PLANS).map((plan) => (
             <PlanCard
               key={plan.name}
-              plan={{
-                ...plan,
-                price: calculatePrice(plan.price),
-              }}
+              plan={plan}
               billingPeriod={billingPeriod}
               isSelected={plan.name === "Free"}
               loading={loading}
