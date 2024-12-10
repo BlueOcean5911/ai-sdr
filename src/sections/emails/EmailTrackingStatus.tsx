@@ -9,6 +9,7 @@ export default function EmailTrackingStatus({
 }: {
   mailing: MailingModel;
 }) {
+  console.log("here--------->", mailing);
   const timestamps: Record<string, string> = {
     [MAILING_STATE.SCHEDULED]: mailing.scheduledAt,
     [MAILING_STATE.DELIVERED]: mailing.deliveredAt,
@@ -59,7 +60,8 @@ export default function EmailTrackingStatus({
                   <Tooltip id={`my-tooltip-${state.key}`} className="z-50">
                     <span className="text-xs text-white">
                       {state.label}
-                      {timestamps[state.key] &&
+                      {timestamps[state.key] !== null &&
+                        timestamps[state.key] !== undefined &&
                         ` at: ${formatDateTimeReadable(timestamps[state.key])}`}
                     </span>
                   </Tooltip>
