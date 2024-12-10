@@ -291,7 +291,7 @@ const LeadTable = () => {
                           }}
                         />
                         <span
-                          className="hover:underline hover:text-blue-500"
+                          className="hover:underline text-blue-900 font-bold"
                           onClick={() => {
                             setSelected(lead);
                             setOverview(true);
@@ -377,7 +377,7 @@ const LeadTable = () => {
                           .map((keyword, idx) => (
                             <span
                               key={idx}
-                              className="p-1 px-2 border border-blue-500 rounded-full text-xs capitalize min-w-16 text-center"
+                              className="px-2 border bg-blue-500 rounded-full text-[10px] capitalize min-w-16 text-center text-white"
                             >
                               {keyword}
                             </span>
@@ -398,7 +398,7 @@ const LeadTable = () => {
                             </a>
                             <Tooltip
                               id={`my-tooltip-company-keywords-${lead.company?.id}`}
-                              place="top"
+                              className="z-50"
                             >
                               <div className="flex gap-2 flex-wrap max-w-72 justify-center">
                                 {lead.company?.keywords
@@ -406,7 +406,7 @@ const LeadTable = () => {
                                   .map((keyword, idx) => (
                                     <span
                                       key={idx}
-                                      className="p-1 px-2 border border-white text-white rounded-full text-xs capitalize  min-w-16 text-center"
+                                      className="px-2 border-white border rounded-full text-[10px] capitalize min-w-16 text-center text-white"
                                     >
                                       {keyword}
                                     </span>
