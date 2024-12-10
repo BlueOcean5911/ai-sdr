@@ -52,7 +52,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </Link>
         )}
       </div>
-      <div className="w-full h-8 px-5 flex items-center gap-2">
+      <div className="w-full h-8 px-5 flex items-center gap-2 border-b border-gray-200 bg-white shadow-sm">
         <TapItem
           key="profile"
           content="Profile"
