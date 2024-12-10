@@ -19,6 +19,7 @@ import {
 } from "@/utils/format";
 import Link from "next/link";
 import EmailTrackingStatus from "./EmailTrackingStatus";
+import { MAILING_STATE } from "@/types/enums";
 
 export default function EmailItem({ mailing }: { mailing: MailingModel }) {
   const [sent, setSent] = useState(false);
@@ -156,21 +157,39 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
             anchor="bottom end"
             className="flex flex-col w-56 origin-top-right bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
           >
-            <MenuItem>
-              <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                Retry
-              </button>
-            </MenuItem>
-            <MenuItem>
-              <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                Skispan Email and Continue Cadence
-              </button>
-            </MenuItem>
-            <MenuItem>
-              <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                Delete Email and Finish Cadence
-              </button>
-            </MenuItem>
+            {mailing.mailingStatus === MAILING_STATE.BOUNCED && (
+              <MenuItem>
+                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                  Resend Email
+                </button>
+              </MenuItem>
+            )}
+            {mailing.mailingStatus === MAILING_STATE.SCHEDULED && (
+              <>
+                <MenuItem>
+                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                    Send Now
+                  </button>
+                </MenuItem>
+                <MenuItem>
+                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                    Skip an Email and Continue Cadence
+                  </button>
+                </MenuItem>
+                <MenuItem>
+                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                    Delete Email and Finish Cadence
+                  </button>
+                </MenuItem>
+              </>
+            )}
+            {mailing.mailingStatus === MAILING_STATE.DELIVERED && (
+              <MenuItem>
+                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                  Reply to Thread
+                </button>
+              </MenuItem>
+            )}
           </MenuItems>
         </Menu>
       </td>
