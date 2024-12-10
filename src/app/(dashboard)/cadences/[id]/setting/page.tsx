@@ -12,6 +12,7 @@ import Select from "@/components/extends/Select/default";
 import { useCadence } from "@/contexts/CadenceContext";
 import FormHelperText from "@/components/extends/FormHelperText";
 import { toast } from "react-toastify";
+import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 
 export default function Page() {
   const { cadence, setCadence } = useCadence();
@@ -66,9 +67,20 @@ export default function Page() {
           <div className="flex flex-1 justify-center items-center bg-gray-100">
             <div className="card py-8 max-w-lg min-h-96 w-full flex flex-col gap-5 border shadow-lg">
               <div className="change-password-header">
-                <h1 className="text-lg">Account Profile</h1>
+                <h1 className="text-lg">
+                  <span className="flex gap-2 items-center">
+                    <Cog6ToothIcon className="w-6 h-6" />
+                    Setting
+                  </span>
+                </h1>
                 <hr />
               </div>
+              <span className="text-sm text-gray-500">
+                The cadence owner will be responsible for managing and
+                monitoring all emails and tasks in this sequence. They will
+                receive notifications and can make adjustments to the cadence as
+                needed.
+              </span>
               <div className="flex-1 p-4 mt-4 flex flex-col gap-2 border rounded">
                 {isReady ? (
                   <Formik

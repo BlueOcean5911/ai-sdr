@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import FormHelperText from "@/components/extends/FormHelperText";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
 
 export default function Profile() {
   const [userData, setUserData] = useState<UserModel>();
@@ -48,7 +49,12 @@ export default function Profile() {
         <div className="flex flex-1 justify-center items-center bg-gray-100">
           <div className="card py-8 max-w-md w-full flex flex-col gap-5 border shadow-lg">
             <div className="change-password-header">
-              <h1 className="text-lg">Account Profile</h1>
+              <h1 className="text-lg">
+                <span className="flex gap-2 items-center">
+                  <UserCircleIcon className="w-6 h-6" />
+                  Account Profile
+                </span>
+              </h1>
               <hr />
             </div>
             <div className="p-4 pt-6 border rounded mt-4">
