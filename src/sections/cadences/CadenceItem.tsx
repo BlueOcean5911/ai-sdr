@@ -71,24 +71,20 @@ export default function CadenceItem({
       <td>
         <div className="flex text-xs px-2 border-x-2 border-dashed">
           <div className="w-min-15 px-2">
-            <div>{cadence.activeCount}</div>
+            <div>{cadence.statistics?.active}</div>
             <div className="text-nowrap">Active</div>
           </div>
           <div className="w-min-15 px-2">
-            <div>{cadence.pausedCount}</div>
+            <div>{cadence.statistics?.paused}</div>
             <div className="text-nowrap">Paused</div>
           </div>
           <div className="w-min-15 px-2">
-            <div>{cadence.bouncedCount}</div>
+            <div>{cadence.statistics?.bounced}</div>
             <div className="text-nowrap">Bounced</div>
           </div>
           <div className="w-min-15 px-2">
-            <div>{cadence.finishedCount}</div>
+            <div>{cadence.statistics?.finished}</div>
             <div className="text-nowrap">Finished</div>
-          </div>
-          <div className="w-min-15 px-2">
-            <div>{0}</div>
-            <div className="text-nowrap">Succeeded</div>
           </div>
         </div>
       </td>

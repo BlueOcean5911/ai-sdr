@@ -22,7 +22,7 @@ export default function ContactItem({
         <input className="shadow-none ring-0 focus:ring-0" type="checkbox" />
       </div>
       <div className="flex items-center flex-1 gap-2 cursor-pointer">
-        <div className="min-w-35 flex items-center">
+        <div className="flex items-center w-36  overflow-hidden text-ellipsis whitespace-nowrap">
           <span className="text-xs">To:</span>
           <Link href={`/leads/${contact.leadId}`}>
             <span className="text-sm text-blue-900 hover:underline">

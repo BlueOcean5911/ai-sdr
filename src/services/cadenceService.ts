@@ -161,6 +161,13 @@ export const getCadences = async (
       shareType: item?.shareType,
       ownerId: item?.ownerId,
       clonedFromId: item?.clonedFromId,
+      statistics: {
+        active: item?.statistics?.active,
+        paused: item?.statistics?.paused,
+        bounced: item?.statistics?.bounced,
+        finished: item?.statistics?.finished,
+        succeeded: item?.statistics?.succeeded,
+      },
       owner: {
         id: item?.owner?.id,
         firstName: item?.owner?.firstName,

@@ -47,6 +47,7 @@ export default function Cadences(
       },
       getCadences,
       (data) => {
+        console.log(data);
         setCadences(data);
         setLoading(false);
       },
