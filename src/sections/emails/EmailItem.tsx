@@ -69,13 +69,13 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
         </span>
       </td>
       <td>
-        <EmailTrackingStatus status={mailing.mailingStatus} />
+        <EmailTrackingStatus mailing={mailing} />
         {/* <span className="p-1 text-xs text-center rounded-full bg-blue-500 text-white capitalize"> */}
         {/* {mailing.mailingStatus} */}
         {/* </span> */}
       </td>
       <td>
-        <span className="text-xs">{formatDate(mailing.scheduledAt)}</span>
+        <span className="text-xs">{formatDate(mailing.stateChangedAt)}</span>
       </td>
       <Transition appear show={sent} as={Fragment}>
         <Dialog as="div" className="relative" onClose={() => setSent(false)}>

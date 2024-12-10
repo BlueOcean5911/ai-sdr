@@ -34,7 +34,6 @@ export interface MailingModel {
   subject: string;
   message: string;
   mailingStatus: MAILING_STATE; // Assuming MAILING_STATE is an enum or type
-  scheduledAt: string;
   leadId: string;
   leadName: string;
   ownerId: string;
@@ -42,6 +41,13 @@ export interface MailingModel {
   cadenceId: string;
   cadenceName: string;
   currentCadenceStep: number;
+
+  scheduledAt: string;
+  deliveredAt: string;
+  openedAt: string;
+  repliedAt: string;
+  bouncedAt: string;
+  stateChangedAt: string;
 }
 
 export interface SendMailingModel {

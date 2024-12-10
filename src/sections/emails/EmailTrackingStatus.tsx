@@ -1,12 +1,22 @@
 import { MAILING_STATE } from "@/types/enums";
 import { Calendar, Check, Mail, Eye, MessageCircle } from "lucide-react";
 import { Tooltip } from "react-tooltip";
+import { MailingModel } from "@/services/mailingService";
+import { formatDateTimeReadable } from "@/utils/format";
 
 export default function EmailTrackingStatus({
-  status = MAILING_STATE.REPLIED,
+  mailing,
 }: {
-  status?: MAILING_STATE;
+  mailing: MailingModel;
 }) {
+  const timestamps: Record<string, string> = {
+    [MAILING_STATE.SCHEDULED]: mailing.scheduledAt,
+    [MAILING_STATE.DELIVERED]: mailing.deliveredAt,
+    [MAILING_STATE.OPENED]: mailing.openedAt,
+    [MAILING_STATE.REPLIED]: mailing.repliedAt,
+    [MAILING_STATE.BOUNCED]: mailing.bouncedAt,
+  };
+
   const states = [
     { key: MAILING_STATE.SCHEDULED, icon: Calendar, label: "Scheduled" },
     { key: MAILING_STATE.BOUNCED, icon: Mail, label: "Sent" },
@@ -15,7 +25,9 @@ export default function EmailTrackingStatus({
     { key: MAILING_STATE.REPLIED, icon: MessageCircle, label: "Replied" },
   ];
 
-  const currentStateIndex = states.findIndex((s) => s.key === status);
+  const currentStateIndex = states.findIndex(
+    (s) => s.key === mailing.mailingStatus
+  );
 
   return (
     <div className="flex items-center p-4 overflow-x-auto">
@@ -45,7 +57,11 @@ export default function EmailTrackingStatus({
                     </div>
                   </a>
                   <Tooltip id={`my-tooltip-${state.key}`} className="z-50">
-                    <span className="text-xs text-white">{state.label}</span>
+                    <span className="text-xs text-white">
+                      {state.label}
+                      {timestamps[state.key] &&
+                        ` at: ${formatDateTimeReadable(timestamps[state.key])}`}
+                    </span>
                   </Tooltip>
                 </div>
               </div>
