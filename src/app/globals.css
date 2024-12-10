@@ -45,6 +45,10 @@
     @apply text-lg text-gray-900;
   }
 
+  th .normal {
+    @apply min-w-32;
+  }
+
   .flex-center {
     @apply flex items-center justify-center;
   }
@@ -292,7 +296,7 @@ label {
 
 .high {
   color: white;
-  background-color: #FFA07A;
+  background-color: #ffa07a;
 }
 
 .medium {
@@ -549,5 +553,5 @@ label {
 }
 
 .ql-toolbar.ql-snow .ql-formats {
-    margin-right: 4px !important;
+  margin-right: 4px !important;
 }

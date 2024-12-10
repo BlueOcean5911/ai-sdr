@@ -17,6 +17,8 @@ import {
   formatDateTimeReadable,
   stripHtmlTags,
 } from "@/utils/format";
+import Link from "next/link";
+import EmailTrackingStatus from "./EmailTrackingStatus";
 
 export default function EmailItem({ mailing }: { mailing: MailingModel }) {
   const [sent, setSent] = useState(false);
@@ -29,20 +31,33 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
       <td className="px-4">
         <input className="shadow-none ring-0 focus:ring-0" type="checkbox" />
       </td>
-      <td onClick={() => setSent(true)}>
-        <span className="text-sm text-blue-900">{mailing.leadName}</span>
+      <td>
+        <Link href={`/leads/${mailing.leadId}`}>
+          <span className="text-sm text-blue-900 hover:underline">
+            {mailing.leadName}
+          </span>
+        </Link>
       </td>
       <td>
         <div className="flex flex-col gap-0.5 text-xs">
-          <span className="font-semibold line-clamp-1 text-sm">
-            {mailing.subject}
-          </span>
-          <span className="line-clamp-2 text-gray-500">
-            <div>{stripHtmlTags(mailing.message)}</div>
-          </span>
+          <div onClick={() => setSent(true)}>
+            <span className="font-semibold line-clamp-1 text-sm">
+              {mailing.subject}
+            </span>
+            <span className="line-clamp-2 text-gray-500">
+              {stripHtmlTags(mailing.message)}
+            </span>
+          </div>
           {mailing.cadenceId && (
-            <span className="line-clamp-1 text-blue-500">
-              Step {mailing.currentCadenceStep} of {mailing.cadenceName}
+            <span className="flex items-center gap-1">
+              <span className="text-xs">
+                Step {mailing.currentCadenceStep} of
+              </span>
+              <span className="line-clamp-1 text-blue-500 hover:underline">
+                <Link href={`/cadences/${mailing.cadenceId}`}>
+                  {mailing.cadenceName}
+                </Link>
+              </span>
             </span>
           )}
         </div>
@@ -54,9 +69,10 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
         </span>
       </td>
       <td>
-        <span className="p-1 text-xs text-center rounded-full bg-blue-500 text-white capitalize">
-          {mailing.mailingStatus}
-        </span>
+        <EmailTrackingStatus status={mailing.mailingStatus} />
+        {/* <span className="p-1 text-xs text-center rounded-full bg-blue-500 text-white capitalize"> */}
+        {/* {mailing.mailingStatus} */}
+        {/* </span> */}
       </td>
       <td>
         <span className="text-xs">{formatDate(mailing.scheduledAt)}</span>

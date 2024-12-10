@@ -356,7 +356,7 @@ const CompanyTable = () => {
                             </a>
                             <Tooltip
                               id={`my-tooltip-company-keywords-${company.id}`}
-                              className="z-20"
+                              className="z-50"
                             >
                               <div className="flex gap-2 flex-wrap max-w-72 justify-center">
                                 {company?.keywords

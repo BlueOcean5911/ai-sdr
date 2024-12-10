@@ -119,7 +119,7 @@ export default function Emails(
               <thead className="sticky top-0 z-10 bg-gray-50 shadow-md">
                 <tr className="text-nowrap">
                   <th></th>
-                  <th>
+                  <th className="min-w-32">
                     <SortableHeader
                       label="to"
                       value="to"
@@ -128,7 +128,7 @@ export default function Emails(
                       handleChangeSort={handleChangeSort}
                     />
                   </th>
-                  <th>
+                  <th className="min-w-96">
                     <SortableHeader
                       label="title"
                       value="title"
@@ -137,10 +137,10 @@ export default function Emails(
                       handleChangeSort={handleChangeSort}
                     />
                   </th>
-                  <th className="py-3 text-left text-xs uppercase text-gray-500">
+                  <th className="min-w-32 py-3 text-left text-xs uppercase text-gray-500">
                     From
                   </th>
-                  <th>
+                  <th className="min-w-32">
                     <SortableHeader
                       label="state"
                       value="state"
@@ -149,9 +149,9 @@ export default function Emails(
                       handleChangeSort={handleChangeSort}
                     />
                   </th>
-                  <th>
+                  <th className="min-w-32">
                     <SortableHeader
-                      label="received at"
+                      label="updated"
                       value="cretedAt"
                       orderBy={emailFilterConfig.orderBy}
                       isAscending={emailFilterConfig.isAscending}
