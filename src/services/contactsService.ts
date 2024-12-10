@@ -31,6 +31,7 @@ export interface ContactInCadence {
   leadStatus?: LEAD_STATUS | string;
   cadenceStepId: string;
   createdAt: string;
+  status?: string;
 }
 
 export interface ContactInCampaign {

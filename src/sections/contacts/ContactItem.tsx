@@ -25,7 +25,7 @@ export default function ContactItem({
         <div className="flex items-center w-36  overflow-hidden text-ellipsis whitespace-nowrap">
           <span className="text-xs">To:</span>
           <Link href={`/leads/${contact.leadId}`}>
-            <span className="text-sm text-blue-900 hover:underline">
+            <span className="text-sm text-blue-900 font-bold hover:underline">
               {contact.firstName} {contact.lastName}
             </span>
           </Link>
@@ -34,21 +34,15 @@ export default function ContactItem({
         <div className="flex flex-1 items-center gap-2 text-xs text-nowrap">
           <span
             className={classNames(
-              "p-1 capitalize",
-              contact.currentStepStatus === "paused"
-                ? "bg-red-400 text-white"
-                : "",
-              contact.currentStepStatus === "active"
-                ? "bg-blue-500 text-white"
-                : "",
-              contact.currentStepStatus === "finished"
-                ? "bg-green-500 text-white"
-                : ""
+              "p-1 capitalize rounded-full px-2",
+              contact.status === "paused" ? "bg-red-400 text-white" : "",
+              contact.status === "active" ? "bg-blue-500 text-white" : "",
+              contact.status === "finished" ? "bg-green-500 text-white" : ""
             )}
           >
-            {contact.currentStepStatus}
+            {contact.status}
           </span>
-          <span className="p-1 text-white bg-gray-500">
+          <span className="p-1 px-2 text-white bg-blue-400 rounded-full">
             Step {contact.cadenceCurrentStep}
           </span>
           <span className="p-1 bg-gray-200">{contact.leadStatus}</span>
