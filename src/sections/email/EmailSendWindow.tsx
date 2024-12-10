@@ -30,9 +30,13 @@ interface UserForSelect {
 
 const EmailSendWindow = ({
   close,
+  fromEmail,
   lead,
 }: {
   close?: () => void;
+  fromEmail?: string;
+  threadId?: string;
+  messageId?: string;
   lead: LeadModelWithCompanyModel;
 }) => {
   const [owner, setOwner] = useState<UserForSelect>({
@@ -139,7 +143,7 @@ const EmailSendWindow = ({
           message: values.message,
           leadId: lead.id,
           ownerId: owner.id,
-          fromEmail: owner.name,
+          fromEmail: owner.email,
           toEmail: lead.email,
           scheduledAt: date,
           mailingStatus: sendLater
@@ -181,9 +185,7 @@ const EmailSendWindow = ({
     toast.success("Email sent successfully");
   };
 
-  const handleBodyChange = (
-    text: string,
-  ) => {
+  const handleBodyChange = (text: string) => {
     quillRef.current?.setContents(new Delta().insert(text));
   };
 
