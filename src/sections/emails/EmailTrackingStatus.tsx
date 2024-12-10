@@ -1,5 +1,5 @@
 import { MAILING_STATE } from "@/types/enums";
-import { Calendar, Check, Mail, Eye, MessageCircle } from "lucide-react";
+import { Calendar, Check, Mail, Eye, MessageCircle, XIcon } from "lucide-react";
 import { Tooltip } from "react-tooltip";
 import { MailingModel } from "@/services/mailingService";
 import { formatDateTimeReadable } from "@/utils/format";
@@ -33,9 +33,17 @@ export default function EmailTrackingStatus({
     <div className="flex items-center p-4 overflow-x-auto">
       {currentStateIndex !== null &&
         states.map((state, index) => {
-          const Icon = state.icon;
+          let Icon = state.icon;
+          let label = state.label;
           const isCompleted = index <= currentStateIndex;
           const isLast = index === states.length - 1;
+          if (
+            state.key == MAILING_STATE.BOUNCED &&
+            mailing.mailingStatus === MAILING_STATE.BOUNCED
+          ) {
+            Icon = XIcon;
+            label = "Bounced";
+          }
 
           return (
             <div key={state.key} className="flex items-center flex-shrink-0">
@@ -61,10 +69,10 @@ export default function EmailTrackingStatus({
                 >
                   <span className="text-xs text-white">
                     {timestamps[state.key]
-                      ? `${state.label} at: ${formatDateTimeReadable(
+                      ? `${label} at: ${formatDateTimeReadable(
                           timestamps[state.key]
                         )}`
-                      : state.label}
+                      : label}
                   </span>
                 </Tooltip>
               </div>
