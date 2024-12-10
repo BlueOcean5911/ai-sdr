@@ -30,16 +30,20 @@ interface UserForSelect {
 
 const EmailSendWindow = ({
   close,
-  fromEmail,
   lead,
+  fromEmail,
+  threadId,
+  messageId,
+  parentMailingId,
 }: {
   close?: () => void;
+  lead: LeadModelWithCompanyModel;
   fromEmail?: string;
   threadId?: string;
   messageId?: string;
-  lead: LeadModelWithCompanyModel;
+  parentMailingId?: string;
 }) => {
-  const [owner, setOwner] = useState<UserForSelect>({
+  const [sender, setSender] = useState<UserForSelect>({
     name: "",
     email: "",
     id: "",
@@ -71,8 +75,8 @@ const EmailSendWindow = ({
   });
 
   useEffect(() => {
-    setSenderId(owner ? owner.id : "");
-  }, [owner]);
+    setSenderId(sender ? sender.id : "");
+  }, [sender]);
 
   const fetchUsers = () => {
     runService(
@@ -87,6 +91,9 @@ const EmailSendWindow = ({
           };
         });
         setUsers([...users]);
+        if (fromEmail) {
+          setSender(users.find((user) => user.email === fromEmail) ?? sender);
+        }
       },
       (status, error) => {
         handleError(status, error);
@@ -142,10 +149,12 @@ const EmailSendWindow = ({
           subject: values.subject,
           message: values.message,
           leadId: lead.id,
-          ownerId: owner.id,
-          fromEmail: owner.email,
+          senderId: sender.id,
+          fromEmail: sender.email,
           toEmail: lead.email,
           scheduledAt: date,
+          threadId: threadId,
+          parentMessageId: messageId,
           mailingStatus: sendLater
             ? MAILING_STATE.SCHEDULED
             : MAILING_STATE.DELIVERED,
@@ -168,9 +177,9 @@ const EmailSendWindow = ({
     runService(
       {
         leadId: lead.id,
-        owner: owner,
+        sender: sender,
         fromEma: lead.email,
-        toEmail: owner.name,
+        toEmail: sender.name,
         subject: values.subject,
         bodyText: values.message,
         scheduledAt: date,
@@ -202,16 +211,22 @@ const EmailSendWindow = ({
         <div className="px-4 py-2 flex flex-1 flex-col gap-2 overflow-auto">
           <div className="flex flex-col justify-between">
             <label className="min-w-20 text-xs">From</label>
-            <Select
-              data={users}
-              onChange={(item) => {
-                setOwner(item);
-                if (senderId && errors.sender !== "")
-                  setErrors({ ...errors, sender: "" });
-              }}
-            />
-            {errors.sender.length > 0 && (
-              <p className="text-red-500 text-xs">{errors.sender}</p>
+            {fromEmail ? (
+              <span>{fromEmail}</span>
+            ) : (
+              <>
+                <Select
+                  data={users}
+                  onChange={(item) => {
+                    setSender(item);
+                    if (senderId && errors.sender !== "")
+                      setErrors({ ...errors, sender: "" });
+                  }}
+                />
+                {errors.sender.length > 0 && (
+                  <p className="text-red-500 text-xs">{errors.sender}</p>
+                )}
+              </>
             )}
           </div>
 

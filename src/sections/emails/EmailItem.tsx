@@ -292,6 +292,9 @@ export default function EmailItem({
           <EmailSendWindow
             close={() => setIsOpenSendEmail(false)}
             lead={lead}
+            fromEmail={mailing.fromEmail}
+            threadId={mailing.threadId}
+            messageId={mailing.messageId}
           />
         </>
       )}

@@ -43,6 +43,11 @@ export interface MailingModel {
   cadenceName: string;
   currentCadenceStep: number;
 
+  fromEmail: string;
+  toEmail: string;
+  threadId: string;
+  messageId: string;
+
   scheduledAt: string;
   deliveredAt: string;
   openedAt: string;
@@ -56,6 +61,8 @@ export interface SendMailingModel {
   ownerId: string;
   fromEmail: string;
   toEmail: string;
+  threadId: string;
+  parentMessageId: string;
   subject: string;
   bodyText?: string;
   bodyHtml?: string;
