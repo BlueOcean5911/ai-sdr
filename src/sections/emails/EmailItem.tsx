@@ -43,10 +43,11 @@ export default function EmailItem({
   deleteMailing: (mailingId: string) => void;
   markAsInterested: (leadId: string) => void;
 }) {
+  console.log("deleteMailing", mailing);
   const [sent, setSent] = useState(false);
   const [isOpenSendEmail, setIsOpenSendEmail] = useState(false);
   const [lead, setLead] = useState<LeadModel>();
-  const handleReplyToThread = (mailingId: string) => {
+  const handleReplyToThread = () => {
     setIsOpenSendEmail(true);
   };
 
@@ -276,7 +277,7 @@ export default function EmailItem({
                   <button
                     className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
                     onClick={() => {
-                      handleReplyToThread(mailing.id);
+                      handleReplyToThread();
                     }}
                   >
                     Reply to Thread

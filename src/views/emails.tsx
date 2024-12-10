@@ -109,9 +109,7 @@ export default function Emails(
 
   const handleSendMailing = (mailingId: string) => {
     runService(
-      {
-        id: mailingId,
-      },
+      mailingId,
       sendMailing,
       (data) => {
         fetchMailings(emailFilterConfig.params);
@@ -125,12 +123,13 @@ export default function Emails(
 
   const handleDeleteMailing = (mailingId: string) => {
     runService(
-      {
-        mailingId: mailingId,
-      },
+      mailingId,
       deleteMailing,
       (data) => {
         fetchMailings(emailFilterConfig.params);
+        if (data.success) {
+          toast.success("Mailing deleted successfully");
+        }
       },
       (status, error) => {
         handleError(status, error);
