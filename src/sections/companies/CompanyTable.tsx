@@ -258,7 +258,7 @@ const CompanyTable = () => {
                     className="h-20 even:bg-blue-50 hover:bg-gray-300 cursor-pointer"
                   >
                     <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 w-52 overflow-hidden">
                         <CheckBox
                           id={company.id}
                           key={company.id}
@@ -285,7 +285,7 @@ const CompanyTable = () => {
                           }}
                         />
                         <span
-                          className="hover:underline"
+                          className="flex-1 overflow-hidden text-ellipsis text-blue-900 font-bold hover:underline"
                           onClick={() => handleOverview(company)}
                         >
                           {company.name}
