@@ -1,20 +1,19 @@
-import { BillingPeriod } from "./BillingPeriod";
-
 interface PlanCardProps {
   plan: {
     name: string;
-    price: number;
     exportCredits: string;
     mobileCredits: string;
+    monthly: { priceId: string; value: number };
+    annually: { priceId: string; value: number };
   };
-  billingPeriod: BillingPeriod;
+  billingPeriod: string;
   isSelected?: boolean;
   loading?: boolean;
   processingPlan?: string;
   onUpgrade: (plan: any) => void;
 }
 
-export const PlanCard = ({
+const PlanCard = ({
   plan,
   billingPeriod,
   isSelected = false,
@@ -24,24 +23,16 @@ export const PlanCard = ({
 }: PlanCardProps) => {
   const isProcessing = processingPlan === plan.name;
 
-  const getPeriodLabel = () => {
-    switch (billingPeriod) {
-      case "monthly":
-        return "month";
-      case "quarterly":
-        return "quarter";
-      case "annually":
-        return "year";
-    }
-  };
-
   return (
     <div className="h-full w-full p-4 md:p-6 flex flex-col gap-4 md:gap-5 border rounded-md shadow-lg bg-white hover:border-blue-600">
       <div className="p-4 md:p-8 flex flex-col gap-2 justify-center items-center">
         <p className="text-xl md:text-2xl font-medium">{plan.name}</p>
         <div className="flex items-baseline gap-1">
           <span className="text-3xl md:text-4xl font-semibold">
-            ${plan.price}
+            $
+            {billingPeriod === "monthly"
+              ? plan.monthly.value
+              : plan.annually.value}
           </span>
         </div>
         {plan.name !== "Free" ? (
@@ -105,3 +96,5 @@ export const PlanCard = ({
     </div>
   );
 };
+
+export default PlanCard;
