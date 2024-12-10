@@ -1,5 +1,10 @@
 import { api } from "@/utils/api";
-import { CadenceStatistics, CountModel, FetchProps } from "@/types";
+import {
+  ApiSuccessResponse,
+  CadenceStatistics,
+  CountModel,
+  FetchProps,
+} from "@/types";
 import { SHARE_TYPE } from "@/types/enums";
 import { UserModel } from "./userService";
 
@@ -21,7 +26,7 @@ interface FetchCompaniesProps extends FetchProps {
 }
 
 export interface CadenceModel extends BaseCadenceModel {
-  id?: string;
+  id: string;
 }
 
 export interface BaseCadenceModel {
@@ -239,4 +244,15 @@ export const updateCadence = async ({
       },
     },
   };
+};
+
+export const deleteCadence = async ({
+  cadenceId,
+}: {
+  cadenceId: string;
+}): Promise<ApiSuccessResponse> => {
+  const url = `api/cadences/${cadenceId}`;
+  const response = await api.delete(url);
+
+  return response;
 };

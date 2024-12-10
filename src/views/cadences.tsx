@@ -12,12 +12,14 @@ import Loading from "@/components/Loading";
 
 import { handleError, runService } from "@/utils/service_utils";
 import {
+  deleteCadence,
   FetchCadenceModel,
   getCadences,
   getCadencesTotalCount,
 } from "@/services/cadenceService";
 import { CadenceItemProps, CountModel } from "@/types";
 import SortableHeader from "@/components/ui/SortableHeader";
+import { toast } from "react-toastify";
 
 export default function Cadences(
   { campaignId }: { campaignId?: string } = { campaignId: "" }
@@ -94,6 +96,22 @@ export default function Cadences(
       });
   };
 
+  const handleDeleteCadence = (cadenceId: string) => {
+    runService(
+      { cadenceId: cadenceId },
+      deleteCadence,
+      (data) => {
+        console.log("cadence deleted", data);
+        toast.success("Cadence deleted successfully");
+        fetchCadences();
+      },
+      (status, error) => {
+        console.log(status, error);
+        handleError(status, error);
+      }
+    );
+  };
+
   return (
     <div className="flex gap-4 p-4 flex-1 overflow-auto">
       {cadenceFilterConfig.isOpen && <FilterCadence />}
@@ -130,7 +148,11 @@ export default function Cadences(
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {cadences.map((cadence: FetchCadenceModel, index) => (
-                  <CadenceItem key={index} cadence={cadence} />
+                  <CadenceItem
+                    key={index}
+                    cadence={cadence}
+                    onDelete={handleDeleteCadence}
+                  />
                 ))}
                 <tr></tr>
               </tbody>

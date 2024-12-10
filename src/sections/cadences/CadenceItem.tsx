@@ -6,14 +6,17 @@ import {
   UpdateCadenceModel,
   FetchCadenceModel,
   updateCadence,
+  deleteCadence,
 } from "@/services/cadenceService";
 import { handleError, runService } from "@/utils/service_utils";
 import Link from "next/link";
 
 export default function CadenceItem({
   cadence,
+  onDelete,
 }: {
   cadence: FetchCadenceModel;
+  onDelete: (cadenceId: string) => void;
 }) {
   const [starred, setStarred] = useState(cadence.star);
   const [active, setActive] = useState(cadence.isActive);
@@ -123,13 +126,13 @@ export default function CadenceItem({
                 </button>
               </MenuItem>
               <MenuItem>
-                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                  Achieve
-                </button>
-              </MenuItem>
-              <MenuItem>
-                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                  Clone
+                <button
+                  className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                  onClick={() => {
+                    onDelete(cadence.id);
+                  }}
+                >
+                  Delete
                 </button>
               </MenuItem>
               <MenuItem>
