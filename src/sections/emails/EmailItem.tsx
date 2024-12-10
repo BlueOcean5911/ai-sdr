@@ -184,11 +184,18 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
               </>
             )}
             {mailing.mailingStatus === MAILING_STATE.DELIVERED && (
-              <MenuItem>
-                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                  Reply to Thread
-                </button>
-              </MenuItem>
+              <>
+                <MenuItem>
+                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                    Mark as Interested
+                  </button>
+                </MenuItem>
+                <MenuItem>
+                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                    Reply to Thread
+                  </button>
+                </MenuItem>
+              </>
             )}
           </MenuItems>
         </Menu>
