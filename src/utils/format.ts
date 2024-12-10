@@ -133,7 +133,12 @@ export const getRelativeTime = (dateString: string): string => {
 };
 
 export const stripHtmlTags = (html: string) => {
-  const doc = new DOMParser().parseFromString(html, "text/html");
+  const decodedHtml = html
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&")
+    .replace(/&#39;/g, "'");
+  const doc = new DOMParser().parseFromString(decodedHtml, "text/html");
   return doc.body.textContent || "";
 };
 
@@ -147,4 +152,4 @@ export const formatTimestamp = (timestamp: number | string): string => {
   const formattedSeconds = String(seconds).padStart(2, "0");
 
   return `${formattedMinutes}:${formattedSeconds}`;
-}
+};

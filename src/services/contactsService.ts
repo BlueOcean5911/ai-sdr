@@ -1,5 +1,5 @@
 import { ApiSuccessResponse, FetchProps } from "@/types";
-import { CADENCE_STEP_STATUS, LEAD_STATUS } from "@/types/enums";
+import { CADENCE_STEP_STATUS, LEAD_STAGE } from "@/types/enums";
 import { api } from "@/utils/api";
 
 interface Option {
@@ -28,7 +28,7 @@ export interface ContactInCadence {
   ownerLastName?: string;
   currentStepStatus?: CADENCE_STEP_STATUS | string;
   cadenceCurrentStep?: number;
-  leadStatus?: LEAD_STATUS | string;
+  leadStatus?: LEAD_STAGE | string;
   cadenceStepId: string;
   createdAt: string;
   status?: string;
@@ -48,7 +48,7 @@ export interface ContactInCampaign {
   ownerLastName?: string;
   currentStepStatus?: CADENCE_STEP_STATUS | string;
   cadenceCurrentStep?: number;
-  leadStatus?: LEAD_STATUS | string;
+  leadStatus?: LEAD_STAGE | string;
 }
 
 export interface ContactInCadenceStatistics {

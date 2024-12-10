@@ -5,7 +5,7 @@ import {
   FetchProps,
   PersonalizedSettingModel,
 } from "@/types";
-import { MAILING_STATE } from "@/types/enums";
+import { LEAD_STAGE, MAILING_STATE } from "@/types/enums";
 
 interface Option {
   value: string;
@@ -36,6 +36,7 @@ export interface MailingModel {
   mailingStatus: MAILING_STATE; // Assuming MAILING_STATE is an enum or type
   leadId: string;
   leadName: string;
+  leadStage: LEAD_STAGE;
   ownerId: string;
   ownerName: string;
   cadenceId: string;
@@ -127,7 +128,7 @@ export const getMailings = async (
     url += searchParams;
   }
   const response = await api.get(url);
-
+  console.log(response);
   return {
     data: response.data,
   };
@@ -243,4 +244,12 @@ export const sendMailing = async (id: string) => {
 export const generateEmail = async (setting: PersonalizedSettingModel) => {
   console.log("generate email data", setting);
   return await api.post("api/mailings/generate", setting);
+};
+
+export const deleteMailing = async (mailingId: string) => {
+  const response = await api.delete(`api/mailings/${mailingId}`);
+  if (response.status !== 200) {
+    throw new Error("Failed to delete mailing");
+  }
+  return response;
 };

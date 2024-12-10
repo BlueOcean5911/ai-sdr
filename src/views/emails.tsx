@@ -1,6 +1,6 @@
 "use client";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 
 import Pagination from "@/components/extends/Pagination/Pagination";
 import FilterEmail from "@/components/Filter/filterEmail";
@@ -10,13 +10,17 @@ import SortableHeader from "@/components/ui/SortableHeader";
 import Loading from "@/components/Loading";
 
 import {
+  deleteMailing,
   getMailings,
   getMailingTotalCount,
   MailingModel,
+  sendMailing,
 } from "@/services/mailingService";
 import { useEmailFilter } from "@/contexts/FilterEmailContext";
 import { handleError, runService } from "@/utils/service_utils";
-import CheckBox from "@/components/extends/CheckBox";
+import { updateLead } from "@/services/leadService";
+import { LEAD_STAGE } from "@/types/enums";
+import { toast } from "react-toastify";
 
 export default function Emails(
   { campaignId, cadenceId }: { campaignId?: string; cadenceId?: string } = {
@@ -30,6 +34,7 @@ export default function Emails(
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
   const [mailings, setMailings] = useState<MailingModel[]>([]);
   const [loading, setLoading] = useState(false);
+  const [selectedLead, setSelectedLead] = useState<MailingModel>();
 
   const fetchMailings = (params: { [key: string]: string }) => {
     setLoading(true);
@@ -69,7 +74,6 @@ export default function Emails(
       },
       getMailingTotalCount,
       (data) => {
-        console.log("Mailing total", data);
         setTotalCount(data?.count ? data?.count : 0);
       },
       (status, error) => {
@@ -102,6 +106,56 @@ export default function Emails(
         };
       });
   };
+
+  const handleSendMailing = (mailingId: string) => {
+    runService(
+      {
+        id: mailingId,
+      },
+      sendMailing,
+      (data) => {
+        fetchMailings(emailFilterConfig.params);
+      },
+      (status, error) => {
+        handleError(status, error);
+        console.log(status, error);
+      }
+    );
+  };
+
+  const handleDeleteMailing = (mailingId: string) => {
+    runService(
+      {
+        mailingId: mailingId,
+      },
+      deleteMailing,
+      (data) => {
+        fetchMailings(emailFilterConfig.params);
+      },
+      (status, error) => {
+        handleError(status, error);
+        console.log(status, error);
+      }
+    );
+  };
+
+  const handleMarkAsInterested = (leadId: string) => {
+    runService(
+      { id: leadId, updateData: { stage: LEAD_STAGE.INTERESTED } },
+      updateLead,
+      (data) => {
+        if (data) {
+          fetchMailings(emailFilterConfig.params);
+          toast.success("Lead updated successfully");
+        }
+      },
+      (status, error) => {
+        console.log(status, error);
+        toast.error(error);
+      }
+    );
+  };
+
   return (
     <div className="flex gap-4 p-4 flex-1 overflow-auto">
       {emailFilterConfig.isOpen && <FilterEmail />}
@@ -165,7 +219,13 @@ export default function Emails(
               </thead>
               <tbody className="bg-white">
                 {mailings.map((mailing: MailingModel) => (
-                  <EmailItem key={mailing.id} mailing={mailing} />
+                  <EmailItem
+                    key={mailing.id}
+                    mailing={mailing}
+                    sendMailing={handleSendMailing}
+                    deleteMailing={handleDeleteMailing}
+                    markAsInterested={handleMarkAsInterested}
+                  />
                 ))}
                 <tr></tr>
               </tbody>

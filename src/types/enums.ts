@@ -47,7 +47,7 @@ export enum CADENCE_STEP_TYPE {
   ACTION_ITEM = "actionItem",
 }
 
-export enum LEAD_STATUS {
+export enum LEAD_STAGE {
   COLD = "cold",
   APPROACHING = "approaching",
   REPLIED = "replied",
