@@ -9,7 +9,6 @@ export default function EmailTrackingStatus({
 }: {
   mailing: MailingModel;
 }) {
-  console.log("here--------->", mailing);
   const timestamps: Record<string, string> = {
     [MAILING_STATE.SCHEDULED]: mailing.scheduledAt,
     [MAILING_STATE.DELIVERED]: mailing.deliveredAt,
@@ -39,33 +38,35 @@ export default function EmailTrackingStatus({
           const isLast = index === states.length - 1;
 
           return (
-            <>
-              <div key={state.key} className="flex items-center flex-shrink-0">
-                <div className="flex flex-col items-center gap-1">
-                  <a data-tooltip-id={`my-tooltip-${state.key}`}>
-                    <div
-                      className={`rounded-full p-2 ${
-                        isCompleted
-                          ? "bg-blue-500 text-green-600"
-                          : "border border-gray-500 text-gray-400"
-                      }`}
-                    >
-                      <Icon
-                        className={`h-3 w-3 ${
-                          isCompleted ? "stroke-white" : ""
-                        }`}
-                      />
-                    </div>
-                  </a>
-                  <Tooltip id={`my-tooltip-${state.key}`} className="z-50">
-                    <span className="text-xs text-white">
-                      {state.label}
-                      {timestamps[state.key] !== null &&
-                        timestamps[state.key] !== undefined &&
-                        ` at: ${formatDateTimeReadable(timestamps[state.key])}`}
-                    </span>
-                  </Tooltip>
-                </div>
+            <div key={state.key} className="flex items-center flex-shrink-0">
+              <div className="flex flex-col items-center gap-1">
+                <a
+                  data-tooltip-id={`email-tracking-${mailing.id}-${state.key}`}
+                >
+                  <div
+                    className={`rounded-full p-2 ${
+                      isCompleted
+                        ? "bg-blue-500 text-green-600"
+                        : "border border-gray-500 text-gray-400"
+                    }`}
+                  >
+                    <Icon
+                      className={`h-3 w-3 ${isCompleted ? "stroke-white" : ""}`}
+                    />
+                  </div>
+                </a>
+                <Tooltip
+                  id={`email-tracking-${mailing.id}-${state.key}`}
+                  className="z-50"
+                >
+                  <span className="text-xs text-white">
+                    {timestamps[state.key]
+                      ? `${state.label} at: ${formatDateTimeReadable(
+                          timestamps[state.key]
+                        )}`
+                      : state.label}
+                  </span>
+                </Tooltip>
               </div>
               {!isLast && (
                 <div
@@ -74,7 +75,7 @@ export default function EmailTrackingStatus({
                   }`}
                 />
               )}
-            </>
+            </div>
           );
         })}
     </div>
