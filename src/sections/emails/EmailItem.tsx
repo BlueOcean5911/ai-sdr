@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   Menu,
   MenuButton,
@@ -19,10 +19,53 @@ import {
 } from "@/utils/format";
 import Link from "next/link";
 import EmailTrackingStatus from "./EmailTrackingStatus";
-import { MAILING_STATE } from "@/types/enums";
+import { LEAD_STAGE, MAILING_STATE } from "@/types/enums";
+import { EmailContent } from "./EmailContent";
+import { getLeadById, LeadModel } from "@/services/leadService";
+import { runService } from "@/utils/service_utils";
+import dynamic from "next/dynamic";
 
-export default function EmailItem({ mailing }: { mailing: MailingModel }) {
+const EmailSendWindow = dynamic(
+  () => import("@/sections/email/EmailSendWindow"),
+  {
+    ssr: false,
+  }
+);
+
+export default function EmailItem({
+  mailing,
+  sendMailing,
+  deleteMailing,
+  markAsInterested,
+}: {
+  mailing: MailingModel;
+  sendMailing: (mailingId: string) => void;
+  deleteMailing: (mailingId: string) => void;
+  markAsInterested: (leadId: string) => void;
+}) {
   const [sent, setSent] = useState(false);
+  const [isOpenSendEmail, setIsOpenSendEmail] = useState(false);
+  const [lead, setLead] = useState<LeadModel>();
+  const handleReplyToThread = (mailingId: string) => {
+    setIsOpenSendEmail(true);
+  };
+
+  const fetchLead = async (leadId: string) => {
+    runService(
+      { id: leadId },
+      getLeadById,
+      (data) => {
+        setLead(data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  };
+
+  useEffect(() => {
+    fetchLead(mailing.leadId);
+  }, []);
 
   return (
     <tr
@@ -71,9 +114,6 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
       </td>
       <td>
         <EmailTrackingStatus mailing={mailing} />
-        {/* <span className="p-1 text-xs text-center rounded-full bg-blue-500 text-white capitalize"> */}
-        {/* {mailing.mailingStatus} */}
-        {/* </span> */}
       </td>
       <td>
         <span className="text-xs">{formatDate(mailing.stateChangedAt)}</span>
@@ -132,7 +172,9 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
                         <span>{mailing.subject}</span>
                       </div>
                     </div>
-                    <div className="flex flex-col gap-3">{mailing.message}</div>
+                    <div className="flex flex-col gap-3 bg-gray-100 p-2 px-4">
+                      <EmailContent content={mailing.message} />
+                    </div>
                     <div className="flex justify-between">
                       <span className="btn-primary capitalize">
                         {mailing.mailingStatus}
@@ -159,7 +201,12 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
           >
             {mailing.mailingStatus === MAILING_STATE.BOUNCED && (
               <MenuItem>
-                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                <button
+                  className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                  onClick={() => {
+                    sendMailing(mailing.id);
+                  }}
+                >
                   Resend Email
                 </button>
               </MenuItem>
@@ -168,30 +215,70 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
               <>
                 <MenuItem>
                   <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                    Edit
+                  </button>
+                </MenuItem>
+                <MenuItem>
+                  <button
+                    className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                    onClick={() => {
+                      sendMailing(mailing.id);
+                    }}
+                  >
                     Send Now
                   </button>
                 </MenuItem>
-                <MenuItem>
-                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                    Skip an Email and Continue Cadence
-                  </button>
-                </MenuItem>
-                <MenuItem>
-                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                    Delete Email and Finish Cadence
-                  </button>
-                </MenuItem>
+                {mailing.cadenceId ? (
+                  <>
+                    <MenuItem>
+                      <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                        Skip Email and Continue Cadence
+                      </button>
+                    </MenuItem>
+                    <MenuItem>
+                      <button
+                        className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                        onClick={() => deleteMailing(mailing.id)}
+                      >
+                        Delete Email and Finish Cadence
+                      </button>
+                    </MenuItem>
+                  </>
+                ) : (
+                  <MenuItem>
+                    <button
+                      className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                      onClick={() => deleteMailing(mailing.id)}
+                    >
+                      Delete
+                    </button>
+                  </MenuItem>
+                )}
               </>
             )}
-            {mailing.mailingStatus === MAILING_STATE.DELIVERED && (
+            {(mailing.mailingStatus === MAILING_STATE.DELIVERED ||
+              mailing.mailingStatus === MAILING_STATE.OPENED ||
+              mailing.mailingStatus === MAILING_STATE.REPLIED) && (
               <>
+                {mailing.leadStage !== LEAD_STAGE.INTERESTED && (
+                  <MenuItem>
+                    <button
+                      className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                      onClick={() => {
+                        markAsInterested(mailing.leadId);
+                      }}
+                    >
+                      Mark as Interested
+                    </button>
+                  </MenuItem>
+                )}
                 <MenuItem>
-                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                    Mark as Interested
-                  </button>
-                </MenuItem>
-                <MenuItem>
-                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                  <button
+                    className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                    onClick={() => {
+                      handleReplyToThread(mailing.id);
+                    }}
+                  >
                     Reply to Thread
                   </button>
                 </MenuItem>
@@ -200,6 +287,14 @@ export default function EmailItem({ mailing }: { mailing: MailingModel }) {
           </MenuItems>
         </Menu>
       </td>
+      {isOpenSendEmail && lead && (
+        <>
+          <EmailSendWindow
+            close={() => setIsOpenSendEmail(false)}
+            lead={lead}
+          />
+        </>
+      )}
     </tr>
   );
 }
