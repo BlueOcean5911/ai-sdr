@@ -57,7 +57,6 @@ const CompanyTable = () => {
       },
       getCompanies,
       (data) => {
-        console.log("company data", data);
         setTotalCompanies(data);
         setLoading(false);
       },
@@ -337,7 +336,7 @@ const CompanyTable = () => {
                           ?.split(",")
                           .slice(0, 3)
                           .map((keyword) => (
-                            <span className="p-1 px-2 border border-blue-500 rounded-full text-xs capitalize min-w-16 text-center">
+                            <span className="px-2 border bg-blue-500 rounded-full text-[10px] capitalize min-w-16 text-center text-white">
                               {keyword}
                             </span>
                           ))}
@@ -362,7 +361,7 @@ const CompanyTable = () => {
                                 {company?.keywords
                                   ?.split(",")
                                   .map((keyword) => (
-                                    <span className="p-1 px-2 border border-white text-white rounded-full text-xs capitalize  min-w-16 text-center">
+                                    <span className="px-2 border-white border rounded-full text-[10px] capitalize min-w-16 text-center text-white">
                                       {keyword}
                                     </span>
                                   )) || <></>}
