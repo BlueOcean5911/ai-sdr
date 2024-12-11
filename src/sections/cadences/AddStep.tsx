@@ -82,10 +82,7 @@ export default function AddStep({
   return (
     <>
       <div className="w-28 flex items-center">
-        <button
-          className="h-8 px-3 rounded-md text-sm text-white bg-blue-900 data-[focus]:bg-blue-500"
-          onClick={openModal}
-        >
+        <button className="btn-primary" onClick={openModal}>
           Add a step
         </button>
       </div>

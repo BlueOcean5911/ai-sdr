@@ -2,9 +2,7 @@ import ActionItemIcon from "@/components/Icons/actionitem.icon";
 import AutomaticEmailIcon from "@/components/Icons/automaticemail.icon";
 import ManualEmailIcon from "@/components/Icons/manualmail.icon";
 import PhoneCallIcon from "@/components/Icons/phonecall.icon";
-import {
-  CadenceStepModel,
-} from "@/services/cadenceStepService";
+import { CadenceStepModel } from "@/services/cadenceStepService";
 import { CADENCE_STEP_TYPE } from "@/types/enums";
 import {
   Dialog,
@@ -13,9 +11,7 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import {
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import React, { Fragment, useEffect, useState } from "react";
 
 interface Interval {
@@ -69,14 +65,14 @@ export default function EditStep({
       });
     }
     if (cadenceStepData.stepType === CADENCE_STEP_TYPE.AUTO_EMAIL) {
-      setCurrentView(CadenceStepView.autoEmail)
+      setCurrentView(CadenceStepView.autoEmail);
     } else if (cadenceStepData.stepType === CADENCE_STEP_TYPE.MANUAL_EMAIL) {
-      setCurrentView(CadenceStepView.manualEmail)
+      setCurrentView(CadenceStepView.manualEmail);
     } else if (cadenceStepData.stepType === CADENCE_STEP_TYPE.PHONE_CALL) {
-      setCurrentView(CadenceStepView.phoneCall)
+      setCurrentView(CadenceStepView.phoneCall);
     } else if (cadenceStepData.stepType === CADENCE_STEP_TYPE.ACTION_ITEM) {
-      setCurrentView(CadenceStepView.actionItem)
-    } 
+      setCurrentView(CadenceStepView.actionItem);
+    }
   }, []);
 
   useEffect(() => {
@@ -452,7 +448,7 @@ export default function EditStep({
                         </div>
                         <div className="flex justify-end gap-4">
                           <button
-                            className="px-3 py-1 rounded-md text-sm bg-gray-300 hover:bg-gray-200"
+                            className="btn-secondary"
                             onClick={() => {
                               setStepData((prev) => ({
                                 ...prev,
@@ -466,7 +462,7 @@ export default function EditStep({
                             Back
                           </button>
                           <button
-                            className="px-3 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
+                            className="btn-primary"
                             onClick={() => {
                               updateStep();
                             }}
@@ -625,7 +621,7 @@ export default function EditStep({
                         </div>
                         <div className="flex justify-end gap-4">
                           <button
-                            className="px-3 py-1 rounded-md text-sm bg-gray-300 hover:bg-gray-200"
+                            className="btn-secondary"
                             onClick={() => {
                               setStepData((prev) => ({
                                 ...prev,
@@ -638,7 +634,7 @@ export default function EditStep({
                             Back
                           </button>
                           <button
-                            className="px-3 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
+                            className="btn-primary"
                             onClick={() => {
                               updateStep();
                             }}
@@ -795,7 +791,7 @@ export default function EditStep({
                         </div>
                         <div className="flex justify-end gap-4">
                           <button
-                            className="px-3 py-1 rounded-md text-sm bg-gray-300 hover:bg-gray-200"
+                            className="btn-secondary"
                             onClick={() => {
                               setStepData((prev) => ({
                                 ...prev,
@@ -808,7 +804,7 @@ export default function EditStep({
                             Back
                           </button>
                           <button
-                            className="px-3 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
+                            className="btn-primary"
                             onClick={() => {
                               updateStep();
                             }}
@@ -965,7 +961,7 @@ export default function EditStep({
                         </div>
                         <div className="flex justify-end gap-4">
                           <button
-                            className="px-3 py-1 rounded-md text-sm bg-gray-300 hover:bg-gray-200"
+                            className="btn-secondary"
                             onClick={() => {
                               setStepData((prev) => ({
                                 ...prev,
@@ -978,7 +974,7 @@ export default function EditStep({
                             Back
                           </button>
                           <button
-                            className="px-3 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
+                            className="btn-primary"
                             onClick={() => {
                               updateStep();
                             }}
