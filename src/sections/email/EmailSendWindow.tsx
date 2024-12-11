@@ -153,7 +153,7 @@ const EmailSendWindow = ({
           subject: values.subject,
           message: values.message,
           leadId: lead.id,
-          senderId: sender.id,
+          ownerId: sender.id,
           fromEmail: sender.email,
           toEmail: lead.email,
           scheduledAt: date,
