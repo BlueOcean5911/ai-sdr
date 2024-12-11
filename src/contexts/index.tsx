@@ -1,6 +1,7 @@
 import { ThemeProvider } from "next-themes";
 
 import { AuthProvider } from "@/contexts/AuthContext";
+import { CreditProvider } from "@/contexts/CreditContext";
 import { AlertProvider } from "@/contexts/AlertContext";
 import { TwilioProvider } from "@/contexts/TwilioContext";
 
@@ -9,9 +10,11 @@ const MainProvider = ({ children }: { children: React.ReactNode }) => {
     <>
       <ThemeProvider attribute="class">
         <AuthProvider>
-          <TwilioProvider>
-            <AlertProvider>{children}</AlertProvider>
-          </TwilioProvider>
+          <CreditProvider>
+            <TwilioProvider>
+              <AlertProvider>{children}</AlertProvider>
+            </TwilioProvider>
+          </CreditProvider>
         </AuthProvider>
       </ThemeProvider>
     </>
