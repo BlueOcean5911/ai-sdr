@@ -35,12 +35,16 @@ const EmailSendWindow = dynamic(
 export default function EmailItem({
   mailing,
   sendMailing,
-  deleteMailing,
+  deleteManualMailing,
+  deleteMailingInCadence,
+  skipMailingInCadence,
   markAsInterested,
 }: {
   mailing: MailingModel;
-  sendMailing: (mailingId: string) => void;
-  deleteMailing: (mailingId: string) => void;
+  sendMailing: (mailingId: string, cadenceStateId?: string) => void;
+  deleteManualMailing: (mailingId: string) => void;
+  deleteMailingInCadence: (mailingId: string) => void;
+  skipMailingInCadence: (mailingId: string) => void;
   markAsInterested: (leadId: string) => void;
 }) {
   const [sent, setSent] = useState(false);
@@ -204,7 +208,7 @@ export default function EmailItem({
                 <button
                   className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
                   onClick={() => {
-                    sendMailing(mailing.id);
+                    sendMailing(mailing.id, mailing.cadenceStateId);
                   }}
                 >
                   Resend Email
@@ -214,15 +218,10 @@ export default function EmailItem({
             {mailing.mailingStatus === MAILING_STATE.SCHEDULED && (
               <>
                 <MenuItem>
-                  <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                    Edit
-                  </button>
-                </MenuItem>
-                <MenuItem>
                   <button
                     className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
                     onClick={() => {
-                      sendMailing(mailing.id);
+                      sendMailing(mailing.id, mailing.cadenceStateId);
                     }}
                   >
                     Send Now
@@ -231,14 +230,17 @@ export default function EmailItem({
                 {mailing.cadenceId ? (
                   <>
                     <MenuItem>
-                      <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
+                      <button
+                        className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                        onClick={() => skipMailingInCadence(mailing.id)}
+                      >
                         Skip Email and Continue Cadence
                       </button>
                     </MenuItem>
                     <MenuItem>
                       <button
                         className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
-                        onClick={() => deleteMailing(mailing.id)}
+                        onClick={() => deleteMailingInCadence(mailing.id)}
                       >
                         Delete Email and Finish Cadence
                       </button>
@@ -248,7 +250,7 @@ export default function EmailItem({
                   <MenuItem>
                     <button
                       className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
-                      onClick={() => deleteMailing(mailing.id)}
+                      onClick={() => deleteManualMailing(mailing.id)}
                     >
                       Delete
                     </button>

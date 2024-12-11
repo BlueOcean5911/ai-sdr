@@ -40,6 +40,7 @@ export interface MailingModel {
   ownerId: string;
   ownerName: string;
   cadenceId: string;
+  cadenceStateId?: string;
   cadenceName: string;
   currentCadenceStep: number;
 
@@ -240,8 +241,18 @@ export const addMailing = async (mailing: SendMailingModel) => {
   };
 };
 
-export const sendMailing = async (id: string) => {
-  const response = await api.post(`api/v2/mailings/send/${id}`);
+export const sendMailing = async ({
+  id,
+  cadenceStateId,
+}: {
+  id: string;
+  cadenceStateId?: string;
+}) => {
+  let url = `api/mailings/send/${id}`;
+  if (cadenceStateId) {
+    url += `?cadenceStateId=${cadenceStateId}`;
+  }
+  const response = await api.post(url);
 
   if (response.status !== 200) {
     throw new Error("Failed to send email");
@@ -255,10 +266,32 @@ export const generateEmail = async (setting: PersonalizedSettingModel) => {
   return await api.post("api/mailings/generate", setting);
 };
 
-export const deleteMailing = async (mailingId: string) => {
-  const response = await api.delete(`api/mailings/${mailingId}`);
+export const deleteManualMailing = async (mailingId: string) => {
+  const response = await api.delete(
+    `api/v2/mailings/delete-manual-email/${mailingId}`
+  );
   if (response.status !== 200) {
     throw new Error("Failed to delete mailing");
+  }
+  return response;
+};
+
+export const deleteMailingInCadence = async (mailingId: string) => {
+  const response = await api.delete(
+    `api/v2/mailings/delete-mailing-and-finish-cadence/${mailingId}`
+  );
+  if (response.status !== 200) {
+    throw new Error("Failed to delete mailing");
+  }
+  return response;
+};
+
+export const skipMailingInCadence = async (mailingId: string) => {
+  const response = await api.post(
+    `api/v2/mailings/skip-sending-email-in-cadence/${mailingId}`
+  );
+  if (response.status !== 200) {
+    throw new Error("Failed to skip mailing");
   }
   return response;
 };

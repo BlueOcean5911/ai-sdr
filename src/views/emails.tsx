@@ -10,7 +10,9 @@ import SortableHeader from "@/components/ui/SortableHeader";
 import Loading from "@/components/Loading";
 
 import {
-  deleteMailing,
+  deleteManualMailing,
+  deleteMailingInCadence,
+  skipMailingInCadence,
   getMailings,
   getMailingTotalCount,
   MailingModel,
@@ -107,9 +109,12 @@ export default function Emails(
       });
   };
 
-  const handleSendMailing = (mailingId: string) => {
+  const handleSendMailing = (mailingId: string, cadenceStateId?: string) => {
     runService(
-      mailingId,
+      {
+        id: mailingId,
+        cadenceStateId: cadenceStateId,
+      },
       sendMailing,
       (data) => {
         fetchMailings(emailFilterConfig.params);
@@ -121,10 +126,44 @@ export default function Emails(
     );
   };
 
-  const handleDeleteMailing = (mailingId: string) => {
+  const handleDeleteManualMailing = (mailingId: string) => {
     runService(
       mailingId,
-      deleteMailing,
+      deleteManualMailing,
+      (data) => {
+        fetchMailings(emailFilterConfig.params);
+        if (data.success) {
+          toast.success("Mailing deleted successfully");
+        }
+      },
+      (status, error) => {
+        handleError(status, error);
+        console.log(status, error);
+      }
+    );
+  };
+
+  const handleDeleteMailingInCadence = (mailingId: string) => {
+    runService(
+      mailingId,
+      deleteMailingInCadence,
+      (data) => {
+        fetchMailings(emailFilterConfig.params);
+        if (data.success) {
+          toast.success("Mailing deleted successfully");
+        }
+      },
+      (status, error) => {
+        handleError(status, error);
+        console.log(status, error);
+      }
+    );
+  };
+
+  const handleSkipMailingInCadence = (mailingId: string) => {
+    runService(
+      mailingId,
+      skipMailingInCadence,
       (data) => {
         fetchMailings(emailFilterConfig.params);
         if (data.success) {
@@ -222,7 +261,9 @@ export default function Emails(
                     key={mailing.id}
                     mailing={mailing}
                     sendMailing={handleSendMailing}
-                    deleteMailing={handleDeleteMailing}
+                    skipMailingInCadence={handleSkipMailingInCadence}
+                    deleteManualMailing={handleDeleteManualMailing}
+                    deleteMailingInCadence={handleDeleteMailingInCadence}
                     markAsInterested={handleMarkAsInterested}
                   />
                 ))}
