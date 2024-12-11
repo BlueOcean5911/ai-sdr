@@ -246,6 +246,8 @@ export const sendMailing = async (id: string) => {
   if (response.status !== 200) {
     throw new Error("Failed to send email");
   }
+
+  return response;
 };
 
 export const generateEmail = async (setting: PersonalizedSettingModel) => {

@@ -43,7 +43,6 @@ export default function EmailItem({
   deleteMailing: (mailingId: string) => void;
   markAsInterested: (leadId: string) => void;
 }) {
-  console.log("deleteMailing", mailing);
   const [sent, setSent] = useState(false);
   const [isOpenSendEmail, setIsOpenSendEmail] = useState(false);
   const [lead, setLead] = useState<LeadModel>();
