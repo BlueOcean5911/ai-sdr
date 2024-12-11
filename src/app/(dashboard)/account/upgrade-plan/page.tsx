@@ -3,26 +3,28 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 
+import BillingPeriodSelector from "@/components/account/BillingPeriod";
 import PlanCard from "@/components/account/PlanCard";
 import UserCountSelector from "@/components/account/UserCountSelector";
 
-import { BillingPeriodSelector } from "@/components/account/BillingPeriod";
-import { PLANS } from "@/data/plan.data";
-
 import { createCheckOutSession } from "@/services/stripeService";
+import { PLANS } from "@/data/plan.data";
+import { useCredit } from "@/contexts/CreditContext";
 
 const Page = () => {
-  const [loading, setLoading] = useState(false);
+  const [processing, setIsProcessing] = useState(false);
   const [processingPlan, setProcessingPlan] = useState<string>("");
   const [userCount, setUserCount] = useState(1);
   const [billingPeriod, setBillingPeriod] = useState<string>("monthly");
+
+  const { isLoading, myPlan } = useCredit();
 
   const searchParams = useSearchParams();
   const status = searchParams.get("status");
 
   const handleUpgrade = async (plan: typeof PLANS.BASIC) => {
     try {
-      setLoading(true);
+      setIsProcessing(true);
       setProcessingPlan(plan.name);
 
       const { sessionId, sessionUrl } = await createCheckOutSession({
@@ -39,7 +41,7 @@ const Page = () => {
       console.error("Checkout error:", error);
       setProcessingPlan("");
     } finally {
-      setLoading(false);
+      setIsProcessing(false);
     }
   };
 
@@ -69,8 +71,8 @@ const Page = () => {
               key={plan.name}
               plan={plan}
               billingPeriod={billingPeriod}
-              isSelected={plan.name === "Free"}
-              loading={loading}
+              isSelected={plan.name === myPlan?.name}
+              processing={processing}
               processingPlan={processingPlan}
               onUpgrade={handleUpgrade}
             />

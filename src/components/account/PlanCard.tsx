@@ -8,7 +8,7 @@ interface PlanCardProps {
   };
   billingPeriod: string;
   isSelected?: boolean;
-  loading?: boolean;
+  processing?: boolean;
   processingPlan?: string;
   onUpgrade: (plan: any) => void;
 }
@@ -17,7 +17,7 @@ const PlanCard = ({
   plan,
   billingPeriod,
   isSelected = false,
-  loading = false,
+  processing = false,
   processingPlan,
   onUpgrade,
 }: PlanCardProps) => {
@@ -62,7 +62,7 @@ const PlanCard = ({
       ) : (
         <button
           className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors disabled:bg-blue-300"
-          disabled={loading || isProcessing}
+          disabled={processing || isProcessing}
           onClick={() => onUpgrade(plan)}
         >
           {isProcessing ? (

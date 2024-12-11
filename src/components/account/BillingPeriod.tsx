@@ -5,7 +5,7 @@ interface BillingPeriodSelectorProps {
   onChange: (period: string) => void;
 }
 
-export const BillingPeriodSelector = ({
+const BillingPeriodSelector = ({
   period,
   onChange,
 }: BillingPeriodSelectorProps) => {
@@ -37,3 +37,5 @@ export const BillingPeriodSelector = ({
     </div>
   );
 };
+
+export default BillingPeriodSelector;
