@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Dialog } from "@headlessui/react";
+import {
+  XMarkIcon,
+  UserCircleIcon,
+  BriefcaseIcon,
+  SparklesIcon,
+} from "@heroicons/react/24/outline";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
@@ -32,146 +37,154 @@ const NewCadenceFromScratch = ({
       }
     );
   };
+
   useEffect(() => {
     fetchUsers();
   }, []);
 
   const userOptions = useMemo(() => {
-    let options = users
-      ? users.map((user) => {
-          return {
-            name: user.firstName + " " + user.lastName,
-            value: user.id,
-          };
-        })
+    return users
+      ? users.map((user) => ({
+          name: `${user.firstName} ${user.lastName}`,
+          value: user.id,
+        }))
       : [];
-    return options;
   }, [users]);
 
   return (
-    <>
-      <Dialog
-        open={true}
-        as="div"
-        className="relative z-50 focus:outline-none"
-        onClose={handleClose}
-      >
-        <div className="fixed inset-0 bg-black/65 z-40" />
-        <div className="fixed inset-0 py-10 overflow-y-auto z-40">
-          <div className="flex min-h-full items-center justify-center p-4 ">
-            <DialogPanel
-              transition
-              className="w-full max-w-lg rounded-xl bg-white backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
+    <Dialog open={true} onClose={handleClose} className="relative z-50">
+      <div
+        className="fixed inset-0 bg-black/40 backdrop-blur-sm"
+        aria-hidden="true"
+      />
+      <div className="fixed inset-0 flex items-center justify-center p-4">
+        <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+          <Dialog.Title
+            as="h3"
+            className="text-lg font-medium leading-6 text-gray-900 flex justify-between items-center"
+          >
+            <span className="flex items-center gap-2">
+              <SparklesIcon className="h-6 w-6 text-blue-500" />
+              New Cadence
+            </span>
+            <button
+              onClick={handleClose}
+              className="rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
-              <DialogTitle
-                as="h3"
-                className="px-6 py-3 flex justify-between items-center rounded-md text-lg font-semibold leading-6 bg-white text-gray-900"
-              >
-                <span>New Cadence</span>
-                <div
-                  className="p-1 rounded-md hover:bg-gray-100"
-                  onClick={handleClose}
-                >
-                  <XMarkIcon className="w-5 h-5" />
-                </div>
-              </DialogTitle>
-              <Formik
-                initialValues={{
-                  name: "",
-                  ownerId: "",
-                }}
-                validationSchema={Yup.object().shape({
-                  name: Yup.string().required("Cadence name is required"),
-                  ownerId: Yup.string().required("Assignee is required"),
-                })}
-                onSubmit={async (values, { setSubmitting }) => {
-                  setSubmitting(false);
-                  handleCreate(values.name, values.ownerId);
-                  toast.success("Cadence created successfully");
-                  setSubmitting(true);
-                }}
-              >
-                {({
-                  errors,
-                  handleBlur,
-                  handleChange,
-                  handleSubmit,
-                  setFieldValue,
-                  isSubmitting,
-                  touched,
-                  values,
-                }) => (
-                  <form noValidate onSubmit={handleSubmit}>
-                    <div className="px-6 py-4 rounded-md bg-gray-100">
-                      <div className="flex flex-col gap-4">
-                        <div className="flex flex-col gap-2 text-sm">
-                          <div className="flex flex-col">
-                            <label>Name*</label>
-                            <input
-                              id="name"
-                              type="text"
-                              placeholder="Name"
-                              className="input-primary max-h-9"
-                              value={values.name}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {touched.name && errors.name && (
-                              <FormHelperText>{errors.name}</FormHelperText>
-                            )}
-                          </div>
-                          <div className="flex flex-col">
-                            <div className="flex flex-col">
-                              <label htmlFor="Cadence Owner">
-                                Cadence Owner*
-                              </label>
-                              <Select
-                                data={userOptions}
-                                defaultValue={userOptions[0]}
-                                onChange={(selectedItem) => {
-                                  if (
-                                    selectedItem &&
-                                    selectedItem.value !== values.ownerId
-                                  )
-                                    setFieldValue(
-                                      "ownerId",
-                                      selectedItem.value
-                                    );
-                                }}
-                              ></Select>
-                              {touched.ownerId && errors.ownerId && (
-                                <FormHelperText>
-                                  {errors.ownerId}
-                                </FormHelperText>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-6">
-                          <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="w-full btn-primary"
-                          >
-                            Create
-                          </button>
-                          <button
-                            className="w-full btn-secondary"
-                            onClick={handleClose}
-                          >
-                            Close
-                          </button>
-                        </div>
+              <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+            </button>
+          </Dialog.Title>
+          <Formik
+            initialValues={{
+              name: "",
+              ownerId: "",
+            }}
+            validationSchema={Yup.object().shape({
+              name: Yup.string().required("Cadence name is required"),
+              ownerId: Yup.string().required("Assignee is required"),
+            })}
+            onSubmit={async (values, { setSubmitting }) => {
+              setSubmitting(true);
+              handleCreate(values.name, values.ownerId);
+              toast.success("Cadence created successfully");
+              setSubmitting(false);
+            }}
+          >
+            {({
+              errors,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              setFieldValue,
+              isSubmitting,
+              touched,
+              values,
+            }) => (
+              <form noValidate onSubmit={handleSubmit} className="mt-4">
+                <div className="space-y-4">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Name*
+                    </label>
+                    <div className="mt-1 relative rounded-md shadow-sm">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <BriefcaseIcon
+                          className="h-5 w-5 text-gray-400"
+                          aria-hidden="true"
+                        />
                       </div>
+                      <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
+                        placeholder="Cadence Name"
+                        value={values.name}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
                     </div>
-                  </form>
-                )}
-              </Formik>
-            </DialogPanel>
-          </div>
-        </div>
-      </Dialog>
-    </>
+                    {touched.name && errors.name && (
+                      <FormHelperText>{errors.name}</FormHelperText>
+                    )}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="ownerId"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Owner*
+                    </label>
+                    <div className="mt-1 relative rounded-md shadow-sm">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <UserCircleIcon
+                          className="h-5 w-5 text-gray-400"
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <Select
+                        data={userOptions}
+                        defaultValue={userOptions[0]}
+                        onChange={(selectedItem) => {
+                          if (
+                            selectedItem &&
+                            selectedItem.value !== values.ownerId
+                          )
+                            setFieldValue("ownerId", selectedItem.value);
+                        }}
+                        className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
+                    {touched.ownerId && errors.ownerId && (
+                      <FormHelperText>{errors.ownerId}</FormHelperText>
+                    )}
+                  </div>
+                </div>
+                <div className="mt-6 flex items-center justify-end space-x-3">
+                  <button
+                    type="button"
+                    className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    onClick={handleClose}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="btn-primary"
+                  >
+                    Create
+                  </button>
+                </div>
+              </form>
+            )}
+          </Formik>
+        </Dialog.Panel>
+      </div>
+    </Dialog>
   );
 };
 

@@ -1,5 +1,6 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowRight, FileText, Sparkles, X } from "lucide-react";
 import Image from "next/image";
 
 const CreateCadence = ({
@@ -22,91 +23,88 @@ const CreateCadence = ({
           <div className="flex min-h-full items-center justify-center p-4 ">
             <DialogPanel
               transition
-              className="w-full max-w-lg rounded-xl bg-white backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
+              className="w-full max-w-2xl rounded-xl bg-white backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 p-4"
             >
-              <DialogTitle
-                as="h3"
-                className="px-6 py-3 flex justify-between items-center rounded-md text-lg font-semibold leading-6 bg-white text-gray-900"
-              >
-                <span>Create New Cadence</span>
-                <div
-                  className="p-1 rounded-md hover:bg-gray-100"
-                  onClick={close}
+              <div className="bg-white rounded-2xl w-full max-w-4xl relative transform transition-all">
+                {/* Close Button */}
+                <button
+                  // onClick={onClose}
+                  className="absolute right-4 top-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  aria-label="Close dialog"
                 >
-                  <XMarkIcon className="w-5 h-5" />
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+
+                {/* Header */}
+                <div className="p-6 pb-0">
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Create New Cadence
+                  </h2>
+                  <p className="mt-2 text-gray-600">
+                    Cadences are a series of automated or manual touchpoints and
+                    activities, designed to drive deeper engagement with your
+                    contacts.
+                  </p>
                 </div>
-              </DialogTitle>
-              <div className="px-6 py-6 flex flex-col gap-4 rounded-md bg-gray-100">
-                <div className="flex justify-between gap-4">
-                  <div
-                    // onClick={() => {
-                    //   if (handleClick) {
-                    //     handleClick("ai-assisted");
-                    //   }
-                    //   close();
-                    // }}
-                    className="w-36 p-3 flex flex-col items-center justify-center gap-1 bg-gray-200 border rounded-lg cursor-not-allowed hover:shadow-lg"
-                  >
-                    {/* <FireIcon className="w-16 h-16 stroke-gray-600 m-4" /> */}
-                    <Image
-                      src={"/assets/images/icon/aiassisted.svg"}
-                      alt="ai assisted"
-                      width={72}
-                      height={72}
-                    />
-                    <h4>AI-assisted</h4>
-                    <p className="text-xs text-center text-gray-400">
-                      Create a cadence with AI-assistance
-                    </p>
-                  </div>
-                  <div
-                    // onClick={() => {
-                    //   if (handleClick) {
-                    //     handleClick("pre-formatted");
-                    //   }
-                    //   close();
-                    // }}
-                    className="w-36 p-3 flex flex-col items-center justify-center gap-1 bg-gray-200 border rounded-lg cursor-not-allowed hover:shadow-lg"
-                  >
-                    {/* <EnvelopeOpenIcon className="w-16 h-16 stroke-gray-600 m-4" /> */}
-                    <Image
-                      src={"/assets/images/icon/preformatted.svg"}
-                      alt="pre formatted"
-                      width={72}
-                      height={72}
-                    />
-                    <h4>Pre-formatted</h4>
-                    <p className="text-xs text-center text-gray-400">
-                      Start with one of pre-formatted cadences
-                    </p>
-                  </div>
-                  <div
+
+                {/* Cards Grid */}
+                <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* AI-assisted Card */}
+                  <button className="group relative bg-gradient-to-br from-purple-50 to-white p-6 rounded-xl border-2 border-transparent hover:border-purple-200 transition-all duration-300 hover:shadow-lg text-left">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-purple-100 rounded-full -mr-8 -mt-8 opacity-50 group-hover:opacity-75 transition-opacity" />
+                    <div className="relative">
+                      <div className="w-12 h-12 rounded-xl bg-purple-100 group-hover:bg-purple-200 flex items-center justify-center mb-4 transition-colors">
+                        <Sparkles className="w-6 h-6 text-purple-600" />
+                      </div>
+                      <h3 className="font-semibold text-gray-900 mb-1">
+                        AI-assisted
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        Create a cadence with AI-assistance
+                      </p>
+                    </div>
+                  </button>
+
+                  {/* Pre-formatted Card */}
+                  <button className="group relative bg-gradient-to-br from-amber-50 to-white p-6 rounded-xl border-2 border-transparent hover:border-amber-200 transition-all duration-300 hover:shadow-lg text-left">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-amber-100 rounded-full -mr-8 -mt-8 opacity-50 group-hover:opacity-75 transition-opacity" />
+                    <div className="relative">
+                      <div className="w-12 h-12 rounded-xl bg-amber-100 group-hover:bg-amber-200 flex items-center justify-center mb-4 transition-colors">
+                        <FileText className="w-6 h-6 text-amber-600" />
+                      </div>
+                      <h3 className="font-semibold text-gray-900 mb-1">
+                        Pre-formatted
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        Start with one of pre-formatted cadences
+                      </p>
+                    </div>
+                  </button>
+
+                  {/* From Scratch Card */}
+                  <button
+                    className="group relative bg-gradient-to-br from-rose-50 to-white p-6 rounded-xl border-2 border-transparent hover:border-rose-200 transition-all duration-300 hover:shadow-lg text-left"
                     onClick={() => {
                       if (handleClick) {
                         handleClick("from-scratch");
                       }
                       close();
                     }}
-                    className="w-36 p-3 flex flex-col items-center justify-center gap-1 bg-white border rounded-lg cursor-pointer hover:shadow-lg"
                   >
-                    {/* <PaperAirplaneIcon className="w-16 h-16 stroke-gray-600 m-4" /> */}
-                    <Image
-                      src={"/assets/images/icon/fromscratch.svg"}
-                      alt="from scratch"
-                      width={72}
-                      height={72}
-                    />
-                    <h4>From scratch</h4>
-                    <p className="text-xs text-center text-gray-400">
-                      Create new cadence from scratch
-                    </p>
-                  </div>
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-rose-100 rounded-full -mr-8 -mt-8 opacity-50 group-hover:opacity-75 transition-opacity" />
+                    <div className="relative">
+                      <div className="w-12 h-12 rounded-xl bg-rose-100 group-hover:bg-rose-200 flex items-center justify-center mb-4 transition-colors">
+                        <ArrowRight className="w-6 h-6 text-rose-600" />
+                      </div>
+                      <h3 className="font-semibold text-gray-900 mb-1">
+                        From scratch
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        Create new cadence from scratch
+                      </p>
+                    </div>
+                  </button>
                 </div>
-                <p className="text-sm">
-                  Cadences are a series of automated or manual touchpoints and
-                  activities, designed to drive deeper engagement with your
-                  contacts.
-                </p>
               </div>
             </DialogPanel>
           </div>
