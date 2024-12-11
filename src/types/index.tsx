@@ -222,3 +222,20 @@ export type TaskType =
   | "linkedinViewProfile"
   | "linkedinInteractWithPost"
   | "actionItem";
+
+  
+export type PlanModel = {
+  name: string;
+  quantity: number;
+  interval: string;
+  status: string;
+  startDate: Date;
+  endDate: Date;
+};
+
+export type CreditContextType = {
+  isLoading: boolean;
+  myPlan: PlanModel | null;
+  // emailCredit: number | null;
+  // mobileCredit: number | null;
+};
