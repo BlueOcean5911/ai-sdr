@@ -90,7 +90,7 @@ export default function InviteUser({
                                   id="email"
                                   type="text"
                                   placeholder="username@example.com"
-                                  className="input-primary max-h-9"
+                                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
                                   value={values.email}
                                   onChange={handleChange}
                                   onBlur={handleBlur}
@@ -106,17 +106,17 @@ export default function InviteUser({
 
                           <div className="pt-2 flex justify-end gap-4 text-sm">
                             <button
+                              className="btn-secondary"
+                              onClick={handleClose}
+                            >
+                              Close
+                            </button>
+                            <button
                               type="submit"
                               disabled={isSubmitting}
                               className="btn-primary"
                             >
                               Invite
-                            </button>
-                            <button
-                              className="btn-secondary"
-                              onClick={handleClose}
-                            >
-                              Close
                             </button>
                           </div>
                         </div>

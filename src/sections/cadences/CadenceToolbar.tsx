@@ -45,7 +45,7 @@ const CadenceToolbar = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center gap-2 border-b-1 border-gray-100 text-sm">
+      <div className="flex justify-between items-center gap-2 border-b-1 border-gray-100 text-sm p-1">
         <button
           className="btn-secondary"
           onClick={() => {
@@ -63,10 +63,15 @@ const CadenceToolbar = () => {
             <span>Show Filters</span>
           )}
         </button>
-        <div className="btn-primary" onClick={() => setOpenCreateCadence(true)}>
-          <PlusCircleIcon className="w-4 h-4 stroke-white" />
-          <span className="text-sm text-white">Build Cadence</span>
-        </div>
+        <button
+          className="btn-primary"
+          onClick={() => setOpenCreateCadence(true)}
+        >
+          <div className="flex items-center gap-2">
+            <PlusCircleIcon className="w-4 h-4 stroke-white" />
+            <span className="text-sm text-white">Build Cadence</span>
+          </div>
+        </button>
       </div>
 
       {openAddCadence && (

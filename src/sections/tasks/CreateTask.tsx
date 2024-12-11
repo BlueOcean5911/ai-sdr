@@ -182,7 +182,7 @@ export default function CreateTask({
                           leadId: values.leadId,
                           status: values.status,
                         };
-                        
+
                         runService(
                           taskData,
                           addTask,
@@ -363,18 +363,18 @@ export default function CreateTask({
 
                           <div className="pt-2 flex justify-end gap-4">
                             <button
-                              type="submit"
-                              disabled={isSubmitting}
-                              className="btn-primary"
-                            >
-                              {task ? "Updte" : "Save"} Task
-                            </button>
-                            <button
                               type="button"
                               className="btn-secondary"
                               onClick={handleClose}
                             >
                               Close
+                            </button>
+                            <button
+                              type="submit"
+                              disabled={isSubmitting}
+                              className="btn-primary"
+                            >
+                              {task ? "Updte" : "Save"} Task
                             </button>
                           </div>
                         </div>

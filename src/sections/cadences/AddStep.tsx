@@ -448,7 +448,7 @@ export default function AddStep({
                         </div>
                         <div className="flex justify-end gap-4">
                           <button
-                            className="px-3 py-1 rounded-md text-sm bg-gray-300 hover:bg-gray-200"
+                            className="btn-secondary"
                             onClick={() => {
                               setStepData((prev) => ({
                                 ...prev,
@@ -462,7 +462,7 @@ export default function AddStep({
                             Back
                           </button>
                           <button
-                            className="px-3 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
+                            className="btn-primary"
                             onClick={() => {
                               createStep();
                             }}
@@ -621,7 +621,7 @@ export default function AddStep({
                         </div>
                         <div className="flex justify-end gap-4">
                           <button
-                            className="px-3 py-1 rounded-md text-sm bg-gray-300 hover:bg-gray-200"
+                            className="btn-secondary"
                             onClick={() => {
                               setStepData((prev) => ({
                                 ...prev,
@@ -634,7 +634,7 @@ export default function AddStep({
                             Back
                           </button>
                           <button
-                            className="px-3 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
+                            className="btn-primary"
                             onClick={() => {
                               createStep();
                             }}
@@ -791,7 +791,7 @@ export default function AddStep({
                         </div>
                         <div className="flex justify-end gap-4">
                           <button
-                            className="px-3 py-1 rounded-md text-sm bg-gray-300 hover:bg-gray-200"
+                            className="btn-secondary"
                             onClick={() => {
                               setStepData((prev) => ({
                                 ...prev,
@@ -804,7 +804,7 @@ export default function AddStep({
                             Back
                           </button>
                           <button
-                            className="px-3 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
+                            className="btn-primary"
                             onClick={() => {
                               createStep();
                             }}
@@ -961,7 +961,7 @@ export default function AddStep({
                         </div>
                         <div className="flex justify-end gap-4">
                           <button
-                            className="px-3 py-1 rounded-md text-sm bg-gray-300 hover:bg-gray-200"
+                            className="btn-secondary"
                             onClick={() => {
                               setStepData((prev) => ({
                                 ...prev,
@@ -974,7 +974,7 @@ export default function AddStep({
                             Back
                           </button>
                           <button
-                            className="px-3 py-1 rounded-md text-sm text-white bg-blue-500 hover:bg-blue-400"
+                            className="btn-primary"
                             onClick={() => {
                               createStep();
                             }}

@@ -6,7 +6,7 @@ const TaskToolbar = ({ handleCreate }: { handleCreate: () => void }) => {
   const { taskFilterConfig, setTaskFilterConfig } = useTaskFilter();
 
   return (
-    <div className="flex flex-row justify-between items-center gap-4 text-sm border-b border-gray-100">
+    <div className="flex flex-row justify-between items-center gap-4 text-sm border-b border-gray-100 p-1">
       <div className="flex items-center gap-2">
         <button
           className="btn-secondary"

@@ -131,14 +131,12 @@ const ManageStuff = () => {
         <div className="flex justify-between items-center">
           <div />
           <div className="flex gap-4">
-            <div className="btn-secondary">
-              <EllipsisVerticalIcon className="w-4 h-4" />
-              <span className="text-sm">Bulk Action</span>
-            </div>
-            <div className="btn-primary" onClick={() => setInvite(true)}>
-              <PlusCircleIcon className="w-4 h-4 stroke-white" />
-              <span className="text-sm text-white">Invite User</span>
-            </div>
+            <button className="btn-primary" onClick={() => setInvite(true)}>
+              <div className="flex gap-2 items-center">
+                <PlusCircleIcon className="w-4 h-4 stroke-white" />
+                <span className="text-sm text-white">Invite User</span>
+              </div>
+            </button>
           </div>
         </div>
 

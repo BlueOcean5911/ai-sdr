@@ -3,6 +3,7 @@ import FormHelperText from "@/components/extends/FormHelperText";
 import { updatePassword } from "@/services/userService";
 import { SuccessModel } from "@/types";
 import { handleError, runService } from "@/utils/service_utils";
+import { KeyIcon } from "@heroicons/react/24/outline";
 import { Formik } from "formik";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
@@ -13,7 +14,13 @@ const Security = () => {
       <div className="flex flex-1 justify-center items-center bg-gray-100">
         <div className="card py-8 max-w-md w-full flex flex-col gap-5 border shadow-lg">
           <div className="change-password-header">
-            <h1 className="text-lg">Change Password</h1>
+            <h1 className="text-lg">
+              {" "}
+              <span className="flex gap-2 items-center">
+                <KeyIcon className="w-6 h-6" />
+                Password
+              </span>
+            </h1>
             <hr />
           </div>
           <div className="p-4 pt-6 border rounded mt-4">
