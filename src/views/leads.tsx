@@ -54,7 +54,7 @@ export default function Leads() {
       {leadFilterConfig.isOpen && <FilterLead />}
       <div className="card p-4 pt-7 flex-1 flex flex-col gap-2 overflow-auto shadow-lg min-w-[420px]">
         <div className="flex-1 flex flex-col gap-2 overflow-auto">
-          <div className="border-b border-gray-100 flex gap-2 overflow-auto">
+          <div className="border-b border-gray-100 flex gap-2 overflow-auto p-1">
             <button
               className={classNames(
                 "pb-1 px-3 text-sm/6 font-semibold focus:outline-none hover:text-blue-400",
@@ -80,8 +80,10 @@ export default function Leads() {
             <div className="flex flex-1 justify-end items-center">
               <Menu>
                 <MenuButton className="btn-primary">
-                  <span className="text-sm text-white">Import</span>
-                  <ChevronDownIcon className="w-3 h-3 stroke-white stroke-2" />
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-white">Import</span>
+                    <ChevronDownIcon className="w-3 h-3 stroke-white stroke-2" />
+                  </div>
                 </MenuButton>
                 <MenuItems
                   anchor="bottom end"

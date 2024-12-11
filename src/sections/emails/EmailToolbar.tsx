@@ -48,7 +48,7 @@ const EmailToolbar = ({ cadenceId }: { cadenceId?: string }) => {
   }, [emailFilterConfig]);
 
   return (
-    <div className="w-full flex items-center gap-2 border-b border-gray-100 text-sm overflow-auto justify-between">
+    <div className="w-full flex items-center gap-2 border-b border-gray-100 text-sm overflow-auto justify-between p-1">
       <button
         className="btn-secondary"
         onClick={() => {
