@@ -86,6 +86,10 @@ export default function CadenceItem({
             <div className="text-nowrap">Bounced</div>
           </div>
           <div className="w-min-15 px-2">
+            <div>{cadence.statistics?.removed}</div>
+            <div className="text-nowrap">Removed</div>
+          </div>
+          <div className="w-min-15 px-2">
             <div>{cadence.statistics?.finished}</div>
             <div className="text-nowrap">Finished</div>
           </div>

@@ -1,13 +1,24 @@
 import Select from "@/components/extends/Select/default";
 import { useLeadSelection } from "@/contexts/LeadSelectionContext";
 import { CadenceModel, getCadences } from "@/services/cadenceService";
-import { addLeadsToExistingCadence, LeadModel } from "@/services/leadService";
+import {
+  addLeadsToExistingCadence,
+  getExistingLeadsInCadence,
+  LeadModel,
+} from "@/services/leadService";
 import { handleError, runService } from "@/utils/service_utils";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { IoPersonAddOutline } from "react-icons/io5";
+import ConfirmModal from "@/components/extends/Modal/ConfirmModal";
+
+interface ConfirmModalData {
+  open: boolean;
+  title: string;
+  description: string;
+}
 
 const AddCadence = ({
   children,
@@ -19,6 +30,12 @@ const AddCadence = ({
   close: () => void;
 }) => {
   const [cadences, setCadences] = React.useState([]);
+  const [isOpenConfirmModal, setIsOpenConfirModal] = useState(true);
+  const [confirmModalData, setConfirmModalData] = useState<ConfirmModalData>({
+    open: false,
+    title: "",
+    description: "",
+  });
   const [selectedCadenceId, setSelectedCadenceId] = useState<string>("");
   const { selectedLeads, setSelectedLeads } = useLeadSelection();
   const fetchCadences = () => {
@@ -38,12 +55,7 @@ const AddCadence = ({
     fetchCadences();
   }, []);
 
-  const handleAddToCadence = () => {
-    if (selectedCadenceId === "" || selectedCadenceId === undefined) {
-      toast.info("Please select at least one cadence.");
-      return;
-    }
-
+  const handleAddLeadsToCadence = () => {
     let leadIds = selectedLeads.map((lead: LeadModel) => lead.id);
 
     runService(
@@ -61,13 +73,58 @@ const AddCadence = ({
     );
   };
 
+  const handleConfirmExistingLeads = () => {
+    if (selectedCadenceId === "" || selectedCadenceId === undefined) {
+      toast.info("Please select at least one cadence.");
+      return;
+    }
+    let leadIds = selectedLeads.map((lead: LeadModel) => lead.id);
+
+    runService(
+      { leadIds, cadenceId: selectedCadenceId },
+      getExistingLeadsInCadence,
+      (existedLeads) => {
+        if (existedLeads.length > 0) {
+          const leadsNames = existedLeads
+            .map((lead: LeadModel) => `"${lead.firstName} ${lead.lastName}"`)
+            .join(", ");
+          setConfirmModalData({
+            open: true,
+            title: "Duplicated Leads founded",
+            description: `The following leads already exist in the selected cadence: ${leadsNames}. It will be ignored. Do you want to continue?`,
+          });
+        } else {
+          const leads = existedLeads.map((lead: LeadModel) => lead.id);
+
+          runService(
+            { leads, cadenceId: selectedCadenceId },
+            addLeadsToExistingCadence,
+            (data) => {
+              toast.success("Successfully Added");
+              setSelectedLeads([]);
+              // close();
+            },
+            (status, error) => {
+              console.log(status, error);
+              handleError(status, error);
+            }
+          );
+        }
+      },
+      (status, error) => {
+        console.log(status, error);
+        handleError(status, error);
+      }
+    );
+  };
+
   return (
-    <>
+    <div className="fixed">
       <div>{children}</div>
       <Dialog
         open={open}
         as="div"
-        className="relative z-50 focus:outline-none"
+        className="fixed z-10 focus:outline-none"
         onClose={close}
       >
         <div className="fixed inset-0 bg-black/65 z-40" />
@@ -113,7 +170,7 @@ const AddCadence = ({
                 <div className="flex items-center gap-6">
                   <button
                     className="btn-primary w-full"
-                    onClick={() => handleAddToCadence()}
+                    onClick={handleConfirmExistingLeads}
                   >
                     Save
                   </button>
@@ -126,7 +183,19 @@ const AddCadence = ({
           </div>
         </div>
       </Dialog>
-    </>
+      <ConfirmModal
+        open={confirmModalData.open}
+        onClose={() =>
+          setConfirmModalData((prev) => ({ ...prev, open: false }))
+        }
+        onConfirm={handleAddLeadsToCadence}
+        onCancel={() =>
+          setConfirmModalData((prev) => ({ ...prev, open: false }))
+        }
+        title={confirmModalData.title}
+        description={confirmModalData.description}
+      />
+    </div>
   );
 };
 
