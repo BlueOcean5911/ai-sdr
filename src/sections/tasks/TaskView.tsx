@@ -73,7 +73,7 @@ const TaskView = ({
           <button
             className="w-full btn-secondary"
             onClick={() =>
-              task && handleUpdate(task?.id, "type", TASK_STATE.SKIPPED)
+              task && handleUpdate(task?.id, "status", TASK_STATE.SKIPPED)
             }
           >
             Skip
@@ -81,7 +81,7 @@ const TaskView = ({
           <button
             className="w-full btn-primary"
             onClick={() =>
-              task && handleUpdate(task?.id, "type", TASK_STATE.COMPLETE)
+              task && handleUpdate(task?.id, "status", TASK_STATE.COMPLETE)
             }
           >
             Complete
