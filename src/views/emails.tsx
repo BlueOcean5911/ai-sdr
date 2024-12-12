@@ -194,12 +194,12 @@ export default function Emails(
       }
     );
     runService(
-      { id: mailingId, updateData: { stage: LEAD_STAGE.INTERESTED } },
+      { id: mailingId, updateData: { state: LEAD_STAGE.INTERESTED } },
       updateMailing,
       (data) => {
         if (data) {
           fetchMailings(emailFilterConfig.params);
-          toast.success("Lead updated successfully");
+          toast.success("Mailing updated successfully");
         }
       },
       (status, error) => {
