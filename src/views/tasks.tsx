@@ -196,8 +196,13 @@ export default function Tasks() {
       <TaskOverview
         show={overview}
         task={focus}
-        lead={lead}
         handleClose={() => setOverview(false)}
+        lead={lead}
+        handleUpdate={(id, type: TASK_STATE) =>
+          handleUpdateTask(id, {
+            status: type,
+          })
+        }
       />
       <div className="card p-4 pt-7 flex-1 flex flex-col gap-2 overflow-auto shadow-lg min-w-[420px]">
         <div className="overflow-auto">
