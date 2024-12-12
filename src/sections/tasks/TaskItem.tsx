@@ -89,6 +89,18 @@ export default function TaskItem({
             {task.title}
           </span>
           <span className="text-xs line-clamp-1">{task.content}</span>
+          {task.cadenceId && (
+            <span className="flex items-center gap-1">
+              <span className="text-xs">
+                Step {task.currentCadenceStep} of
+              </span>
+              <span className="line-clamp-1 text-sm text-blue-500 hover:underline">
+                <Link href={`/cadences/${task.cadenceId}`}>
+                  {task.cadenceName}
+                </Link>
+              </span>
+            </span>
+          )}
         </div>
       </td>
       <td className="w-1/3 pr-4 py-2">
