@@ -18,6 +18,7 @@ import {
   MailingModel,
   sendMailing,
   updateMailing,
+  markMailingAsInterested,
 } from "@/services/mailingService";
 import { useEmailFilter } from "@/contexts/FilterEmailContext";
 import { handleError, runService } from "@/utils/service_utils";
@@ -178,29 +179,13 @@ export default function Emails(
     );
   };
 
-  const handleMarkAsInterested = (leadId: string, mailingId: string) => {
+  const handleMarkAsInterested = (mailingId: string) => {
     runService(
-      { id: leadId, updateData: { stage: LEAD_STAGE.INTERESTED } },
-      updateLead,
+      { id: mailingId },
+      markMailingAsInterested,
       (data) => {
-        if (data) {
-          fetchMailings(emailFilterConfig.params);
-          toast.success("Lead updated successfully");
-        }
-      },
-      (status, error) => {
-        console.log(status, error);
-        toast.error(error);
-      }
-    );
-    runService(
-      { id: mailingId, updateData: { state: LEAD_STAGE.INTERESTED } },
-      updateMailing,
-      (data) => {
-        if (data) {
-          fetchMailings(emailFilterConfig.params);
-          toast.success("Mailing updated successfully");
-        }
+        fetchMailings(emailFilterConfig.params);
+        toast.success("Mailing updated successfully");
       },
       (status, error) => {
         console.log(status, error);
