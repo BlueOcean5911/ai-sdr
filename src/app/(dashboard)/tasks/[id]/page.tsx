@@ -10,7 +10,12 @@ import {
   getLeadById,
   // updateLead,
 } from "@/services/leadService";
-import { getTaskById, TaskModel, updateTask, UpdateTaskModel } from "@/services/taskService";
+import {
+  getTaskById,
+  TaskModel,
+  updateTask,
+  UpdateTaskModel,
+} from "@/services/taskService";
 import TaskView from "@/sections/tasks/TaskView";
 import LeadView from "@/sections/leads/LeadView";
 import { TASK_STATE } from "@/types/enums";
@@ -75,9 +80,9 @@ export default function Page({ params }: { params: { id: string } }) {
         <div className="flex flex-1 flex-row gap-2">
           <TaskView
             task={task}
-            handleUpdate={(id, type: TASK_STATE) =>
+            handleUpdate={(id, type: string, value: TASK_STATE | string) =>
               handleUpdateTask(id, {
-                status: type,
+                [type]: value,
               })
             }
           />
