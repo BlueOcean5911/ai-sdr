@@ -182,7 +182,7 @@ export default function TaskItem({
                     <MenuItem key={state}>
                       <button
                         className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
-                        onClick={() => handleUpdate(task.id, "type", state)}
+                        onClick={() => handleUpdate(task.id, "status", state)}
                       >
                         {`${
                           state.charAt(0).toUpperCase() + state.slice(1)
