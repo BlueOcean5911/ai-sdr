@@ -11,15 +11,18 @@ import {
   updateCadenceState,
   pauseContactInCadence,
   resumeContactInCadence,
+  removeContactInCadence,
+  finishContactInCadence,
 } from "@/services/contactsService";
 import GeneralContacts from "./generalContacts";
 import Pagination from "@/components/extends/Pagination/Pagination";
 import { useEffect, useState } from "react";
 import { handleError, runService } from "@/utils/service_utils";
 import { SuccessModel } from "@/types";
-import { LEAD_STATUS_IN_CADENCE } from "@/types/enums";
+import { LEAD_STAGE, LEAD_STATUS_IN_CADENCE } from "@/types/enums";
 import { toast } from "react-toastify";
 import { deleteCadenceState } from "@/services/cadenceState";
+import { updateLead } from "@/services/leadService";
 
 export default function CadenceContacts(
   { cadenceId, campaignId }: { cadenceId?: string; campaignId?: string } = {
@@ -75,25 +78,6 @@ export default function CadenceContacts(
           );
           fetchContactsStatistics();
           toast.success("Cadence step paused successfully.");
-        }
-      },
-      (status, error) => {
-        handleError(status, error);
-      }
-    );
-  };
-
-  const handleDeleteCadenceStep = (id: string) => {
-    runService(
-      { id },
-      deleteCadenceState,
-      (data: SuccessModel) => {
-        if (data.success) {
-          setContacts(
-            contacts.filter((contact) => contact.cadenceStepId !== id)
-          );
-          fetchContactsStatistics();
-          toast.success("Cadence step deleted successfully.");
         }
       },
       (status, error) => {
@@ -167,6 +151,65 @@ export default function CadenceContacts(
     );
   };
 
+  const handleRemove = (contactId: string, cadenceId: string) => {
+    runService(
+      { contactId, cadenceId },
+      removeContactInCadence,
+      (data: SuccessModel) => {
+        if (data.success) {
+          setContacts(
+            contacts.map((contact) => {
+              if (contact.leadId === contactId) {
+                contact.status = LEAD_STATUS_IN_CADENCE.REMOVED;
+              }
+              return contact;
+            })
+          );
+          toast.success("Contact resumed in this cadence successfully.");
+        }
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  const handleFinish = (
+    contactId: string,
+    cadenceId: string,
+    leadStage: LEAD_STAGE
+  ) => {
+    runService(
+      { id: contactId, updateData: { stage: leadStage } },
+      updateLead,
+      (data) => {
+        runService(
+          { contactId, cadenceId },
+          finishContactInCadence,
+          (data: SuccessModel) => {
+            if (data.success) {
+              setContacts(
+                contacts.map((contact) => {
+                  if (contact.leadId === contactId) {
+                    contact.status = LEAD_STATUS_IN_CADENCE.FINISHED;
+                  }
+                  return contact;
+                })
+              );
+              toast.success("Contact finished in this cadence successfully.");
+            }
+          },
+          (status, error) => {
+            handleError(status, error);
+          }
+        );
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
   useEffect(() => {
     fetchContactsStatistics();
     fetchContactsInCadence();
@@ -185,7 +228,8 @@ export default function CadenceContacts(
           contacts={contacts}
           pause={handlePause}
           resume={handleResume}
-          onDeleteOne={(id: string) => handleDeleteCadenceStep(id)}
+          remove={handleRemove}
+          finish={handleFinish}
         />
         {/* Pagination */}
         <div className="flex justify-end">

@@ -7,19 +7,42 @@ import Link from "next/link";
 import { getInitials, getRelativeTime } from "@/utils/format";
 import { Tooltip } from "react-tooltip";
 import { useCadence } from "@/contexts/CadenceContext";
+import { LEAD_STAGE, LEAD_STATUS_IN_CADENCE } from "@/types/enums";
+import FinishCadenceModal from "./FinishCadenceModdal";
+import { handleError, runService } from "@/utils/service_utils";
+import { updateLead } from "@/services/leadService";
+
 export default function ContactItem({
   contact,
   pause,
   resume,
-  onDelete,
+  remove,
+  finish,
 }: {
   contact: ContactInCadence;
   pause: (contactId: string, cadenceId: string) => void;
   resume: (contactId: string, cadenceId: string) => void;
-  onDelete: (id: string) => void;
+  remove: (contactId: string, cadenceId: string) => void;
+  finish: (contactId: string, cadenceId: string, leadStage: LEAD_STAGE) => void;
 }) {
   const { cadence } = useCadence();
-  console.log("jerer", contact.leadId, cadence.id);
+  const [open, setOpen] = React.useState(false);
+
+  const handleMarkAsFinished = (actionIndex: number) => {
+    let leadStage: LEAD_STAGE = contact.leadStatus;
+    if (actionIndex === 0) {
+      leadStage = LEAD_STAGE.REPLIED;
+    } else if (actionIndex === 1) {
+      leadStage = LEAD_STAGE.INTERESTED;
+    } else if (actionIndex === 2) {
+      leadStage = LEAD_STAGE.DO_NOT_CONTACT;
+    } else if (actionIndex === 3) {
+      leadStage = LEAD_STAGE.CHANGED_JOB;
+    }
+
+    finish(contact.leadId, cadence.id, leadStage);
+    setOpen(false);
+  };
   return (
     <div className="w-full py-4 flex items-center border-b hover:bg-gray-100">
       <div className="px-4">
@@ -39,9 +62,18 @@ export default function ContactItem({
           <span
             className={classNames(
               "p-1 capitalize rounded-full px-2",
-              contact.status === "paused" ? "bg-red-400 text-white" : "",
-              contact.status === "active" ? "bg-blue-500 text-white" : "",
-              contact.status === "finished" ? "bg-green-500 text-white" : ""
+              contact.status === LEAD_STATUS_IN_CADENCE.PAUSED
+                ? "bg-red-400 text-white"
+                : "",
+              contact.status === LEAD_STATUS_IN_CADENCE.ACTIVE
+                ? "bg-blue-500 text-white"
+                : "",
+              contact.status === LEAD_STATUS_IN_CADENCE.REMOVED
+                ? "bg-gray-500 text-white"
+                : "",
+              contact.status === LEAD_STATUS_IN_CADENCE.FINISHED
+                ? "bg-green-500 text-white"
+                : ""
             )}
           >
             {contact.status}
@@ -91,7 +123,7 @@ export default function ContactItem({
             anchor="bottom end"
             className="flex flex-col w-56 origin-top-right bg-white rounded-md shadow-md border border-white/5 text-gray-900 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-20"
           >
-            {contact.status === "active" && (
+            {contact.status === LEAD_STATUS_IN_CADENCE.ACTIVE && (
               <MenuItem>
                 <button
                   className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
@@ -103,7 +135,7 @@ export default function ContactItem({
                 </button>
               </MenuItem>
             )}
-            {contact.status === "paused" && (
+            {contact.status === LEAD_STATUS_IN_CADENCE.PAUSED && (
               <MenuItem>
                 <button
                   className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
@@ -115,26 +147,39 @@ export default function ContactItem({
                 </button>
               </MenuItem>
             )}
-            {contact.currentStepStatus !== "finished" && (
+            {contact.status !== LEAD_STATUS_IN_CADENCE.FINISHED &&
+              contact.status !== LEAD_STATUS_IN_CADENCE.REMOVED && (
+                <MenuItem>
+                  <button
+                    className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                    onClick={() => setOpen(true)}
+                  >
+                    Mark as finished
+                  </button>
+                </MenuItem>
+              )}
+            {contact.status !== LEAD_STATUS_IN_CADENCE.REMOVED && (
               <MenuItem>
-                <button className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100">
-                  Mark as finished
+                <button
+                  className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
+                  onClick={() => {
+                    remove(contact.leadId, cadence.id);
+                  }}
+                >
+                  Remove from cadence
                 </button>
               </MenuItem>
             )}
-            <MenuItem>
-              <button
-                className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
-                onClick={() => {
-                  onDelete(contact.cadenceStepId);
-                }}
-              >
-                Remove from cadence
-              </button>
-            </MenuItem>
           </MenuItems>
         </Menu>
       </div>
+      <FinishCadenceModal
+        open={open}
+        onClose={() => setOpen(false)}
+        handleMarkAsFinished={handleMarkAsFinished}
+        contactName={`${contact.firstName} ${contact.lastName}`}
+        cadenceName={cadence.name}
+      />
     </div>
   );
 }

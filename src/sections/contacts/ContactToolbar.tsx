@@ -8,7 +8,7 @@ const stageDict: Record<string, string> = {
   repliedCount: "Replied",
   interestedCount: "Interested",
   notInterestedCount: "Not Interested",
-  unResponsiveCount: "Unresponsive",
+  unresponsiveCount: "Unresponsive",
   doNotContactCount: "Do Not Contact",
   badDataCount: "Bad Data",
   changedJobCount: "Changed Job",

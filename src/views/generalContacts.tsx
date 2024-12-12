@@ -2,17 +2,20 @@
 
 import ContactItem from "@/sections/contacts/ContactItem";
 import { ContactInCadence } from "@/services/contactsService";
+import { LEAD_STAGE } from "@/types/enums";
 
 export default function GeneralContacts({
   contacts,
   pause,
   resume,
-  onDeleteOne,
+  remove,
+  finish,
 }: {
   contacts: ContactInCadence[];
   pause: (contactId: string, cadenceId: string) => void;
   resume: (contactId: string, cadenceId: string) => void;
-  onDeleteOne: (id: string) => void;
+  remove: (contactId: string, cadenceId: string) => void;
+  finish: (contactId: string, cadenceId: string, leadStage: LEAD_STAGE) => void;
 }) {
   return (
     <>
@@ -26,7 +29,8 @@ export default function GeneralContacts({
                 contact={contact}
                 pause={pause}
                 resume={resume}
-                onDelete={(id: string) => onDeleteOne(id)}
+                remove={remove}
+                finish={finish}
               />
             ))
           ) : (

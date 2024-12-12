@@ -32,7 +32,7 @@ export interface ContactInCadence {
   ownerLastName?: string;
   currentStepStatus?: LEAD_STATUS_IN_CADENCE | string;
   cadenceCurrentStep?: number;
-  leadStatus?: LEAD_STAGE | string;
+  leadStatus: LEAD_STAGE;
   cadenceStepId: string;
   createdAt: string;
   status?: string;
@@ -62,7 +62,7 @@ export interface ContactInCadenceStatistics {
   repliedCount: number;
   interestedCount: number;
   notInterestedCount: number;
-  unResponsiveCount: number;
+  unresponsiveCount: number;
   doNotContactCount: number;
   badDataCount: number;
   changedJobCount: number;
@@ -125,7 +125,7 @@ export const getContactsInCadenceStatistics = async (
       repliedCount: response.data?.repliedCount,
       interestedCount: response.data?.interestedCount,
       notInterestedCount: response.data?.notInterestedCount,
-      unResponsiveCount: response.data?.unResponsiveCount,
+      unresponsiveCount: response.data?.unresponsiveCount,
       doNotContactCount: response.data?.doNotContactCount,
       badDataCount: response.data?.badDataCount,
       changedJobCount: response.data?.changedJobCount,
@@ -192,6 +192,26 @@ export const resumeContactInCadence = async ({
   cadenceId: string;
 }): Promise<ApiSuccessResponse> => {
   return await api.post(`api/contacts/resume/${cadenceId}/${contactId}`);
+};
+
+export const removeContactInCadence = async ({
+  contactId,
+  cadenceId,
+}: {
+  contactId: string;
+  cadenceId: string;
+}): Promise<ApiSuccessResponse> => {
+  return await api.delete(`api/contacts/remove/${cadenceId}/${contactId}`);
+};
+
+export const finishContactInCadence = async ({
+  contactId,
+  cadenceId,
+}: {
+  contactId: string;
+  cadenceId: string;
+}): Promise<ApiSuccessResponse> => {
+  return await api.post(`api/contacts/finish/${cadenceId}/${contactId}`);
 };
 
 export const updateCadenceState = async ({

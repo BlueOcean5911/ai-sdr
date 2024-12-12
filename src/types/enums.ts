@@ -52,11 +52,13 @@ export enum LEAD_STAGE {
   APPROACHING = "approaching",
   REPLIED = "replied",
   INTERESTED = "interested",
-  NOT_INTERESTED = "not-interested",
+  NOT_INTERESTED = "notInterested",
   UNRESPONSIVE = "unresponsive",
-  BAD_DATA = "bad-data",
-  CHANGED_JOB = "changed-job",
+  DO_NOT_CONTACT = "doNotContact",
+  BAD_DATA = "badData",
+  CHANGED_JOB = "changedJob",
   OPEN = "open",
+  OPEN_DEAL = "openDeal",
   UNQUALIFIED = "unqualified",
 }
 
