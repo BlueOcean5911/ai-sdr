@@ -169,7 +169,9 @@ export default function Tasks() {
       updateTask,
       (data) => {
         // console.log("Updated task", data);
-        setTasks(tasks.map((task) => (task.id === id ? data : task)));
+        // setTasks(tasks.map((task) => (task.id === id ? data : task)));
+        fetchTaskTotalCount(currentParams);
+        fetchTasks(currentParams);
         toast.success("Successfully updated");
       },
       (statusCode, error) => {
