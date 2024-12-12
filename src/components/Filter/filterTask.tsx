@@ -26,21 +26,6 @@ export default function FilterTask() {
           label: user.firstName + " " + user.lastName,
         }));
         setFromUserOption(usersOption);
-        runService(
-          undefined,
-          getMe,
-          (user) => {
-            setTaskFilterConfig({
-              ...taskFilterConfig,
-              fromUser: usersOption.filter(
-                (option: any) => option.value === user.id
-              ),
-            });
-          },
-          (statusCode, error) => {
-            handleError(statusCode, error);
-          }
-        );
       },
       (status, error) => {
         console.error(error);

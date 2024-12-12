@@ -23,21 +23,6 @@ export default function FilterContact() {
           label: user.firstName + " " + user.lastName,
         }));
         setFromUserOption(usersOption);
-        runService(
-          undefined,
-          getMe,
-          (user) => {
-            setContactFilterConfig({
-              ...contactFilterConfig,
-              owners: usersOption.filter(
-                (option: any) => option.value === user.id
-              ),
-            });
-          },
-          (statusCode, error) => {
-            handleError(statusCode, error);
-          }
-        );
       },
       (status, error) => {
         console.error(error);

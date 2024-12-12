@@ -47,28 +47,6 @@ export const EmailFilterProvider = ({ children }: { children: ReactNode }) => {
     }
   );
 
-  useEffect(() => {
-    runService(
-      undefined,
-      getMe,
-      (user) => {
-        console.log("here filter email context");
-        setEmailFilterConfig((prevConfig) => ({
-          ...prevConfig,
-          fromUser: [
-            {
-              value: user.id,
-              label: `${user.firstName} ${user.lastName}`,
-            },
-          ],
-        }));
-      },
-      (statusCode, error) => {
-        handleError(statusCode, error);
-      }
-    );
-  }, []);
-
   return (
     <EmailFilterContext.Provider
       value={{ emailFilterConfig, setEmailFilterConfig }}
