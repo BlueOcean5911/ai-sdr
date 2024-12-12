@@ -7,16 +7,19 @@ import { LeadModelWithCompanyModel } from "@/services/leadService";
 import { TaskModel } from "@/services/taskService";
 import TaskView from "./TaskView";
 import { classNames } from "@/utils";
+import { TASK_STATE } from "@/types/enums";
 
 const TaskOverview = ({
   show,
   task,
   lead,
+  handleUpdate,
   handleClose,
 }: {
   show: boolean;
   task?: TaskModel;
   lead?: LeadModelWithCompanyModel;
+  handleUpdate: (id: string, type: TASK_STATE) => void;
   handleClose: () => void;
 }) => {
   return (
@@ -42,7 +45,10 @@ const TaskOverview = ({
           </Link>
         </div>
         <div className="flex flex-1 flex-row gap-2">
-          <TaskView task={task} />
+          <TaskView
+            task={task}
+            handleUpdate={handleUpdate}
+          />
           {lead && <LeadView lead={lead} />}
         </div>
       </div>
