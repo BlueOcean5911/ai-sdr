@@ -3,15 +3,17 @@
 import { useEffect, useState } from "react";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { useRouter, useSearchParams } from "next/navigation";
-import { runService } from "@/utils/service_utils";
+import { toast } from "react-toastify";
+import { handleError, runService } from "@/utils/service_utils";
 import {
   LeadModelWithCompanyModel,
   getLeadById,
   // updateLead,
 } from "@/services/leadService";
-import { getTaskById, TaskModel } from "@/services/taskService";
+import { getTaskById, TaskModel, updateTask, UpdateTaskModel } from "@/services/taskService";
 import TaskView from "@/sections/tasks/TaskView";
 import LeadView from "@/sections/leads/LeadView";
+import { TASK_STATE } from "@/types/enums";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -40,6 +42,21 @@ export default function Page({ params }: { params: { id: string } }) {
     );
   }, [id]);
 
+  const handleUpdateTask = (id: string, data: UpdateTaskModel) => {
+    runService(
+      { taskId: id, updateData: data },
+      updateTask,
+      (data) => {
+        // console.log("Updated task", data);
+        toast.success("Successfully updated");
+      },
+      (statusCode, error) => {
+        handleError(statusCode, error);
+        toast.error("Something went wrong");
+      }
+    );
+  };
+
   return (
     <>
       <div className="w-full flex flex-1 flex-col overflow-auto">
@@ -56,7 +73,14 @@ export default function Page({ params }: { params: { id: string } }) {
           </button>
         </div>
         <div className="flex flex-1 flex-row gap-2">
-          <TaskView task={task} />
+          <TaskView
+            task={task}
+            handleUpdate={(id, type: TASK_STATE) =>
+              handleUpdateTask(id, {
+                status: type,
+              })
+            }
+          />
           {lead && <LeadView lead={lead} />}
         </div>
       </div>

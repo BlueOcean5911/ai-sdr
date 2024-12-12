@@ -1,6 +1,5 @@
 import { api } from "@/utils/api";
 import { ApiCountResponse, FetchProps } from "@/types";
-import { MAILING_STATE } from "@/types/enums";
 
 interface Option {
   value: string;
@@ -25,6 +24,10 @@ interface FetchTasksProps extends FetchProps {
 
 export interface TaskModel extends BaseTaskModel {
   id: string;
+  cadenceId: string;
+  cadenceStateId?: string;
+  cadenceName: string;
+  currentCadenceStep: number;
 }
 
 export interface BaseTaskModel {
