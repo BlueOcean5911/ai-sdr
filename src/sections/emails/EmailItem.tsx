@@ -258,16 +258,6 @@ export default function EmailItem({
                 )}
               </>
             )}
-            <MenuItem>
-              <button
-                className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
-                onClick={() => {
-                  markAsInterested(mailing.id);
-                }}
-              >
-                Mark as Interested
-              </button>
-            </MenuItem>
             {(mailing.mailingStatus === MAILING_STATE.DELIVERED ||
               mailing.mailingStatus === MAILING_STATE.OPENED ||
               mailing.mailingStatus === MAILING_STATE.REPLIED) && (
