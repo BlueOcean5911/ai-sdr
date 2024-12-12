@@ -223,7 +223,13 @@ export type TaskType =
   | "linkedinInteractWithPost"
   | "actionItem";
 
-  
+export type CreditModel = {
+  emailReg: number;
+  emailExt: number;
+  mobileReg: number;
+  mobileExt: number;
+};
+
 export type PlanModel = {
   name: string;
   quantity: number;
@@ -236,6 +242,7 @@ export type PlanModel = {
 export type CreditContextType = {
   isLoading: boolean;
   myPlan: PlanModel | null;
+  credits: CreditModel | null;
   // emailCredit: number | null;
   // mobileCredit: number | null;
 };
