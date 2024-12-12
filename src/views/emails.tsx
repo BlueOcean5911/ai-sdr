@@ -184,8 +184,10 @@ export default function Emails(
       { id: mailingId },
       markMailingAsInterested,
       (data) => {
-        fetchMailings(emailFilterConfig.params);
-        toast.success("Mailing updated successfully");
+        if (data.success) {
+          fetchMailings(emailFilterConfig.params);
+          toast.success("Mailing updated successfully");
+        }
       },
       (status, error) => {
         console.log(status, error);
