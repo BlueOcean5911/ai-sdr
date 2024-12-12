@@ -45,7 +45,7 @@ export default function EmailItem({
   deleteManualMailing: (mailingId: string) => void;
   deleteMailingInCadence: (mailingId: string) => void;
   skipMailingInCadence: (mailingId: string) => void;
-  markAsInterested: (leadId: string) => void;
+  markAsInterested: (leadId: string, mailingId: string) => void;
 }) {
   const [sent, setSent] = useState(false);
   const [isOpenSendEmail, setIsOpenSendEmail] = useState(false);
@@ -267,7 +267,7 @@ export default function EmailItem({
                     <button
                       className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
                       onClick={() => {
-                        markAsInterested(mailing.leadId);
+                        markAsInterested(mailing.leadId, mailing.id);
                       }}
                     >
                       Mark as Interested

@@ -242,6 +242,20 @@ export const addMailing = async (mailing: SendMailingModel) => {
   };
 };
 
+export const updateMailing = async (data: {
+  id: string;
+  updateData: MailingModel;
+}) => {
+  const { id, updateData } = data;
+  const response = await api.put(`api/mailings/${id}`, updateData);
+  if (response.status !== 200) {
+    throw new Error("Failed to update mailing");
+  }
+  console.log("response", response);
+
+  return response;
+};
+
 export const sendMailing = async ({
   id,
   cadenceStateId,
