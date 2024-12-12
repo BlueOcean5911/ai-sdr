@@ -258,7 +258,7 @@ export const updateMailing = async (data: {
 
 export const markMailingAsInterested = async ({ id }: { id: string }) => {
   const response = await api.post(`api/mailings/mark-as-interested/${id}`);
-  return response.data;
+  return response;
 };
 
 export const sendMailing = async ({
