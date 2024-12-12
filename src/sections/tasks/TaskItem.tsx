@@ -163,26 +163,34 @@ export default function TaskItem({
                 Edit
               </button>
             </MenuItem>
-            <MenuItem>
-              <button
-                className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
-                onClick={handleDelete}
-              >
-                Delete
-              </button>
-            </MenuItem>
+            {!task.cadenceId && (
+              <MenuItem>
+                <button
+                  className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                  onClick={handleDelete}
+                >
+                  Delete
+                </button>
+              </MenuItem>
+            )}
             <hr />
             {Object.values(TASK_STATE)
               .filter((state) => state !== task.status)
               .map((state) => (
-                <MenuItem key={state}>
-                  <button
-                    className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
-                    onClick={() => handleUpdate(task.id, "type", state)}
-                  >
-                    {`${state.charAt(0).toUpperCase() + state.slice(1)} Task`}
-                  </button>
-                </MenuItem>
+                <>
+                  {task.cadenceId && state === TASK_STATE.ARCHIVED ? null : (
+                    <MenuItem key={state}>
+                      <button
+                        className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                        onClick={() => handleUpdate(task.id, "type", state)}
+                      >
+                        {`${
+                          state.charAt(0).toUpperCase() + state.slice(1)
+                        } Task`}
+                      </button>
+                    </MenuItem>
+                  )}
+                </>
               ))}
           </MenuItems>
         </Menu>
