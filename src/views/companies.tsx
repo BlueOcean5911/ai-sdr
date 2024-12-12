@@ -62,7 +62,7 @@ export default function Companies() {
       {companyFilterConfig.isOpen && <FilterCompany />}
       <div className="card p-4 pt-7 flex-1 flex flex-col gap-2 overflow-auto shadow-lg min-w-[420px]">
         <div className="flex-1 flex flex-col gap-2 overflow-auto">
-          <div className="border-b border-gray-100 flex gap-2 overflow-auto">
+          <div className="border-b border-gray-100 flex gap-2 overflow-auto p-1">
             <button
               className={classNames(
                 "pb-1 px-3 text-sm/6 font-semibold focus:outline-none hover:text-blue-400",
