@@ -69,6 +69,14 @@ export enum CADENCE_STEP_STATUS {
   FINISHED = "finished",
 }
 
+export enum LEAD_STATUS_IN_CADENCE {
+  ACTIVE = "active",
+  PAUSED = "paused",
+  REMOVED = "removed",
+  BOUNDED = "bounced",
+  FINISHED = "finished",
+}
+
 export enum MAILING_STATE {
   DRAFT = "drafted",
   SCHEDULED = "scheduled",

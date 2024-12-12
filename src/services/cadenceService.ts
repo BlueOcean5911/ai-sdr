@@ -171,7 +171,7 @@ export const getCadences = async (
         paused: item?.statistics?.paused,
         bounced: item?.statistics?.bounced,
         finished: item?.statistics?.finished,
-        succeeded: item?.statistics?.succeeded,
+        removed: item?.statistics?.removed,
       },
       owner: {
         id: item?.owner?.id,

@@ -199,18 +199,18 @@ export interface CadenceStatistics {
   paused: number;
   bounced: number;
   finished: number;
-  succeeded: number;
+  removed: number;
 }
 
 export const taskTypeIcons = {
-    autoEmail: <AutomaticEmailIcon />,
-    phoneCall: <PhoneCallIcon />,
-    manualEmail: <ManualEmailIcon />,
-    linkedinConnect: <LinkedinRequestIcon />,
-    linkedinSendMessage: <LinkedinMessageIcon />,
-    linkedinViewProfile: <LinkedinViewIcon />,
-    linkedinInteractWithPost: <LinkedinInteractIcon />,
-    actionItem: <ActionItemIcon />,
+  autoEmail: <AutomaticEmailIcon />,
+  phoneCall: <PhoneCallIcon />,
+  manualEmail: <ManualEmailIcon />,
+  linkedinConnect: <LinkedinRequestIcon />,
+  linkedinSendMessage: <LinkedinMessageIcon />,
+  linkedinViewProfile: <LinkedinViewIcon />,
+  linkedinInteractWithPost: <LinkedinInteractIcon />,
+  actionItem: <ActionItemIcon />,
 };
 
 export type TaskType =
@@ -223,7 +223,6 @@ export type TaskType =
   | "linkedinInteractWithPost"
   | "actionItem";
 
-  
 export type PlanModel = {
   name: string;
   quantity: number;

@@ -252,3 +252,26 @@ export const addLeadsToExistingCadence = async ({
     },
   };
 };
+
+// Extra functions
+export const getExistingLeadsInCadence = async ({
+  leadIds,
+  cadenceId,
+}: {
+  leadIds: string[];
+  cadenceId: string;
+}): Promise<ApiLeadsResponse> => {
+  // console.log("add lead to existing cadence", leadIds, cadenceId);
+  const response = await api.post(
+    `/api/v2/cadences/${cadenceId}/get-existing-leads`,
+    {
+      leadIds,
+    }
+  );
+
+  if (response.status !== 200) {
+    console.log("getExistingLeadInCadence", response.status, response.data);
+    throw new Error("Failed to get existing leads in cadence");
+  }
+  return response;
+};

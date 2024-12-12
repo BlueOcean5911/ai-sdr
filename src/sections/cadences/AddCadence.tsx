@@ -94,15 +94,13 @@ const AddCadence = ({
             description: `The following leads already exist in the selected cadence: ${leadsNames}. It will be ignored. Do you want to continue?`,
           });
         } else {
-          const leads = existedLeads.map((lead: LeadModel) => lead.id);
-
           runService(
-            { leads, cadenceId: selectedCadenceId },
+            { leadIds, cadenceId: selectedCadenceId },
             addLeadsToExistingCadence,
             (data) => {
               toast.success("Successfully Added");
               setSelectedLeads([]);
-              // close();
+              close();
             },
             (status, error) => {
               console.log(status, error);

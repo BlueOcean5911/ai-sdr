@@ -1,5 +1,9 @@
 import { ApiSuccessResponse, FetchProps } from "@/types";
-import { CADENCE_STEP_STATUS, LEAD_STAGE } from "@/types/enums";
+import {
+  CADENCE_STEP_STATUS,
+  LEAD_STAGE,
+  LEAD_STATUS_IN_CADENCE,
+} from "@/types/enums";
 import { api } from "@/utils/api";
 
 interface Option {
@@ -17,16 +21,16 @@ interface FetchContactProps extends FetchProps {
 }
 
 export interface ContactInCadence {
-  firstName?: string;
-  lastName?: string;
-  leadId?: string;
+  firstName: string;
+  lastName: string;
+  leadId: string;
   jobTitle?: string;
   companyId: string;
   companyName?: string;
   ownerId?: string;
   ownerFirstName?: string;
   ownerLastName?: string;
-  currentStepStatus?: CADENCE_STEP_STATUS | string;
+  currentStepStatus?: LEAD_STATUS_IN_CADENCE | string;
   cadenceCurrentStep?: number;
   leadStatus?: LEAD_STAGE | string;
   cadenceStepId: string;
@@ -168,6 +172,26 @@ export const getContactsInCadence = async (
   const response = await api.get(url);
 
   return response;
+};
+
+export const pauseContactInCadence = async ({
+  contactId,
+  cadenceId,
+}: {
+  contactId: string;
+  cadenceId: string;
+}): Promise<ApiSuccessResponse> => {
+  return await api.post(`api/contacts/pause/${cadenceId}/${contactId}`);
+};
+
+export const resumeContactInCadence = async ({
+  contactId,
+  cadenceId,
+}: {
+  contactId: string;
+  cadenceId: string;
+}): Promise<ApiSuccessResponse> => {
+  return await api.post(`api/contacts/resume/${cadenceId}/${contactId}`);
 };
 
 export const updateCadenceState = async ({

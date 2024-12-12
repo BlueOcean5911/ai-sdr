@@ -6,16 +6,20 @@ import { classNames } from "@/utils";
 import Link from "next/link";
 import { getInitials, getRelativeTime } from "@/utils/format";
 import { Tooltip } from "react-tooltip";
-
+import { useCadence } from "@/contexts/CadenceContext";
 export default function ContactItem({
   contact,
-  handleUpdate,
+  pause,
+  resume,
   onDelete,
 }: {
   contact: ContactInCadence;
-  handleUpdate: (id: string, status: string) => void;
+  pause: (contactId: string, cadenceId: string) => void;
+  resume: (contactId: string, cadenceId: string) => void;
   onDelete: (id: string) => void;
 }) {
+  const { cadence } = useCadence();
+  console.log("jerer", contact.leadId, cadence.id);
   return (
     <div className="w-full py-4 flex items-center border-b hover:bg-gray-100">
       <div className="px-4">
@@ -92,10 +96,7 @@ export default function ContactItem({
                 <button
                   className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
                   onClick={() => {
-                    const cadenceStepId = contact.cadenceStepId
-                      ? contact.cadenceStepId
-                      : "";
-                    handleUpdate(cadenceStepId, "paused");
+                    pause(contact.leadId, cadence.id);
                   }}
                 >
                   Pause sequence now
@@ -107,10 +108,7 @@ export default function ContactItem({
                 <button
                   className="p-2 text-xs flex w-full items-center rounded-lg data-[focus]:bg-blue-100"
                   onClick={() => {
-                    const cadenceStepId = contact.cadenceStepId
-                      ? contact.cadenceStepId
-                      : "";
-                    handleUpdate(cadenceStepId, "active");
+                    resume(contact.leadId, cadence.id);
                   }}
                 >
                   Resume sequence now

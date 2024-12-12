@@ -9,12 +9,15 @@ import {
   getContactsInCadence,
   getContactsInCadenceStatistics,
   updateCadenceState,
+  pauseContactInCadence,
+  resumeContactInCadence,
 } from "@/services/contactsService";
 import GeneralContacts from "./generalContacts";
 import Pagination from "@/components/extends/Pagination/Pagination";
 import { useEffect, useState } from "react";
 import { handleError, runService } from "@/utils/service_utils";
 import { SuccessModel } from "@/types";
+import { LEAD_STATUS_IN_CADENCE } from "@/types/enums";
 import { toast } from "react-toastify";
 import { deleteCadenceState } from "@/services/cadenceState";
 
@@ -118,14 +121,56 @@ export default function CadenceContacts(
     );
   };
 
+  const handlePause = (contactId: string, cadenceId: string) => {
+    runService(
+      { contactId, cadenceId },
+      pauseContactInCadence,
+      (data: SuccessModel) => {
+        if (data.success) {
+          setContacts(
+            contacts.map((contact) => {
+              if (contact.leadId === contactId) {
+                contact.status = LEAD_STATUS_IN_CADENCE.PAUSED;
+              }
+              return contact;
+            })
+          );
+          toast.success("Contact paused in this cadence successfully.");
+        }
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  const handleResume = (contactId: string, cadenceId: string) => {
+    runService(
+      { contactId, cadenceId },
+      resumeContactInCadence,
+      (data: SuccessModel) => {
+        if (data.success) {
+          setContacts(
+            contacts.map((contact) => {
+              if (contact.leadId === contactId) {
+                contact.status = LEAD_STATUS_IN_CADENCE.ACTIVE;
+              }
+              return contact;
+            })
+          );
+          toast.success("Contact resumed in this cadence successfully.");
+        }
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
   useEffect(() => {
     fetchContactsStatistics();
     fetchContactsInCadence();
   }, [pageSize, totalCount, contactFilterConfig]);
-
-  useEffect(() => {
-    console.log(" contacts here ", contacts);
-  }, [contacts]);
 
   return (
     <div className="flex gap-4 p-4 flex-1 overflow-auto">
@@ -138,9 +183,8 @@ export default function CadenceContacts(
         {/* Table */}
         <GeneralContacts
           contacts={contacts}
-          handleUpdateCadenceState={(id, status) =>
-            handleUpdateCadenceStep(id, status)
-          }
+          pause={handlePause}
+          resume={handleResume}
           onDeleteOne={(id: string) => handleDeleteCadenceStep(id)}
         />
         {/* Pagination */}

@@ -5,11 +5,13 @@ import { ContactInCadence } from "@/services/contactsService";
 
 export default function GeneralContacts({
   contacts,
-  handleUpdateCadenceState,
+  pause,
+  resume,
   onDeleteOne,
 }: {
   contacts: ContactInCadence[];
-  handleUpdateCadenceState: (id: string, status: string) => void;
+  pause: (contactId: string, cadenceId: string) => void;
+  resume: (contactId: string, cadenceId: string) => void;
   onDeleteOne: (id: string) => void;
 }) {
   return (
@@ -22,9 +24,8 @@ export default function GeneralContacts({
               <ContactItem
                 key={index}
                 contact={contact}
-                handleUpdate={(id: string, status: string) => {
-                  handleUpdateCadenceState(id, status);
-                }}
+                pause={pause}
+                resume={resume}
                 onDelete={(id: string) => onDeleteOne(id)}
               />
             ))
