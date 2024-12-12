@@ -24,7 +24,7 @@ export default function TaskItem({
   handleEdit: () => void;
   handleDelete: () => void;
   handleOverview: () => void;
-  handleUpdate: (id: string, type: TASK_STATE) => void;
+  handleUpdate: (id: string, type: string, value: TASK_STATE | string) => void;
 }) {
   const [users, setUsers] = useState<UserModel[]>();
   const [lead, setLead] = useState<LeadModelWithCompanyModel>();
@@ -91,9 +91,7 @@ export default function TaskItem({
           <span className="text-xs line-clamp-1">{task.content}</span>
           {task.cadenceId && (
             <span className="flex items-center gap-1">
-              <span className="text-xs">
-                Step {task.currentCadenceStep} of
-              </span>
+              <span className="text-xs">Step {task.currentCadenceStep} of</span>
               <span className="line-clamp-1 text-sm text-blue-500 hover:underline">
                 <Link href={`/cadences/${task.cadenceId}`}>
                   {task.cadenceName}
@@ -180,7 +178,7 @@ export default function TaskItem({
                 <MenuItem key={state}>
                   <button
                     className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
-                    onClick={() => handleUpdate(task.id, state)}
+                    onClick={() => handleUpdate(task.id, "type", state)}
                   >
                     {`${state.charAt(0).toUpperCase() + state.slice(1)} Task`}
                   </button>

@@ -1,3 +1,5 @@
+"use client";
+import { useEffect, useState } from "react";
 import { TaskModel } from "@/services/taskService";
 import { TASK_STATE } from "@/types/enums";
 import { formatDate } from "@/utils/format";
@@ -7,10 +9,16 @@ const TaskView = ({
   handleUpdate,
 }: {
   task?: TaskModel;
-  handleUpdate: (id: string, type: TASK_STATE) => void;
+  handleUpdate: (id: string, type: string, value: TASK_STATE | string) => void;
 }) => {
+  const [content, setContent] = useState<string>(task?.content || "");
+
+  useEffect(() => {
+    setContent(task?.content || "");
+  }, [task]);
+
   return (
-    <div className="max-w-80 flex flex-1 flex-col bg-gray-100">
+    <div className="w-80 flex flex-col bg-gray-100">
       <div className="px-5 flex flex-row justify-between items-center gap-3 bg-white">
         <span className="text-lg font-semibold text-nowrap text-ellipsis overflow-hidden ">
           {task?.title}
@@ -42,23 +50,39 @@ const TaskView = ({
               <span className="w-2/3 capitalize">{task?.status}</span>
             </div>
           </div>
-          <div className="w-full p-3 flex flex-col gap-3 rounded-md border bg-white">
+          <div className="w-full p-3 flex flex-1 flex-col gap-3 rounded-md border bg-white">
             <div className="flex flex-row justify-between items-center">
               <span className="font-semibold">Description</span>
             </div>
-            <div className="min-h-20 text-sm break-words">{task?.content}</div>
+            <textarea
+              id="content"
+              placeholder="Note"
+              className="input-primary h-full"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+            <button
+              className="w-20 h-8 ml-auto btn-primary"
+              onClick={() => task && handleUpdate(task.id, "content", content)}
+            >
+              Save
+            </button>
           </div>
         </div>
         <div className="w-full flex flex-row gap-3">
           <button
             className="w-full btn-secondary"
-            onClick={() => task && handleUpdate(task?.id, TASK_STATE.SKIPPED)}
+            onClick={() =>
+              task && handleUpdate(task?.id, "type", TASK_STATE.SKIPPED)
+            }
           >
             Skip
           </button>
           <button
             className="w-full btn-primary"
-            onClick={() => task && handleUpdate(task?.id, TASK_STATE.COMPLETE)}
+            onClick={() =>
+              task && handleUpdate(task?.id, "type", TASK_STATE.COMPLETE)
+            }
           >
             Complete
           </button>

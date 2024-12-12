@@ -198,9 +198,9 @@ export default function Tasks() {
         task={focus}
         handleClose={() => setOverview(false)}
         lead={lead}
-        handleUpdate={(id, type: TASK_STATE) =>
+        handleUpdate={(id, type: string, value: TASK_STATE | string) =>
           handleUpdateTask(id, {
-            status: type,
+            [type]: value,
           })
         }
       />
@@ -285,9 +285,13 @@ export default function Tasks() {
                     handleEdit={() => handleEdit(task)}
                     handleDelete={() => handleDelete(task.id)}
                     handleOverview={() => handleOverview(task)}
-                    handleUpdate={(id, type: TASK_STATE) =>
+                    handleUpdate={(
+                      id: string,
+                      type: string,
+                      value: TASK_STATE | string
+                    ) =>
                       handleUpdateTask(id, {
-                        status: type,
+                        [type]: value,
                       })
                     }
                   />
