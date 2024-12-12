@@ -80,6 +80,7 @@ export interface MailingsStatistics {
   bouncedCount?: number;
   openedCount?: number;
   repliedCount?: number;
+  interestedCount?: number;
 }
 
 interface ApiMailingResponse {

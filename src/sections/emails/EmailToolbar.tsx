@@ -22,6 +22,7 @@ const EmailToolbar = ({ cadenceId }: { cadenceId?: string }) => {
     bouncedCount: 0,
     openedCount: 0,
     repliedCount: 0,
+    interestedCount: 0,
   });
 
   const fetchStatistics = () => {
@@ -181,25 +182,7 @@ const EmailToolbar = ({ cadenceId }: { cadenceId?: string }) => {
             <span className="text-inherit">Opened</span>
           </div>
         </Link>
-        {/* <Link href={`${path}?clicked=true`}>
-          <div
-            className={classNames(
-              "w-20 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
-              currentParams["clicked"]
-                ? "border-b-blue-500  bg-gray-100"
-                : "hover:bg-gray-100 hover:border-b-blue-500"
-            )}
-            onClick={() =>
-              setEmailFilterConfig((prev) => ({
-                ...prev,
-                params: { clicked: "true" },
-              }))
-            }
-          >
-            <span className="text-inherit">{statistics.clickedCount}</span>
-            <span className="text-inherit">Clicked</span>
-          </div>
-        </Link> */}
+
         <Link href={`${path}?replied=true`}>
           <div
             className={classNames(
@@ -217,6 +200,25 @@ const EmailToolbar = ({ cadenceId }: { cadenceId?: string }) => {
           >
             <span className="text-inherit">{statistics.repliedCount}</span>
             <span className="text-inherit">Replied</span>
+          </div>
+        </Link>
+        <Link href={`${path}?interested=true`}>
+          <div
+            className={classNames(
+              "w-20 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
+              currentParams["interested"]
+                ? "border-b-blue-500  bg-gray-100"
+                : "hover:bg-gray-100 hover:border-b-blue-500"
+            )}
+            onClick={() =>
+              setEmailFilterConfig((prev) => ({
+                ...prev,
+                params: { interested: "true" },
+              }))
+            }
+          >
+            <span className="text-inherit">{statistics.interestedCount}</span>
+            <span className="text-inherit">Interested</span>
           </div>
         </Link>
       </div>
