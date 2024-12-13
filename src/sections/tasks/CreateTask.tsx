@@ -1,4 +1,4 @@
-import { CreateTaskProps } from "@/types";
+import { format, toZonedTime } from "date-fns-tz";
 import {
   Dialog,
   DialogPanel,
@@ -7,17 +7,19 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import React, { Fragment, useState, useEffect } from "react";
-import { handleError, runService } from "@/utils/service_utils";
-import { getUsers } from "@/services/userService";
-import { addTask, BaseTaskModel, updateTask } from "@/services/taskService";
+import { toast } from "react-toastify";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import FormHelperText from "@/components/extends/FormHelperText";
-import { toast } from "react-toastify";
 import Select from "@/components/extends/Select/default";
 import { useTaskFilter } from "@/contexts/FilterTaskContext";
-import { CADENCE_STEP_TYPE } from "@/types/enums";
 import { getLeads } from "@/services/leadService";
+import { getUsers } from "@/services/userService";
+import { addTask, BaseTaskModel, updateTask } from "@/services/taskService";
+import { CreateTaskProps } from "@/types";
+import { CADENCE_STEP_TYPE } from "@/types/enums";
+import { getUserTimeZone } from "@/utils/format";
+import { handleError, runService } from "@/utils/service_utils";
 
 const taskTypeOptions = [
   { value: CADENCE_STEP_TYPE.MANUAL_EMAIL, name: "Email" },
@@ -41,6 +43,8 @@ export default function CreateTask({
   const { setTaskFilterConfig } = useTaskFilter();
   const [userOptions, setUserOptions] = useState<any[]>([]);
   const [leadOptions, setLeadOptions] = useState<any[]>([]);
+
+  const userTimeZone: string = getUserTimeZone();
 
   const fetchUsers = () => {
     runService(
@@ -116,8 +120,14 @@ export default function CreateTask({
                       ownerId: task ? task.ownerId : "",
                       taskPriority: task ? task.taskPriority : "",
                       endDate: task
-                        ? task.endDate.split("T")[0]
-                        : new Date().toISOString().split("T")[0],
+                        ? format(
+                            toZonedTime(task.endDate + "Z", userTimeZone),
+                            "yyyy-MM-dd HH:mm"
+                          ).replace(" ", "T")
+                        : format(new Date(), "yyyy-MM-dd HH:mm").replace(
+                            " ",
+                            "T"
+                          ),
                       content: task ? task.content : "",
                       status: task ? task.status : "incomplete",
                     }}
@@ -146,14 +156,18 @@ export default function CreateTask({
                           taskData.taskType = values.taskType;
                         if (values.taskPriority !== task.taskPriority)
                           taskData.taskPriority = values.taskPriority;
-                        if (values.endDate !== task.endDate.split("T")[0])
-                          taskData.endDate = values.endDate;
+                        if (values.endDate !== task.endDate)
+                          taskData.endDate = new Date(values.endDate)
+                            .toISOString()
+                            .replace("Z", "");
                         if (values.ownerId !== task.ownerId)
                           taskData.ownerId = values.ownerId;
                         if (values.leadId !== task.leadId)
                           taskData.leadId = values.leadId;
                         if (values.status !== task.status)
                           taskData.status = values.status;
+
+                        console.log(taskData);
 
                         runService(
                           { taskId: task.id, updateData: taskData },
@@ -177,7 +191,9 @@ export default function CreateTask({
                           content: values.content,
                           taskType: values.taskType,
                           taskPriority: values.taskPriority,
-                          endDate: values.endDate,
+                          endDate: new Date(values.endDate)
+                            .toISOString()
+                            .replace("Z", ""),
                           ownerId: values.ownerId,
                           leadId: values.leadId,
                           status: values.status,
@@ -297,7 +313,7 @@ export default function CreateTask({
                           </div>
 
                           <div className="flex gap-2">
-                            <div className="w-3/4 flex flex-col gap-1">
+                            <div className="w-3/5 flex flex-col gap-1">
                               <label htmlFor="taskPriority">Priority:</label>
                               <Select
                                 data={taskPriorityOptions}
@@ -321,11 +337,11 @@ export default function CreateTask({
                                 </FormHelperText>
                               )}
                             </div>
-                            <div className="w-1/4 flex flex-col gap-1">
+                            <div className="w-2/5 flex flex-col gap-1">
                               <label htmlFor="endDate">Due Date:</label>
                               <input
                                 id="endDate"
-                                type="date"
+                                type="datetime-local"
                                 placeholder="Due Date"
                                 className="input-primary max-h-9"
                                 value={values.endDate}
