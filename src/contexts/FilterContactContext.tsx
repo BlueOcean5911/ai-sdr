@@ -11,6 +11,7 @@ interface ContactFilterConfig {
   isOpen: boolean;
   cadenceSteps: Option | Option[] | null;
   owners: Option | Option[] | null;
+  stage: string | undefined;
   search: string;
 }
 
@@ -35,6 +36,7 @@ export const ContactFilterProvider = ({
       isOpen: true,
       cadenceSteps: [],
       owners: [],
+      stage: undefined,
       search: "",
     });
 
