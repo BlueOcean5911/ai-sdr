@@ -33,6 +33,64 @@ export function formatDate(dateString: string): string {
   return date.toLocaleDateString("en-US", options).replace(",", "");
 }
 
+export function formatDateOrTime(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+
+  // Check if the date is today
+  const isToday =
+    date.getFullYear() === now.getFullYear() &&
+    date.getMonth() === now.getMonth() &&
+    date.getDate() === now.getDate();
+
+  if (isToday) {
+    // Format time if it's today
+    const options: Intl.DateTimeFormatOptions = {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    };
+    return date.toLocaleTimeString("en-US", options);
+  } else {
+    // Format date if it's not today
+    const options: Intl.DateTimeFormatOptions = {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    };
+    return date.toLocaleDateString("en-US", options).replace(",", "");
+  }
+}
+
+export function formatDateToLocalISOString(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+export function getUserTimeZone(): string {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
+
+export function convertUtcToLocal(utcDateString: string, timeZone: string): string {
+  const utcDate: Date = new Date(utcDateString);
+
+  // Use toLocaleString to convert to local time based on the user's time zone
+  return utcDate.toLocaleString("en-US", {
+    timeZone: timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false, // Set to true for 12-hour format
+  });
+}
+
 export function formatDateTimeReadable(dateTime: Date | string) {
   if (typeof dateTime === "string") {
     dateTime = new Date(dateTime);
