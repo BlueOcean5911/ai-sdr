@@ -1,4 +1,4 @@
-import { format, toZonedTime } from "date-fns-tz";
+import { toZonedTime } from "date-fns-tz";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -12,6 +12,7 @@ import { TaskType, taskTypeIcons } from "@/types";
 import { TASK_STATE } from "@/types/enums";
 import { formatDateOrTime, getInitials, getUserTimeZone } from "@/utils/format";
 import { runService, handleError } from "@/utils/service_utils";
+import { classNames } from "@/utils";
 
 export default function TaskItem({
   task,
@@ -64,6 +65,8 @@ export default function TaskItem({
     fetchLead();
   }, [task]);
 
+  const zonedTime = toZonedTime(task.endDate + "Z", userTimeZone);
+  const dueDate = formatDateOrTime(zonedTime);
   const owner = users?.find((user) => user.id === task.ownerId);
   let ownerName = "";
   if (owner) {
@@ -133,13 +136,13 @@ export default function TaskItem({
         </span>
       </td>
       <td>
-        <span className="text-sm">
-          {formatDateOrTime(
-            format(
-              toZonedTime(task.endDate + "Z", userTimeZone),
-              "yyyy-MM-dd HH:mm"
-            )
+        <span
+          className={classNames(
+            "text-sm",
+            zonedTime < new Date() ? "text-red-500" : ""
           )}
+        >
+          {dueDate}
         </span>
       </td>
       <td>

@@ -33,8 +33,8 @@ export function formatDate(dateString: string): string {
   return date.toLocaleDateString("en-US", options).replace(",", "");
 }
 
-export function formatDateOrTime(dateString: string): string {
-  const date = new Date(dateString);
+export function formatDateOrTime(inDate: string | Date): string {
+  const date = new Date(inDate);
   const now = new Date();
 
   // Check if the date is today
@@ -76,7 +76,10 @@ export function getUserTimeZone(): string {
   return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 
-export function convertUtcToLocal(utcDateString: string, timeZone: string): string {
+export function convertUtcToLocal(
+  utcDateString: string,
+  timeZone: string
+): string {
   const utcDate: Date = new Date(utcDateString);
 
   // Use toLocaleString to convert to local time based on the user's time zone
