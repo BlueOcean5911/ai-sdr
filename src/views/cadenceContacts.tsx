@@ -51,6 +51,7 @@ export default function CadenceContacts(
         cadenceSteps: contactFilterConfig.cadenceSteps,
         search: contactFilterConfig.search,
         owners: contactFilterConfig.owners,
+        stage: contactFilterConfig.stage,
       },
       getContactsInCadence,
       (data) => {
