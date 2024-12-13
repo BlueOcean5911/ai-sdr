@@ -44,11 +44,11 @@ export default function ContactItem({
     setOpen(false);
   };
   return (
-    <div className="w-full py-4 flex items-center border-b hover:bg-gray-100">
-      <div className="px-4">
+    <tr className="group h-20 even:bg-blue-50 hover:bg-gray-100 hover:cursor-pointer border-b">
+      <td className="px-4">
         <input className="shadow-none ring-0 focus:ring-0" type="checkbox" />
-      </div>
-      <div className="flex items-center flex-1 gap-2 cursor-pointer">
+      </td>
+      <td>
         <div className="flex items-center w-36  overflow-hidden text-ellipsis whitespace-nowrap">
           <span className="text-xs">To:</span>
           <Link href={`/leads/${contact.leadId}`}>
@@ -57,30 +57,35 @@ export default function ContactItem({
             </span>
           </Link>
         </div>
-
+      </td>
+      <td>
+        <span
+          className={classNames(
+            "p-1 text-xs capitalize rounded-full px-2",
+            contact.status === LEAD_STATUS_IN_CADENCE.PAUSED
+              ? "bg-red-400 text-white"
+              : "",
+            contact.status === LEAD_STATUS_IN_CADENCE.ACTIVE
+              ? "bg-blue-500 text-white"
+              : "",
+            contact.status === LEAD_STATUS_IN_CADENCE.REMOVED
+              ? "bg-gray-500 text-white"
+              : "",
+            contact.status === LEAD_STATUS_IN_CADENCE.FINISHED
+              ? "bg-green-500 text-white"
+              : ""
+          )}
+        >
+          {contact.status}
+        </span>
+      </td>
+      <td>
+        <span className="p-1 px-2 text-xs text-white bg-blue-400 rounded-full">
+          Step {contact.cadenceCurrentStep}
+        </span>
+      </td>
+      <td>
         <div className="flex flex-1 items-center gap-2 text-xs text-nowrap">
-          <span
-            className={classNames(
-              "p-1 capitalize rounded-full px-2",
-              contact.status === LEAD_STATUS_IN_CADENCE.PAUSED
-                ? "bg-red-400 text-white"
-                : "",
-              contact.status === LEAD_STATUS_IN_CADENCE.ACTIVE
-                ? "bg-blue-500 text-white"
-                : "",
-              contact.status === LEAD_STATUS_IN_CADENCE.REMOVED
-                ? "bg-gray-500 text-white"
-                : "",
-              contact.status === LEAD_STATUS_IN_CADENCE.FINISHED
-                ? "bg-green-500 text-white"
-                : ""
-            )}
-          >
-            {contact.status}
-          </span>
-          <span className="p-1 px-2 text-white bg-blue-400 rounded-full">
-            Step {contact.cadenceCurrentStep}
-          </span>
           <span className="p-1 bg-gray-200">{contact.leadStatus}</span>
           <span className="text-sm font-semibold line-clamp-1">
             {contact.jobTitle}
@@ -92,12 +97,18 @@ export default function ContactItem({
             </span>
           </Link>
         </div>
+      </td>
 
+      <td>
         <div className="flex items-center gap-2 text-xs">
           <span>
             Created At: <br />
             {getRelativeTime(contact.createdAt)}
           </span>
+        </div>
+      </td>
+      <td>
+        <div className="flex justify-center items-center">
           <a
             data-tooltip-id="contact-ownername"
             data-tooltip-content={`${contact.ownerFirstName} ${contact.ownerLastName}`}
@@ -110,9 +121,9 @@ export default function ContactItem({
           </a>
           <Tooltip id="contact-ownername" />
         </div>
-      </div>
+      </td>
 
-      <div className="px-4 flex items-center">
+      <td className="px-4">
         <Menu>
           <MenuButton className="">
             <div className="p-1 border rounded-md">
@@ -172,7 +183,7 @@ export default function ContactItem({
             )}
           </MenuItems>
         </Menu>
-      </div>
+      </td>
       <FinishCadenceModal
         open={open}
         onClose={() => setOpen(false)}
@@ -180,6 +191,6 @@ export default function ContactItem({
         contactName={`${contact.firstName} ${contact.lastName}`}
         cadenceName={cadence.name}
       />
-    </div>
+    </tr>
   );
 }
