@@ -30,8 +30,8 @@ export default function CadenceContacts(
     campaignId: "",
   }
 ) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { contactFilterConfig } = useContactFilter();
-
   const [contacts, setContacts] = useState<ContactInCadence[]>([]);
   const [statisticData, setStatisticData] =
     useState<ContactInCadenceStatistics>();
@@ -41,6 +41,7 @@ export default function CadenceContacts(
   const [totalCount, setTotalCount] = useState<number>(0);
 
   const fetchContactsInCadence = () => {
+    setIsLoading(true);
     const offset = pageSize * (currentPage - 1);
     const limit = pageSize;
     runService(
@@ -56,9 +57,11 @@ export default function CadenceContacts(
       getContactsInCadence,
       (data) => {
         setContacts(data);
+        setIsLoading(false);
       },
       (status, error) => {
         handleError(status, error);
+        setIsLoading(false);
       }
     );
   };
@@ -226,6 +229,7 @@ export default function CadenceContacts(
 
         {/* Table */}
         <GeneralContacts
+          isLoading={isLoading}
           contacts={contacts}
           pause={handlePause}
           resume={handleResume}
