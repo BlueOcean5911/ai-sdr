@@ -213,7 +213,7 @@ export default function CadenceContacts(
   useEffect(() => {
     fetchContactsStatistics();
     fetchContactsInCadence();
-  }, [pageSize, totalCount, contactFilterConfig]);
+  }, [pageSize, totalCount, contactFilterConfig, cadenceId]);
 
   return (
     <div className="flex gap-4 p-4 flex-1 overflow-auto">
