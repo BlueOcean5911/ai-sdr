@@ -268,7 +268,7 @@ export const sendMailing = async ({
   id: string;
   cadenceStateId?: string;
 }) => {
-  let url = `api/mailings/send/${id}`;
+  let url = `api/v2/mailings/send/${id}`;
   if (cadenceStateId) {
     url += `?cadenceStateId=${cadenceStateId}`;
   }
