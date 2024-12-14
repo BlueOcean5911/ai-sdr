@@ -165,6 +165,7 @@ const EmailSendWindow = ({
         },
         addMailing,
         (data) => {
+          console.log(data);
           runService(
             { id: data.id },
             sendMailing,
