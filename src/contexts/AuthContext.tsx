@@ -5,7 +5,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 import { isTokenExpired } from "@/utils/jwt";
-import { getRememberMe, getToken, saveToken, signOut } from "@/services/authService";
+import {
+  getRememberMe,
+  getToken,
+  saveToken,
+  signOut,
+} from "@/services/authService";
 import { privatePaths } from "@/data/paths";
 
 export const Context = createContext<any>(undefined);
@@ -26,17 +31,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    if (token && !isTokenExpired(token)) {
-      setIsAuthenticated(true);
-      const decoded = jwt.decode(token) as JwtPayload;
-      saveToken(token);
-      setMe(decoded);
-      // console.log("me: ", decoded);
-    } else {
-      setIsAuthenticated(false);
-      setToken(null);
-      console.log("token expired");
-    }
+    if (token)
+      if (!isTokenExpired(token)) {
+        setIsAuthenticated(true);
+        const decoded = jwt.decode(token) as JwtPayload;
+        saveToken(token);
+        setMe(decoded);
+        // console.log("me: ", decoded);
+      } else {
+        setIsAuthenticated(false);
+        setToken(null);
+        console.log("token expired");
+      }
     setIsLoading(false);
   }, [token]);
 
