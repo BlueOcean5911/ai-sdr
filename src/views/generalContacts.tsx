@@ -1,17 +1,20 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import SortableHeader from "@/components/ui/SortableHeader";
 import ContactItem from "@/sections/contacts/ContactItem";
 import { ContactInCadence } from "@/services/contactsService";
 import { LEAD_STAGE } from "@/types/enums";
 
 export default function GeneralContacts({
+  isLoading,
   contacts,
   pause,
   resume,
   remove,
   finish,
 }: {
+  isLoading: boolean;
   contacts: ContactInCadence[];
   pause: (contactId: string, cadenceId: string) => void;
   resume: (contactId: string, cadenceId: string) => void;
@@ -86,7 +89,13 @@ export default function GeneralContacts({
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {contacts.length > 0 ? (
+            {isLoading ? (
+              <tr>
+                <td colSpan={7} className="text-center py-4">
+                  <Loading />
+                </td>
+              </tr>
+            ) : contacts.length > 0 ? (
               contacts.map((contact, index) => (
                 <ContactItem
                   key={index}
@@ -98,9 +107,11 @@ export default function GeneralContacts({
                 />
               ))
             ) : (
-              <div className="w-full h-full flex-center">
-                <p className="text-gray-900 text-sm">No contacts found.</p>
-              </div>
+              <tr>
+                <td colSpan={7} className="text-center py-4">
+                  <p className="text-gray-900 text-sm">No contacts found.</p>
+                </td>
+              </tr>
             )}
             <tr></tr>
           </tbody>

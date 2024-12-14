@@ -18,6 +18,7 @@ interface FetchContactProps extends FetchProps {
   cadenceSteps?: Option | Option[] | null;
   owners?: Option | Option[] | null;
   search?: string;
+  stage?: string | undefined;
 }
 
 export interface ContactInCadence {
@@ -163,6 +164,9 @@ export const getContactsInCadence = async (
   }
   for (const state of steps) {
     url += `&cadenceSteps=${state}`;
+  }
+  if (data.stage) {
+    url += `&stage=${data.stage}`;
   }
 
   if (data.search) {
