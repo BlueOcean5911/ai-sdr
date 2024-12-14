@@ -166,7 +166,7 @@ const EmailSendWindow = ({
         addMailing,
         (data) => {
           runService(
-            data.id,
+            { id: data.id },
             sendMailing,
             (data) => {
               if (data.success) {
