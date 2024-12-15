@@ -50,21 +50,21 @@ interface ApiStatisticsResponse {
 }
 
 export const getAlerts = async (
-  data: FetchAlertsProps = { offset: 0, limit: 100, params: {} }
+  data: FetchProps = { offset: 0, limit: 100 }
 ): Promise<ApiAlertsResponse> => {
   let url = `/api/alerts?offset=${data.offset}&limit=${data.limit}`;
 
-  const keys = Object.keys(data.params);
+  // const keys = Object.keys(data.params);
   let searchParams = "";
 
-  if (keys.length > 0) {
-    searchParams =
-      "&" + keys.map((key) => `${key}=${data.params[key]}`).join("&");
-  }
+  // if (keys.length > 0) {
+  //   searchParams =
+  //     "&" + keys.map((key) => `${key}=${data.params[key]}`).join("&");
+  // }
 
-  if (data.search) {
-    url += `&search=${data.search}`;
-  }
+  // if (data.search) {
+  //   url += `&search=${data.search}`;
+  // }
   if (searchParams) {
     url += searchParams;
   }
