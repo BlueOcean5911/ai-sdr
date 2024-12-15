@@ -5,6 +5,16 @@ export interface UserModel extends BaseUserModel {
   id?: string;
 }
 
+export interface UpdateUserModel {
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  title?: string;
+  enabled?: boolean;
+}
+
 export interface BaseUserModel {
   firstName: string;
   lastName: string;
