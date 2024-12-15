@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Circle, Check, Trash, Mail, ArrowRight, User } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -28,6 +28,7 @@ export const AlertItem: React.FC<AlertItemProps> = ({
   onMarkAsUnread,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const router = useRouter();
 
   const getActionColor = (type: string) => {
     switch (type) {
@@ -42,13 +43,13 @@ export const AlertItem: React.FC<AlertItemProps> = ({
     }
   };
 
-  const isSamePerson = alert.dmler.fullName === alert.receptient?.fullName;
+  const isSamePerson = alert.dmler?.id === alert.receptient?.id;
   return (
     <div
       className={classNames(
-        "w-full px-2 py-4 flex flex-row justify-between items-center gap-2 border-l-2 hover:bg-blue-50 transition-colors duration-200",
+        "w-full px-2 py-4 flex flex-row justify-between items-center gap-2 border-l-2 border-b hover:bg-blue-50 transition-colors duration-200",
         alert.isRead ? "bg-gray-50" : "bg-white",
-        alert.isSelected ? "!border-l-blue-600" : "!border-l-white",
+        alert.isSelected ? "!border-l-blue-600" : "!border-l-white"
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -71,12 +72,14 @@ export const AlertItem: React.FC<AlertItemProps> = ({
           <TooltipProvider>
             <Tooltip
               content={`${isSamePerson ? "Doer/Owner" : "Doer"}: ${
-                alert.dmler.fullName
+                alert.dmler.firstName + " " + alert.dmler.lastName
               }`}
             >
               <TooltipTrigger>
-                <div className="p-2 w-10 h-10 text-sm font-medium text-center rounded-full text-white bg-blue-700 flex items-center justify-center flex-shrink-0">
-                  {getInitials(alert.dmler.fullName || "C D")}
+                <div className="p-2 text-sm font-medium text-center rounded-full text-white bg-blue-700 flex items-center justify-center flex-shrink-0">
+                  {getInitials(
+                    alert.dmler.firstName + " " + alert.dmler.lastName
+                  )}
                 </div>
               </TooltipTrigger>
             </Tooltip>
@@ -85,10 +88,18 @@ export const AlertItem: React.FC<AlertItemProps> = ({
             <>
               <ArrowRight className="w-4 h-4 text-gray-400" />
               <TooltipProvider>
-                <Tooltip content={`Owner: ${alert.receptient.fullName}`}>
+                <Tooltip
+                  content={`Owner: ${
+                    alert.dmler.firstName + " " + alert.dmler.lastName
+                  }`}
+                >
                   <TooltipTrigger>
-                    <div className="p-2 w-10 h-10 text-sm font-medium text-center rounded-full text-white bg-gray-700 flex items-center justify-center flex-shrink-0">
-                      {getInitials(alert.receptient.fullName || "C D")}
+                    <div className="p-2 text-sm font-medium text-center rounded-full text-white bg-gray-700 flex items-center justify-center flex-shrink-0">
+                      {getInitials(
+                        alert.receptient.firstName +
+                          " " +
+                          alert.receptient.lastName
+                      )}
                     </div>
                   </TooltipTrigger>
                 </Tooltip>
@@ -103,7 +114,7 @@ export const AlertItem: React.FC<AlertItemProps> = ({
             >
               {alert.type.charAt(0).toUpperCase() + alert.type.slice(1)}
             </span>
-            <span className="text-sm text-gray-500">Task ID: {alert.id}</span>
+            {/* <span className="text-sm text-gray-500">Task ID: {alert.id}</span> */}
             {isSamePerson && (
               <TooltipProvider>
                 <Tooltip content="Doer/Owner">
@@ -126,12 +137,18 @@ export const AlertItem: React.FC<AlertItemProps> = ({
       <div className="flex items-center gap-2 flex-shrink-0">
         {isHovered ? (
           <>
-            <Link href={`/tasks/${alert.id}`}>
-              <Button variant="outline" size="sm" className="p-2">
-                <ArrowRight className="w-4 h-4" />
-                {/* <span className="sr-only">View Task</span> */}
-              </Button>
-            </Link>
+            <Button
+              variant="outline"
+              size="sm"
+              className="p-2"
+              onClick={() => {
+                if (!alert.isRead) onMarkAsRead(alert.id);
+                router.push(alert.href);
+              }}
+            >
+              <ArrowRight className="w-4 h-4" />
+              {/* <span className="sr-only">View Task</span> */}
+            </Button>
             {alert.isRead ? (
               <Button
                 variant="outline"
