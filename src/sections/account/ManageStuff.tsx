@@ -15,6 +15,7 @@ import {
   sendInviteLink,
   UserModel,
   getMe,
+  UpdateUserModel,
 } from "@/services/userService";
 import { handleError, runService } from "@/utils/service_utils";
 
@@ -55,7 +56,7 @@ const ManageStuff = () => {
     );
   };
 
-  const handleUpdate = (userData: UserModel) => {
+  const handleUpdate = (userData: UpdateUserModel) => {
     runService(
       userData,
       updateOther,
