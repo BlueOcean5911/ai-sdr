@@ -199,10 +199,13 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const getSelectedCount = useCallback(() => {
+    return alerts.filter((alert) => alert.isSelected).length;
+  }, [alerts]);
+
+  useEffect(() => {
     const allSelected = alerts.every((alert) => alert.isSelected);
     const someSelected = alerts.some((alert) => alert.isSelected);
     setIsSemiSelected(!allSelected && someSelected);
-    return alerts.filter((alert) => alert.isSelected).length;
   }, [alerts]);
 
   return (
