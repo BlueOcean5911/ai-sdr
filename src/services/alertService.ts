@@ -11,6 +11,7 @@ export interface AlertModel extends BaseAlertModel {
   id: string;
   dmler: UserModel;
   receptient: UserModel;
+  isSelected?: boolean;
 }
 
 export interface BaseAlertModel {
@@ -19,6 +20,7 @@ export interface BaseAlertModel {
   content: string;
   href: string;
   createdAt: string;
+  isRead: boolean;
 }
 
 export interface UpdateAlertModel {
@@ -27,6 +29,7 @@ export interface UpdateAlertModel {
   content?: string;
   href?: string;
   date?: string;
+  isRead?: boolean;
 }
 
 export interface AlertsStatistics {
