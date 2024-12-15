@@ -113,7 +113,7 @@ const LeadToolbar = () => {
 
   return (
     <>
-      <div className="flex items-center gap-2 border-b-1 border-gray-100 py-1 text-sm">
+      <div className="flex items-center gap-2 border-b-1 border-gray-100 p-1 text-sm">
         <button
           className="btn-secondary"
           onClick={() => {
