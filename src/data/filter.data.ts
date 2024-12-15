@@ -48,6 +48,14 @@ export const stateOptions = [
   { value: "complete", label: "Completed" },
 ];
 
+export const leadStatusInCadenceOptions = [
+  { value: "finished", label: "Finished" },
+  { value: "active", label: "Active" },
+  { value: "paused", label: "Paused" },
+  { value: "removed", label: "Removed" },
+  { value: "bounced", label: "Bounced" },
+];
+
 export const cadenceStatusOptions = [
   { value: "Active", label: "Active" },
   { value: "Paused", label: "Paused" },

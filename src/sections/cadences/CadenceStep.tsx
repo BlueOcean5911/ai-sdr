@@ -146,24 +146,32 @@ export default function CadenceStep({
           {cadenceStep.stepType === CADENCE_STEP_TYPE.AUTO_EMAIL && (
             <div className="flex min-w-48 flex-wrap items-center">
               <div className="flex flex-col w-min-15 px-1 text-xs">
-                <span>{cadenceStep.scheduledCount}</span>
+                <span>{cadenceStep.statistics.scheduledCount}</span>
                 <span className="text-nowrap">Scheduled</span>
               </div>
               <div className="flex flex-col w-min-15 px-1 text-xs">
-                <span>{cadenceStep.deliveredCount}</span>
+                <span>{cadenceStep.statistics.skippedCount}</span>
+                <span className="text-nowrap">Skipped</span>
+              </div>
+              <div className="flex flex-col w-min-15 px-1 text-xs">
+                <span>{cadenceStep.statistics.deliveredCount}</span>
                 <span className="text-nowrap">Delivered</span>
               </div>
               <div className="flex flex-col w-min-15 px-1 text-xs">
-                <span>{cadenceStep.openedCount}</span>
-                <span className="text-nowrap">Opened</span>
-              </div>
-              <div className="flex flex-col w-min-15 px-1 text-xs">
-                <span>{cadenceStep.bouncedCount}</span>
+                <span>{cadenceStep.statistics.bouncedCount}</span>
                 <span className="text-nowrap">Bounced</span>
               </div>
               <div className="flex flex-col w-min-15 px-1 text-xs">
-                <span>{cadenceStep.repliedCount}</span>
+                <span>{cadenceStep.statistics.openedCount}</span>
+                <span className="text-nowrap">Opened</span>
+              </div>
+              <div className="flex flex-col w-min-15 px-1 text-xs">
+                <span>{cadenceStep.statistics.repliedCount}</span>
                 <span className="text-nowrap">Replied</span>
+              </div>
+              <div className="flex flex-col w-min-15 px-1 text-xs">
+                <span>{cadenceStep.statistics.interestedCount}</span>
+                <span className="text-nowrap">Interested</span>
               </div>
             </div>
           )}

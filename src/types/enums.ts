@@ -86,6 +86,7 @@ export enum MAILING_STATE {
   BOUNCED = "bounced",
   OPENED = "opened",
   REPLIED = "replied",
+  SKIPPED = "skipped",
 }
 
 export enum DOCUMENT_TYPE {

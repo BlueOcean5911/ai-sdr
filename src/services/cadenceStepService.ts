@@ -3,6 +3,7 @@ import { ApiSuccessResponse, CountModel, FetchProps } from "@/types";
 import { CADENCE_STEP_TYPE, COMPANY_SIZE, EMAIL_STATUS } from "@/types/enums";
 import { boolean, number } from "yup";
 import { TemplateModel } from "./templatesService";
+import { MailingsStatistics } from "./mailingService";
 
 interface FetchCadenceStepsProps extends FetchProps {}
 
@@ -25,7 +26,7 @@ export interface CadenceStepStatisticsModel {
 
 export interface CadenceStepWithTemplateAndStatisticsModel
   extends CadenceStepWithTemplateModel {
-  statistics: CadenceStepStatisticsModel;
+  statistics: MailingsStatistics;
 }
 
 export interface BaseCadenceStepModel {

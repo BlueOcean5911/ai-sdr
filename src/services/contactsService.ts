@@ -16,6 +16,7 @@ interface Option {
 interface FetchContactProps extends FetchProps {
   cadenceId?: string;
   cadenceSteps?: Option | Option[] | null;
+  contactStates?: Option | Option[] | null;
   owners?: Option | Option[] | null;
   search?: string;
   stage?: string | undefined;
@@ -113,6 +114,18 @@ export const getContactsInCadenceStatistics = async (
     url += `&cadenceSteps=${state}`;
   }
 
+  let contactStates: string[] = [];
+  if (Array.isArray(data.contactStates)) {
+    contactStates = data.contactStates.map((option) => option.value);
+  } else if (data.contactStates) {
+    contactStates = [data.contactStates.value];
+  } else {
+    contactStates = [];
+  }
+  for (const contactState of contactStates) {
+    url += `&contactStates=${contactState}`;
+  }
+
   if (data.search) {
     url += `&search=${data.search}`;
   }
@@ -167,6 +180,18 @@ export const getContactsInCadence = async (
   }
   if (data.stage) {
     url += `&stage=${data.stage}`;
+  }
+
+  let contactStates: string[] = [];
+  if (Array.isArray(data.contactStates)) {
+    contactStates = data.contactStates.map((option) => option.value);
+  } else if (data.contactStates) {
+    contactStates = [data.contactStates.value];
+  } else {
+    contactStates = [];
+  }
+  for (const contactState of contactStates) {
+    url += `&contactStates=${contactState}`;
   }
 
   if (data.search) {

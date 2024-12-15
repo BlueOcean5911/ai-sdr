@@ -50,6 +50,7 @@ export default function CadenceContacts(
         limit,
         cadenceId,
         cadenceSteps: contactFilterConfig.cadenceSteps,
+        contactStates: contactFilterConfig.contactStates,
         search: contactFilterConfig.search,
         owners: contactFilterConfig.owners,
         stage: contactFilterConfig.stage,
@@ -95,6 +96,7 @@ export default function CadenceContacts(
       {
         cadenceId,
         cadenceSteps: contactFilterConfig.cadenceSteps,
+        contactStates: contactFilterConfig.contactStates,
         search: contactFilterConfig.search,
         owners: contactFilterConfig.owners,
       },
@@ -169,6 +171,7 @@ export default function CadenceContacts(
               return contact;
             })
           );
+          fetchContactsStatistics();
           toast.success("Contact resumed in this cadence successfully.");
         }
       },
@@ -200,6 +203,7 @@ export default function CadenceContacts(
                   return contact;
                 })
               );
+              fetchContactsStatistics();
               toast.success("Contact finished in this cadence successfully.");
             }
           },

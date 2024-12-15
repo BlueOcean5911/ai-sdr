@@ -169,7 +169,7 @@ export default function Emails(
       (data) => {
         fetchMailings(emailFilterConfig.params);
         if (data.success) {
-          toast.success("Mailing deleted successfully");
+          toast.success("Mailing skipped successfully");
         }
       },
       (status, error) => {

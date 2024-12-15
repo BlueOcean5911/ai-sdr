@@ -54,6 +54,7 @@ export interface MailingModel {
   openedAt: string;
   repliedAt: string;
   bouncedAt: string;
+  skippedAt: string;
   stateChangedAt: string;
 }
 
@@ -76,6 +77,7 @@ export interface MailingsStatistics {
   totalCount?: number;
   draftedCount?: number;
   scheduledCount?: number;
+  skippedCount?: number;
   deliveredCount?: number;
   bouncedCount?: number;
   openedCount?: number;

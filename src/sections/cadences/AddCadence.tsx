@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { IoPersonAddOutline } from "react-icons/io5";
 import ConfirmModal from "@/components/extends/Modal/ConfirmModal";
+import { Sparkles } from "lucide-react";
 
 interface ConfirmModalData {
   open: boolean;
@@ -146,8 +147,8 @@ const AddCadence = ({
               </DialogTitle>
               <hr />
               <div className="p-6 w-full flex flex-col gap-4">
-                <div className="border rounded-full w-64 h-64 flex-center m-auto shadow-lg">
-                  <IoPersonAddOutline className="w-48 h-48 p-8 m-auto stroke-blue-900" />
+                <div className="w-36 h-36 m-auto rounded-xl bg-blue-100 group-hover:bg-blue-200 flex items-center justify-center mb-4 transition-colors">
+                  <IoPersonAddOutline className="w-16 h-16 m-auto stroke-blue-900" />
                 </div>
                 <span className="mb-8 text-center text-sm">
                   Choose a cadence from the list to add this lead to. This will

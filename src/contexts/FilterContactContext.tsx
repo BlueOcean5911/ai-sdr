@@ -1,3 +1,4 @@
+import { leadStatusInCadenceOptions } from "@/data/filter.data";
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 interface Option {
@@ -10,6 +11,7 @@ interface Option {
 interface ContactFilterConfig {
   isOpen: boolean;
   cadenceSteps: Option | Option[] | null;
+  contactStates: Option | Option[] | null;
   owners: Option | Option[] | null;
   stage: string | undefined;
   search: string;
@@ -35,6 +37,7 @@ export const ContactFilterProvider = ({
     useState<ContactFilterConfig>({
       isOpen: true,
       cadenceSteps: [],
+      contactStates: [],
       owners: [],
       stage: undefined,
       search: "",

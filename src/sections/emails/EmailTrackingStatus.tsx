@@ -1,5 +1,14 @@
 import { MAILING_STATE } from "@/types/enums";
-import { Calendar, Check, Mail, Eye, MessageCircle, XIcon } from "lucide-react";
+import {
+  Calendar,
+  SkipForwardIcon,
+  Check,
+  Mail,
+  Eye,
+  MessageCircle,
+  XIcon,
+  SkipForward,
+} from "lucide-react";
 import { Tooltip } from "react-tooltip";
 import { MailingModel } from "@/services/mailingService";
 import { formatDateTimeReadable } from "@/utils/format";
@@ -10,6 +19,7 @@ export default function EmailTrackingStatus({
   mailing: MailingModel;
 }) {
   const timestamps: Record<string, string> = {
+    [MAILING_STATE.SKIPPED]: mailing.skippedAt,
     [MAILING_STATE.SCHEDULED]: mailing.scheduledAt,
     [MAILING_STATE.DELIVERED]: mailing.deliveredAt,
     [MAILING_STATE.OPENED]: mailing.openedAt,
@@ -18,6 +28,7 @@ export default function EmailTrackingStatus({
   };
 
   const states = [
+    { key: MAILING_STATE.SKIPPED, icon: SkipForwardIcon, label: "Skipped" },
     { key: MAILING_STATE.SCHEDULED, icon: Calendar, label: "Scheduled" },
     { key: MAILING_STATE.BOUNCED, icon: Mail, label: "Sent" },
     { key: MAILING_STATE.DELIVERED, icon: Check, label: "Delivered" },
@@ -36,13 +47,26 @@ export default function EmailTrackingStatus({
           let Icon = state.icon;
           let label = state.label;
           const isCompleted = index <= currentStateIndex;
-          const isLast = index === states.length - 1;
+          let isLast = index === states.length - 1;
           if (
             state.key == MAILING_STATE.BOUNCED &&
             mailing.mailingStatus === MAILING_STATE.BOUNCED
           ) {
             Icon = XIcon;
             label = "Bounced";
+          }
+          console.log(timestamps);
+          if (timestamps[MAILING_STATE.SKIPPED] !== null) {
+            console.log("23423423234");
+            isLast = true;
+            if (state.key !== MAILING_STATE.SKIPPED) {
+              return null;
+            }
+          } else {
+            console.log("123123123");
+            if (state.key === MAILING_STATE.SKIPPED) {
+              return null;
+            }
           }
 
           return (
