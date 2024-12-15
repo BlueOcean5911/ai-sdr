@@ -159,9 +159,7 @@ const EmailSendWindow = ({
           scheduledAt: date,
           threadId: threadId,
           parentMessageId: messageId,
-          mailingStatus: sendLater
-            ? MAILING_STATE.SCHEDULED
-            : MAILING_STATE.DELIVERED,
+          state: sendLater ? MAILING_STATE.SCHEDULED : MAILING_STATE.DELIVERED,
         },
         addMailing,
         (data) => {
@@ -200,7 +198,7 @@ const EmailSendWindow = ({
         subject: values.subject,
         bodyText: values.message,
         scheduledAt: date,
-        mailingStatus: MAILING_STATE.SCHEDULED,
+        state: MAILING_STATE.SCHEDULED,
       },
       addMailing,
       () => {},
