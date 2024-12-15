@@ -3,12 +3,11 @@ import { api } from "@/utils/api";
 
 export interface UserModel extends BaseUserModel {
   id?: string;
-  fullName?: string;
 }
 
 export interface BaseUserModel {
-  firstName?: string;
-  lastName?: string;
+  firstName: string;
+  lastName: string;
   email?: string;
   phone?: string;
   title?: string;

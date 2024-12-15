@@ -1,13 +1,16 @@
 "use client";
-
 import { AlertListHeader } from "@/components/alert/AlertListHeader";
 import { AlertItem } from "@/components/alert/AlertItem";
 import { useAlert } from "@/contexts/AlertContext";
+import Pagination from "@/components/extends/Pagination/Pagination";
 
 export default function Page() {
   const {
     loading,
     alerts,
+    pageSize,
+    setCurrentPage,
+    setPageSize,
     handleDelete,
     handleSelectAll,
     handleMarkAsRead,
@@ -37,7 +40,7 @@ export default function Page() {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
           </div>
         ) : alerts.length > 0 ? (
-          <div className="flex flex-1 flex-col divide-y divide-gray-200 overflow-auto">
+          <div className="flex flex-1 flex-col overflow-auto">
             {alerts.map((alert) => (
               <AlertItem
                 key={alert.id}
@@ -59,6 +62,17 @@ export default function Page() {
             </p>
           </div>
         )}
+      </div>
+      <div className="flex justify-end px-16 border-t">
+        <Pagination
+          className="pagination-bar"
+          totalCount={alerts.length}
+          pageSize={pageSize}
+          onPageChange={(pageSize: number, currentPage: number) => {
+            setPageSize(pageSize);
+            setCurrentPage(currentPage);
+          }}
+        />
       </div>
     </div>
   );
