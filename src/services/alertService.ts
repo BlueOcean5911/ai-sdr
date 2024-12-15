@@ -29,7 +29,7 @@ export interface UpdateAlertModel {
   content?: string;
   href?: string;
   date?: string;
-  isRead?: boolean;
+  isRead: boolean;
 }
 
 export interface AlertsStatistics {
@@ -128,19 +128,17 @@ export const addAlert = async (alert: AlertModel) => {
 
 export const updateAlert = async (data: {
   alertId: string;
-  updateData: BaseAlertModel;
+  updateData: UpdateAlertModel;
 }) => {
   const { alertId, updateData } = data;
   const response = await api.put(`api/alerts/${alertId}`, updateData);
-  console.log("send alert", response.data);
+  // console.log("send alert", response.data);
   if (response.status !== 200) {
     throw new Error("Failed to create alert");
   }
 
   return {
-    data: {
-      id: response.data.surrogateId,
-    },
+    data: response.data,
   };
 };
 
