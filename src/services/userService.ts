@@ -3,6 +3,7 @@ import { api } from "@/utils/api";
 
 export interface UserModel extends BaseUserModel {
   id?: string;
+  fullName?: string;
 }
 
 export interface BaseUserModel {

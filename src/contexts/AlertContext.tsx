@@ -5,8 +5,9 @@ import {
   useState,
   ReactNode,
   useEffect,
+  useCallback,
 } from "react";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 import { wsService } from "@/services/websocketService";
 import { useAuth } from "@/contexts/AuthContext";
@@ -17,7 +18,13 @@ interface AlertContextType {
   loading: boolean;
   alerts: AlertModel[] | [];
   setAlerts: (alerts: AlertModel[]) => void;
-  handleDeleteAlert: (id: string) => void;
+  handleDelete: (id: string | undefined) => void;
+  handleSelectAll: () => void;
+  handleMarkAsRead: (id: string | undefined) => void;
+  handleMarkAsUnread: (id: string | undefined) => void;
+  handleToggleSelect: (id: string) => void;
+  getSelectedCount: () => number;
+  isSemiSelected: boolean;
 }
 
 interface MessageType {
@@ -32,6 +39,7 @@ export const AlertContext = createContext<AlertContextType | undefined>(
 export const AlertProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [alerts, setAlerts] = useState<AlertModel[]>([]);
+  const [isSemiSelected, setIsSemiSelected] = useState(false);
 
   const { isAuthenticated, token } = useAuth();
 
@@ -51,21 +59,21 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  const handleDeleteAlert = (alertId: string) => {
-    runService(
-      alertId,
-      deleteAlert,
-      () => {
-        if (wsService.getStatus() === "disconnected") {
-          setAlerts(alerts?.filter((alert) => alert.id !== alertId));
-          toast.success("Alert deleted successfully!");
-        }
-      },
-      (status, error) => {
-        handleError(status, error);
-      }
-    );
-  };
+  // const handleDeleteAlert = (alertId: string) => {
+  //   runService(
+  //     alertId,
+  //     deleteAlert,
+  //     () => {
+  //       if (wsService.getStatus() === "disconnected") {
+  //         setAlerts(alerts?.filter((alert) => alert.id !== alertId));
+  //         toast.success("Alert deleted successfully!");
+  //       }
+  //     },
+  //     (status, error) => {
+  //       handleError(status, error);
+  //     }
+  //   );
+  // };
 
   useEffect(() => {
     if (!isAuthenticated || !token) return;
@@ -102,9 +110,93 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [isAuthenticated, token]);
 
+  const handleSelectAll = useCallback(() => {
+    setAlerts((prevAlerts) => {
+      const allSelected = prevAlerts.every((alert) => alert.isSelected);
+      return prevAlerts.map((alert) => ({
+        ...alert,
+        isSelected: !allSelected,
+      }));
+    });
+  }, []);
+
+  const handleMarkAsRead = useCallback((id: string | undefined) => {
+    if (id)
+      setAlerts((prevAlerts) =>
+        prevAlerts.map((alert) =>
+          alert.id === id
+            ? { ...alert, isRead: true, isSelected: false }
+            : alert
+        )
+      );
+    else
+      setAlerts((prevAlerts) =>
+        prevAlerts.map((alert) =>
+          alert.isSelected
+            ? { ...alert, isRead: true, isSelected: false }
+            : alert
+        )
+      );
+  }, []);
+
+  const handleMarkAsUnread = useCallback((id: string | undefined) => {
+    if (id)
+      setAlerts((prevAlerts) =>
+        prevAlerts.map((alert) =>
+          alert.id === id
+            ? { ...alert, isRead: false, isSelected: false }
+            : alert
+        )
+      );
+    else
+      setAlerts((prevAlerts) =>
+        prevAlerts.map((alert) =>
+          alert.isSelected
+            ? { ...alert, isRead: false, isSelected: false }
+            : alert
+        )
+      );
+  }, []);
+
+  const handleDelete = useCallback((id: string | undefined) => {
+    if (id)
+      setAlerts((prevAlerts) => prevAlerts.filter((alert) => alert.id !== id));
+    else
+      setAlerts((prevAlerts) =>
+        prevAlerts.filter((alert) => !alert.isSelected)
+      );
+  }, []);
+
+  const handleToggleSelect = useCallback((id: string) => {
+    setAlerts((prevAlerts) => {
+      const newAlerts = prevAlerts.map((alert) =>
+        alert.id === id ? { ...alert, isSelected: !alert.isSelected } : alert
+      );
+      return newAlerts;
+    });
+  }, []);
+
+  const getSelectedCount = useCallback(() => {
+    const allSelected = alerts.every((alert) => alert.isSelected);
+    const someSelected = alerts.some((alert) => alert.isSelected);
+    setIsSemiSelected(!allSelected && someSelected);
+    return alerts.filter((alert) => alert.isSelected).length;
+  }, [alerts]);
+
   return (
     <AlertContext.Provider
-      value={{ loading, alerts, setAlerts, handleDeleteAlert }}
+      value={{
+        loading,
+        alerts,
+        setAlerts,
+        handleDelete,
+        handleSelectAll,
+        handleMarkAsRead,
+        handleMarkAsUnread,
+        handleToggleSelect,
+        getSelectedCount,
+        isSemiSelected,
+      }}
     >
       {children}
     </AlertContext.Provider>
