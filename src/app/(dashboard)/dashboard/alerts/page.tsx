@@ -25,7 +25,7 @@ export default function Page() {
   const selectedCount = getSelectedCount();
 
   return (
-    <div className="flex flex-1 gap-2">
+    <div className="flex flex-1 gap-2 overflow-auto">
       {/* <AlertFilter /> */}
       <div className="flex flex-1 flex-col rounded-lg border shadow-lg bg-white overflow-auto">
         <AlertListHeader
