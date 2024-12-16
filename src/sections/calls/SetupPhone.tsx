@@ -1,19 +1,53 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { getPhones, PhoneProps, setupPhone } from "@/services/phoneService";
+import { handleError, runService } from "@/utils/service_utils";
+import { toast } from "react-toastify";
 
 const SetupPhone = () => {
   const [start, setStart] = useState<boolean>(false);
   const { me, setMe } = useAuth();
+  const [phones, setPhones] = useState<PhoneProps[]>([]);
+
+  useEffect(() => {
+    runService(
+      undefined,
+      getPhones,
+      (data) => {
+        setPhones(data);
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  }, []);
+
+  const handleSetupPhone = (phone: PhoneProps) => {
+    runService(
+      phone.id,
+      setupPhone,
+      (data) => {
+        if (data.id) {
+          toast.success("Phone number setup successfully");
+          setMe({ ...me, phone: `${phone.phoneNumber}` });
+        }
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
 
   return (
     <div className="p-4 flex flex-1 justify-center items-center gap-2 text-sm">
       {!start ? (
         <div className="max-w-4xl p-4 flex flex-col items-center">
           <Image
+            className="m-4"
             src={"/assets/images/icon/phoneadd.png"}
             alt={"nodata"}
             width={120}
@@ -38,7 +72,7 @@ const SetupPhone = () => {
             country code of your location.
           </p>
 
-          <div className="flex flex-row items-center gap-4">
+          <div className="relative flex flex-row items-center gap-4">
             <input
               type="text"
               name="phone"
@@ -55,26 +89,24 @@ const SetupPhone = () => {
             <thead>
               <tr className="text-left border-b">
                 <th className="px-4 py-2">Phone Number</th>
-                <th className="px-4 py-2">Region</th>
                 <th className="px-4 py-2"></th>
               </tr>
             </thead>
             <tbody>
-              {new Array(10).fill(null).map((_, idx) => (
+              {phones.map((phone, idx) => (
                 <tr key={idx} className="border-b">
                   <td className="px-4 py-2">
                     <div className="flex items-center">
                       <CheckCircle2 className="w-4 h-4 mr-2 fill-green-500 stroke-white" />
-                      <p>{`+1 (555)-001-000${idx}`}</p>
+                      <p>{phone.phoneNumber}</p>
                     </div>
                   </td>
-                  <td className="px-4 py-2">US (MA)</td>
                   <td className="px-4 py-2">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => {
-                        setMe({ ...me, phone: `+1 (555)-001-000${idx}` });
+                        handleSetupPhone(phone);
                       }}
                     >
                       Select
