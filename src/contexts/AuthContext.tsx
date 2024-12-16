@@ -12,6 +12,8 @@ import {
   signOut,
 } from "@/services/authService";
 import { privatePaths } from "@/data/paths";
+import { handleError, runService } from "@/utils/service_utils";
+import { getMe } from "@/services/userService";
 
 export const Context = createContext<any>(undefined);
 
@@ -34,9 +36,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (token)
       if (!isTokenExpired(token)) {
         setIsAuthenticated(true);
-        const decoded = jwt.decode(token) as JwtPayload;
+        // const decoded = jwt.decode(token) as JwtPayload;
+        runService(
+          undefined,
+          getMe,
+          (data) => {
+            setMe(data);
+          },
+          (status, error) => {
+            handleError(status, error);
+          }
+        );
         saveToken(token);
-        setMe(decoded);
+        // setMe(decoded);
         // console.log("me: ", decoded);
       } else {
         setIsAuthenticated(false);
@@ -68,7 +80,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Context.Provider
-      value={{ isLoading, isAuthenticated, token, me, setToken, setMe, handleSignOut }}
+      value={{
+        isLoading,
+        isAuthenticated,
+        token,
+        me,
+        setToken,
+        setMe,
+        handleSignOut,
+      }}
     >
       {children}
     </Context.Provider>
