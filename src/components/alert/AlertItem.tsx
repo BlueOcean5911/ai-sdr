@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { AlertModel } from "@/services/alertService";
 import { getInitials, getRelativeTime } from "@/utils/format";
 import { classNames } from "@/utils";
+import Link from "next/link";
 
 interface AlertItemProps {
   alert: AlertModel;
@@ -47,7 +48,7 @@ export const AlertItem: React.FC<AlertItemProps> = ({
   return (
     <div
       className={classNames(
-        "w-full px-2 py-4 flex flex-row justify-between items-center gap-2 border-l-2 border-b hover:bg-blue-50 transition-colors duration-200",
+        "w-full px-1.5 py-4 flex flex-row justify-between items-center gap-2 border-l-2 border-b hover:bg-blue-50 transition-colors duration-200",
         alert.isRead ? "bg-gray-50" : "bg-white",
         alert.isSelected ? "!border-l-blue-600" : "!border-l-white"
       )}
@@ -109,9 +110,7 @@ export const AlertItem: React.FC<AlertItemProps> = ({
         </div>
         <div className="flex flex-1 flex-col gap-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span
-              className={`text-sm font-semibold ${getActionColor(alert.type)}`}
-            >
+            <span className={`text-xs ${getActionColor(alert.type)}`}>
               {alert.type.charAt(0).toUpperCase() + alert.type.slice(1)}
             </span>
             {/* <span className="text-sm text-gray-500">Task ID: {alert.id}</span> */}
@@ -125,13 +124,14 @@ export const AlertItem: React.FC<AlertItemProps> = ({
               </TooltipProvider>
             )}
           </div>
-          <span
-            className={`font-semibold truncate ${
-              alert.isRead ? "text-gray-600" : "text-gray-900"
+          <Link
+            href={alert.href}
+            className={`font-semibold text-sm truncate hover:underline ${
+              alert.isRead ? "text-gray-400" : "text-gray-600"
             }`}
           >
             {alert.title}
-          </span>
+          </Link>
         </div>
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">

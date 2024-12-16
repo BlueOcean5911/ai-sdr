@@ -23,7 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <SalesMarketingStatistics />
         <div className="p-5 flex flex-1 flex-col rounded-lg bg-white shadow-md overflow-auto min-h-[768px]">
           <span className="text-lg font-semibold">Workspace</span>
-          <div className="w-full flex items-center gap-2 border-b">
+          <div className="w-full flex items-center gap-2 border-b mb-2">
             <Link
               href="/dashboard/mailings"
               className={classNames(

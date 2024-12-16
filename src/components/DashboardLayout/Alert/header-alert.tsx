@@ -1,21 +1,31 @@
-import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { BellAlertIcon } from "@heroicons/react/24/outline";
 
-import  { useAlert } from "@/contexts/AlertContext";
+import { useAlert } from "@/contexts/AlertContext";
 import { alertIcons } from "@/data/alert.data";
 import { getRelativeTime } from "@/utils/format";
 
 export default function HeaderAlert() {
-  const { alerts } = useAlert();
+  const { alerts, handleMarkAsRead } = useAlert();
+  const filteredAlerts = alerts.filter((alert) => !alert.isRead);
+
+  const router = useRouter();
 
   return (
     <>
       <Menu as="div" className="relative">
         <MenuButton className="-m-1.5 flex items-center p-1.5">
           <span className="sr-only">Open Alert</span>
-          <BellAlertIcon className="h-6 w-6" aria-hidden="true" />
+          <div className="relative">
+            <BellAlertIcon className="h-6 w-6" aria-hidden="true" />
+            {filteredAlerts.length > 0 && (
+              <span className="absolute -top-1 1right-1 inline-flex items-center justify-center w-4 h-4 text-xs font-medium text-white bg-red-600 rounded-full">
+                {filteredAlerts.length}
+              </span>
+            )}
+          </div>
         </MenuButton>
         <MenuItems
           transition
@@ -26,11 +36,14 @@ export default function HeaderAlert() {
           </div>
           <div className="flex-1 overflow-y-auto">
             {alerts.length > 0 ? (
-              alerts.map((item, id) => (
+              filteredAlerts.map((item, id) => (
                 <MenuItem key={id}>
-                  <Link
-                    href={item.href}
-                    className="block px-3 py-2 text-sm leading-6 border-b text-gray-900 data-[focus]:bg-blue-200"
+                  <div
+                    className="block px-3 py-2 text-sm leading-6 border-b text-gray-900 data-[focus]:bg-blue-50 data-[focus]:cursor-pointer"
+                    onClick={() => {
+                      handleMarkAsRead(item.id);
+                      router.push(item.href);
+                    }}
                   >
                     <div className="flex items-center gap-4">
                       {item.type && item.type in alertIcons && (
@@ -52,7 +65,7 @@ export default function HeaderAlert() {
                         </p>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 </MenuItem>
               ))
             ) : (
@@ -65,7 +78,7 @@ export default function HeaderAlert() {
                 />
                 <span>No new alerts</span>
                 <span className="w-2/3 text-xs">
-                  You'll see new alerts hear.
+                  You'll see new alerts here.
                 </span>
               </div>
             )}

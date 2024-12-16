@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox"; // Ensure this imports correctly
 import { AlertModel } from "@/services/alertService";
-import { Check, Trash, Mail } from "lucide-react";
+import { Check, Trash, Mail, Filter } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 interface AlertListHeaderProps {
   alerts: AlertModel[];
+  isFilterOpen: boolean;
+  setIsFilterOpen: (open: boolean) => void;
   onSelectAll: () => void;
   onMarkAsRead: (id: string | undefined) => void;
   onMarkAsUnread: (id: string | undefined) => void;
@@ -17,6 +19,8 @@ interface AlertListHeaderProps {
 
 export function AlertListHeader({
   alerts,
+  isFilterOpen,
+  setIsFilterOpen,
   onSelectAll,
   onMarkAsRead,
   onMarkAsUnread,
@@ -46,7 +50,7 @@ export function AlertListHeader({
   }, [isSemiSelected]);
 
   return (
-    <div className="w-full px-6 py-4 flex flex-row items-center gap-4 border-b bg-gray-100">
+    <div className="w-full px-6 py-2 flex flex-row items-center gap-4 border-b bg-gray-100">
       <Checkbox
         id="select-all"
         // Change the prop name if necessary
@@ -90,6 +94,15 @@ export function AlertListHeader({
         <Trash className="w-4 h-4 mr-2" />
         Delete
       </Button>
+      {/* <Button
+        variant="outline"
+        className="flex items-center"
+        size="sm"
+        onClick={() => setIsFilterOpen(!isFilterOpen)}
+      >
+        <Filter className="w-4 h-4 mr-2" />
+        {isFilterOpen ? "Hide Filter": "Show Filter"}
+      </Button> */}
     </div>
   );
 }
