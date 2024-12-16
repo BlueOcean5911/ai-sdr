@@ -25,24 +25,24 @@ api.interceptors.request.use(
 
 // Create an Axios instance with default headers
 const twilioApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_TWILIO_URL,
+  baseURL: process.env.NEXT_PUBLIC_TWILIO_VOICE_CALL_BACKEND_ENDPOINT,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 // Add a request interceptor
-twilioApi.interceptors.request.use(
-  (config) => {
-    const token = getRememberMe() || getToken();
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+// twilioApi.interceptors.request.use(
+//   (config) => {
+//     const token = getRememberMe() || getToken();
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
 
 export { api, twilioApi };
