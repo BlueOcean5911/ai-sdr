@@ -11,13 +11,23 @@ import {
 
 import { wsService } from "@/services/websocketService";
 import { useAuth } from "@/contexts/AuthContext";
-import { AlertModel, deleteAlert, getAlerts } from "@/services/alertService";
+import {
+  AlertModel,
+  deleteAlert,
+  getAlerts,
+  updateAlert,
+  UpdateAlertModel,
+} from "@/services/alertService";
 import { handleError, runService } from "@/utils/service_utils";
 
 interface AlertContextType {
   loading: boolean;
   alerts: AlertModel[] | [];
+  currentPage: number;
+  pageSize: number;
   setAlerts: (alerts: AlertModel[]) => void;
+  setCurrentPage: (page: number) => void;
+  setPageSize: (size: number) => void;
   handleDelete: (id: string | undefined) => void;
   handleSelectAll: () => void;
   handleMarkAsRead: (id: string | undefined) => void;
@@ -40,13 +50,20 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [alerts, setAlerts] = useState<AlertModel[]>([]);
   const [isSemiSelected, setIsSemiSelected] = useState(false);
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const { isAuthenticated, token } = useAuth();
 
   const fetchAlerts = () => {
     setLoading(true);
+    const offset = pageSize * (currentPage - 1);
+    const limit = pageSize;
     runService(
-      undefined,
+      {
+        offset: offset,
+        limit: limit,
+      },
       getAlerts,
       (data) => {
         setAlerts(data);
@@ -59,21 +76,41 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  // const handleDeleteAlert = (alertId: string) => {
-  //   runService(
-  //     alertId,
-  //     deleteAlert,
-  //     () => {
-  //       if (wsService.getStatus() === "disconnected") {
-  //         setAlerts(alerts?.filter((alert) => alert.id !== alertId));
-  //         toast.success("Alert deleted successfully!");
-  //       }
-  //     },
-  //     (status, error) => {
-  //       handleError(status, error);
-  //     }
-  //   );
-  // };
+  const handleDeleteAlert = (alertId: string) => {
+    runService(
+      alertId,
+      deleteAlert,
+      () => {
+        if (wsService.getStatus() === "disconnected") {
+          setAlerts(alerts?.filter((alert) => alert.id !== alertId));
+        }
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  const handleUpdateAlert = (alertId: string, updateData: UpdateAlertModel) => {
+    runService(
+      { alertId, updateData },
+      updateAlert,
+      (data) => {
+        if (data) {
+          setAlerts(
+            alerts.map((alert) =>
+              alert.id === alertId
+                ? { ...alert, isRead: updateData.isRead }
+                : alert
+            )
+          );
+        }
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
 
   useEffect(() => {
     if (!isAuthenticated || !token) return;
@@ -120,51 +157,36 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
     });
   }, []);
 
-  const handleMarkAsRead = useCallback((id: string | undefined) => {
-    if (id)
-      setAlerts((prevAlerts) =>
-        prevAlerts.map((alert) =>
-          alert.id === id
-            ? { ...alert, isRead: true, isSelected: false }
-            : alert
-        )
-      );
-    else
-      setAlerts((prevAlerts) =>
-        prevAlerts.map((alert) =>
-          alert.isSelected
-            ? { ...alert, isRead: true, isSelected: false }
-            : alert
-        )
-      );
-  }, []);
+  const handleMarkAsRead = useCallback(
+    (id: string | undefined) => {
+      if (id) {
+        handleUpdateAlert(id, { isRead: true });
+      } else
+        alerts.map((alert) => {
+          if (alert.isSelected) handleUpdateAlert(alert.id, { isRead: true });
+        });
+    },
+    [alerts]
+  );
 
-  const handleMarkAsUnread = useCallback((id: string | undefined) => {
-    if (id)
-      setAlerts((prevAlerts) =>
-        prevAlerts.map((alert) =>
-          alert.id === id
-            ? { ...alert, isRead: false, isSelected: false }
-            : alert
-        )
-      );
-    else
-      setAlerts((prevAlerts) =>
-        prevAlerts.map((alert) =>
-          alert.isSelected
-            ? { ...alert, isRead: false, isSelected: false }
-            : alert
-        )
-      );
-  }, []);
+  const handleMarkAsUnread = useCallback(
+    (id: string | undefined) => {
+      if (id) {
+        handleUpdateAlert(id, { isRead: false });
+      } else
+        alerts.map((alert) => {
+          if (alert.isSelected) handleUpdateAlert(alert.id, { isRead: false });
+        });
+    },
+    [alerts]
+  );
 
   const handleDelete = useCallback((id: string | undefined) => {
-    if (id)
-      setAlerts((prevAlerts) => prevAlerts.filter((alert) => alert.id !== id));
+    if (id) handleDeleteAlert(id);
     else
-      setAlerts((prevAlerts) =>
-        prevAlerts.filter((alert) => !alert.isSelected)
-      );
+      alerts.map((alert) => {
+        if (alert.isSelected) handleDeleteAlert(alert.id);
+      });
   }, []);
 
   const handleToggleSelect = useCallback((id: string) => {
@@ -177,10 +199,13 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const getSelectedCount = useCallback(() => {
+    return alerts.filter((alert) => alert.isSelected).length;
+  }, [alerts]);
+
+  useEffect(() => {
     const allSelected = alerts.every((alert) => alert.isSelected);
     const someSelected = alerts.some((alert) => alert.isSelected);
     setIsSemiSelected(!allSelected && someSelected);
-    return alerts.filter((alert) => alert.isSelected).length;
   }, [alerts]);
 
   return (
@@ -188,7 +213,11 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
       value={{
         loading,
         alerts,
+        pageSize,
+        currentPage,
         setAlerts,
+        setCurrentPage,
+        setPageSize,
         handleDelete,
         handleSelectAll,
         handleMarkAsRead,

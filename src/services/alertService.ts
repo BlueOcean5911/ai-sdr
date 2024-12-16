@@ -29,7 +29,7 @@ export interface UpdateAlertModel {
   content?: string;
   href?: string;
   date?: string;
-  isRead?: boolean;
+  isRead: boolean;
 }
 
 export interface AlertsStatistics {
@@ -50,21 +50,21 @@ interface ApiStatisticsResponse {
 }
 
 export const getAlerts = async (
-  data: FetchAlertsProps = { offset: 0, limit: 100, params: {} }
+  data: FetchProps = { offset: 0, limit: 100 }
 ): Promise<ApiAlertsResponse> => {
   let url = `/api/alerts?offset=${data.offset}&limit=${data.limit}`;
 
-  const keys = Object.keys(data.params);
+  // const keys = Object.keys(data.params);
   let searchParams = "";
 
-  if (keys.length > 0) {
-    searchParams =
-      "&" + keys.map((key) => `${key}=${data.params[key]}`).join("&");
-  }
+  // if (keys.length > 0) {
+  //   searchParams =
+  //     "&" + keys.map((key) => `${key}=${data.params[key]}`).join("&");
+  // }
 
-  if (data.search) {
-    url += `&search=${data.search}`;
-  }
+  // if (data.search) {
+  //   url += `&search=${data.search}`;
+  // }
   if (searchParams) {
     url += searchParams;
   }
@@ -128,19 +128,17 @@ export const addAlert = async (alert: AlertModel) => {
 
 export const updateAlert = async (data: {
   alertId: string;
-  updateData: BaseAlertModel;
+  updateData: UpdateAlertModel;
 }) => {
   const { alertId, updateData } = data;
   const response = await api.put(`api/alerts/${alertId}`, updateData);
-  console.log("send alert", response.data);
+  // console.log("send alert", response.data);
   if (response.status !== 200) {
     throw new Error("Failed to create alert");
   }
 
   return {
-    data: {
-      id: response.data.surrogateId,
-    },
+    data: response.data,
   };
 };
 
