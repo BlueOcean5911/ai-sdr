@@ -45,6 +45,7 @@ export const AlertItem: React.FC<AlertItemProps> = ({
   };
 
   const isSamePerson = alert.dmler?.id === alert.receptient?.id;
+  const taskType = alert.statusTo ? "task_" + alert.statusTo : alert.type;
   return (
     <div
       className={classNames(
@@ -110,8 +111,8 @@ export const AlertItem: React.FC<AlertItemProps> = ({
         </div>
         <div className="flex flex-1 flex-col gap-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className={`text-xs ${getActionColor(alert.type)}`}>
-              {alert.type.charAt(0).toUpperCase() + alert.type.slice(1)}
+            <span className={`text-xs uppercase ${getActionColor(alert.type)}`}>
+              {taskType}
             </span>
             {/* <span className="text-sm text-gray-500">Task ID: {alert.id}</span> */}
             {isSamePerson && (
