@@ -78,6 +78,7 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
       alertFilterConfig,
       getAlerts,
       (data) => {
+        console.log("alerts: ", data);
         setAlerts(data);
         setLoading(false);
       },

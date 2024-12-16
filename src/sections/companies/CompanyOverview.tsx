@@ -1,17 +1,11 @@
-import { CompanyModel } from "@/services/companyService";
-import { classNames } from "@/utils";
-import {
-  CheckBadgeIcon,
-  NoSymbolIcon,
-  PhoneIcon,
-  QuestionMarkCircleIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import { MessageCircleWarning, MoveDiagonal } from "lucide-react";
-import Link from "next/link";
+import OverviewLayout from "@/layouts/OverviewLayout";
+import { Building2, Calendar, Info, LinkIcon, Phone } from "lucide-react";
 import { FaLinkedinIn } from "react-icons/fa";
-import { IoIosLink } from "react-icons/io";
-import { CiLocationOn } from "react-icons/ci";
+import ContactInfoItem, {
+  ContactStatus,
+} from "@/components/contact/ContactItem";
+import Tag from "@/components/ui/tag";
+import { CompanyModel } from "@/services/companyService";
 
 const CompanyOverview = ({
   show,
@@ -23,120 +17,94 @@ const CompanyOverview = ({
   handleClose: () => void;
 }) => {
   return (
-    <>
-      <div
-        className={classNames(
-          "absolute top-0 bottom-0 z-20 w-1/2 flex flex-1 flex-col border-l bg-white overflow-scroll transition-all duration-500",
-          show ? "right-0" : "-right-full"
-        )}
-      >
-        <div className="px-5 py-2 flex items-center gap-2">
-          <div
-            className="p-1 flex justify-center items-center rounded-md hover:bg-gray-200"
-            onClick={handleClose}
-          >
-            <XMarkIcon className="w-5 h-5" />
-          </div>
-          <Link
-            href={`/companies/${company?.id}`}
-            className="p-1 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-200"
-          >
-            <MoveDiagonal className="w-5 h-5" />
-          </Link>
-        </div>
-        <div className="px-5 flex flex-row items-center gap-3">
-          <span className="text-lg font-semibold">{company?.name}</span>
-          <a href={company?.website}>
-            <IoIosLink className="w-6 h-6 p-1 rounded-md border" />
-          </a>
-          <a href={company?.linkedin}>
-            <FaLinkedinIn className="w-6 h-6 p-1 rounded-md border" />
-          </a>
-        </div>
-        <div className="px-5 py-1 text-sm">
-          {company?.industry} * {company?.city} {company?.state} *{" "}
-          {company?.size} employees * {company?.annualRevenue}
-        </div>
-        <div className="p-4 flex flex-1 flex-col md:flex-row gap-3 bg-gray-100">
-          <div className="flex flex-col gap-3">
-            <div className="w-full p-3 flex flex-col gap-3 rounded-md border bg-white">
-              <div className="flex flex-row justify-between items-center">
-                <span className="font-semibold">Contact information</span>
-              </div>
-              <div className="flex flex-row items-center text-sm">
-                <span className="w-1/3">Phone</span>
-                <div className="w-2/3 flex flex-row items-center gap-2">
-                  <span className="p-2 flex justify-center items-center rounded-full bg-gray-200">
-                    <PhoneIcon className="w-3 h-3" />
-                  </span>
-                  <span className="flex-1">{company?.phone}</span>
-                  {company?.phoneStatus === "verified" && (
-                    <CheckBadgeIcon className="w-5 h-5 stroke-green-500" />
-                  )}
-                  {company?.phoneStatus === "questionable" && (
-                    <QuestionMarkCircleIcon className="w-5 h-5 stroke-yellow-500" />
-                  )}
-                  {company?.phoneStatus === "invalid" && (
-                    <MessageCircleWarning className="w-5 h-5 stroke-red-500" />
-                  )}
-                  {company?.phoneStatus === "noStatus" && (
-                    <NoSymbolIcon className="w-5 h-5 stroke-gray-500" />
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-row text-sm">
-                <span className="w-1/3">Stage</span>
-                <span className="p-1 rounded-md bg-gray-200">
-                  {company?.stage}
-                </span>
-              </div>
-              <div className="flex flex-row text-sm">
-                <span className="w-1/3">Location</span>
-                <div className="w-2/3 flex flex-row items-center gap-2">
-                  <span className="p-1 flex justify-center items-center rounded-full bg-gray-200">
-                    <CiLocationOn className="w-5 h-5" />
-                  </span>
-                  {company?.streetAddress}, {company?.city}, {company?.state}
-                  {", "}
-                  {company?.country}, {company?.postalCode}
-                </div>
-              </div>
-            </div>
-            <div className="p-3 flex flex-col gap-3 rounded-md border bg-white">
-              <div className="flex flex-row justify-between items-center">
-                <span className="font-semibold">About</span>
-              </div>
-              <span className="text-sm">{company?.description}</span>
-              <div className="flex flex-row text-sm">
-                <span className="w-1/3">Keywords</span>
-                <div className="w-2/3 space-x-2">
-                  {company?.keywords?.split(",").map((item, idx) => (
-                    <span
-                      key={idx}
-                      className=" px-1 text-nowrap rounded-md bg-gray-200"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-row text-sm">
-                <span className="w-1/3">Annual revenue</span>
-                <span className="w-2/3">{company?.annualRevenue}</span>
-              </div>
-              <div className="flex flex-row text-sm">
-                <span className="w-1/3">Founded</span>
-                <span className="w-2/3">{company?.yearFounded}</span>
-              </div>
-              <div className="flex flex-row text-sm">
-                <span className="w-1/3">Industry</span>
-                <span className="w-2/3">{company?.industry}</span>
-              </div>
-            </div>
+    <OverviewLayout
+      show={show}
+      handleClose={handleClose}
+      linkHref={`/companies/${company?.id}`}
+      width="w-full sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/3"
+    >
+      <section className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold">{company?.name}</h2>
+          <div className="flex gap-2">
+            {[
+              {
+                href: company?.website,
+                icon: LinkIcon,
+                label: "Company website",
+              },
+              {
+                href: company?.linkedin,
+                icon: FaLinkedinIn,
+                label: "Company LinkedIn",
+              },
+            ].map((link, index) => (
+              <a
+                key={index}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-800"
+                aria-label={link.label}
+              >
+                <link.icon className="w-5 h-5" />
+              </a>
+            ))}
           </div>
         </div>
-      </div>
-    </>
+        <div className="flex flex-wrap gap-2 mb-4">
+          <Tag color="bg-blue-100 text-blue-800">{company?.industry}</Tag>
+          <Tag color="bg-green-100 text-green-800">
+            {company?.size} employees
+          </Tag>
+          <Tag color="bg-purple-100 text-purple-800">
+            {company?.city}, {company?.state}
+          </Tag>
+        </div>
+        <div className="flex items-start gap-3 mb-4">
+          <Info className="w-5 h-5 text-gray-400 flex-shrink-0 mt-1" />
+          <p className="text-sm text-gray-700">{company?.description}</p>
+        </div>
+        <ContactInfoItem
+          label="Company Phone"
+          value={company?.phone || ""}
+          status={(company?.phoneStatus as ContactStatus) || "noStatus"}
+          icon={Phone}
+          subIcon={Building2}
+        />
+        <div className="mt-4">
+          <h3 className="font-medium text-sm mb-2">Keywords</h3>
+          <div className="flex flex-wrap gap-2">
+            {company?.keywords?.split(",").map((item: string, idx: number) => (
+              <Tag key={idx} color="bg-gray-100 text-gray-800">
+                {item.trim()}
+              </Tag>
+            ))}
+          </div>
+        </div>
+        <div className="mt-4 space-y-2">
+          {[
+            {
+              icon: Building2,
+              label: "Annual revenue",
+              value: company?.annualRevenue,
+            },
+            {
+              icon: Calendar,
+              label: "Founded",
+              value: company?.yearFounded,
+            },
+          ].map((item, index) => (
+            <div key={index} className="flex items-center gap-2">
+              <item.icon className="w-4 h-4 text-gray-400" />
+              <span className="text-sm text-gray-700">
+                <span className="font-medium">{item.label}:</span> {item.value}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+    </OverviewLayout>
   );
 };
 
