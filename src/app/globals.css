@@ -84,7 +84,7 @@
   }
 
   .input-primary {
-    @apply focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md;
+    @apply w-full px-4 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
   }
 
   .nav {
@@ -159,10 +159,6 @@
 
   .cntr {
     position: relative;
-  }
-
-  .input-primary {
-    @apply block h-full w-full px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-sm border border-gray-300 hover:border-gray-500 rounded-md focus:border-gray-500;
   }
 
   @keyframes jelly {
