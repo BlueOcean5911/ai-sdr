@@ -23,6 +23,7 @@ const EmailToolbar = ({ cadenceId }: { cadenceId?: string }) => {
     openedCount: 0,
     repliedCount: 0,
     interestedCount: 0,
+    skippedCount: 0,
   });
 
   const fetchStatistics = () => {
@@ -57,6 +58,11 @@ const EmailToolbar = ({ cadenceId }: { cadenceId?: string }) => {
       label: "Scheduled",
       count: statistics.scheduledCount,
       params: { scheduled: "true" },
+    },
+    {
+      label: "Skipped",
+      count: statistics.skippedCount,
+      params: { skipped: "true" },
     },
     {
       label: "Delivered",
