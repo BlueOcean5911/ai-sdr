@@ -1,6 +1,7 @@
 import { api } from "@/utils/api";
 import { UserModel } from "./userService";
 import { ApiCountResponse, FetchProps } from "@/types";
+import { AlertFilterType } from "@/contexts/AlertContext";
 
 interface FetchAlertsProps extends FetchProps {
   search?: string;
@@ -50,7 +51,7 @@ interface ApiStatisticsResponse {
 }
 
 export const getAlerts = async (
-  data: FetchProps = { offset: 0, limit: 100 }
+  data: AlertFilterType
 ): Promise<ApiAlertsResponse> => {
   let url = `/api/alerts?offset=${data.offset}&limit=${data.limit}`;
 
@@ -62,9 +63,9 @@ export const getAlerts = async (
   //     "&" + keys.map((key) => `${key}=${data.params[key]}`).join("&");
   // }
 
-  // if (data.search) {
-  //   url += `&search=${data.search}`;
-  // }
+  if (data.search) {
+    url += `&search=${data.search}`;
+  }
   if (searchParams) {
     url += searchParams;
   }

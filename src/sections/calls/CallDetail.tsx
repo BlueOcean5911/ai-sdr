@@ -24,40 +24,40 @@ export default function CallDetail({
   open: boolean;
   handleClose: () => void;
 }) {
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string | null>("/assets/audio/sample.mp3");
 
-  useEffect(() => {
-    if (call?.recording_url) {
-      fetch(
-        `${call.recording_url}.mp3`,
-        {
-          headers: {
-            Authorization: `Basic ${Buffer.from(
-              `${accountSid}:${authToken}`
-            ).toString("base64")}`,
-          },
-        }
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(
-              "Network response was not ok " + response.statusText
-            );
-          }
-          return response.blob();
-        })
-        .then((blob) => {
-          const url = URL.createObjectURL(blob);
-          setAudioUrl(url);
-        })
-        .catch((error) => {
-          console.error(
-            "There has been a problem with your fetch operation:",
-            error
-          );
-        });
-    }
-  }, [call]);
+  // useEffect(() => {
+  //   if (call?.recording_url) {
+  //     fetch(
+  //       `${call.recording_url}.mp3`,
+  //       {
+  //         headers: {
+  //           Authorization: `Basic ${Buffer.from(
+  //             `${accountSid}:${authToken}`
+  //           ).toString("base64")}`,
+  //         },
+  //       }
+  //     )
+  //       .then((response) => {
+  //         if (!response.ok) {
+  //           throw new Error(
+  //             "Network response was not ok " + response.statusText
+  //           );
+  //         }
+  //         return response.blob();
+  //       })
+  //       .then((blob) => {
+  //         const url = URL.createObjectURL(blob);
+  //         setAudioUrl(url);
+  //       })
+  //       .catch((error) => {
+  //         console.error(
+  //           "There has been a problem with your fetch operation:",
+  //           error
+  //         );
+  //       });
+  //   }
+  // }, [call]);
 
   return (
     <>
@@ -80,10 +80,10 @@ export default function CallDetail({
                     as="h3"
                     className="px-6 py-3 text-lg font-semibold leading-6 bg-white text-gray-900 rounded-md shadow-md"
                   >
-                    Call Detail
+                    Call With John Doe
                   </DialogTitle>
                   {call && (
-                    <div className="flex flex-col gap-4 p-6">
+                    <div className="flex flex-col gap-2 p-6">
                       {audioUrl && (
                         <div className="flex flex-row justify-between items-center gap-4">
                           <div className="rounded-full overflow-hidden">
@@ -102,7 +102,7 @@ export default function CallDetail({
                           </div>
                         </div>
                       )}
-                      <div className="flex flex-row justify-between items-center gap-4">
+                      {/* <div className="flex flex-row justify-between items-center gap-4">
                         <label htmlFor="from">From:</label>
                         <input
                           id="from"
@@ -124,8 +124,16 @@ export default function CallDetail({
                           className="input-primary text-center"
                           value={call.date_created.split("T")[0]}
                         />
+                      </div> */}
+                      <div className="flex flex-col gap-1 text-sm">
+                        <label htmlFor="contact">Contact:</label>
+                        <input
+                          type="text"
+                          id="contact"
+                          className="input-primary"
+                        />
                       </div>
-                      <div className="flex flex-col gap-1">
+                      <div className="flex flex-col gap-1 text-sm">
                         <label htmlFor="purpose">Purpose:</label>
                         <input
                           type="text"
@@ -133,7 +141,15 @@ export default function CallDetail({
                           className="input-primary"
                         />
                       </div>
-                      <div className="flex flex-col gap-1">
+                      <div className="flex flex-col gap-1 text-sm">
+                        <label htmlFor="disposition">Dispoisition:</label>
+                        <input
+                          type="text"
+                          id="disposition"
+                          className="input-primary"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1 text-sm">
                         <label htmlFor="notes">Notes:</label>
                         <textarea
                           id="notes"
@@ -141,7 +157,7 @@ export default function CallDetail({
                           rows={4}
                         />
                       </div>
-                      <button className="btn-primary">Save</button>
+                      <button className="w-20 btn-primary">Save</button>
                     </div>
                   )}
                 </DialogPanel>

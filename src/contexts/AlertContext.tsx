@@ -7,7 +7,6 @@ import {
   useEffect,
   useCallback,
 } from "react";
-// import { toast } from "react-toastify";
 
 import { wsService } from "@/services/websocketService";
 import { useAuth } from "@/contexts/AuthContext";
@@ -23,11 +22,11 @@ import { handleError, runService } from "@/utils/service_utils";
 interface AlertContextType {
   loading: boolean;
   alerts: AlertModel[] | [];
-  currentPage: number;
-  pageSize: number;
+  isFilterOpen: boolean;
+  alertFilterConfig: AlertFilterType;
   setAlerts: (alerts: AlertModel[]) => void;
-  setCurrentPage: (page: number) => void;
-  setPageSize: (size: number) => void;
+  setIsFilterOpen: (open: boolean) => void;
+  setAlertFilterConfig: (config: AlertFilterType) => void;
   handleDelete: (id: string | undefined) => void;
   handleSelectAll: () => void;
   handleMarkAsRead: (id: string | undefined) => void;
@@ -35,6 +34,16 @@ interface AlertContextType {
   handleToggleSelect: (id: string) => void;
   getSelectedCount: () => number;
   isSemiSelected: boolean;
+}
+
+export interface AlertFilterType {
+  offset: number,
+  limit: number,
+  isRead: boolean;
+  type: string;
+  orderBy: string;
+  isAscending: boolean | undefined;
+  search: string;
 }
 
 interface MessageType {
@@ -50,20 +59,23 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [alerts, setAlerts] = useState<AlertModel[]>([]);
   const [isSemiSelected, setIsSemiSelected] = useState(false);
-  const [pageSize, setPageSize] = useState<number>(10);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
+  const [alertFilterConfig, setAlertFilterConfig] = useState<AlertFilterType>({
+    offset: 0,
+    limit: 10,
+    isRead: false,
+    type: "",
+    orderBy: "",
+    isAscending: false,
+    search: "",
+  });
 
   const { isAuthenticated, token } = useAuth();
 
   const fetchAlerts = () => {
     setLoading(true);
-    const offset = pageSize * (currentPage - 1);
-    const limit = pageSize;
     runService(
-      {
-        offset: offset,
-        limit: limit,
-      },
+      alertFilterConfig,
       getAlerts,
       (data) => {
         setAlerts(data);
@@ -119,7 +131,7 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
     wsService.connect(token);
 
     const createHandler = (message: MessageType) => {
-      setAlerts((alerts) => [...(alerts || []), message.data]);
+      setAlerts((alerts) => [message.data, ...(alerts || [])]);
     };
 
     const updateHandler = (message: MessageType) => {
@@ -145,7 +157,7 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
       wsService.unsubscribe("UPDATE_ALERT", updateHandler);
       wsService.unsubscribe("DELETE_ALERT", deleteHandler);
     };
-  }, [isAuthenticated, token]);
+  }, [isAuthenticated, token, setAlertFilterConfig]);
 
   const handleSelectAll = useCallback(() => {
     setAlerts((prevAlerts) => {
@@ -213,11 +225,11 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
       value={{
         loading,
         alerts,
-        pageSize,
-        currentPage,
+        isFilterOpen,
+        alertFilterConfig,
         setAlerts,
-        setCurrentPage,
-        setPageSize,
+        setIsFilterOpen,
+        setAlertFilterConfig,
         handleDelete,
         handleSelectAll,
         handleMarkAsRead,

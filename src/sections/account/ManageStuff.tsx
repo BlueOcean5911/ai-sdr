@@ -142,13 +142,13 @@ const ManageStuff = () => {
         </div>
 
         {/* Table */}
-        <div className="flex-1 overflow-auto border rounded">
+        <div className="flex flex-1 flex-col w-full align-middle border rounded-md overflow-auto">
           {loading ? (
             <Loading />
           ) : (
-            <table className="w-full divide-y divide-gray-300">
-              <thead className="bg-white sticky top-0 z-10">
-                <tr>
+            <table className="flex-1 w-full">
+              <thead className="sticky top-0 z-10 bg-gray-50 shadow-md">
+                <tr className="text-nowrap">
                   <th
                     scope="col"
                     className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
@@ -177,12 +177,12 @@ const ManageStuff = () => {
                     scope="col"
                     className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
-                    Phone
+                    AIVIO Phone
                   </th>
                   <th
                     scope="col"
-                    className="py-3.5 text-left text-sm font-semibold text-gray-900"
-                  ></th>
+                    className="py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >Action</th>
                 </tr>
               </thead>
               <tbody className="bg-white overflow-auto">
@@ -190,7 +190,7 @@ const ManageStuff = () => {
                   users.map((user, index) => (
                     <tr
                       key={index}
-                      className="even:bg-blue-50 hover:bg-gray-300"
+                      className="h-16 even:bg-blue-50 hover:bg-gray-300"
                     >
                       <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                         {user.firstName}
@@ -207,33 +207,36 @@ const ManageStuff = () => {
                       <td className="whitespace-nowraptext-sm text-gray-500">
                         {user.phone}
                       </td>
-                      <td className="py-2 flex flex-1 justify-center items-center gap-4">
-                        {me && user.id !== me.id ? (
-                          <>
-                            <ToggleButton
-                              checked={user.enabled ? user.enabled : false}
-                              handleChange={() => {
-                                handleUpdate({
-                                  id: user.id,
-                                  enabled: !user.enabled,
-                                });
-                              }}
-                            />
-                            <div
-                              className="p-1 rounded-md cursor-pointer hover:bg-gray-100"
-                              onClick={() => handleConfirmDelete(user)}
-                            >
-                              <TrashIcon className="w-5 h-5 stroke-red-500" />
+                      <td>
+                        <div className="py-2 flex flex-1 justify-center items-center gap-4">
+                          {me && user.id !== me.id ? (
+                            <>
+                              <ToggleButton
+                                checked={user.enabled ? user.enabled : false}
+                                handleChange={() => {
+                                  handleUpdate({
+                                    id: user.id,
+                                    enabled: !user.enabled,
+                                  });
+                                }}
+                              />
+                              <div
+                                className="p-1 rounded-md cursor-pointer hover:bg-gray-100"
+                                onClick={() => handleConfirmDelete(user)}
+                              >
+                                <TrashIcon className="w-5 h-5 stroke-red-500" />
+                              </div>
+                            </>
+                          ) : (
+                            <div className="p-1 rounded-md cursor-pointer hover:bg-gray-100">
+                              Current User
                             </div>
-                          </>
-                        ) : (
-                          <div className="p-1 rounded-md cursor-pointer hover:bg-gray-100">
-                            Current User
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
+                <tr></tr>
               </tbody>
             </table>
           )}

@@ -182,7 +182,7 @@ export default function Profile() {
                       </div>
                       <div className="flex flex-col w-full gap-1">
                         <label className="text-xs min-w-24" htmlFor="phone">
-                          Phone:
+                          AIVIO Phone:
                         </label>
                         <div className="flex flex-col w-full gap-1">
                           <input
@@ -193,6 +193,7 @@ export default function Profile() {
                             value={values.phone}
                             onBlur={handleBlur}
                             onChange={handleChange}
+                            disabled
                           />
                         </div>
                       </div>
