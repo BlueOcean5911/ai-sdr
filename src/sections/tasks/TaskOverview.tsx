@@ -1,13 +1,9 @@
-import Link from "next/link";
-import { MoveDiagonal } from "lucide-react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-
+import OverviewLayout from "@/layouts/OverviewLayout";
 import LeadView from "@/sections/leads/LeadView";
 import { LeadModelWithCompanyModel } from "@/services/leadService";
 import { TaskModel } from "@/services/taskService";
-import TaskView from "./TaskView";
-import { classNames } from "@/utils";
 import { TASK_STATE } from "@/types/enums";
+import TaskView from "./TaskView";
 
 const TaskOverview = ({
   show,
@@ -23,33 +19,21 @@ const TaskOverview = ({
   handleClose: () => void;
 }) => {
   return (
-    <>
-      <div
-        className={classNames(
-          "absolute top-0 bottom-0 z-20 max-w-6xl flex flex-1 flex-col border-l bg-white overflow-scroll transition-all duration-500",
-          show ? "right-0" : "-right-full"
-        )}
-      >
-        <div className="px-5 py-2 flex items-center gap-2">
-          <div
-            className="p-1 flex justify-center items-center rounded-md hover:bg-gray-200"
-            onClick={handleClose}
-          >
-            <XMarkIcon className="w-5 h-5" />
-          </div>
-          <Link
-            href={`/tasks/${task?.id}`}
-            className="p-1 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-200"
-          >
-            <MoveDiagonal className="w-5 h-5" />
-          </Link>
-        </div>
-        <div className="flex flex-1 flex-row gap-2">
+    <OverviewLayout
+      show={show}
+      handleClose={handleClose}
+      linkHref={`/tasks/${task?.id}`}
+      width="w-full sm:w-11/12 md:w-5/6 lg:w-3/4 xl:w-2/3 max-w-6xl"
+    >
+      <div className="flex flex-1 flex-col lg:flex-row">
+        <div className="w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r">
           <TaskView task={task} handleUpdate={handleUpdate} />
-          {lead && <LeadView lead={lead} />}
+        </div>
+        <div className="w-full lg:w-2/3">
+          <LeadView lead={lead} />
         </div>
       </div>
-    </>
+    </OverviewLayout>
   );
 };
 

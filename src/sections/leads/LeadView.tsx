@@ -1,225 +1,195 @@
 import { LeadModelWithCompanyModel } from "@/services/leadService";
 import {
-  CheckBadgeIcon,
-  EnvelopeIcon,
-  NoSymbolIcon,
-  PhoneIcon,
-  QuestionMarkCircleIcon,
-} from "@heroicons/react/24/outline";
-import { MessageCircleWarning } from "lucide-react";
-import { FaInfo, FaLinkedinIn } from "react-icons/fa";
-import { IoIosLink } from "react-icons/io";
+  Building2,
+  Calendar,
+  Info,
+  Link,
+  Mail,
+  Phone,
+  Smartphone,
+} from "lucide-react";
+import { FaLinkedinIn } from "react-icons/fa";
+import Tag from "@/components/ui/tag";
+import ContactInfoItem, {
+  ContactItem,
+  ContactStatus,
+} from "@/components/contact/ContactItem";
 
-const LeadView = ({ lead }: { lead?: LeadModelWithCompanyModel }) => {
+const LeadView: React.FC<{ lead?: LeadModelWithCompanyModel }> = ({
+  lead = undefined,
+}) => {
+  if (!lead) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full">
+        <Info className="w-10 h-10 text-gray-400" />
+        <p className="text-gray-400">No Lead Data</p>
+      </div>
+    );
+  }
+  const contactItems: ContactItem[] = [
+    {
+      label: "Email",
+      value: lead.email || "",
+      status: lead.emailStatus as ContactStatus,
+      icon: Mail,
+    },
+    {
+      label: "Work Email",
+      value: lead.workEmail || "",
+      status: lead.workEmailStatus as ContactStatus,
+      icon: Mail,
+    },
+    {
+      label: "Primary Phone",
+      value: lead.primaryPhone || "",
+      status: lead.primaryPhoneStatus as ContactStatus,
+      icon: Phone,
+    },
+    {
+      label: "Mobile Phone",
+      value: lead.mobilePhone || "",
+      status: lead.mobilePhoneStatus as ContactStatus,
+      icon: Phone,
+      subIcon: Smartphone,
+    },
+    {
+      label: "Work Phone",
+      value: lead.workPhone || "",
+      status: lead.workPhoneStatus as ContactStatus,
+      icon: Phone,
+      subIcon: Building2,
+    },
+  ];
+
   return (
-    <div className="flex flex-1 flex-col">
-      <div className="px-5 flex flex-row items-center gap-3">
-        <span className="text-lg font-semibold">
-          {lead?.firstName} {lead?.lastName}
-        </span>
-        <a href={lead?.linkedin}>
-          <FaLinkedinIn className="w-6 h-6 p-1 rounded-md border fill-blue-500" />
-        </a>
-      </div>
-      <div className="px-5 py-2 text-sm">
-        {lead?.title} at {lead?.company?.name} * {lead?.company?.city},{" "}
-        {lead?.company?.state} * {lead?.company?.annualRevenue}
-      </div>
-      <div className="p-4 flex flex-1 flex-col lg:flex-row gap-3 bg-gray-100 overflow-scroll transition-all duration-500">
-        <div className="lg:w-1/2 xl:w-1/3 flex flex-col gap-3">
-          <div className="w-full p-3 flex flex-col gap-3 rounded-md border bg-white">
-            <div className="flex flex-row justify-between items-center">
-              <span className="font-semibold">Contact information</span>
-            </div>
-            <div className="flex flex-row justify-between items-center">
-              <div className="flex flex-row justify-end items-center gap-2">
-                <div className="p-2 flex justify-center items-center rounded-full bg-gray-200">
-                  <EnvelopeIcon className="w-3 h-3" />
-                </div>
-                <span className="text-sm">{lead?.email}</span>
-              </div>
-              {lead?.emailStatus === "verified" && (
-                <CheckBadgeIcon className="w-5 h-5 stroke-green-500" />
-              )}
-              {lead?.emailStatus === "questionable" && (
-                <QuestionMarkCircleIcon className="w-5 h-5 stroke-yellow-500" />
-              )}
-              {lead?.emailStatus === "invalid" && (
-                <MessageCircleWarning className="w-5 h-5 stroke-red-500" />
-              )}
-              {lead?.emailStatus === "noStatus" && (
-                <NoSymbolIcon className="w-5 h-5 stroke-gray-500" />
-              )}
-            </div>
-            <div className="flex flex-row justify-between items-center">
-              <div className="flex flex-row justify-end items-center gap-2">
-                <div className="p-2 flex justify-center items-center rounded-full bg-gray-200">
-                  <EnvelopeIcon className="w-3 h-3" />
-                </div>
-                <span className="text-sm">{lead?.workEmail}</span>
-              </div>
-              {lead?.workEmailStatus === "verified" && (
-                <CheckBadgeIcon className="w-5 h-5 stroke-green-500" />
-              )}
-              {lead?.workEmailStatus === "questionable" && (
-                <QuestionMarkCircleIcon className="w-5 h-5 stroke-yellow-500" />
-              )}
-              {lead?.workEmailStatus === "invalid" && (
-                <MessageCircleWarning className="w-5 h-5 stroke-red-500" />
-              )}
-              {lead?.workEmailStatus === "noStatus" && (
-                <NoSymbolIcon className="w-5 h-5 stroke-gray-500" />
-              )}
-            </div>
-            <div className="flex flex-row justify-between items-center">
-              <div className="flex flex-row justify-end items-center gap-2">
-                <div className="p-2 flex justify-center items-center rounded-full bg-gray-200">
-                  <PhoneIcon className="w-3 h-3" />
-                </div>
-                <span className="text-sm">{lead?.primaryPhone}</span>
-              </div>
-              {lead?.primaryPhoneStatus === "verified" && (
-                <CheckBadgeIcon className="w-5 h-5 stroke-green-500" />
-              )}
-              {lead?.primaryPhoneStatus === "questionable" && (
-                <QuestionMarkCircleIcon className="w-5 h-5 stroke-yellow-500" />
-              )}
-              {lead?.primaryPhoneStatus === "invalid" && (
-                <MessageCircleWarning className="w-5 h-5 stroke-red-500" />
-              )}
-              {lead?.primaryPhoneStatus === "noStatus" && (
-                <NoSymbolIcon className="w-5 h-5 stroke-gray-500" />
-              )}
-            </div>
-            <div className="flex flex-row justify-between items-center">
-              <div className="flex flex-row justify-end items-center gap-2">
-                <div className="p-2 flex justify-center items-center rounded-full bg-gray-200">
-                  <PhoneIcon className="w-3 h-3" />
-                </div>
-                <span className="text-sm">{lead?.mobilePhone}</span>
-              </div>
-              {lead?.mobilePhoneStatus === "verified" && (
-                <CheckBadgeIcon className="w-5 h-5 stroke-green-500" />
-              )}
-              {lead?.mobilePhoneStatus === "questionable" && (
-                <QuestionMarkCircleIcon className="w-5 h-5 stroke-yellow-500" />
-              )}
-              {lead?.mobilePhoneStatus === "invalid" && (
-                <MessageCircleWarning className="w-5 h-5 stroke-red-500" />
-              )}
-              {lead?.mobilePhoneStatus === "noStatus" && (
-                <NoSymbolIcon className="w-5 h-5 stroke-gray-500" />
-              )}
-            </div>
-            <div className="flex flex-row justify-between items-center">
-              <div className="flex flex-row justify-end items-center gap-2">
-                <div className="p-2 flex justify-center items-center rounded-full bg-gray-200">
-                  <PhoneIcon className="w-3 h-3" />
-                </div>
-                <span className="text-sm">{lead?.workPhone}</span>
-              </div>
-              {lead?.workPhoneStatus === "verified" && (
-                <CheckBadgeIcon className="w-5 h-5 stroke-green-500" />
-              )}
-              {lead?.workPhoneStatus === "questionable" && (
-                <QuestionMarkCircleIcon className="w-5 h-5 stroke-yellow-500" />
-              )}
-              {lead?.workPhoneStatus === "invalid" && (
-                <MessageCircleWarning className="w-5 h-5 stroke-red-500" />
-              )}
-              {lead?.workPhoneStatus === "noStatus" && (
-                <NoSymbolIcon className="w-5 h-5 stroke-gray-500" />
-              )}
-            </div>
-          </div>
-          <div className="w-full p-3 flex flex-col gap-3 rounded-md border bg-white">
-            <div className="flex flex-row justify-between items-center">
-              <span className="font-semibold">Personal Note1</span>
-            </div>
-            <div className="min-h-20 flex flex-row justify-between items-center">
-              {lead?.personalNote1}
-            </div>
-          </div>
-          <div className="w-full p-3 flex flex-col gap-3 rounded-md border bg-white">
-            <div className="flex flex-row justify-between items-center">
-              <span className="font-semibold">Personal Note2</span>
-            </div>
-            <div className="min-h-20 flex flex-row justify-between items-center">
-              {lead?.personalNote2}
-            </div>
-          </div>
+    <div className="flex flex-1 flex-col bg-white">
+      <header className="px-6 py-3 border-b">
+        <div className="flex items-center gap-4">
+          <h1 className="text-lg font-semibold text-gray-900">
+            {lead.firstName} {lead.lastName}
+          </h1>
+          <a
+            href={lead.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:text-blue-800"
+            aria-label="LinkedIn profile"
+          >
+            <FaLinkedinIn className="w-5 h-5" />
+          </a>
         </div>
-        <div className="lg:w-1/2 xl:w-2/3 flex flex-col gap-3">
-          <div className="p-3 flex flex-col gap-3 rounded-md border bg-white">
-            <div className="flex flex-row justify-between items-center">
-              <div className="flex flex-row items-center gap-2">
-                <span className="font-semibold">{lead?.company?.name}</span>
-                <a href={lead?.company?.website}>
-                  <IoIosLink className="w-6 h-6 p-1 rounded-md border" />
-                </a>
-                <a href={lead?.company?.linkedin}>
-                  <FaLinkedinIn className="w-6 h-6 p-1 rounded-md border fill-blue-500" />
-                </a>
-              </div>
-            </div>
-            <div className="flex flex-row items-center gap-6 text-sm">
-              {lead?.company?.industry} * {lead?.company?.size} employees *{" "}
-              {lead?.company?.city}, {lead?.company?.state}
-            </div>
-            <div className="flex flex-row items-start gap-2">
-              <div className="p-2 flex justify-start items-start rounded-full bg-gray-200">
-                <FaInfo className="w-3 h-3" />
-              </div>
-              <span className="text-sm">{lead?.company?.description}</span>
-            </div>
-            <div className="flex flex-row justify-between items-center">
-              <div className="flex flex-row items-center gap-2">
-                <div className="p-2 flex justify-center items-center rounded-full bg-gray-200">
-                  <PhoneIcon className="w-3 h-3" />
+        <p className="mt-1 text-sm text-gray-600">
+          {lead.title} at {lead.company?.name} • {lead.company?.city},{" "}
+          {lead.company?.state} • {lead.company?.annualRevenue}
+        </p>
+      </header>
+      <main className="p-6 grid gap-6 md:grid-cols-2">
+        <section className="space-y-6">
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <h2 className="text-lg font-semibold mb-4">Contact Information</h2>
+            {contactItems.map((item, index) => (
+              <ContactInfoItem key={index} {...item} />
+            ))}
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <h2 className="text-lg font-semibold mb-4">Personal Notes</h2>
+            <div className="space-y-4">
+              {[lead.personalNote1, lead.personalNote2].map((note, index) => (
+                <div key={index} className="text-sm text-gray-700">
+                  <p className="font-medium mb-1">Note {index + 1}:</p>
+                  <p>{note}</p>
                 </div>
-                <span className="text-sm">{lead?.company?.phone}</span>
-              </div>
-              {lead?.company?.phoneStatus === "verified" && (
-                <CheckBadgeIcon className="w-5 h-5 stroke-green-500" />
-              )}
-              {lead?.company?.phoneStatus === "questionable" && (
-                <QuestionMarkCircleIcon className="w-5 h-5 stroke-yellow-500" />
-              )}
-              {lead?.company?.phoneStatus === "invalid" && (
-                <MessageCircleWarning className="w-5 h-5 stroke-red-500" />
-              )}
-              {lead?.company?.phoneStatus === "noStatus" && (
-                <NoSymbolIcon className="w-5 h-5 stroke-gray-500" />
-              )}
+              ))}
             </div>
-            <div className="flex flex-row text-sm">
-              <span className="w-1/3">Keywords</span>
-              <div className="w-2/3 flex space-x-3 flex-wrap">
-                {lead?.company?.keywords?.split(",").map((item, idx) => (
-                  <span
-                    key={idx}
-                    className="px-1 capitalize text-nowrap rounded-md bg-gray-200 mb-1"
-                  >
+          </div>
+        </section>
+        <section className="bg-white p-6 rounded-lg shadow-sm border">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold">{lead.company?.name}</h2>
+            <div className="flex gap-2">
+              {[
+                {
+                  href: lead.company?.website,
+                  icon: Link,
+                  label: "Company website",
+                },
+                {
+                  href: lead.company?.linkedin,
+                  icon: FaLinkedinIn,
+                  label: "Company LinkedIn",
+                },
+              ].map((link, index) => (
+                <a
+                  key={index}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800"
+                  aria-label={link.label}
+                >
+                  <link.icon className="w-5 h-5" />
+                </a>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2 mb-4">
+            <Tag color="bg-blue-100 text-blue-800">
+              {lead.company?.industry}
+            </Tag>
+            <Tag color="bg-green-100 text-green-800">
+              {lead.company?.size} employees
+            </Tag>
+            <Tag color="bg-purple-100 text-purple-800">
+              {lead.company?.city}, {lead.company?.state}
+            </Tag>
+          </div>
+          <div className="flex items-start gap-3 mb-4">
+            <Info className="w-5 h-5 text-gray-400 flex-shrink-0 mt-1" />
+            <p className="text-sm text-gray-700">{lead.company?.description}</p>
+          </div>
+          <ContactInfoItem
+            label="Company Phone"
+            value={lead.company?.phone || ""}
+            status={(lead.company?.phoneStatus as ContactStatus) || "noStatus"}
+            icon={Phone}
+            subIcon={Building2}
+          />
+          <div className="mt-4">
+            <h3 className="font-medium text-sm mb-2">Keywords</h3>
+            <div className="flex flex-wrap gap-2">
+              {lead.company?.keywords
+                ?.split(",")
+                .map((item: string, idx: number) => (
+                  <Tag key={idx} color="bg-gray-100 text-gray-800">
                     {item.trim()}
-                  </span>
+                  </Tag>
                 ))}
-              </div>
-            </div>
-            <div className="flex flex-row text-sm">
-              <span className="w-1/3">Annual revenue</span>
-              <span className="w-2/3">{lead?.company?.annualRevenue}</span>
-            </div>
-            <div className="flex flex-row text-sm">
-              <span className="w-1/3">Founded</span>
-              <span className="w-2/3">{lead?.company?.yearFounded}</span>
-            </div>
-            <div className="flex flex-row text-sm">
-              <span className="w-1/3">Industry</span>
-              <span className="w-2/3">{lead?.company?.industry}</span>
             </div>
           </div>
-        </div>
-      </div>
+          <div className="mt-4 space-y-2">
+            {[
+              {
+                icon: Building2,
+                label: "Annual revenue",
+                value: lead.company?.annualRevenue,
+              },
+              {
+                icon: Calendar,
+                label: "Founded",
+                value: lead.company?.yearFounded,
+              },
+            ].map((item, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <item.icon className="w-4 h-4 text-gray-400" />
+                <span className="text-sm text-gray-700">
+                  <span className="font-medium">{item.label}:</span>{" "}
+                  {item.value}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
     </div>
   );
 };
