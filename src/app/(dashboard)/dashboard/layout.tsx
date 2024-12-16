@@ -21,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </NavTitle>
       <div className="p-4 flex flex-1 flex-col gap-4 bg-gray-100 overflow-auto">
         <SalesMarketingStatistics />
-        <div className="p-5 flex flex-1 flex-col rounded-lg bg-white shadow-md overflow-auto min-h-[768px]">
+        <div className="p-5 flex flex-1 flex-col rounded-lg bg-white shadow-md overflow-auto min-h-[496px]">
           <span className="text-lg font-semibold">Workspace</span>
           <div className="w-full flex items-center gap-2 border-b mb-2">
             <Link
