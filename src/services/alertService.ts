@@ -2,6 +2,7 @@ import { api } from "@/utils/api";
 import { UserModel } from "./userService";
 import { ApiCountResponse, FetchProps } from "@/types";
 import { AlertFilterType } from "@/contexts/AlertContext";
+import { TASK_STATE } from "@/types/enums";
 
 interface FetchAlertsProps extends FetchProps {
   search?: string;
@@ -22,6 +23,7 @@ export interface BaseAlertModel {
   href: string;
   createdAt: string;
   isRead: boolean;
+  statusTo: TASK_STATE;
 }
 
 export interface UpdateAlertModel {
