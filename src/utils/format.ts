@@ -1,5 +1,6 @@
 import { format, register } from "timeago.js";
 import * as en from "timeago.js/lib/lang/en_US";
+import { parsePhoneNumberWithError } from "libphonenumber-js";
 
 export function formatNumber(value: number, showPlus: boolean = true): string {
   if (value >= 1000000) {
@@ -213,4 +214,20 @@ export const formatTimestamp = (timestamp: number | string): string => {
   const formattedSeconds = String(seconds).padStart(2, "0");
 
   return `${formattedMinutes}:${formattedSeconds}`;
+};
+
+export const formatToE164 = (phoneNumber: string): string | null => {
+  try {
+    // Parse without region restriction
+    const parsedNumber = parsePhoneNumberWithError(phoneNumber);
+
+    if (!parsedNumber || !parsedNumber.isValid()) {
+      return null;
+    }
+
+    return parsedNumber.format("E.164");
+  } catch (error) {
+    console.error("Phone number parsing error:", error);
+    return null;
+  }
 };
