@@ -28,6 +28,7 @@
     "formik": "^2.4.6",
     "html-to-react": "^1.7.0",
     "jsonwebtoken": "^9.0.2",
+    "libphonenumber-js": "^1.11.16",
     "lottie-react": "^2.4.0",
     "lucide-react": "^0.435.0",
     "moment": "^2.30.1",
