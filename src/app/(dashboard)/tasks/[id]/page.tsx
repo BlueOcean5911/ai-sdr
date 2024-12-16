@@ -65,7 +65,7 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <div className="w-full flex flex-1 flex-col overflow-auto">
-        <div className="px-5 py-2 flex items-center">
+        <div className="px-5 py-2 flex items-center border-b">
           <button
             className="p-1 text-sm rounded-md hover:bg-gray-100"
             onClick={() => router.push("/tasks")}
@@ -78,15 +78,21 @@ export default function Page({ params }: { params: { id: string } }) {
           </button>
         </div>
         <div className="flex flex-1 flex-row gap-2">
-          <TaskView
-            task={task}
-            handleUpdate={(id, type: string, value: TASK_STATE | string) =>
-              handleUpdateTask(id, {
-                [type]: value,
-              })
-            }
-          />
-          {lead && <LeadView lead={lead} />}
+          <div className="flex flex-1 flex-col lg:flex-row">
+            <div className="w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r">
+              <TaskView
+                task={task}
+                handleUpdate={(id, type: string, value: TASK_STATE | string) =>
+                  handleUpdateTask(id, {
+                    [type]: value,
+                  })
+                }
+              />
+            </div>
+            <div className="w-full lg:w-2/3">
+              <LeadView lead={lead} />
+            </div>
+          </div>
         </div>
       </div>
     </>
