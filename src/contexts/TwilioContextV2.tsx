@@ -124,7 +124,6 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
     try {
       existedDevice.setup(accessToken);
     } catch (error) {
-      device.destroy();
       initializeTwilio();
     }
   };
