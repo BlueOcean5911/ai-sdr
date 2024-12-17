@@ -1,7 +1,7 @@
 "use client";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
-import { CallModel } from "@/services/callService";
+import { CallProps } from "@/services/callService";
 import { SlCallIn } from "react-icons/sl";
 import { SlCallOut } from "react-icons/sl";
 
@@ -12,7 +12,7 @@ export default function CallItem({
   handleEdit,
   handleDelete,
 }: {
-  call: CallModel;
+  call: CallProps;
   handleEdit: () => void;
   handleDelete: () => void;
 }) {
@@ -24,43 +24,20 @@ export default function CallItem({
           type="checkbox"
         />
       </td>
-      <td className="px-3 py-1" >
-        {call.direction === "inbound" ? (
-          <SlCallIn className="w-5 h-5 fill-blue-900 stroke-blue-900" />
-        ) : (
+      <td className="p-1 text-xs text-nowrap">{call.leadName}</td>
+      <td className="p-1">
+        {call.outbound ? (
           <SlCallOut className="w-5 h-5 fill-blue-900 stroke-blue-900" />
+        ) : (
+          <SlCallIn className="w-5 h-5 fill-blue-900 stroke-blue-900" />
         )}
       </td>
-      <td className="min-w-32">
-        <span className="text-sm font-semibold text-blue-900 line-clamp-1">
-          {call.from_formatted || "Unknown"}
-        </span>
-        <span className="text-xs line-clamp-1">{call.from_ || "Unknown"}</span>
+      <td className="p-1 text-xs text-nowrap">{call.callPurposeName}</td>
+      <td className="p-1 text-xs text-nowrap">
+        {call.callDispositionName}
       </td>
-      <td className="min-w-32">
-        <p className="text-sm font-semibold text-blue-900 line-clamp-1">
-          {call.to || "Unknown"}
-        </p>
-        <p className="text-xs line-clamp-1">
-          {call.to_formatted || "Unknown"}
-        </p>
-      </td>
-      <td className="min-w-20">
-        <p className="text-sm">{call.start_time.split("T")[0]}</p>
-        <span className="text-xs">{call.start_time.split("T")[1].replace("Z", "")}</span>
-      </td>
-      <td className="min-w-16 p-1 text-xs text-nowrap">
-        {formatTimestamp(call.duration)}
-      </td>
-      <td className="min-w-32 p-1 text-xs font-semibold text-nowrap capitalize">
-        {call.status}
-      </td>
-      <td className="min-w-20 p-1 text-xs font-semibold text-nowrap">
-        {call.price}
-      </td>
-      <td className="min-w-32 p-1 text-xs font-semibold text-nowrap">
-        {call.price_unit}
-      </td>
+      <td className="p-1 text-xs text-nowrap capitalize">{call.note}</td>
+      <td className="p-1 text-xs text-nowrap capitalize">{call.state}</td>
       <td className="">
         <Menu>
           <MenuButton className="">
@@ -99,4 +76,3 @@ export default function CallItem({
     </tr>
   );
 }
-
