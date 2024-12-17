@@ -1,7 +1,7 @@
 "use client";
 
 import DialPad from "@/components/twilio/DialPad";
-import CallBar from "@/components/twilio/PhoneDiaBar";
+import CallBar from "@/components/twilio/PhoneDialBar";
 import { LoaderCircleIcon, PhoneCall } from "lucide-react";
 import { useTwilioContext } from "@/contexts/TwilioContextV2";
 import CallLog from "../calls/CallLog";
