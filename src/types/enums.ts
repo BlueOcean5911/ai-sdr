@@ -126,6 +126,9 @@ export enum CALL_STATE {
   NO_ANSWER = "no-answer",
   CANCELLED = "cancelled",
   FAILED = "failed",
+
+  // INBOUND
+  MISSED = "missed",
 }
 
 export enum USER_CALL_TYPE {
