@@ -12,13 +12,14 @@ const CallToolbar = () => {
   const { callFilterConfig, setCallFilterConfig } = useCallFilter();
   const [statistics, setStatistics] = useState<CallStatistics>({
     total: 0,
-    active: 0,
     no_answer: 0,
-    left_voicemail: 0,
     busy: 0,
+    left_voicemail: 0,
     gatekeeper: 0,
-    connected: 0,
-    no_deposition: 0,
+    bad_number: 0,
+    connected_positive: 0,
+    connected_neutral: 0,
+    connected_negative: 0,
   });
 
   // const fetchStatistics = () => {
@@ -40,8 +41,8 @@ const CallToolbar = () => {
   // }, []);
 
   return (
-    <div className="flex items-center gap-2">
-      <button
+    <div className="flex justify-between items-center gap-2">
+      {/* <button
         className="btn-secondary"
         onClick={() => {
           setCallFilterConfig((prev) => ({
@@ -54,13 +55,14 @@ const CallToolbar = () => {
         <span className="text-sm">
           {callFilterConfig.isOpen ? "Hide Filters" : "Show Filters"}
         </span>
-      </button>
+      </button> */}
+      <div></div>
       <div className="flex gap-2 overflow-auto">
         {Object.entries(statistics).map(([key, count]) => (
           <Link key={key} href={`${path}?${key}=true`}>
             <div
               className={classNames(
-                "w-24 min-w-20 py-1 flex flex-col text-xs text-center cursor-pointer border-b",
+                "min-w-20 py-1 flex flex-col text-xs text-center text-nowrap cursor-pointer border-b",
                 currentParams[key]
                   ? "border-b-blue-500 bg-gray-100"
                   : "hover:bg-gray-100 hover:border-b-blue-500"
