@@ -72,14 +72,13 @@ const PhoneDial = () => {
         )}
       </div>
 
-      {showDialPad && (
-        <DialPad
-          onDial={(phoneNumber: string) => {
-            handleDial(phoneNumber);
-          }}
-          onClose={() => setShowDialPad(false)}
-        />
-      )}
+      <DialPad
+        isOpen={showDialPad}
+        onDial={(phoneNumber: string) => {
+          handleDial(phoneNumber);
+        }}
+        onClose={() => setShowDialPad(false)}
+      />
 
       {Array.from(callLogCallSids).map((callSid: string, index) => (
         <CallLog

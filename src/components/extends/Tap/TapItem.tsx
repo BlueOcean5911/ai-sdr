@@ -5,35 +5,47 @@ import React from "react";
 const TapItem = ({
   content,
   link,
+  icon,
   active = false,
 }: {
   content: string | React.ReactNode;
   link: string;
+  icon?: React.ReactNode;
   active?: boolean;
 }) => {
-  const [isHovered, setIsHovered] = React.useState(false);
-
   return (
     <>
       <Link href={link}>
-        <span
-          className="flex flex-col rounded-md text-sm hover:bg-gray-100"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+        <button
+          className={`
+                group inline-flex items-center px-1 py-4 text-sm font-medium border-b-2 hover:border-gray-300 
+                ${
+                  active
+                    ? "border-blue-400 text-blue-400"
+                    : "border-transparent text-gray-400 hover:text-gray-700"
+                }
+              `}
         >
           <span
-            className={classNames(
-              "p-1.5 cursor-pointer font-semibold",
-              active && "text-blue-500 hover:text-blue-400"
-            )}
+            className={`
+                inline-flex items-center gap-2 transition-colors duration-200
+                ${
+                  active
+                    ? "text-blue-400 stroke-blue-400"
+                    : "text-gray-400 group-hover:text-gray-400"
+                }
+              `}
           >
+            {React.cloneElement(icon as React.ReactElement, {
+              className: `w-4 h-4 ${
+                active
+                  ? "fill-blue-400 stroke-blue-400"
+                  : "text-gray-400 group-hover:text-gray-400"
+              }`,
+            })}
             {content}
           </span>
-          <span
-            className="w-full border-b-2 border-blue-500 transition-all duration-400"
-            style={{ width: isHovered ? "100%" : !active ? "0%" : "" }}
-          />
-        </span>
+        </button>
       </Link>
     </>
   );
