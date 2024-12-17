@@ -18,7 +18,7 @@ const TapItem = ({
       <Link href={link}>
         <button
           className={`
-                group inline-flex items-center px-1 py-4 text-sm font-medium border-b-2 hover:border-gray-300 
+                group inline-flex items-center px-1 py-1   text-sm font-medium border-b-2 hover:border-gray-300 
                 ${
                   active
                     ? "border-blue-400 text-blue-400"
