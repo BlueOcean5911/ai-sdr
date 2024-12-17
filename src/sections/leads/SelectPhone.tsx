@@ -7,7 +7,7 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 
-import { LeadModel, LeadModelWithCompanyModel } from "@/services/leadService";
+import { LeadModelWithCompanyModel } from "@/services/leadService";
 import { useTwilioContext } from "@/contexts/TwilioContextV2";
 
 export default function SelectPhone({
@@ -21,7 +21,6 @@ export default function SelectPhone({
 }) {
   const { handleDial } = useTwilioContext();
 
-  console.log("hereherehere==1!!!!!!!!!!!!!!", lead);
   const handleCall = (number: string) => {
     console.log("hereherehere==", lead);
     if (lead) {
@@ -52,7 +51,12 @@ export default function SelectPhone({
                       as="h3"
                       className="px-6 py-3 text-lg font-semibold leading-6 bg-white text-gray-900 rounded-md"
                     >
-                      Call with {lead.firstName} {lead.lastName}
+                      Call{" "}
+                      {lead ? (
+                        <>
+                          With {lead?.firstName} {lead?.lastName}
+                        </>
+                      ) : null}
                     </DialogTitle>
                     <div className="flex flex-col gap-2 p-6">
                       <div className="flex flex-col gap-2">
