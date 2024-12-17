@@ -60,10 +60,15 @@ export default function CallBar({
     <div className="flex flex-col lg:flex-row items-end lg:items-center gap-2 lg:gap-24 justify-between px-4 py-2 bg-white border-b text-sm rounded-lg shadow-lg shadow-gray-900/40">
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2 text-base">
-          <span className="font-medium">Call with</span>
-          <span className="text-blue-600 font-medium">
-            {callInfo.lead?.firstName} {callInfo.lead?.firstName}
-          </span>
+          Call
+          {callInfo.lead && (
+            <>
+              With{" "}
+              <span className="text-blue-600 font-medium">
+                {callInfo.lead?.firstName} {callInfo.lead?.firstName}
+              </span>
+            </>
+          )}
         </div>
         {callInfo.outbound && (
           <div className="flex items-center gap-2">
@@ -81,7 +86,7 @@ export default function CallBar({
           Show Caller Details
         </button>
       </div>
-      {state === "pending" && (
+      {state === CALL_STATE.INCOMING && (
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-4">
             <button
