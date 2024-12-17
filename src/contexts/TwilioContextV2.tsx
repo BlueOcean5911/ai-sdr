@@ -52,7 +52,6 @@ const TwilioContext = createContext<TwilioContextType | undefined>(undefined);
 
 export function TwilioProvider({ children }: { children: ReactNode }) {
   const { me } = useAuth();
-
   const [device, setDevice] = useState<any>(null);
   const [deviceState, setDeviceState] = useState<string | null>(null);
   const [connections, setConnections] = useState<any[] | []>([]);
@@ -70,11 +69,6 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     initializeTwilio();
   }, [me]);
-
-  useEffect(() => {
-    console.log("CONNECTIONS", connections);
-    console.log("callMapping", callMapping);
-  }, [connections, callMapping]);
 
   const cleanCallLogCallSids = (callSid: string): void => {
     callLogCallSids.delete(callSid);
@@ -96,63 +90,6 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
     );
   };
 
-  const handlePendingCall = (conn: any) => {
-    const callSid = conn.parameters.CallSid;
-    setCallMapping((prev) => {
-      // If CallSid exists, preserve existing data and only update the state
-      if (prev[callSid]) {
-        return {
-          ...prev,
-          [callSid]: {
-            ...prev[callSid],
-            state: CALL_STATE.OPEN,
-          },
-        };
-      }
-      return { ...prev };
-    });
-  };
-
-  const handleCancelCall = (connection: any) => {
-    const callSid = connection.parameters.CallSid;
-    // remove the connection from the activeConnections set and connections
-    cleanConnection(callSid);
-
-    setCallMapping((prev) => {
-      // If CallSid exists, preserve existing data and only update the state
-      if (prev[callSid]) {
-        return {
-          ...prev,
-          [callSid]: {
-            ...prev[callSid],
-            state: CALL_STATE.CANCELLED,
-          },
-        };
-      }
-      return { ...prev };
-    });
-  };
-
-  const handleRejectCall = (connection: any) => {
-    const callSid = connection.parameters.CallSid;
-    // remove the connection from the activeConnections set and connections
-    cleanConnection(callSid);
-
-    setCallMapping((prev) => {
-      // If CallSid exists, preserve existing data and only update the state
-      if (prev[callSid]) {
-        return {
-          ...prev,
-          [callSid]: {
-            ...prev[callSid],
-            state: CALL_STATE.REJECTED,
-          },
-        };
-      }
-      return { ...prev };
-    });
-  };
-
   const handleLogCall = (
     callSid: string,
     callDispositionId: string,
@@ -164,7 +101,6 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
     call.callPurposeId = callPurposeId;
     call.note = note;
     delete call.lead;
-    console.log("call: ", call);
 
     runService(
       call,
@@ -185,11 +121,18 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
     if (!existedDevice) {
       initializeTwilio();
     }
-    existedDevice.setup(accessToken);
+    try {
+      existedDevice.setup(accessToken);
+    } catch (error) {
+      device.destroy();
+      initializeTwilio();
+    }
   };
 
   const handleIncomingCall = (connection: any) => {
     const callSid = connection.parameters.CallSid;
+    let isCallAccepted = false;
+
     if (!activeConnections.has(callSid)) {
       activeConnections.add(callSid);
 
@@ -212,9 +155,60 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
       },
     }));
 
-    connection.on("pending", handlePendingCall);
-    connection.on("canceled", handleCancelCall);
-    connection.on("rejected", handleRejectCall);
+    // Handle accepted call
+    connection.on("accept", () => {
+      isCallAccepted = true;
+      setCallMapping((prev) => ({
+        ...prev,
+        [callSid]: {
+          ...prev[callSid],
+          state: CALL_STATE.OPEN,
+        },
+      }));
+    });
+    // Handle missed/rejected call
+    connection.on("cancel", () => {
+      const currentMapping: CallMapping = callMappingRef.current;
+      if (currentMapping[callSid]?.state === CALL_STATE.INCOMING) {
+        if (!isCallAccepted) {
+          if (callSid in currentMapping) {
+            let call = {
+              ...currentMapping[callSid],
+              state: CALL_STATE.MISSED,
+            };
+            delete call.lead;
+
+            runService(
+              call,
+              addCall,
+              (data) => {
+                toast.success("Call data uploaded successfully");
+              },
+              (status, error) => {
+                handleError(status, error);
+              }
+            );
+          }
+
+          cleanConnection(connection.parameters.CallSid);
+        }
+      }
+    });
+    // Handle completed call
+    connection.on("disconnect", () => {
+      if (isCallAccepted) {
+        setCallMapping((prev) => ({
+          ...prev,
+          [callSid]: {
+            ...prev[callSid],
+            state: CALL_STATE.COMPLETED,
+          },
+        }));
+
+        callLogCallSids.add(callSid);
+        cleanConnection(callSid);
+      }
+    });
   };
 
   const initializeTwilio = async () => {
@@ -267,7 +261,6 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
     lead?: LeadModel,
     taskId?: string
   ) => {
-    console.log("here================", lead, leadId, taskId);
     if (!device || !phoneNumber) return;
     const formattedNumber = formatToE164(phoneNumber);
     if (!formattedNumber) {
@@ -290,7 +283,6 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
     }
 
     outgoingConnection.on("accept", () => {
-      console.log("accept===========>");
       const callSid = outgoingConnection.parameters.CallSid;
       if (!activeConnections.has(callSid)) {
         activeConnections.add(callSid);
@@ -302,7 +294,7 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
           return [...uniqueConnections, outgoingConnection];
         });
       }
-      console.log("here================123", leadId, lead, taskId);
+
       setCallMapping((prev) => ({
         ...prev,
         [outgoingConnection.parameters.CallSid]: {
@@ -342,7 +334,7 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
       const data: TokenResponse = response.data;
       return data.token;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -375,61 +367,6 @@ export function useTwilioContext() {
   return context;
 }
 
-// Connection States:
-
-// - "pending" // Initial state when call is being established
-// - "ringing" // Call is ringing on recipient's end
-// - "open" // Active call connection
-// - "closed" // Call has ended normally
-// - "failed" // Call failed to connect
-// - "busy" // Recipient's line was busy
-// - "canceled" // Call was canceled before connecting
-// - "rejected" // Recipient rejected the call
-
-// Connection Events:
-
-// connection.on("accept") // Call was accepted
-// connection.on("cancel") // Call was canceled
-// connection.on("disconnect") // Call ended (normal termination)
-// connection.on("reject") // Call was rejected
-// connection.on("error") // Error occurred during call
-// connection.on("mute") // Call was muted
-// connection.on("unmute") // Call was unmuted
-// connection.on("volume") // Volume changed
-// connection.on("warning") // Warning event occurred
-// connection.on("warning-cleared") // Warning was cleared
-
-// inbound calls
-
-// States:
-// - "pending" // Incoming call notification
-// - "ringing" // Your device is ringing
-// - "open" // You accepted the call
-// - "closed" // You ended the call
-// - "rejected" // You rejected the call
-// - "canceled" // Caller hung up before you answered
-
-// Events:
-// connection.on("incoming") // New incoming call
-// connection.on("accept") // You accepted call
-// connection.on("reject") // You rejected call
-// connection.on("cancel") // Caller canceled
-// connection.on("disconnect") // Call ended
-
-// outbound calls
-
-// States:
-// - "pending" // Call initializing
-// - "ringing" // Recipient's phone ringing
-// - "open" // Recipient answered
-// - "closed" // Call completed normally
-// - "failed" // Call failed to connect
-// - "busy" // Recipient line busy
-// - "canceled" // You canceled before answer
-
-// Events:
-// connection.on("accept") // Recipient answered
-// connection.on("reject") // Recipient rejected
-// connection.on("disconnect") // Call ended
-// connection.on("busy") // Line busy
-// connection.on("error") // Connection error
+// https://www.twilio.com/en-us/blog/routing-incoming-phone-calls-twilio-programmable-voice-python-django
+// https://www.twilio.com/en-us/blog/make-receive-phone-calls-browser-twilio-programmable-voice-python-javascript
+// https://www.twilio.com/docs/voice/sdks/javascript/v1/connection#accept-handler
