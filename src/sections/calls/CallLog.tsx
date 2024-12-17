@@ -152,7 +152,7 @@ export default function CallLog({
                     <Formik
                       enableReinitialize={true}
                       initialValues={{
-                        contact: "1e6c3893fe2c4a0d98ec111521c5f963",
+                        contact: callMapping[callSid]?.leadId || "none",
                         disposition: "",
                         purpose: "",
                         note: "",
