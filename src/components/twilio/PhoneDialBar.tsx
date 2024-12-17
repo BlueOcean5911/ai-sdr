@@ -60,7 +60,7 @@ export default function CallBar({
     <div className="flex flex-col lg:flex-row items-end lg:items-center gap-2 lg:gap-24 justify-between px-4 py-2 bg-white border-b text-sm rounded-lg shadow-lg shadow-gray-900/40">
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2 text-base">
-          Call
+          Call{" "}
           {callInfo.lead && (
             <>
               With{" "}
