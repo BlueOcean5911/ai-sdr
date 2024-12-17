@@ -47,6 +47,18 @@ export interface CallProps {
   callPurposeName: string;
 }
 
+export interface CallStatistics {
+  total?: number;
+  no_answer?: number;
+  busy?: number;
+  left_voicemail?: number;
+  gatekeeper?: number;
+  bad_number?: number;
+  connected_positive?: number;
+  connected_neutral?: number;
+  connected_negative?: number;
+}
+
 interface ApiCallResponse {
   data: CallProps | null;
 }
@@ -73,6 +85,7 @@ export const getCalls = async (
 ): Promise<ApiCallsResponse> => {
   try {
     const response = await api.get("api/v1/calls");
+    console.log("calls data", response.data);
     return response;
   } catch (error) {
     console.log(error);
