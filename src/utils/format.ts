@@ -218,8 +218,10 @@ export const formatTimestamp = (timestamp: number | string): string => {
 
 export const formatToE164 = (phoneNumber: string): string | null => {
   try {
+    // Remove white space and brackets
+    const cleanedNumber = phoneNumber.replace(/\s+|\(|\)/g, "");
     // Parse without region restriction
-    const parsedNumber = parsePhoneNumberWithError(phoneNumber);
+    const parsedNumber = parsePhoneNumberWithError(cleanedNumber);
 
     if (!parsedNumber || !parsedNumber.isValid()) {
       return null;

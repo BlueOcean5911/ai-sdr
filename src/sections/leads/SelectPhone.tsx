@@ -7,8 +7,8 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 
-import { LeadModelWithCompanyModel } from "@/services/leadService";
-import { useTwilioContext } from "@/contexts/TwilioContext";
+import { LeadModel, LeadModelWithCompanyModel } from "@/services/leadService";
+import { useTwilioContext } from "@/contexts/TwilioContextV2";
 
 export default function SelectPhone({
   open,
@@ -19,11 +19,14 @@ export default function SelectPhone({
   lead: LeadModelWithCompanyModel | undefined;
   handleClose: () => void;
 }) {
-  const { handleCallOut } = useTwilioContext();
+  const { handleDial } = useTwilioContext();
 
+  console.log("hereherehere==1!!!!!!!!!!!!!!", lead);
   const handleCall = (number: string) => {
-    console.log("selected phone number: ", number);
-    handleCallOut(number);
+    console.log("hereherehere==", lead);
+    if (lead) {
+      handleDial(number, lead.id, lead);
+    }
     handleClose();
   };
 
@@ -57,7 +60,7 @@ export default function SelectPhone({
                           Primary Phone
                         </label>
                         <button
-                        className="p-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                          className="p-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
                           onClick={() =>
                             lead.primaryPhone
                               ? handleCall(lead.primaryPhone)
@@ -72,7 +75,7 @@ export default function SelectPhone({
                           Mobile Phone
                         </label>
                         <button
-                        className="p-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                          className="p-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
                           onClick={() =>
                             lead.mobilePhone ? handleCall(lead.mobilePhone) : {}
                           }
@@ -85,7 +88,7 @@ export default function SelectPhone({
                           Work Phone
                         </label>
                         <button
-                        className="p-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                          className="p-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
                           onClick={() =>
                             lead.workPhone ? handleCall(lead.workPhone) : {}
                           }

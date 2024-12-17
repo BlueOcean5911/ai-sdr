@@ -1,3 +1,6 @@
+import { CallCreateProps } from "@/services/callService";
+import { LeadModel } from "@/services/leadService";
+
 export enum COMPANY_SIZE {
   ONE_TO_TEN = "1-10",
   ELEVEN_TO_TWENTY = "11-20",
@@ -99,4 +102,33 @@ export enum TASK_STATE {
   INCOMPLETE = "incomplete",
   SKIPPED = "skipped",
   ARCHIVED = "archived",
+}
+
+export interface CallInfo extends CallCreateProps {
+  lead?: LeadModel;
+}
+
+export interface CallMapping {
+  [CallSid: string]: CallInfo;
+}
+
+export enum CALL_STATE {
+  PENDING = "pending",
+  ACCEPTED = "accepted",
+  RINGING = "ringing",
+  INCOMING = "incoming",
+  OPEN = "open",
+
+  // Final states after call
+  BUSY = "busy",
+  REJECTED = "rejected",
+  COMPLETED = "completed",
+  NO_ANSWER = "no-answer",
+  CANCELLED = "cancelled",
+  FAILED = "failed",
+}
+
+export enum USER_CALL_TYPE {
+  VOIP = "voip",
+  bridge = "bridge",
 }

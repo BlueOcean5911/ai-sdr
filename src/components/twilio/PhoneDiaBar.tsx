@@ -1,13 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { Phone, PhoneCall, Mic, PhoneOff } from "lucide-react";
-
-interface CallInfo {
-  leadId: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-}
+import { CALL_STATE, CallInfo } from "@/types/enums";
 
 export default function CallBar({
   state,
@@ -68,10 +62,21 @@ export default function CallBar({
         <div className="flex items-center gap-2 text-base">
           <span className="font-medium">Call with</span>
           <span className="text-blue-600 font-medium">
-            {callInfo.firstName} {callInfo.lastName}
+            {callInfo.lead?.firstName} {callInfo.lead?.firstName}
           </span>
         </div>
-        <span className="text-gray-600">{callInfo.phoneNumber}</span>
+        {callInfo.outbound && (
+          <div className="flex items-center gap-2">
+            <span className="text-gray-600">Outbound</span>
+            <span className="text-gray-600">{callInfo.toPhoneNumber}</span>
+          </div>
+        )}
+        {!callInfo.outbound && (
+          <div className="flex items-center gap-2">
+            <span className="text-gray-600">Inbound</span>
+            <span className="text-gray-600">{callInfo.fromPhoneNumber}</span>
+          </div>
+        )}
         <button className="flex items-center gap-1 px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
           Show Caller Details
         </button>
@@ -104,13 +109,20 @@ export default function CallBar({
           Connecting...
         </div>
       )}
-      {state === "ringing" && (
+      {state === CALL_STATE.RINGING && (
         <div className="flex items-center gap-2 text-green-600">
           <PhoneCall className="h-5 w-5 stroke-white" />
           Ringing...
+          <button
+            className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+            onClick={() => disconnect()}
+          >
+            <PhoneOff className="h-4 w-4 stroke-white" />
+            Hang Up
+          </button>
         </div>
       )}
-      {state === "open" && (
+      {state === CALL_STATE.OPEN && (
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 text-green-600">
             <PhoneCall className="h-5 w-5 stroke-white" />

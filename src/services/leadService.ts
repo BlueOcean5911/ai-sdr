@@ -163,6 +163,16 @@ export const getLeadById = async (props: {
   };
 };
 
+export const getLeadByPhoneNumber = async (props: {
+  id: string;
+}): Promise<ApiLeadWithCompanyModelResponse> => {
+  const { id } = props;
+  let url = `/api/leads/phone/${id}`;
+
+  const response = await api.get(url);
+  return response;
+};
+
 export const deleteLead = async (
   leadId: string
 ): Promise<ApiSuccessResponse> => {

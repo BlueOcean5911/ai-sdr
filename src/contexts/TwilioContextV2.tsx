@@ -7,37 +7,45 @@ import {
   ReactNode,
   useState,
   useEffect,
+  useRef,
 } from "react";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { twilioApi } from "@/utils/api";
 import { formatToE164 } from "@/utils/format";
-import { PhoneNumber } from "libphonenumber-js";
+import { toast } from "react-toastify";
+import { CALL_STATE, CallMapping } from "@/types/enums";
+import { handleError, runService } from "@/utils/service_utils";
+import { addCall } from "@/services/callService";
+import { LeadModel } from "@/services/leadService";
 
 interface TokenResponse {
   token: string;
   identify: string;
 }
 
-interface CallInfo {
-  leadId: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-}
-
-interface CallMapping {
-  [CallSid: string]: CallInfo;
-}
-
 interface TwilioContextType {
   device: any;
+  deviceState: string | null;
   callMapping: CallMapping;
   connections: any[];
   showDialPad: boolean;
+  callLogCallSids: Set<string>;
   setCallMapping: (mapping: CallMapping) => void;
-  handleDial: (phoneNumber: string) => void;
+  handleDial: (
+    phoneNumber: string,
+    leadId?: string,
+    lead?: LeadModel,
+    taskId?: string
+  ) => void;
   setShowDialPad: (show: boolean) => void;
+  cleanCallMapping: (callSid: string) => void;
+  handleLogCall: (
+    callSid: string,
+    callDispositionId: string,
+    callPurposeId: string,
+    note: string
+  ) => void;
 }
 
 const TwilioContext = createContext<TwilioContextType | undefined>(undefined);
@@ -46,24 +54,167 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
   const { me } = useAuth();
 
   const [device, setDevice] = useState<any>(null);
+  const [deviceState, setDeviceState] = useState<string | null>(null);
   const [connections, setConnections] = useState<any[] | []>([]);
   const [callMapping, setCallMapping] = useState<CallMapping>({});
   const [showDialPad, setShowDialPad] = useState<boolean>(false);
-  const [activeConnections, setActiveConnections] = useState(new Set());
+  const [callLogCallSids] = useState(new Set<string>());
+  const [activeConnections] = useState(new Set());
+  const callMappingRef = useRef({});
+
+  // Update ref whenever callMapping changes
+  useEffect(() => {
+    callMappingRef.current = callMapping;
+  }, [callMapping]);
 
   useEffect(() => {
     initializeTwilio();
   }, [me]);
 
-  const handleIncomingConnection = (connection: any) => {
-    // Only process if this connection isn't already being handled
-    if (
-      !connections.some(
-        (conn) => conn.parameters.CallSid === connection.parameters.CallSid
-      )
-    ) {
-      setConnections((prev) => [...prev, connection]);
+  useEffect(() => {
+    console.log("CONNECTIONS", connections);
+    console.log("callMapping", callMapping);
+  }, [connections, callMapping]);
+
+  const cleanCallLogCallSids = (callSid: string): void => {
+    callLogCallSids.delete(callSid);
+  };
+
+  const cleanCallMapping = (callSid: string) => {
+    setCallMapping((prev) => {
+      const newMapping = { ...prev };
+      delete newMapping[callSid];
+      return newMapping;
+    });
+    cleanCallLogCallSids(callSid);
+  };
+
+  const cleanConnection = (callSid: string) => {
+    activeConnections.delete(callSid);
+    setConnections((currentConnections) =>
+      currentConnections.filter((conn) => conn.parameters.CallSid !== callSid)
+    );
+  };
+
+  const handlePendingCall = (conn: any) => {
+    const callSid = conn.parameters.CallSid;
+    setCallMapping((prev) => {
+      // If CallSid exists, preserve existing data and only update the state
+      if (prev[callSid]) {
+        return {
+          ...prev,
+          [callSid]: {
+            ...prev[callSid],
+            state: CALL_STATE.OPEN,
+          },
+        };
+      }
+      return { ...prev };
+    });
+  };
+
+  const handleCancelCall = (connection: any) => {
+    const callSid = connection.parameters.CallSid;
+    // remove the connection from the activeConnections set and connections
+    cleanConnection(callSid);
+
+    setCallMapping((prev) => {
+      // If CallSid exists, preserve existing data and only update the state
+      if (prev[callSid]) {
+        return {
+          ...prev,
+          [callSid]: {
+            ...prev[callSid],
+            state: CALL_STATE.CANCELLED,
+          },
+        };
+      }
+      return { ...prev };
+    });
+  };
+
+  const handleRejectCall = (connection: any) => {
+    const callSid = connection.parameters.CallSid;
+    // remove the connection from the activeConnections set and connections
+    cleanConnection(callSid);
+
+    setCallMapping((prev) => {
+      // If CallSid exists, preserve existing data and only update the state
+      if (prev[callSid]) {
+        return {
+          ...prev,
+          [callSid]: {
+            ...prev[callSid],
+            state: CALL_STATE.REJECTED,
+          },
+        };
+      }
+      return { ...prev };
+    });
+  };
+
+  const handleLogCall = (
+    callSid: string,
+    callDispositionId: string,
+    callPurposeId: string,
+    note: string
+  ) => {
+    const call = callMapping[callSid];
+    call.callDispositionId = callDispositionId;
+    call.callPurposeId = callPurposeId;
+    call.note = note;
+    delete call.lead;
+    console.log("call: ", call);
+
+    runService(
+      call,
+      addCall,
+      (data) => {
+        toast.success("Call data uploaded successfully");
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  const handleOffline = (existedDevice: any) => {
+    setDeviceState("offline");
+    const accessToken = refreshToken();
+    if (!accessToken) return;
+    if (!existedDevice) {
+      initializeTwilio();
     }
+    existedDevice.setup(accessToken);
+  };
+
+  const handleIncomingCall = (connection: any) => {
+    const callSid = connection.parameters.CallSid;
+    if (!activeConnections.has(callSid)) {
+      activeConnections.add(callSid);
+
+      setConnections((currentConnections) => {
+        const uniqueConnections = currentConnections.filter(
+          (conn) => conn.parameters.CallSid !== callSid
+        );
+        return [...uniqueConnections, connection];
+      });
+    }
+
+    setCallMapping((prev) => ({
+      ...prev,
+      [connection.parameters.CallSid]: {
+        fromPhoneNumber: connection.parameters.From,
+        toPhoneNumber: connection.parameters.To,
+        outbound: false,
+        callSid: connection.parameters.CallSid,
+        state: CALL_STATE.INCOMING,
+      },
+    }));
+
+    connection.on("pending", handlePendingCall);
+    connection.on("canceled", handleCancelCall);
+    connection.on("rejected", handleRejectCall);
   };
 
   const initializeTwilio = async () => {
@@ -83,152 +234,103 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
         codecPreferences: [Connection.Codec.PCMU, Connection.Codec.Opus],
         fakeLocalDTMF: true,
         enableRingingState: true,
+        enableIceRestart: true,
         debug: true,
         allowIncomingWhileBusy: true,
         edge: ["ashburn", "dublin", "singapore"],
       });
 
-      newDevice.on("ready", () => {});
-
-      newDevice.on("error", (error) => {});
-
-      newDevice.on("connect", (conn: any) => {});
-
-      newDevice.on("disconnect", (conn: any) => {});
-
-      newDevice.on("incoming", (connection: any) => {
-        const callSid = connection.parameters.CallSid;
-        if (!activeConnections.has(callSid)) {
-          activeConnections.add(callSid);
-          setConnections((currentConnections) => {
-            const uniqueConnections = currentConnections.filter(
-              (conn) => conn.parameters.CallSid !== callSid
-            );
-            return [...uniqueConnections, connection];
-          });
-        }
-
-        connection.on("reject", () => {
-          setConnections((prev) =>
-            prev.filter(
-              (conn) => conn.parameters.CallSid !== conn.parameters.CallSid
-            )
-          );
-          setCallMapping((prev) => {
-            const newMapping = { ...prev };
-            delete newMapping[connection.parameters.CallSid];
-            return newMapping;
-          });
-        });
-
-        connection.on("cancel", () => {
-          setConnections((prev) =>
-            prev.filter(
-              (conn) => conn.parameters.CallSid !== conn.parameters.CallSid
-            )
-          );
-          setCallMapping((prev) => {
-            const newMapping = { ...prev };
-            delete newMapping[connection.parameters.CallSid];
-            return newMapping;
-          });
-        });
-
-        connection.on("disconnect", async () => {
-          const callSid = connection.parameters.CallSid;
-          activeConnections.delete(callSid);
-          setConnections((currentConnections) =>
-            currentConnections.filter(
-              (conn) => conn.parameters.CallSid !== callSid
-            )
-          );
-          setCallMapping((prev) => {
-            const newMapping = { ...prev };
-            delete newMapping[connection.parameters.CallSid];
-            return newMapping;
-          });
-        });
-
-        //  add logic to fetch lead information with phone number
-        setCallMapping((prev) => ({
-          ...prev,
-          [connection.parameters.CallSid]: {
-            leadId: "123",
-            firstName: "John",
-            lastName: "Doe",
-            phoneNumber: connection.parameters.From,
-          },
-        }));
+      newDevice.on("ready", () => {
+        setDeviceState("ready");
       });
-
-      newDevice.on("offline", async (device: any) => {
-        const accessToken = await refreshToken();
-        if (accessToken) {
-          device.setup(accessToken);
-          setDevice(device);
-        }
+      newDevice.on("busy", () => {
+        setDeviceState("busy");
       });
+      newDevice.on("error", () => {
+        device.destroy();
+        initializeTwilio();
+        setDeviceState(null);
+      });
+      newDevice.on("offline", handleOffline);
+      newDevice.on("incoming", handleIncomingCall);
 
       setDevice(newDevice);
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleDial = (phoneNumber: string) => {
-    // TODO: Add logic to get lead information with parameter
+  // handle outgoing calls
+  const handleDial = (
+    phoneNumber: string,
+    leadId?: string,
+    lead?: LeadModel,
+    taskId?: string
+  ) => {
+    console.log("here================", lead, leadId, taskId);
     if (!device || !phoneNumber) return;
-
     const formattedNumber = formatToE164(phoneNumber);
     if (!formattedNumber) {
+      toast.error("Invalid phone number");
       return;
     }
 
-    setShowDialPad(false);
+    // If dial pad is open, close it
+    if (showDialPad) {
+      setShowDialPad(false);
+    }
 
-    const outgoingConnection = device.connect({ To: phoneNumber });
-    setConnections((prev: any[]) => [...prev, outgoingConnection]);
+    let outgoingConnection;
+    try {
+      outgoingConnection = device.connect({ To: phoneNumber });
+    } catch (error) {
+      toast.info("Your device is busy, please try again later");
+      console.error("Error dialing:", error);
+      return;
+    }
 
     outgoingConnection.on("accept", () => {
-      const CallSid = outgoingConnection.parameters.CallSid;
-      // TODO: Add logic to get lead information
+      console.log("accept===========>");
+      const callSid = outgoingConnection.parameters.CallSid;
+      if (!activeConnections.has(callSid)) {
+        activeConnections.add(callSid);
+
+        setConnections((currentConnections) => {
+          const uniqueConnections = currentConnections.filter(
+            (conn) => conn.parameters.CallSid !== callSid
+          );
+          return [...uniqueConnections, outgoingConnection];
+        });
+      }
+      console.log("here================123", leadId, lead, taskId);
       setCallMapping((prev) => ({
         ...prev,
-        [CallSid]: {
-          leadId: "12345",
-          firstName: "John",
-          lastName: "Doe",
-          phoneNumber: phoneNumber,
+        [outgoingConnection.parameters.CallSid]: {
+          lead: lead,
+          leadId: leadId,
+          taskId: taskId,
+          fromPhoneNumber: me.phone,
+          toPhoneNumber: phoneNumber,
+          outbound: true,
+          callSid: outgoingConnection.parameters.CallSid,
+          state: CALL_STATE.OPEN,
         },
       }));
     });
+    outgoingConnection.on("disconnect", (connection: any) => {
+      const callSid = connection.parameters.CallSid;
 
-    outgoingConnection.on("disconnect", async (conn: any) => {
-      setConnections((prev) =>
-        prev.filter(
-          (connection) =>
-            connection.parameters.CallSid !== conn.parameters.CallSid
-        )
-      );
+      setCallMapping((prev) => ({
+        ...prev,
+        [callSid]: {
+          ...prev[callSid],
+          state: CALL_STATE.COMPLETED,
+        },
+      }));
+
+      callLogCallSids.add(callSid);
+      cleanConnection(callSid);
     });
-
-    outgoingConnection.on("closed", (conn: any) => {
-      setConnections((prev) =>
-        prev.filter(
-          (connection) =>
-            connection.parameters.CallSid !== conn.parameters.CallSid
-        )
-      );
-    });
-
-    outgoingConnection.on("cancel", (conn: any) => {
-      setConnections((prev) =>
-        prev.filter(
-          (connection) =>
-            connection.parameters.CallSid !== conn.parameters.CallSid
-        )
-      );
-    });
-
-    outgoingConnection.on("ringing", (conn: any) => {});
   };
 
   const refreshToken = async () => {
@@ -236,22 +338,28 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
       if (me?.phone) {
         return;
       }
-      const response = await twilioApi.get(`/token/${me?.phone}`);
+      const response = await twilioApi.get(`/token/${me.phone}`);
       const data: TokenResponse = response.data;
       return data.token;
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <TwilioContext.Provider
       value={{
         device,
+        deviceState,
         callMapping,
         connections,
         showDialPad,
+        callLogCallSids,
         setCallMapping,
         handleDial,
         setShowDialPad,
+        cleanCallMapping,
+        handleLogCall,
       }}
     >
       {children}
@@ -266,3 +374,62 @@ export function useTwilioContext() {
   }
   return context;
 }
+
+// Connection States:
+
+// - "pending" // Initial state when call is being established
+// - "ringing" // Call is ringing on recipient's end
+// - "open" // Active call connection
+// - "closed" // Call has ended normally
+// - "failed" // Call failed to connect
+// - "busy" // Recipient's line was busy
+// - "canceled" // Call was canceled before connecting
+// - "rejected" // Recipient rejected the call
+
+// Connection Events:
+
+// connection.on("accept") // Call was accepted
+// connection.on("cancel") // Call was canceled
+// connection.on("disconnect") // Call ended (normal termination)
+// connection.on("reject") // Call was rejected
+// connection.on("error") // Error occurred during call
+// connection.on("mute") // Call was muted
+// connection.on("unmute") // Call was unmuted
+// connection.on("volume") // Volume changed
+// connection.on("warning") // Warning event occurred
+// connection.on("warning-cleared") // Warning was cleared
+
+// inbound calls
+
+// States:
+// - "pending" // Incoming call notification
+// - "ringing" // Your device is ringing
+// - "open" // You accepted the call
+// - "closed" // You ended the call
+// - "rejected" // You rejected the call
+// - "canceled" // Caller hung up before you answered
+
+// Events:
+// connection.on("incoming") // New incoming call
+// connection.on("accept") // You accepted call
+// connection.on("reject") // You rejected call
+// connection.on("cancel") // Caller canceled
+// connection.on("disconnect") // Call ended
+
+// outbound calls
+
+// States:
+// - "pending" // Call initializing
+// - "ringing" // Recipient's phone ringing
+// - "open" // Recipient answered
+// - "closed" // Call completed normally
+// - "failed" // Call failed to connect
+// - "busy" // Recipient line busy
+// - "canceled" // You canceled before answer
+
+// Events:
+// connection.on("accept") // Recipient answered
+// connection.on("reject") // Recipient rejected
+// connection.on("disconnect") // Call ended
+// connection.on("busy") // Line busy
+// connection.on("error") // Connection error
