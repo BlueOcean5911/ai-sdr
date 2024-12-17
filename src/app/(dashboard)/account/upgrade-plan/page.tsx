@@ -56,8 +56,8 @@ const Page = () => {
   return (
     <div className="flex justify-center overflow-auto">
       <div className="max-w-6xl px-4 py-12 w-full flex flex-col justify-center text-center gap-2">
-        <h1 className="text-4xl font-semibold">Upgrade Your Plan</h1>
-        <h3 className="text-2xl font-semibold">
+        <h1 className="text-2xl">Upgrade Your Plan</h1>
+        <h3 className="text-xl text-gray-500">
           Pricing for one-person startups to Fortune 500 enterprises.
         </h3>
         <BillingPeriodSelector

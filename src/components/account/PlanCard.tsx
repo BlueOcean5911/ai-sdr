@@ -24,11 +24,11 @@ const PlanCard = ({
   const isProcessing = processingPlan === plan.name;
 
   return (
-    <div className="h-full w-full p-4 md:p-6 flex flex-col gap-4 md:gap-5 border rounded-md shadow-lg bg-white hover:border-blue-600">
+    <div className="h-full w-full p-4 md:p-6 mt-8 flex flex-col gap-4 md:gap-5 border rounded-3xl hover:-translate-y-4 shadow-lg bg-white border-2 hover:border-blue-500 text-gray-700">
       <div className="p-4 md:p-8 flex flex-col gap-2 justify-center items-center">
-        <p className="text-xl md:text-2xl font-medium">{plan.name}</p>
+        <p className="text-base">{plan.name}</p>
         <div className="flex items-baseline gap-1">
-          <span className="text-3xl md:text-4xl font-semibold">
+          <span className="text-4xl md:text-4xl font-semibold text-gray-700">
             $
             {billingPeriod === "monthly"
               ? plan.monthly.value
@@ -47,9 +47,13 @@ const PlanCard = ({
         )}
       </div>
 
-      <div className="flex-1 flex flex-col gap-3 justify-center items-center text-sm md:text-base">
-        <p className="text-center">{plan.exportCredits}</p>
-        <p className="text-center">{plan.mobileCredits}</p>
+      <div className="flex-1 flex flex-col gap-3 justify-center items-center text-sm md:text-base text-gray-00">
+        <p className="text-center text-gray-800 text-sm">
+          {plan.exportCredits}
+        </p>
+        <p className="text-center  text-gray-800 text-sm">
+          {plan.mobileCredits}
+        </p>
       </div>
 
       {isSelected ? (
@@ -61,7 +65,7 @@ const PlanCard = ({
         </button>
       ) : (
         <button
-          className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors disabled:bg-blue-300"
+          className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-400 transition-colors disabled:bg-blue-300"
           disabled={processing || isProcessing}
           onClick={() => onUpgrade(plan)}
         >

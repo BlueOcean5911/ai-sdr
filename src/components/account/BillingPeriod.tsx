@@ -25,7 +25,7 @@ const BillingPeriodSelector = ({
             className={classNames(
               "relative px-6 py-2 text-sm rounded-full transition-all duration-200",
               option.value === period
-                ? "bg-blue-600 text-white shadow-sm"
+                ? "bg-blue-500 text-white shadow-sm"
                 : "text-gray-700 hover:bg-gray-300"
             )}
             onClick={() => onChange(option.value)}

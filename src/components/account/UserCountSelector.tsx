@@ -3,19 +3,14 @@ interface UserCountSelectorProps {
   onChange: (count: number) => void;
 }
 
-const UserCountSelector = ({
-  userCount,
-  onChange,
-}: UserCountSelectorProps) => {
+const UserCountSelector = ({ userCount, onChange }: UserCountSelectorProps) => {
   const handleIncrement = () => onChange(userCount + 1);
   const handleDecrement = () => onChange(userCount > 1 ? userCount - 1 : 1);
 
   return (
     <div className="p-2 flex flex-col md:flex-row justify-between items-center gap-3 border-b bg-white mb-4">
       <div>
-        <label className="text-xl font-semibold text-gray-700">
-          Edtions & Users
-        </label>
+        <label className="text-lg text-gray-700">Edtions & Users</label>
       </div>
       <div className="flex items-center gap-3">
         <label className="text-base font-medium text-gray-700">
@@ -35,7 +30,7 @@ const UserCountSelector = ({
             onChange={(e) =>
               onChange(Math.max(1, parseInt(e.target.value) || 1))
             }
-            className="w-16 text-center border rounded-md p-1 h-8 text-lg"
+            className="input-primary w-16 text-center border rounded-md p-1 h-8"
             min="1"
           />
           <button
