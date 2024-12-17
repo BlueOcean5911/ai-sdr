@@ -23,12 +23,36 @@ export interface CallCreateProps {
   recordingUrl?: string;
 }
 
-export interface CallProps extends CallCreateProps {
+export interface CallProps {
   id: string;
+  callDispositionId: string;
+  callPurposeId: string;
+  fromPhoneNumber: string;
+  note: string;
+  outbound: string;
+  toPhoneNumber: string;
+  userCallType?: USER_CALL_TYPE;
+  state: CALL_STATE;
+
+  leadId?: string;
+  leadName?: string;
+  cadenceId?: string;
+  cadenceName?: string;
+  cadenceStepId?: string;
+  currentCadenceStep?: string;
+  taskId?: string;
+  taskTitle?: string;
+
+  callDispositionName: string;
+  callPurposeName: string;
 }
 
 interface ApiCallResponse {
   data: CallProps | null;
+}
+
+interface ApiCallsResponse {
+  data: CallProps[] | [];
 }
 
 export const addCall = async (
@@ -41,5 +65,17 @@ export const addCall = async (
   } catch (error) {
     console.log(error);
     return { data: null };
+  }
+};
+
+export const getCalls = async (
+  // data: CallFetchProps
+): Promise<ApiCallsResponse> => {
+  try {
+    const response = await api.get("api/v1/calls");
+    return response;
+  } catch (error) {
+    console.log(error);
+    return { data: [] };
   }
 };
