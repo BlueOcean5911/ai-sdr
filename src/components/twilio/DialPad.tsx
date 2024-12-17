@@ -31,10 +31,7 @@ const DialPad: React.FC<DialPadProps> = ({ isOpen, onClose, onDial }) => {
 
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
-          <div className="flex items-center justify-between mb-6">
-            <Dialog.Title className="text-xl font-semibold text-gray-900">
-              Enter the number
-            </Dialog.Title>
+          <div className="flex items-center justify-end mb-6">
             <button
               onClick={onClose}
               className="p-2 rounded-full text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
