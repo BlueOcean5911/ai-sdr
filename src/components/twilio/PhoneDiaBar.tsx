@@ -19,7 +19,7 @@ export default function CallBar({
   const [duration, setDuration] = useState<string>("00:00");
 
   useEffect(() => {
-    let intervalId;
+    // let intervalId;
 
     if (state === "open") {
       let ms = 0;
@@ -49,7 +49,7 @@ export default function CallBar({
 
       const timeInterval = setInterval(timer, 10);
       return () => {
-        if (intervalId) {
+        if (timeInterval) {
           clearInterval(timeInterval);
         }
       };
