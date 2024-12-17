@@ -61,8 +61,6 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
   const [activeConnections] = useState(new Set());
   const callMappingRef = useRef({});
 
-  const baseUrl = process.env.NEXT_PUBLIC_TWILIO_URL;
-
   // Update ref whenever callMapping changes
   useEffect(() => {
     callMappingRef.current = callMapping;
@@ -222,7 +220,7 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
     const aivioPhoneNumber = me.phone;
     const { Device, Connection } = await import("twilio-client");
     try {
-      const response = await twilioApi.get(`${baseUrl}/token/${aivioPhoneNumber}`);
+      const response = await twilioApi.get(`/token/${aivioPhoneNumber}`);
 
       const data: TokenResponse = response.data;
       const newDevice = new Device(data.token, {
@@ -332,8 +330,7 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
       if (me?.phone) {
         return;
       }
-      const response = await twilioApi.get(`${baseUrl}/token/${me.phone}`);
-
+      const response = await twilioApi.get(`/token/${me.phone}`);
       const data: TokenResponse = response.data;
       return data.token;
     } catch (err) {
