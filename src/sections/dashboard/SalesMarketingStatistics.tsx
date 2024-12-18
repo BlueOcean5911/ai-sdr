@@ -209,11 +209,14 @@ const SalesMarketingStatistics = () => {
             <span className="text-sm">Average duration</span>
             <div className="flex flex-wrap justify-between items-center gap-2">
               <span className="text-3xl">
-                {statistics.callAverageDuration}s
+                {Number(statistics.callAverageDuration || 0).toFixed(2)}s
               </span>
               <div className="flex flex-col gap-0.5">
                 <span className="text-sm text-center rounded-md bg-green-200">
-                  {statistics.callAverageDurationFromLastWeek}s
+                  {Number(
+                    statistics.callAverageDurationFromLastWeek || 0
+                  ).toFixed(2)}
+                  s
                 </span>
                 <span className="text-xs text-gray-400">from last week</span>
               </div>
