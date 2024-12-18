@@ -39,69 +39,72 @@ export default function HeaderAlert() {
               <h2 className="text-lg font-semibold text-gray-900">Alerts</h2>
             </div>
           </div>
-          <div className="flex-1 overflow-y-auto">
-            {alerts.length > 0 ? (
-              filteredAlerts.map((item, id) => (
-                <MenuItem key={id}>
-                  <div
-                    className="block px-3 py-2 text-sm leading-6 border-b text-gray-900 data-[focus]:bg-blue-50 data-[focus]:cursor-pointer"
-                    onClick={() => {
-                      handleMarkAsRead(item.id);
-                      router.push(item.href);
-                    }}
-                  >
-                    <div className="flex items-center gap-4">
-                      {item.type && item.type in alertIcons && (
-                        <div className="flex-center w-10 h-10">
-                          <div className="w-6 h-6 flex-center">
-                            {alertIcons[item.type]}
+          <div className="flex flex-col flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto">
+              {alerts.length > 0 ? (
+                filteredAlerts.map((item, id) => (
+                  <MenuItem key={id}>
+                    <div
+                      className="block px-3 py-2 text-sm leading-6 border-b text-gray-900 data-[focus]:bg-blue-50 data-[focus]:cursor-pointer"
+                      onClick={() => {
+                        handleMarkAsRead(item.id);
+                        router.push(item.href);
+                      }}
+                    >
+                      <div className="flex items-center gap-4">
+                        {item.type && item.type in alertIcons && (
+                          <div className="flex-center w-10 h-10">
+                            <div className="w-6 h-6 flex-center">
+                              {alertIcons[item.type]}
+                            </div>
                           </div>
+                        )}
+                        <div className="flex-1 overflow-hidden">
+                          <p className="font-semibold text-ellipsis overflow-hidden whitespace-nowrap">
+                            {item.title}
+                          </p>
+                          <p className="w-full text-sm text-ellipsis overflow-hidden whitespace-nowrap">
+                            {item.dmler?.firstName} {item.dmler?.lastName} {""}
+                            {item.content} {item.receptient?.firstName}{" "}
+                            {item.receptient?.lastName}{" "}
+                            {getRelativeTime(item.createdAt)}
+                          </p>
                         </div>
-                      )}
-                      <div className="flex-1 overflow-hidden">
-                        <p className="font-semibold text-ellipsis overflow-hidden whitespace-nowrap">
-                          {item.title}
-                        </p>
-                        <p className="w-full text-sm text-ellipsis overflow-hidden whitespace-nowrap">
-                          {item.dmler?.firstName} {item.dmler?.lastName} {""}
-                          {item.content} {item.receptient?.firstName}{" "}
-                          {item.receptient?.lastName}{" "}
-                          {getRelativeTime(item.createdAt)}
-                        </p>
                       </div>
                     </div>
-                  </div>
-                </MenuItem>
-              ))
-            ) : (
-              <>
-                <div className="px-6 py-12 flex flex-col items-center">
-                  <div className="relative mb-6">
-                    <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center animate-fade-in">
-                      <Check className="w-10 h-10 text-green-500" />
+                  </MenuItem>
+                ))
+              ) : (
+                <>
+                  <div className="px-6 py-12 flex flex-col items-center">
+                    <div className="relative mb-6">
+                      <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center animate-fade-in">
+                        <Check className="w-10 h-10 text-green-500" />
+                      </div>
+                      <div className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center animate-bounce">
+                        <span className="text-xs font-medium text-white">
+                          0
+                        </span>
+                      </div>
                     </div>
-                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center animate-bounce">
-                      <span className="text-xs font-medium text-white">0</span>
-                    </div>
+
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      No new alerts
+                    </h3>
+                    <p className="text-sm text-gray-500 text-center max-w-[200px]">
+                      You'll see new alerts here when they arrive
+                    </p>
                   </div>
-
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    No new alerts
-                  </h3>
-                  <p className="text-sm text-gray-500 text-center max-w-[200px]">
-                    You'll see new alerts here when they arrive
-                  </p>
-                </div>
-
-                <div className="px-6 py-4 bg-gray-50 flex justify-end gap-3">
-                  <Link href={ROUTE_ALERTS}>
-                    <button className="px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-150 rounded-lg">
-                      View All
-                    </button>
-                  </Link>
-                </div>
-              </>
-            )}
+                </>
+              )}
+            </div>
+            <div className="px-6 py-4 bg-gray-50 flex justify-end gap-3">
+              <Link href={ROUTE_ALERTS}>
+                <button className="px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-150 rounded-lg">
+                  View All
+                </button>
+              </Link>
+            </div>
           </div>
         </MenuItems>
       </Menu>
