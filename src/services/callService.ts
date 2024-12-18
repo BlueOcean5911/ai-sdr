@@ -73,6 +73,7 @@ export interface CallProps {
   callPurposeName: string;
 
   createdAt: string;
+  duration: number;
 }
 
 export interface CallUpdate {

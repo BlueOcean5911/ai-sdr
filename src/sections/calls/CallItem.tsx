@@ -6,7 +6,7 @@ import { SlCallIn } from "react-icons/sl";
 import { SlCallOut } from "react-icons/sl";
 import Link from "next/link";
 import { classNames } from "@/utils";
-import { formatDateOrTime } from "@/utils/format";
+import { formatDateOrTime, formatSecondsToTime } from "@/utils/format";
 
 export default function CallItem({
   call,
@@ -65,9 +65,12 @@ export default function CallItem({
       <td className="p-1 text-nowrap">{call.callDispositionName}</td>
       <td className="p-1 text-nowrap">{call.callPurposeName}</td>
       <td className="p-1 text-nowrap capitalize">
-        {call.note?.length > 15 ? call.note.slice(0, 10) + "..." : call.note}
+        {call.note.length > 15 ? call.note.slice(0, 10) + "..." : call.note}
       </td>
       <td className="p-1 text-nowrap capitalize">{call.state}</td>
+      <td className="p-1 text-nowrap capitalize">
+        {formatSecondsToTime(call.duration)}
+      </td>
       <td className="p-1 text-nowrap capitalize">
         {formatDateOrTime(call.createdAt)}
       </td>

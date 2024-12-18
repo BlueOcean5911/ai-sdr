@@ -123,6 +123,7 @@ export default function Calls() {
       },
       getCalls,
       (data) => {
+        console.log(data);
         setCalls(data);
       },
       (status, error) => {
@@ -185,6 +186,7 @@ export default function Calls() {
                     "purpose",
                     "note",
                     "states",
+                    "duration",
                     "Date",
                   ].map((value, index) => (
                     <th key={index}>
