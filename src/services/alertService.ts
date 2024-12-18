@@ -79,24 +79,24 @@ export const getAlerts = async (
 };
 
 export const getAlertTotalCount = async (
-  data: FetchAlertsProps = { params: {} }
+ 
 ): Promise<ApiCountResponse> => {
-  let url = `/api/alerts/total-count?`;
-  //  get search params from current params
-  const keys = Object.keys(data.params);
-  let searchParams = "";
+  let url = `/api/alerts/total-count`;
+  // //  get search params from current params
+  // const keys = Object.keys(data.params);
+  // let searchParams = "";
 
-  if (keys.length > 0) {
-    searchParams =
-      "&" + keys.map((key) => `${key}=${data.params[key]}`).join("&");
-  }
+  // if (keys.length > 0) {
+  //   searchParams =
+  //     "&" + keys.map((key) => `${key}=${data.params[key]}`).join("&");
+  // }
 
-  if (data.search) {
-    url += `&search=${data.search}`;
-  }
-  if (searchParams) {
-    url += searchParams;
-  }
+  // if (data.search) {
+  //   url += `&search=${data.search}`;
+  // }
+  // if (searchParams) {
+  //   url += searchParams;
+  // }
   const response = await api.get(url);
 
   return {
