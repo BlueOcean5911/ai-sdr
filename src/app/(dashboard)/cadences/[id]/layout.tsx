@@ -17,6 +17,7 @@ import {
   updateCadence,
   UpdateCadenceModel,
 } from "@/services/cadenceService";
+import { LayoutGrid, MailIcon, SettingsIcon, User2 } from "lucide-react";
 
 const CadenceLayout = ({ id }: { id: string }) => {
   const router = useRouter();
@@ -152,24 +153,28 @@ const CadenceLayout = ({ id }: { id: string }) => {
       <div className="w-full h-8 px-5 flex items-center gap-2">
         <TapItem
           key="overview"
+          icon={<LayoutGrid className="w-4 h-4" />}
           content="Overview"
           link={`/cadences/${cadence?.id}`}
           active={pathname === `/cadences/${cadence?.id}`}
         />
         <TapItem
           key="contacts"
+          icon={<User2 className="w-4 h-4" />}
           content="Contacts"
           link={`/cadences/${cadence?.id}/contacts`}
           active={pathname === `/cadences/${cadence?.id}/contacts`}
         />
         <TapItem
           key="emails"
+          icon={<MailIcon className="w-4 h-4" />}
           content="Emails"
           link={`/cadences/${cadence?.id}/emails`}
           active={pathname === `/cadences/${cadence?.id}/emails`}
         />
         <TapItem
           key="setting"
+          icon={<SettingsIcon className="w-4 h-4" />}
           content="Setting"
           link={`/cadences/${cadence?.id}/setting`}
           active={pathname === `/cadences/${cadence?.id}/setting`}

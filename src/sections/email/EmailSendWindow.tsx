@@ -228,8 +228,8 @@ const EmailSendWindow = ({
               </div>
             </div>
           )}
-          <div className="px-4 py-2 flex justify-between items-center border-b-2 text-base">
-            Send Email
+          <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-gray-900">Send Email</h2>
             <XMarkIcon
               className="w-5 h-5 hover:stroke-gray-600 cursor-pointer"
               onClick={close}

@@ -32,17 +32,18 @@ const TapItem = ({
                 ${
                   active
                     ? "text-gray-00 stroke-gray-900"
-                    : "text-gray-400 group-hover:text-gray-400"
+                    : "text-gray-600 group-hover:text-gray-900"
                 }
               `}
           >
-            {React.cloneElement(icon as React.ReactElement, {
-              className: `w-4 h-4 ${
-                active
-                  ? "fill-gray-900 stroke-gray-900"
-                  : "text-gray-400 group-hover:text-gray-400"
-              }`,
-            })}
+            {icon &&
+              React.cloneElement(icon as React.ReactElement, {
+                className: `w-4 h-4 ${
+                  active
+                    ? "fill-gray-900 stroke-gray-900"
+                    : "text-gray-400 group-hover:text-gray-400"
+                }`,
+              })}
             {content}
           </span>
         </button>
