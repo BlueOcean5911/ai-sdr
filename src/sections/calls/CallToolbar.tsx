@@ -1,40 +1,14 @@
 import { useCallFilter } from "@/contexts/FilterCallContext";
-import { CallStatistics, getCallStatistics } from "@/services/callService";
+import { CallStatistics } from "@/services/callService";
 import { classNames } from "@/utils";
-import { handleError, runService } from "@/utils/service_utils";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
-interface Statistics {
-  [key: string]: number | string;
-}
-
-const CallToolbar = () => {
+const CallToolbar = ({ statistics }: { statistics: CallStatistics }) => {
   const path = usePathname();
   const currentParams = Object.fromEntries(useSearchParams());
   const { callFilterConfig, setCallFilterConfig } = useCallFilter();
-  const [statistics, setStatistics] = useState<Statistics>({});
-
-  const fetchStatistics = () => {
-    runService(
-      undefined,
-      getCallStatistics,
-      (data) => {
-        setStatistics(data);
-        console.log("statistics", data);
-      },
-      (status, error) => {
-        console.log(status, error);
-        handleError(status, error);
-      }
-    );
-  };
-
-  useEffect(() => {
-    fetchStatistics();
-  }, []);
 
   return (
     <div className="flex justify-between items-center gap-2 p-1">

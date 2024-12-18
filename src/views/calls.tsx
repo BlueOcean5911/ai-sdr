@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 
 import CallItem from "@/sections/calls/CallItem";
 import CallToolbar from "@/sections/calls/CallToolbar";
@@ -11,23 +10,80 @@ import Pagination from "@/components/extends/Pagination/Pagination";
 
 import { handleError, runService } from "@/utils/service_utils";
 import { useCallFilter } from "@/contexts/FilterCallContext";
-import { CallProps, getCalls, getCallTotalCount } from "@/services/callService";
-
-// import { callData } from "@/data/call.data";
+import {
+  CallProps,
+  CallStatistics,
+  deleteCall,
+  getCalls,
+  getCallStatistics,
+  getCallTotalCount,
+  updateCall,
+} from "@/services/callService";
+import CallLog, { CallSubmitProps } from "@/sections/calls/CallLogV2";
+import { toast } from "react-toastify";
 
 export default function Calls() {
-  const [open, setOpen] = useState(true);
-  const [focus, setFocus] = useState<CallProps>();
+  const [open, setOpen] = useState(false);
+  const [focus, setFocus] = useState<CallProps | null>(null);
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalCount, setTotalCount] = useState<number>(0);
   const { callFilterConfig, setCallFilterConfig } = useCallFilter();
   const [calls, setCalls] = useState<CallProps[]>([]);
   const [loading, setLoading] = useState(false);
+  const [statistics, setStatistics] = useState<CallStatistics>({});
 
+  const fetchStatistics = () => {
+    runService(
+      undefined,
+      getCallStatistics,
+      (data) => {
+        if (data) {
+          setStatistics(data);
+        }
+      },
+      (status, error) => {
+        console.log(status, error);
+        handleError(status, error);
+      }
+    );
+  };
+
+  useEffect(() => {
+    fetchStatistics();
+  }, []);
   const handleEdit = (call: CallProps) => {
     setFocus(call);
     setOpen(true);
+  };
+
+  const handleEditCall = (values: CallSubmitProps) => {
+    runService(
+      {
+        id: focus?.id,
+        data: {
+          leadId: values.leadId,
+          callDispositionId: values.dispositionId,
+          callPurposeId: values.purposeId,
+          note: values.note,
+        },
+      },
+      updateCall,
+      (data) => {
+        if (data) {
+          refresh();
+          toast.success("Call updated successfully");
+        }
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
+  };
+
+  const handleEditCallClose = () => {
+    setFocus(null);
+    setOpen(false);
   };
 
   const handleChangeSort = (label: string) => {
@@ -35,7 +91,21 @@ export default function Calls() {
   };
 
   const handleDelete = (callId: string) => {
-    setCalls(calls.filter((call) => call.id !== callId));
+    runService(
+      {
+        id: callId,
+      },
+      deleteCall,
+      (data) => {
+        if (data) {
+          refresh();
+          toast.success("Call deleted successfully");
+        }
+      },
+      (status, error) => {
+        handleError(status, error);
+      }
+    );
   };
 
   const fetchCalls = async () => {
@@ -53,7 +123,6 @@ export default function Calls() {
       },
       getCalls,
       (data) => {
-        console.log("calls: ", data);
         setCalls(data);
       },
       (status, error) => {
@@ -74,19 +143,22 @@ export default function Calls() {
       },
       getCallTotalCount,
       (data) => {
-        console.log("Call total", data);
         setTotalCount(data?.count ? data?.count : 0);
       },
       (status, error) => {
         handleError(status, error);
-        console.log(status, error);
       }
     );
   };
 
-  useEffect(() => {
+  const refresh = () => {
     fetchCalls();
     fetchCallTotalCount();
+    fetchStatistics();
+  };
+
+  useEffect(() => {
+    refresh();
   }, [callFilterConfig, currentPage, pageSize]);
 
   return (
@@ -94,7 +166,7 @@ export default function Calls() {
       {callFilterConfig.isOpen && <FilterCall />}
       <div className="card p-4 pt-7 flex-1 flex flex-col gap-2 overflow-auto shadow-lg min-w-[420px]">
         <div className="overflow-auto">
-          <CallToolbar />
+          <CallToolbar statistics={statistics} />
         </div>
         {/* Table */}
         <div className="flex flex-1 flex-col w-full align-middle border rounded-md overflow-auto">
@@ -168,11 +240,15 @@ export default function Calls() {
           />
         </div>
       </div>
+      <CallLog
+        open={open}
+        leadId={focus?.leadId}
+        depositionId={focus?.callDispositionId}
+        purposeId={focus?.callPurposeId}
+        note={focus?.note}
+        onSubmit={handleEditCall}
+        onClose={handleEditCallClose}
+      />
     </div>
   );
 }
-
-// const Calls = () => {
-//   return <div></div>;
-// };
-// export default Calls;

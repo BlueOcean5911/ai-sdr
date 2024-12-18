@@ -1,4 +1,4 @@
-import { ApiCountResponse, FetchProps } from "@/types";
+import { ApiCountResponse, ApiSuccessResponse, FetchProps } from "@/types";
 import { CALL_STATE, USER_CALL_TYPE } from "@/types/enums";
 import { api } from "@/utils/api";
 
@@ -75,16 +75,15 @@ export interface CallProps {
   createdAt: string;
 }
 
+export interface CallUpdate {
+  callDispositionId: string;
+  callPurposeId: string;
+  fromPhoneNumber: string;
+  note: string;
+}
+
 export interface CallStatistics {
-  total?: number;
-  no_answer?: number;
-  busy?: number;
-  left_voicemail?: number;
-  gatekeeper?: number;
-  bad_number?: number;
-  connected_positive?: number;
-  connected_neutral?: number;
-  connected_negative?: number;
+  [key: string]: number | string;
 }
 
 interface ApiCallResponse {
@@ -273,4 +272,25 @@ export const getCallStatistics = async (): Promise<any> => {
     console.log(error);
     return { data: {} };
   }
+};
+
+export const updateCall = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: CallUpdate;
+}): Promise<ApiCallResponse> => {
+  const response = await api.put(`api/v1/calls/${id}`, data);
+  return {
+    data: response.data,
+  };
+};
+
+export const deleteCall = async ({
+  id,
+}: {
+  id: string;
+}): Promise<ApiSuccessResponse> => {
+  return await api.delete(`api/v1/calls/${id}`);
 };
