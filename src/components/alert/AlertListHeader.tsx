@@ -9,8 +9,7 @@ interface AlertListHeaderProps {
   isFilterOpen: boolean;
   setIsFilterOpen: (open: boolean) => void;
   onSelectAll: () => void;
-  onMarkAsRead: (id: string | undefined) => void;
-  onMarkAsUnread: (id: string | undefined) => void;
+  onBulkUpdate: (isRead: boolean) => void;
   onDelete: (id: string | undefined) => void;
   selectedCount: number;
   totalCount: number;
@@ -22,8 +21,7 @@ export function AlertListHeader({
   isFilterOpen,
   setIsFilterOpen,
   onSelectAll,
-  onMarkAsRead,
-  onMarkAsUnread,
+  onBulkUpdate,
   onDelete,
   selectedCount,
   totalCount,
@@ -68,7 +66,7 @@ export function AlertListHeader({
         variant="outline"
         className="flex items-center"
         size="sm"
-        onClick={() => onMarkAsRead(undefined)}
+        onClick={() => onBulkUpdate(true)}
         disabled={!readAble}
       >
         <Check className="w-4 h-4 mr-2" />
@@ -78,7 +76,7 @@ export function AlertListHeader({
         variant="outline"
         className="flex items-center"
         size="sm"
-        onClick={() => onMarkAsUnread(undefined)}
+        onClick={() => onBulkUpdate(false)}
         disabled={!unreadAble}
       >
         <Mail className="w-4 h-4 mr-2" />

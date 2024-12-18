@@ -132,6 +132,21 @@ export const addAlert = async (alert: AlertModel) => {
   };
 };
 
+export const bulkUpdateAlerts = async (data: {
+  alerts: string[],
+  isRead: boolean,
+}) => {
+  // console.log("update alerts", data);
+  const response = await api.post("api/alerts/bulk-update", data);
+  // console.log("update alerts response", response.data);
+  if (response.status !== 200) {
+    throw new Error("Failed to update alerts");
+  }
+  return {
+    data: response.data,
+  };
+}
+
 export const updateAlert = async (data: {
   alertId: string;
   updateData: UpdateAlertModel;

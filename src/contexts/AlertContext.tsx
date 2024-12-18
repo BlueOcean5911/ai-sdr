@@ -7,11 +7,13 @@ import {
   useEffect,
   useCallback,
 } from "react";
+import { toast } from "react-toastify";
 
 import { wsService } from "@/services/websocketService";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   AlertModel,
+  bulkUpdateAlerts,
   deleteAlert,
   getAlerts,
   getAlertTotalCount,
@@ -30,6 +32,7 @@ interface AlertContextType {
   setAlerts: (alerts: AlertModel[]) => void;
   setIsFilterOpen: (open: boolean) => void;
   setAlertFilterConfig: (config: AlertFilterType) => void;
+  handleBulkUpdate: (isRead: boolean) => void;
   handleDelete: (id: string | undefined) => void;
   handleSelectAll: () => void;
   handleMarkAsRead: (id: string | undefined) => void;
@@ -121,6 +124,44 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
         handleError(status, error);
       }
     );
+  };
+
+  const handleBulkUpdate = async (isRead: boolean) => {
+    const selectedAlerts = alerts.filter(
+      (alert) => alert.isSelected && alert.isRead !== isRead
+    );
+    const updateData = {
+      alerts: selectedAlerts.map((alert) => alert.id),
+      isRead: isRead,
+    };
+
+    if (selectedAlerts.length === 0) {
+      alert("No alerts selected for bulk update!");
+      return;
+    }
+
+    setLoading(true);
+    runService(
+      updateData,
+      bulkUpdateAlerts,
+      (data) => {
+        if (data.success) {
+          setAlerts((prevAlerts) =>
+            prevAlerts.map((alert) =>
+              selectedAlerts.find((a) => a.id === alert.id)
+                ? { ...alert, isRead: isRead, isSelected: false }
+                : alert
+            )
+          );
+          toast.success("Alerts updated successfully!");
+        }
+      },
+      (status, error) => {
+        handleError(status, error);
+        setLoading(false);
+      }
+    );
+    setLoading(false);
   };
 
   const handleDeleteAlert = (alertId: string) => {
@@ -269,6 +310,7 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
         setAlerts,
         setIsFilterOpen,
         setAlertFilterConfig,
+        handleBulkUpdate,
         handleDelete,
         handleSelectAll,
         handleMarkAsRead,

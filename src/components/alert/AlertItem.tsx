@@ -66,7 +66,7 @@ export const AlertItem: React.FC<AlertItemProps> = ({
         />
         <Checkbox
           id={`alert-${alert.id}`}
-          checked={alert.isSelected}
+          checked={alert.isSelected || false}
           onChange={() => onToggleSelect(alert.id)}
           className="flex-shrink-0"
         />

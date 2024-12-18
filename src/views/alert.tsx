@@ -14,6 +14,7 @@ export default function Page() {
     alertFilterConfig,
     setIsFilterOpen,
     setAlertFilterConfig,
+    handleBulkUpdate,
     handleDelete,
     handleSelectAll,
     handleMarkAsRead,
@@ -34,8 +35,7 @@ export default function Page() {
           isFilterOpen={isFilterOpen}
           setIsFilterOpen={setIsFilterOpen}
           onSelectAll={handleSelectAll}
-          onMarkAsRead={handleMarkAsRead}
-          onMarkAsUnread={handleMarkAsUnread}
+          onBulkUpdate={handleBulkUpdate}
           onDelete={handleDelete}
           selectedCount={selectedCount}
           totalCount={alerts.length}
