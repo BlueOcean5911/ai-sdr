@@ -65,6 +65,9 @@ export const getAlerts = async (
   //     "&" + keys.map((key) => `${key}=${data.params[key]}`).join("&");
   // }
 
+  if (data.isRead) {
+    url += `&isRead=${data.isRead}`;
+  }
   if (data.search) {
     url += `&search=${data.search}`;
   }
