@@ -155,7 +155,7 @@ const SalesMarketingStatistics = () => {
               <span className="text-3xl">
                 {statistics.totalCalls
                   ? (
-                      (statistics.callConnected / statistics.totalEmails) *
+                      (statistics.callConnected / statistics.totalCalls) *
                       100
                     ).toFixed(2)
                   : 0}
@@ -166,7 +166,7 @@ const SalesMarketingStatistics = () => {
                   {statistics.totalCalls
                     ? (
                         (statistics.callConnectedFromLastWeek /
-                          statistics.totalEmails) *
+                          statistics.totalCalls) *
                         100
                       ).toFixed(2)
                     : 0}
@@ -184,7 +184,7 @@ const SalesMarketingStatistics = () => {
               <span className="text-3xl">
                 {statistics.totalCalls
                   ? (
-                      (statistics.callPositive / statistics.totalEmails) *
+                      (statistics.callPositive / statistics.totalCalls) *
                       100
                     ).toFixed(2)
                   : 0}
@@ -195,7 +195,7 @@ const SalesMarketingStatistics = () => {
                   {statistics.totalCalls
                     ? (
                         (statistics.callPositiveFromLastWeek /
-                          statistics.totalEmails) *
+                          statistics.totalCalls) *
                         100
                       ).toFixed(2)
                     : 0}
