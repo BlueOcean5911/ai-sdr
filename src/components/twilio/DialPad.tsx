@@ -64,21 +64,21 @@ const DialPad: React.FC<DialPadProps> = ({ isOpen, onClose, onDial }) => {
             <div className="flex justify-center gap-4">
               <button
                 onClick={handleDial}
-                className="w-16 h-16 flex items-center justify-center bg-green-500 rounded-full text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                className="w-16 h-16 flex items-center justify-center bg-blue-500 rounded-full text-white hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
                 <Phone className="w-8 h-8 stroke-white" />
               </button>
               <button
                 onClick={() => handleNumberClick("+")}
-                className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded-full text-2xl font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="w-16 h-16 flex items-center justify-center bg-blue-500 rounded-full text-white hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
-                <Plus className="w-8 h-8 " />
+                <Plus className="w-8 h-8 stroke-white" />
               </button>
               <button
                 onClick={handleDelete}
-                className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="w-16 h-16 flex items-center justify-center bg-blue-500 rounded-full text-white hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
-                <Delete className="w-8 h-8" />
+                <Delete className="w-8 h-8 stroke-white" />
               </button>
             </div>
           </div>
