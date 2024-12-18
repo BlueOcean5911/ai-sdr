@@ -14,6 +14,7 @@ import {
   AlertModel,
   deleteAlert,
   getAlerts,
+  getAlertTotalCount,
   updateAlert,
   UpdateAlertModel,
 } from "@/services/alertService";
@@ -22,6 +23,7 @@ import { handleError, runService } from "@/utils/service_utils";
 interface AlertContextType {
   loading: boolean;
   alerts: AlertModel[] | [];
+  alertTotalCount: number;
   isFilterOpen: boolean;
   alertFilterConfig: AlertFilterType;
   setAlerts: (alerts: AlertModel[]) => void;
@@ -58,6 +60,7 @@ export const AlertContext = createContext<AlertContextType | undefined>(
 export const AlertProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [alerts, setAlerts] = useState<AlertModel[]>([]);
+  const [alertTotalCount, setAlertTotalCount] = useState(0);
   const [isSemiSelected, setIsSemiSelected] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [alertFilterConfig, setAlertFilterConfig] = useState<AlertFilterType>({
@@ -85,6 +88,19 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
       (status, error) => {
         handleError(status, error);
         setLoading(false);
+      }
+    );
+  };
+
+  const fetchTotalCount = () => {
+    runService(
+      undefined,
+      getAlertTotalCount,
+      (data) => {
+        setAlertTotalCount(data.count);
+      },
+      (status, error) => {
+        handleError(status, error);
       }
     );
   };
@@ -129,6 +145,7 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
     if (!isAuthenticated || !token) return;
 
     fetchAlerts();
+    fetchTotalCount();
     wsService.connect(token);
 
     const createHandler = (message: MessageType) => {
@@ -158,7 +175,7 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
       wsService.unsubscribe("UPDATE_ALERT", updateHandler);
       wsService.unsubscribe("DELETE_ALERT", deleteHandler);
     };
-  }, [isAuthenticated, token, setAlertFilterConfig]);
+  }, [isAuthenticated, token, alertFilterConfig]);
 
   const handleSelectAll = useCallback(() => {
     setAlerts((prevAlerts) => {
@@ -226,6 +243,7 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
       value={{
         loading,
         alerts,
+        alertTotalCount,
         isFilterOpen,
         alertFilterConfig,
         setAlerts,
