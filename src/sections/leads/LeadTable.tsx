@@ -28,6 +28,7 @@ import { useLeadSelection } from "@/contexts/LeadSelectionContext";
 import { handleError, runService } from "@/utils/service_utils";
 import { getFormattedAddress } from "@/utils/format";
 import { CountModel } from "@/types";
+import { Building2, MapPin, Users } from "lucide-react";
 
 const LeadTable = () => {
   const { leadFilterConfig, setLeadFilterConfig } = useLeadFilter();
@@ -235,12 +236,7 @@ const LeadTable = () => {
                   >
                     Company
                   </th>
-                  <th
-                    scope="col"
-                    className="px-3 text-left text-sm font-semibold text-gray-500"
-                  >
-                    Company Location
-                  </th>
+
                   <th
                     scope="col"
                     className="px-3 text-left text-sm font-semibold text-gray-500"
@@ -353,18 +349,25 @@ const LeadTable = () => {
                         className="hover:underline hover:text-blue-900"
                         href={`companies/${lead.company?.id}`}
                       >
-                        {lead.company?.name}
+                        <span className="flex items-center gap-2">
+                          <Building2 className="w-4 h-4 text-gray-500 inline-block" />
+                          {lead.company?.name}
+                        </span>
                       </a>
+                      <span className="flex items-center gap-2 text-gray-500">
+                        <MapPin className="w-4 h-4" />
+                        {getFormattedAddress(
+                          lead.company?.city,
+                          lead.company?.state,
+                          lead.company?.country
+                        )}
+                      </span>
                     </td>
                     <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      {getFormattedAddress(
-                        lead.company?.city,
-                        lead.company?.state,
-                        lead.company?.country
-                      )}
-                    </td>
-                    <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      {lead.company?.size}
+                      <span className="flex items-center gap-2">
+                        <Users className="w-4 h-4 text-gray-500" />
+                        {lead.company?.size}
+                      </span>
                     </td>
                     <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       {lead.company?.industry}
@@ -377,7 +380,7 @@ const LeadTable = () => {
                           .map((keyword, idx) => (
                             <span
                               key={idx}
-                              className="px-2 border bg-blue-500 rounded-full text-[10px] capitalize min-w-16 text-center text-white"
+                              className="px-2 border bg-blue-100 text-blue-800 rounded-full text-[10px] capitalize min-w-16 text-center"
                             >
                               {keyword}
                             </span>
