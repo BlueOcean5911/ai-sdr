@@ -106,7 +106,9 @@ export function TwilioProvider({ children }: { children: ReactNode }) {
       call,
       addCall,
       (data) => {
-        toast.success("Call data uploaded successfully");
+        if (data) {
+          toast.success("Call data uploaded successfully");
+        }
       },
       (status, error) => {
         handleError(status, error);
