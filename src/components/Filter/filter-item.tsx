@@ -13,7 +13,7 @@ const FilterItem: React.FC<FilterItemProps> = ({ icon, title, children }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="rounded-lg border border-gray-200 overflow-hidden mb-2">
+    <div className="rounded-lg border border-gray-200 mb-2">
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-colors duration-150"
