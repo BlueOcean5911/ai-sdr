@@ -51,7 +51,6 @@ export default function Calls(
       (data) => {
         console.log("calls: ", data);
         setCalls(data);
-        // setTotalCount(data.totalCount);
       },
       (status, error) => {
         handleError(status, error);
@@ -73,7 +72,6 @@ export default function Calls(
         <div className="overflow-auto">
           <CallToolbar />
         </div>
-
         {/* Table */}
         <div className="flex flex-1 flex-col w-full align-middle border rounded-md overflow-auto">
           {loading ? (
@@ -84,12 +82,14 @@ export default function Calls(
                 <tr>
                   <th></th>
                   {[
-                    "contact",
                     "direction",
-                    "purpose",
+                    "contact",
+                    "user",
                     "disposition",
+                    "purpose",
                     "note",
-                    "status",
+                    "states",
+                    "Date",
                   ].map((value, index) => (
                     <th key={index}>
                       <SortableHeader
@@ -125,7 +125,7 @@ export default function Calls(
                       colSpan={8}
                       className="h-full flex justify-center items-center"
                     >
-                      <p></p>
+                      <p>No calls</p>
                     </td>
                   </tr>
                 )}
@@ -134,8 +134,7 @@ export default function Calls(
             </table>
           )}
         </div>
-        {/* Pagination */}
-        {/* <div className="flex justify-end">
+        <div className="flex justify-end">
           <Pagination
             className="pagination-bar"
             totalCount={totalCount}
@@ -145,7 +144,7 @@ export default function Calls(
               setCurrentPage(currentPage);
             }}
           />
-        </div> */}
+        </div>
       </div>
     </div>
   );

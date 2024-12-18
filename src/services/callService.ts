@@ -35,7 +35,12 @@ export interface CallProps {
   state: CALL_STATE;
 
   leadId?: string;
-  leadName?: string;
+  leadFirstName?: string;
+  leadLastName?: string;
+  userId?: string;
+  userFirstName?: string;
+  userLastName?: string;
+
   cadenceId?: string;
   cadenceName?: string;
   cadenceStepId?: string;
@@ -45,6 +50,8 @@ export interface CallProps {
 
   callDispositionName: string;
   callPurposeName: string;
+
+  createdAt: string;
 }
 
 export interface CallStatistics {
@@ -80,9 +87,8 @@ export const addCall = async (
   }
 };
 
-export const getCalls = async (
-  // data: CallFetchProps
-): Promise<ApiCallsResponse> => {
+export const getCalls = async (): // data: CallFetchProps
+Promise<ApiCallsResponse> => {
   try {
     const response = await api.get("api/v1/calls");
     console.log("calls data", response.data);

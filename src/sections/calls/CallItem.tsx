@@ -4,8 +4,9 @@ import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { CallProps } from "@/services/callService";
 import { SlCallIn } from "react-icons/sl";
 import { SlCallOut } from "react-icons/sl";
-
-import { formatTimestamp } from "@/utils/format";
+import Link from "next/link";
+import { classNames } from "@/utils";
+import { formatDateOrTime } from "@/utils/format";
 
 export default function CallItem({
   call,
@@ -24,20 +25,50 @@ export default function CallItem({
           type="checkbox"
         />
       </td>
-      <td className="p-1 text-xs text-nowrap">{call.leadName}</td>
       <td className="p-1">
-        {call.outbound ? (
-          <SlCallOut className="w-5 h-5 fill-blue-900 stroke-blue-900" />
-        ) : (
-          <SlCallIn className="w-5 h-5 fill-blue-900 stroke-blue-900" />
-        )}
+        <div className="flex justify-end pr-8">
+          {call.outbound ? (
+            <SlCallOut className="w-5 h-5 fill-blue-900 stroke-blue-900" />
+          ) : (
+            <SlCallIn className="w-5 h-5 fill-blue-900 stroke-blue-900" />
+          )}
+        </div>
       </td>
-      <td className="p-1 text-xs text-nowrap">{call.callPurposeName}</td>
-      <td className="p-1 text-xs text-nowrap">
-        {call.callDispositionName}
+      <td className="p-1 text-sm text-nowrap">
+        <Link href={`/leads/${call.leadId}`}>
+          <span className="block text-blue-900 font-bold hover:underline">
+            {call.leadFirstName} {call.leadLastName}
+          </span>
+        </Link>
+        <span
+          className={classNames(
+            call.leadFirstName || call.leadLastName ? "text-xs" : "text-sm"
+          )}
+        >
+          {call.fromPhoneNumber}
+        </span>
       </td>
-      <td className="p-1 text-xs text-nowrap capitalize">{call.note}</td>
-      <td className="p-1 text-xs text-nowrap capitalize">{call.state}</td>
+      <td className="p-1 text-sm text-nowrap">
+        <td className="p-1 text-sm text-nowrap">
+          <span className="block text-blue-900 font-bold hover:underline">
+            {call.userFirstName} {call.userLastName}
+          </span>
+          <span
+            className={classNames(
+              call.userFirstName || call.userLastName ? "text-xs" : "text-sm"
+            )}
+          >
+            {call.toPhoneNumber}
+          </span>
+        </td>
+      </td>
+      <td className="p-1 text-sm text-nowrap">{call.callDispositionName}</td>
+      <td className="p-1 text-sm text-nowrap">{call.callPurposeName}</td>
+      <td className="p-1 text-sm text-nowrap capitalize">{call.note}</td>
+      <td className="p-1 text-sm text-nowrap capitalize">{call.state}</td>
+      <td className="p-1 text-sm text-nowrap capitalize">
+        {formatDateOrTime(call.createdAt)}
+      </td>
       <td className="">
         <Menu>
           <MenuButton className="">
@@ -51,7 +82,7 @@ export default function CallItem({
           >
             <MenuItem>
               <button
-                className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                className="p-2 text-sm font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
                 onClick={handleEdit}
               >
                 Edit
@@ -59,14 +90,14 @@ export default function CallItem({
             </MenuItem>
             <MenuItem>
               <button
-                className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
+                className="p-2 text-sm font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100"
                 onClick={handleDelete}
               >
                 Delete
               </button>
             </MenuItem>
             <MenuItem>
-              <button className="p-2 text-xs font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100">
+              <button className="p-2 text-sm font-semibold flex w-full items-center rounded-md data-[focus]:bg-blue-100">
                 CRM Sync History
               </button>
             </MenuItem>
