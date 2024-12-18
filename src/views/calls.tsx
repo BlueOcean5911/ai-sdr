@@ -11,16 +11,11 @@ import Pagination from "@/components/extends/Pagination/Pagination";
 
 import { handleError, runService } from "@/utils/service_utils";
 import { useCallFilter } from "@/contexts/FilterCallContext";
-import { CallProps, getCalls } from "@/services/callService";
+import { CallProps, getCalls, getCallTotalCount } from "@/services/callService";
 
 // import { callData } from "@/data/call.data";
 
-export default function Calls(
-  { campaignId, cadenceId }: { campaignId?: string; cadenceId?: string } = {
-    cadenceId: "",
-    campaignId: "",
-  }
-) {
+export default function Calls() {
   const [open, setOpen] = useState(true);
   const [focus, setFocus] = useState<CallProps>();
   const [pageSize, setPageSize] = useState<number>(10);
@@ -45,8 +40,17 @@ export default function Calls(
 
   const fetchCalls = async () => {
     setLoading(true);
+    const offset = pageSize * (currentPage - 1);
+    const limit = pageSize;
     await runService(
-      undefined,
+      {
+        offset,
+        limit,
+        fromUser: callFilterConfig.fromUser,
+        states: callFilterConfig.states,
+        purposes: callFilterConfig.purposes,
+        dispositions: callFilterConfig.dispositions,
+      },
       getCalls,
       (data) => {
         console.log("calls: ", data);
@@ -54,20 +58,40 @@ export default function Calls(
       },
       (status, error) => {
         handleError(status, error);
-        console.log(status, error);
         setLoading(false);
       }
     );
     setLoading(false);
   };
 
+  const fetchCallTotalCount = () => {
+    runService(
+      {
+        fromUser: callFilterConfig.fromUser,
+        states: callFilterConfig.states,
+        purposes: callFilterConfig.purposes,
+        dispositions: callFilterConfig.dispositions,
+      },
+      getCallTotalCount,
+      (data) => {
+        console.log("Call total", data);
+        setTotalCount(data?.count ? data?.count : 0);
+      },
+      (status, error) => {
+        handleError(status, error);
+        console.log(status, error);
+      }
+    );
+  };
+
   useEffect(() => {
     fetchCalls();
-  }, []);
+    fetchCallTotalCount();
+  }, [callFilterConfig, currentPage, pageSize]);
 
   return (
     <div className="flex gap-4 p-4 flex-1 overflow-auto">
-      {/* {callFilterConfig.isOpen && <FilterCall />} */}
+      {callFilterConfig.isOpen && <FilterCall />}
       <div className="card p-4 pt-7 flex-1 flex flex-col gap-2 overflow-auto shadow-lg min-w-[420px]">
         <div className="overflow-auto">
           <CallToolbar />
@@ -77,7 +101,7 @@ export default function Calls(
           {loading ? (
             <Loading />
           ) : (
-            <table className="flex-1 w-full">
+            <table className="w-full">
               <thead className="sticky top-0 z-10 bg-gray-50 shadow-md">
                 <tr>
                   <th></th>
@@ -120,18 +144,16 @@ export default function Calls(
                     />
                   ))
                 ) : (
-                  <tr>
-                    <td
-                      colSpan={8}
-                      className="h-full flex justify-center items-center"
-                    >
-                      <p>No calls</p>
-                    </td>
-                  </tr>
+                  <></>
                 )}
                 <tr></tr>
               </tbody>
             </table>
+          )}
+          {calls.length == 0 && (
+            <div className="flex flex-1 justify-center items-center h-full">
+              <p>No Calls Found</p>
+            </div>
           )}
         </div>
         <div className="flex justify-end">

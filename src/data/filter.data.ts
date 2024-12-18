@@ -113,3 +113,12 @@ export const companyStageOptions = [
   { value: "Evangelist", label: "Evangelist" },
   { value: "Other", label: "Other" },
 ];
+
+export const callStateOptions = [
+  { value: "missed", label: "Missed" },
+  { value: "busy", label: "Busy" },
+  { value: "completed", label: "Completed" },
+  { value: "no-answer", label: "No Answer" },
+  { value: "cancelled", label: "Cancelled" },
+  { value: "failed", label: "Failed" },
+];

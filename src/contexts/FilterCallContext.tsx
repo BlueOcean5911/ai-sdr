@@ -11,7 +11,9 @@ interface CallFilterConfig {
   params: { [key: string]: string };
   isOpen: boolean;
   fromUser: Option | Option[] | null;
-  priority: Option | Option[] | null;
+  states: Option | Option[] | null;
+  purposes: Option | Option[] | null;
+  dispositions: Option | Option[] | null;
   orderBy: string;
   isAscending: boolean | undefined;
   search: string;
@@ -31,7 +33,9 @@ export const CallFilterProvider = ({ children }: { children: ReactNode }) => {
     params: {},
     isOpen: true,
     fromUser: [],
-    priority: [],
+    states: [],
+    purposes: [],
+    dispositions: [],
     orderBy: "",
     isAscending: undefined,
     search: "",

@@ -7,6 +7,7 @@ export interface CallPurposeBase {
   order: number;
   callState: CALL_STATE;
 }
+export interface CallPurposeModel extends CallPurposeBase {}
 export interface CallPurposeCreate extends CallPurposeBase {}
 export interface CallPurposeUpdate extends CallPurposeBase {}
 

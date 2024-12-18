@@ -7,6 +7,7 @@ export interface CallDispositionBase {
   order: number;
   callState: CALL_STATE;
 }
+export interface CallDispositionModel extends CallDispositionBase {}
 export interface CallDispositionCreate extends CallDispositionBase {}
 export interface CallDispositionUpdate extends CallDispositionBase {}
 

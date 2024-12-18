@@ -6,15 +6,31 @@ import {
 import FilterItem from "./filter-item";
 import { useCallFilter } from "@/contexts/FilterCallContext";
 import Select from "react-tailwindcss-select";
-import { fromUserOptions, priorityOptions } from "@/data/filter.data";
+import {
+  callStateOptions,
+  fromUserOptions,
+  priorityOptions,
+} from "@/data/filter.data";
 import { runService } from "@/utils/service_utils";
 import { getUsers, UserModel } from "@/services/userService";
 import { useEffect, useState } from "react";
+import {
+  CallDispositionBase,
+  CallDispositionModel,
+  getCallDispositions,
+} from "@/services/callDispositionService";
+import {
+  CallPurposeBase,
+  CallPurposeModel,
+  getCallPurposes,
+} from "@/services/callPurposeService";
 
 export default function FilterCall() {
   const { callFilterConfig, setCallFilterConfig } = useCallFilter();
   const [fromUserOption, setFromUserOption] = useState(fromUserOptions);
-  const [priorityOption, setPriorityOption] = useState(priorityOptions);
+  const [callStateOption, setCallStateOption] = useState(callStateOptions);
+  const [purposeOption, setPurposeOption] = useState([]);
+  const [dispositionOption, setDispositionOption] = useState([]);
 
   const fetchUsers = () => {
     runService(
@@ -33,8 +49,46 @@ export default function FilterCall() {
     );
   };
 
+  const fetchCallPurposes = () => {
+    runService(
+      undefined,
+      getCallPurposes,
+      (purposes) => {
+        const purposeOption = purposes.map((purpose: CallPurposeModel) => ({
+          value: purpose.id,
+          label: purpose.name,
+        }));
+        setPurposeOption(purposeOption);
+      },
+      (status, error) => {
+        console.error(error);
+      }
+    );
+  };
+
+  const fetchCallDispositions = () => {
+    runService(
+      undefined,
+      getCallDispositions,
+      (dispositions) => {
+        const dispositionOption = dispositions.map(
+          (disposition: CallDispositionModel) => ({
+            value: disposition.id,
+            label: disposition.name,
+          })
+        );
+        setDispositionOption(dispositionOption);
+      },
+      (status, error) => {
+        console.error(error);
+      }
+    );
+  };
+
   useEffect(() => {
     fetchUsers();
+    fetchCallPurposes();
+    fetchCallDispositions();
   }, []);
 
   return (
@@ -109,17 +163,101 @@ export default function FilterCall() {
           </FilterItem>
           <FilterItem
             icon={<ListBulletIcon className="w-4 h-4" />}
-            title="Priority"
+            title="Call State"
           >
             <Select
-              value={callFilterConfig.priority}
+              value={callFilterConfig.states}
               onChange={(value) =>
                 setCallFilterConfig({
                   ...callFilterConfig,
-                  priority: value,
+                  states: value,
                 })
               }
-              options={priorityOption}
+              options={callStateOption}
+              isMultiple={true}
+              isSearchable={true}
+              primaryColor={"indigo"}
+              classNames={{
+                menuButton: (value) => {
+                  const isDisabled = value?.isDisabled;
+                  return `flex text-xs text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
+                    isDisabled
+                      ? "bg-gray-200"
+                      : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
+                  }`;
+                },
+                menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-xs text-gray-700",
+                listItem: (value) => {
+                  const isSelected = value?.isSelected;
+                  return `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${
+                    isSelected
+                      ? `text-white bg-blue-500`
+                      : `text-gray-500 hover:bg-blue-100 hover:text-blue-500`
+                  }`;
+                },
+
+                searchBox:
+                  "text-xs w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none",
+                searchIcon:
+                  "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
+              }}
+            ></Select>
+          </FilterItem>
+          <FilterItem
+            icon={<ListBulletIcon className="w-4 h-4" />}
+            title="Call Purpose"
+          >
+            <Select
+              value={callFilterConfig.purposes}
+              onChange={(value) =>
+                setCallFilterConfig({
+                  ...callFilterConfig,
+                  purposes: value,
+                })
+              }
+              options={purposeOption}
+              isMultiple={true}
+              isSearchable={true}
+              primaryColor={"indigo"}
+              classNames={{
+                menuButton: (value) => {
+                  const isDisabled = value?.isDisabled;
+                  return `flex text-xs text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
+                    isDisabled
+                      ? "bg-gray-200"
+                      : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
+                  }`;
+                },
+                menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-xs text-gray-700",
+                listItem: (value) => {
+                  const isSelected = value?.isSelected;
+                  return `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${
+                    isSelected
+                      ? `text-white bg-blue-500`
+                      : `text-gray-500 hover:bg-blue-100 hover:text-blue-500`
+                  }`;
+                },
+
+                searchBox:
+                  "text-xs w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none",
+                searchIcon:
+                  "absolute w-4 h-4 mt-2.5 pb-0.5 ml-1.5 text-gray-500",
+              }}
+            ></Select>
+          </FilterItem>
+          <FilterItem
+            icon={<ListBulletIcon className="w-4 h-4" />}
+            title="Call Disposition"
+          >
+            <Select
+              value={callFilterConfig.dispositions}
+              onChange={(value) =>
+                setCallFilterConfig({
+                  ...callFilterConfig,
+                  dispositions: value,
+                })
+              }
+              options={dispositionOption}
               isMultiple={true}
               isSearchable={true}
               primaryColor={"indigo"}

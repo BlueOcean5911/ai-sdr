@@ -1,48 +1,44 @@
 import { useCallFilter } from "@/contexts/FilterCallContext";
-import { CallStatistics } from "@/services/callService";
+import { CallStatistics, getCallStatistics } from "@/services/callService";
 import { classNames } from "@/utils";
+import { handleError, runService } from "@/utils/service_utils";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+interface Statistics {
+  [key: string]: number | string;
+}
 
 const CallToolbar = () => {
   const path = usePathname();
   const currentParams = Object.fromEntries(useSearchParams());
   const { callFilterConfig, setCallFilterConfig } = useCallFilter();
-  const [statistics, setStatistics] = useState<CallStatistics>({
-    total: 0,
-    no_answer: 0,
-    busy: 0,
-    left_voicemail: 0,
-    gatekeeper: 0,
-    bad_number: 0,
-    connected_positive: 0,
-    connected_neutral: 0,
-    connected_negative: 0,
-  });
+  const [statistics, setStatistics] = useState<Statistics>({});
 
-  // const fetchStatistics = () => {
-  //   runService(
-  //     undefined,
-  //     getCallStatistics,
-  //     (data) => {
-  //       setStatistics(data);
-  //     },
-  //     (status, error) => {
-  //       console.log(status, error);
-  //       handleError(status, error);
-  //     }
-  //   );
-  // };
+  const fetchStatistics = () => {
+    runService(
+      undefined,
+      getCallStatistics,
+      (data) => {
+        setStatistics(data);
+        console.log("statistics", data);
+      },
+      (status, error) => {
+        console.log(status, error);
+        handleError(status, error);
+      }
+    );
+  };
 
-  // useEffect(() => {
-  //   fetchStatistics();
-  // }, []);
+  useEffect(() => {
+    fetchStatistics();
+  }, []);
 
   return (
-    <div className="flex justify-between items-center gap-2">
-      {/* <button
+    <div className="flex justify-between items-center gap-2 p-1">
+      <button
         className="btn-secondary"
         onClick={() => {
           setCallFilterConfig((prev) => ({
@@ -55,7 +51,7 @@ const CallToolbar = () => {
         <span className="text-sm">
           {callFilterConfig.isOpen ? "Hide Filters" : "Show Filters"}
         </span>
-      </button> */}
+      </button>
       <div></div>
       <div className="flex gap-2 overflow-auto">
         {Object.entries(statistics).map(([key, count]) => (
