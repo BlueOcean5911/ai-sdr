@@ -9,6 +9,7 @@ export const ROUTE_COMPANIES = "/companies";
 export const ROUTE_CALLS = "/calls";
 export const ROUTE_MEETINGS = "/meetings";
 export const ROUTE_TASKS = "/tasks";
+export const ROUTE_ALERTS = "/alerts";
 export const ROUTE_ACCOUNT = "/account";
 export const ROUTE_SETTING = "/setting";
 export const ROUTE_LOGIN = "/login";

@@ -14,6 +14,7 @@ import {
 
 import { ROUTE_ACCOUNT_PROFILE, ROUTE_LOGIN } from "./routes";
 import {
+  Bell,
   CalendarCheck,
   LucideMonitorSpeaker,
   MailIcon,
@@ -136,6 +137,12 @@ export const navigations = [
         name: "Tasks",
         href: "/tasks",
         icon: CalendarCheck,
+        current: false,
+      },
+      {
+        name: "Alerts",
+        href: "/alerts",
+        icon: Bell,
         current: false,
       },
     ],

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { BellAlertIcon } from "@heroicons/react/24/outline";
@@ -6,6 +5,9 @@ import { BellAlertIcon } from "@heroicons/react/24/outline";
 import { useAlert } from "@/contexts/AlertContext";
 import { alertIcons } from "@/data/alert.data";
 import { getRelativeTime } from "@/utils/format";
+import { Bell, Check } from "lucide-react";
+import Link from "next/link";
+import { ROUTE_ALERTS } from "@/data/routes";
 
 export default function HeaderAlert() {
   const { alerts, handleMarkAsRead } = useAlert();
@@ -29,10 +31,13 @@ export default function HeaderAlert() {
         </MenuButton>
         <MenuItems
           transition
-          className="flex flex-col absolute right-0 z-50 mt-2.5 min-w-64 max-w-96 max-h-[600px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-gray-900/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+          className="flex flex-col absolute right-0 z-50 mt-2.5 min-w-96 max-w-96 max-h-[600px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-gray-900/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
         >
-          <div className="p-3 border-b border-gray-200 flex justify-between items-center">
-            <h3>Alerts</h3>
+          <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Bell className="w-5 h-5 text-gray-500" />
+              <h2 className="text-lg font-semibold text-gray-900">Alerts</h2>
+            </div>
           </div>
           <div className="flex-1 overflow-y-auto">
             {alerts.length > 0 ? (
@@ -69,18 +74,33 @@ export default function HeaderAlert() {
                 </MenuItem>
               ))
             ) : (
-              <div className="p-6 flex flex-1 flex-col justify-center items-center text-center gap-2">
-                <Image
-                  src={"/assets/images/nodata.svg"}
-                  alt={"nodata"}
-                  width={120}
-                  height={120}
-                />
-                <span>No new alerts</span>
-                <span className="w-2/3 text-xs">
-                  You'll see new alerts here.
-                </span>
-              </div>
+              <>
+                <div className="px-6 py-12 flex flex-col items-center">
+                  <div className="relative mb-6">
+                    <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center animate-fade-in">
+                      <Check className="w-10 h-10 text-green-500" />
+                    </div>
+                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center animate-bounce">
+                      <span className="text-xs font-medium text-white">0</span>
+                    </div>
+                  </div>
+
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    No new alerts
+                  </h3>
+                  <p className="text-sm text-gray-500 text-center max-w-[200px]">
+                    You'll see new alerts here when they arrive
+                  </p>
+                </div>
+
+                <div className="px-6 py-4 bg-gray-50 flex justify-end gap-3">
+                  <Link href={ROUTE_ALERTS}>
+                    <button className="px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-150 rounded-lg">
+                      View All
+                    </button>
+                  </Link>
+                </div>
+              </>
             )}
           </div>
         </MenuItems>
