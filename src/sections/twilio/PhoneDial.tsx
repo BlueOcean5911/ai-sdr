@@ -38,10 +38,10 @@ const PhoneDial = () => {
             </div>
           ))}
       </div>
-      <div className="fixed bottom-0 left-0 px-8 py-2 z-40">
+      <div className="fixed bottom-0 left-0 px-4 py-2 z-40">
         {device && (
           <div
-            className="relative flex items-center justify-center gap-2 rounded-full p-4 m-2 shadow-[0_0_15px_5px_rgba(0,0,0,0.2)] hover:shadow-[0_0_20px_8px_rgba(0,0,0,0.25)] transition-shadow duration-300 cursor-pointer"
+            className="relative flex items-center justify-center gap-2 rounded-full p-4 m-2 shadow-[0_0_15px_5px_rgba(0,0,0,0.2)] hover:shadow-[0_0_20px_8px_rgba(0,0,0,0.25)] transition-shadow duration-300 cursor-pointer border-4 border-blue-200"
             onClick={() => {
               if (deviceState === "ready") {
                 setShowDialPad(true);
