@@ -9,6 +9,7 @@ export default function Page() {
   const {
     loading,
     alerts,
+    alertTotalCount,
     isFilterOpen,
     alertFilterConfig,
     setIsFilterOpen,
@@ -72,7 +73,7 @@ export default function Page() {
         <div className="flex justify-end px-16 border-t">
           <Pagination
             className="pagination-bar"
-            totalCount={alerts.length}
+            totalCount={alertTotalCount}
             pageSize={alertFilterConfig.limit}
             onPageChange={(pageSize: number, currentPage: number) => {
               setAlertFilterConfig({
