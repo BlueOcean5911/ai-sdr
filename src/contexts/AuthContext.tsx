@@ -51,10 +51,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         // setMe(decoded);
         // console.log("me: ", decoded);
       } else {
-        setIsAuthenticated(false);
-        setToken(null);
+        handleSignOut();
         console.log("token expired");
       }
+    else setIsAuthenticated(false);
     setIsLoading(false);
   }, [token]);
 
