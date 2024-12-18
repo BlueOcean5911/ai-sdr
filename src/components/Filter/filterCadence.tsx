@@ -9,6 +9,7 @@ import { handleError, runService } from "@/utils/service_utils";
 import { getMe, getUsers, UserModel } from "@/services/userService";
 import { useEffect, useState } from "react";
 import Select from "react-tailwindcss-select";
+import { ActivitySquare, Star, User } from "lucide-react";
 
 export default function FilterCadence() {
   const { cadenceFilterConfig, setCadenceFilterConfig } = useCadenceFilter();
@@ -63,10 +64,7 @@ export default function FilterCadence() {
           />
         </form>
         <div>
-          <FilterItem
-            icon={<ListBulletIcon className="w-4 h-4" />}
-            title="Owned By"
-          >
+          <FilterItem icon={<User className="w-4 h-4" />} title="Owned By">
             <Select
               value={cadenceFilterConfig.ownedBy}
               onChange={(value) =>
@@ -105,10 +103,7 @@ export default function FilterCadence() {
               }}
             ></Select>
           </FilterItem>
-          <FilterItem
-            icon={<ListBulletIcon className="w-4 h-4" />}
-            title="Starred"
-          >
+          <FilterItem icon={<Star className="w-4 h-4" />} title="Starred">
             <div
               className="flex justify-between items-center"
               onClick={() =>
@@ -134,7 +129,7 @@ export default function FilterCadence() {
             </div>
           </FilterItem>
           <FilterItem
-            icon={<ListBulletIcon className="w-4 h-4" />}
+            icon={<ActivitySquare className="w-4 h-4" />}
             title="Active"
           >
             <div

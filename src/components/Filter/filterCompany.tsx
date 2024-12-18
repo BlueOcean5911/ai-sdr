@@ -1,6 +1,7 @@
 import { ListBulletIcon } from "@heroicons/react/24/outline";
 import FilterItem from "./filter-item";
 import { useCompanyFilter } from "@/contexts/FilterCompanyContext";
+import { Building2, Factory, MapPin } from "lucide-react";
 
 export default function FilterCompany() {
   const { companyFilterConfig, setCompanyFilterConfig } = useCompanyFilter();
@@ -10,7 +11,7 @@ export default function FilterCompany() {
       <h3 className="p-2 border-b border-gray-100">Search</h3>
       <div className="flex-1 flex flex-col gap-0 p-2 border rounded overflow-auto">
         <FilterItem
-          icon={<ListBulletIcon className="w-4 h-4" />}
+          icon={<Building2 className="w-4 h-4" />}
           title="Company Name"
         >
           <input
@@ -25,10 +26,7 @@ export default function FilterCompany() {
             }}
           />
         </FilterItem>
-        <FilterItem
-          icon={<ListBulletIcon className="w-4 h-4" />}
-          title="Location"
-        >
+        <FilterItem icon={<MapPin className="w-4 h-4" />} title="Location">
           <div className="">
             <label htmlFor="country" className="text-xs">
               Country
@@ -141,10 +139,7 @@ export default function FilterCompany() {
             }}
           ></Select>
         </FilterItem> */}
-        <FilterItem
-          icon={<ListBulletIcon className="w-4 h-4" />}
-          title="Industry"
-        >
+        <FilterItem icon={<Factory className="w-4 h-4" />} title="Industry">
           <input
             type="text"
             className="input-primary w-full"

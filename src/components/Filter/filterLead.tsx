@@ -1,6 +1,7 @@
 import { ListBulletIcon } from "@heroicons/react/24/outline";
 import FilterItem from "./filter-item";
 import { useLeadFilter } from "@/contexts/FilterLeadContext";
+import { Briefcase, Building2, Factory, MapPin } from "lucide-react";
 
 export default function FilterLead() {
   const { leadFilterConfig, setLeadFilterConfig } = useLeadFilter();
@@ -49,10 +50,7 @@ export default function FilterLead() {
             }}
           ></Select>
         </FilterItem> */}
-        <FilterItem
-          icon={<ListBulletIcon className="w-4 h-4" />}
-          title="Job Title"
-        >
+        <FilterItem icon={<Briefcase className="w-4 h-4" />} title="Job Title">
           <input
             type="text"
             className="input-primary w-full"
@@ -66,7 +64,7 @@ export default function FilterLead() {
           />
         </FilterItem>
         <FilterItem
-          icon={<ListBulletIcon className="w-4 h-4" />}
+          icon={<Building2 className="w-4 h-4" />}
           title="Company Name"
         >
           <input
@@ -81,10 +79,7 @@ export default function FilterLead() {
             }}
           />
         </FilterItem>
-        <FilterItem
-          icon={<ListBulletIcon className="w-4 h-4" />}
-          title="Location"
-        >
+        <FilterItem icon={<MapPin className="w-4 h-4" />} title="Location">
           <div className="">
             <label htmlFor="country" className="text-xs">
               Country
@@ -179,10 +174,7 @@ export default function FilterLead() {
             }}
           ></Select>
         </FilterItem> */}
-        <FilterItem
-          icon={<ListBulletIcon className="w-4 h-4" />}
-          title="Industry"
-        >
+        <FilterItem icon={<Factory className="w-4 h-4" />} title="Industry">
           <input
             type="text"
             className="input-primary w-full"

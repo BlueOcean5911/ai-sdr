@@ -1,46 +1,40 @@
 "use client";
-import { classNames } from "@/utils";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
 
-const FilterItem = ({
-  icon,
-  title,
-  children,
-}: {
+import React, { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
+
+interface FilterItemProps {
   icon: React.ReactNode;
   title: string;
   children: React.ReactNode;
-}) => {
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      <div className="border-0 border-blue-100  rounded-md py-0.5">
-        <div
-          className="flex items-center px-2 py-2 bg-blue-100"
-          onClick={() => setOpen(!open)}
-        >
-          {icon}
-          <span className="ml-2 text-sm font-medium text-gray-900 flex-1">
-            {title}
-          </span>
-          {/* collapse button */}
-          <ChevronDownIcon
-            className={classNames(
-              open ? "transform rotate-180" : "",
-              "w-4 h-4 transition-transform duration-200"
-            )}
-            onClick={() => setOpen(false)}
-          />
-        </div>
+}
 
-        {open && (
-          <div className="px-2 py-2 bg-gray-0 border-y-2 border-blue-100 border-x-2">
-            <div className="space-y-2 text-sm">{children}</div>
-          </div>
+const FilterItem: React.FC<FilterItemProps> = ({ icon, title, children }) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="rounded-lg border border-gray-200 overflow-hidden mb-2">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-colors duration-150"
+      >
+        <div className="flex items-center gap-2 text-gray-700">
+          {icon}
+          <span className="font-medium text-sm">{title}</span>
+        </div>
+        {open ? (
+          <ChevronUp className="w-4 h-4 text-gray-500" />
+        ) : (
+          <ChevronDown className="w-4 h-4 text-gray-500" />
         )}
-      </div>
-    </>
+      </button>
+
+      {open && (
+        <div className="p-3 space-y-3 bg-white">
+          <div className="space-y-2 text-sm">{children}</div>
+        </div>
+      )}
+    </div>
   );
 };
 

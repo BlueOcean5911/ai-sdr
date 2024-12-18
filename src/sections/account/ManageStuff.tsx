@@ -18,6 +18,7 @@ import {
   UpdateUserModel,
 } from "@/services/userService";
 import { handleError, runService } from "@/utils/service_utils";
+import { Mail, MailIcon, PhoneIcon, User2 } from "lucide-react";
 
 const ManageStuff = () => {
   const [me, setMe] = useState<UserModel>();
@@ -153,19 +154,19 @@ const ManageStuff = () => {
                     scope="col"
                     className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
                   >
-                    First Name
+                    <span className="flex items-center gap-2">
+                      <User2 className="w-4 h-4" />
+                      User Name
+                    </span>
                   </th>
                   <th
                     scope="col"
                     className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
-                    Last Name
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Email
+                    <span className="flex items-center gap-2">
+                      <MailIcon className="w-4 h-4" />
+                      Email
+                    </span>
                   </th>
                   <th
                     scope="col"
@@ -177,12 +178,17 @@ const ManageStuff = () => {
                     scope="col"
                     className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
-                    AIVIO Phone
+                    <span className="flex items-center gap-2">
+                      <PhoneIcon className="w-4 h-4" />
+                      AIVIO Phone
+                    </span>
                   </th>
                   <th
                     scope="col"
                     className="py-3.5 text-center text-sm font-semibold text-gray-900"
-                  >Action</th>
+                  >
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white overflow-auto">
@@ -193,19 +199,27 @@ const ManageStuff = () => {
                       className="h-16 even:bg-blue-50 hover:bg-gray-300"
                     >
                       <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                        {user.firstName}
+                        <span className="flex items-center gap-2">
+                          <User2 className="w-4 h-4" />
+                          {user.firstName} {user.lastName}
+                        </span>
                       </td>
                       <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                        {user.lastName}
-                      </td>
-                      <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                        {user.email}
+                        <div className="flex items-center gap-2">
+                          <MailIcon className="w-4 h-4 " />
+                          {user.email}
+                        </div>
                       </td>
                       <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                         {user.title}
                       </td>
                       <td className="whitespace-nowraptext-sm text-gray-500">
-                        {user.phone}
+                        {user.phone && (
+                          <span className="flex items-center gap-2">
+                            <PhoneIcon className="w-4 h-4" />
+                            {user.phone}
+                          </span>
+                        )}
                       </td>
                       <td>
                         <div className="py-2 flex flex-1 justify-center items-center gap-4">
@@ -224,11 +238,12 @@ const ManageStuff = () => {
                                 className="p-1 rounded-md cursor-pointer hover:bg-gray-100"
                                 onClick={() => handleConfirmDelete(user)}
                               >
-                                <TrashIcon className="w-5 h-5 stroke-red-500" />
+                                <TrashIcon className="w-5 h-5 stroke-blue-900" />
                               </div>
                             </>
                           ) : (
-                            <div className="p-1 rounded-md cursor-pointer hover:bg-gray-100">
+                            <div className="p-1 rounded-md cursor-pointer flex items-center gap-2">
+                              <User2 className="w-5 h-5 stroke-blue-900" />
                               Current User
                             </div>
                           )}

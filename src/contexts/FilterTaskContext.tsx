@@ -33,7 +33,7 @@ export const TaskFilterContext = createContext<
 export const TaskFilterProvider = ({ children }: { children: ReactNode }) => {
   const [taskFilterConfig, setTaskFilterConfig] = useState<TaskFilterConfig>({
     params: {},
-    isOpen: false,
+    isOpen: true,
     fromUser: null,
     priority: null,
     state: [stateOptions[0]],

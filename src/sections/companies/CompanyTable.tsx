@@ -336,7 +336,7 @@ const CompanyTable = () => {
                           ?.split(",")
                           .slice(0, 3)
                           .map((keyword) => (
-                            <span className="px-2 border bg-blue-500 rounded-full text-[10px] capitalize min-w-16 text-center text-white">
+                            <span className="px-2 border bg-blue-100 text-blue-800 rounded-full text-xs capitalize min-w-16 text-center">
                               {keyword}
                             </span>
                           ))}

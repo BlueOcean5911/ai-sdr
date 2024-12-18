@@ -11,6 +11,7 @@ import { getMe, getUsers, UserModel } from "@/services/userService";
 import { useTaskFilter } from "@/contexts/FilterTaskContext";
 import { handleError, runService } from "@/utils/service_utils";
 import { priorityOptions, stateOptions } from "@/data/filter.data";
+import { AlertTriangle, Calendar, CheckCircle2, User2 } from "lucide-react";
 
 export default function FilterTask() {
   const { taskFilterConfig, setTaskFilterConfig } = useTaskFilter();
@@ -65,10 +66,7 @@ export default function FilterTask() {
           />
         </form>
         <div>
-          <FilterItem
-            icon={<ListBulletIcon className="w-4 h-4" />}
-            title="Assignee"
-          >
+          <FilterItem icon={<User2 className="w-4 h-4" />} title="Assignee">
             <Select
               value={taskFilterConfig.fromUser}
               onChange={(value) =>
@@ -108,7 +106,7 @@ export default function FilterTask() {
             ></Select>
           </FilterItem>
           <FilterItem
-            icon={<ListBulletIcon className="w-4 h-4" />}
+            icon={<AlertTriangle className="w-4 h-4" />}
             title="Priority"
           >
             <Select
@@ -150,7 +148,7 @@ export default function FilterTask() {
             ></Select>
           </FilterItem>
           <FilterItem
-            icon={<ListBulletIcon className="w-4 h-4" />}
+            icon={<CheckCircle2 className="w-4 h-4" />}
             title="Task State"
           >
             <Select
@@ -191,10 +189,7 @@ export default function FilterTask() {
               }}
             ></Select>
           </FilterItem>
-          <FilterItem
-            icon={<ListBulletIcon className="w-4 h-4" />}
-            title="Due Date"
-          >
+          <FilterItem icon={<Calendar className="w-4 h-4" />} title="Due Date">
             <div className="flex justify-between items-center gap-1">
               <DatePicker
                 selected={taskFilterConfig.fromDate}

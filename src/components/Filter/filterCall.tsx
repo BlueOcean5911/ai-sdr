@@ -24,6 +24,7 @@ import {
   CallPurposeModel,
   getCallPurposes,
 } from "@/services/callPurposeService";
+import { CheckCircle2, PhoneCall, Target, User } from "lucide-react";
 
 export default function FilterCall() {
   const { callFilterConfig, setCallFilterConfig } = useCallFilter();
@@ -119,10 +120,7 @@ export default function FilterCall() {
           />
         </form>
         <div>
-          <FilterItem
-            icon={<ListBulletIcon className="w-4 h-4" />}
-            title="From User"
-          >
+          <FilterItem icon={<User className="w-4 h-4" />} title="From User">
             <Select
               value={callFilterConfig.fromUser}
               onChange={(value) =>
@@ -162,7 +160,7 @@ export default function FilterCall() {
             ></Select>
           </FilterItem>
           <FilterItem
-            icon={<ListBulletIcon className="w-4 h-4" />}
+            icon={<PhoneCall className="w-4 h-4" />}
             title="Call State"
           >
             <Select
@@ -204,7 +202,7 @@ export default function FilterCall() {
             ></Select>
           </FilterItem>
           <FilterItem
-            icon={<ListBulletIcon className="w-4 h-4" />}
+            icon={<Target className="w-4 h-4" />}
             title="Call Purpose"
           >
             <Select
@@ -246,7 +244,7 @@ export default function FilterCall() {
             ></Select>
           </FilterItem>
           <FilterItem
-            icon={<ListBulletIcon className="w-4 h-4" />}
+            icon={<CheckCircle2 className="w-4 h-4" />}
             title="Call Disposition"
           >
             <Select

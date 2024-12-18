@@ -8,6 +8,7 @@ import Select from "react-tailwindcss-select";
 import { handleError, runService } from "@/utils/service_utils";
 import { getMe, getUsers, UserModel } from "@/services/userService";
 import { useEffect, useRef, useState } from "react";
+import { User } from "lucide-react";
 
 export default function FilterEmail() {
   const { emailFilterConfig, setEmailFilterConfig } = useEmailFilter();
@@ -66,10 +67,7 @@ export default function FilterEmail() {
             className="flex w-full border-0 pl-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
           />
         </form>
-        <FilterItem
-          icon={<ListBulletIcon className="w-4 h-4" />}
-          title="From User"
-        >
+        <FilterItem icon={<User className="w-4 h-4" />} title="From User">
           <Select
             value={emailFilterConfig.fromUser}
             onChange={(value) =>
