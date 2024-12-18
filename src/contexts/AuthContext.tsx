@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         handleSignOut();
         console.log("token expired");
       }
-    else setIsAuthenticated(false);
+    else handleSignOut();
     setIsLoading(false);
   }, [token]);
 
@@ -73,6 +73,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const handleSignOut = () => {
     signOut();
     setToken(null);
+    setIsAuthenticated(false);
     setMe(null);
     setIsAdmin(false);
     setIsSuperAdmin(false);
