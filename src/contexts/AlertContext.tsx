@@ -23,6 +23,7 @@ import { handleError, runService } from "@/utils/service_utils";
 interface AlertContextType {
   loading: boolean;
   alerts: AlertModel[] | [];
+  unreadAlerts: AlertModel[] | [];
   alertTotalCount: number;
   isFilterOpen: boolean;
   alertFilterConfig: AlertFilterType;
@@ -39,8 +40,8 @@ interface AlertContextType {
 }
 
 export interface AlertFilterType {
-  offset: number,
-  limit: number,
+  offset: number;
+  limit: number;
   isRead: boolean;
   type: string;
   orderBy: string;
@@ -60,6 +61,7 @@ export const AlertContext = createContext<AlertContextType | undefined>(
 export const AlertProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [alerts, setAlerts] = useState<AlertModel[]>([]);
+  const [unreadAlerts, setUnreadAlerts] = useState<AlertModel[]>([]);
   const [alertTotalCount, setAlertTotalCount] = useState(0);
   const [isSemiSelected, setIsSemiSelected] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
@@ -83,6 +85,22 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
       (data) => {
         console.log("alerts: ", data);
         setAlerts(data);
+        setLoading(false);
+      },
+      (status, error) => {
+        handleError(status, error);
+        setLoading(false);
+      }
+    );
+  };
+
+  const fecthUnreadAlerts = () => {
+    setLoading(true);
+    runService(
+      { offset: 0, limit: 100, isRead: false },
+      getAlerts,
+      (data) => {
+        setUnreadAlerts(data);
         setLoading(false);
       },
       (status, error) => {
@@ -145,6 +163,7 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
     if (!isAuthenticated || !token) return;
 
     fetchAlerts();
+    fecthUnreadAlerts();
     fetchTotalCount();
     wsService.connect(token);
 
@@ -243,6 +262,7 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
       value={{
         loading,
         alerts,
+        unreadAlerts,
         alertTotalCount,
         isFilterOpen,
         alertFilterConfig,
